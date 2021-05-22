@@ -1,13 +1,13 @@
 import React, { useState } from "react"
 
-import { useAppSelector, useAppDispatch } from "../../redux/hooks"
-import { RootState } from "../../redux/store"
+import { useAppSelector, useAppDispatch } from "redux/hooks"
+import { RootState } from "redux/store"
 import {
   decrement,
   increment,
   incrementByAmount,
   incrementAsync,
-} from "../../redux/reducers/counter/counterSlice"
+} from "redux/reducers/counter/counterSlice"
 import styles from "./Counter.module.css"
 
 export default function Counter() {
