@@ -51,7 +51,7 @@ const config = {
   },
   resolve: {
     extensions: [".js", ".jsx", ".tsx", ".ts"],
-    modules: ["node_modules", path.resolve(__dirname, "..", "src")]
+    modules: ["node_modules", path.resolve(__dirname, "..", "src")],
   },
   plugins: [
     new HtmlWebpackPlugin({

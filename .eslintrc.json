@@ -27,7 +27,8 @@
       {
         "props": false
       }
-    ]
+    ],
+    "react/jsx-props-no-spreading": "off"
   },
   "ignorePatterns": [
     "*.svg",
