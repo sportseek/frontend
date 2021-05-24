@@ -1,4 +1,5 @@
 import { ThemeOptions as MuiThemeOptions } from "@material-ui/core"
+import React from "react"
 
 export interface ThemeOptions extends MuiThemeOptions {
   header: Header
@@ -16,6 +17,7 @@ export type HeaderOptions = Partial<Header>
 export interface SideBar {
   width: React.CSSProperties["width"]
   footer: {
+    height: React.CSSProperties["height"]
     color: React.CSSProperties["color"]
     background: React.CSSProperties["color"]
   }

@@ -1,6 +1,7 @@
-import React, { useState, PropsWithChildren, FC } from "react"
+import React, { PropsWithChildren, FC } from "react"
 import { styled } from "@material-ui/core/styles"
 import { Hidden, Paper } from "@material-ui/core"
+import Helmet from "react-helmet"
 import Sidebar from "components/Sidebar"
 import Header from "components/Header"
 
@@ -31,22 +32,21 @@ const MainContent = styled(Paper)(({ theme }) => ({
 export type MainLayoutProps = PropsWithChildren<{}>
 
 const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
-  const [open, setOpen] = useState(false)
   const { children } = props
-  const handleDrawerToggle = () => setOpen(!open)
 
   return (
     <Root>
+      <Helmet title="Seek your Sport" />
       <Drawer>
         <Hidden mdUp implementation="js">
-          <Sidebar />
+          <Sidebar variant="temporary" />
         </Hidden>
         <Hidden smDown implementation="css">
-          <Sidebar />
+          <Sidebar variant="permanent" />
         </Hidden>
       </Drawer>
       <AppContent>
-        <Header onDrawerToggle={handleDrawerToggle} />
+        <Header />
         <MainContent elevation={0}>{children}</MainContent>
       </AppContent>
     </Root>
