@@ -1,26 +1,15 @@
 import React, { FC } from "react"
 import clsx from "clsx"
 import { makeStyles, styled } from "@material-ui/core/styles"
+import { Drawer, Toolbar, Divider, Typography, Button } from "@material-ui/core"
 import {
-  Drawer,
-  Toolbar,
-  List,
-  ListItem,
-  ListItemIcon,
-  Divider,
-  ListItemText,
-  Typography,
-  Button,
-} from "@material-ui/core"
-import {
-  Inbox as InboxIcon,
-  Mail as MailIcon,
   ChevronLeft as LeftIcon,
   ChevronRight as RightIcon,
 } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { closeSideBar, openSideBar } from "redux/reducers/sidebar/sidebarSlice"
 import { RootState } from "redux/store"
+import ItemList from "./Items"
 
 const Filler = styled("div")({
   flexGrow: 1,
@@ -88,27 +77,8 @@ const SideBar: FC<SidebarProps> = (props: SidebarProps) => {
       onClose={() => dispatch(closeSideBar())}
     >
       <Toolbar />
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      <ItemList />
+
       <Filler />
       <Divider />
 

@@ -1,6 +1,13 @@
 import { FunctionComponent, ReactNode } from "react"
 import { RouteComponentProps } from "react-router-dom"
-import { Search as SearchIcon } from "@material-ui/icons"
+import {
+  PageviewRounded as SearchIcon,
+  DashboardRounded as DashboardIcon,
+  AdjustTwoTone as ReduxIcon,
+  HelpRounded as HelpIcon,
+  MessageRounded as MessageIcon,
+  SettingsRounded as SettingsIcon,
+} from "@material-ui/icons"
 import SignIn from "./Sign/SignIn"
 import SignUp from "./Sign/SignUp"
 import MainLayout, { MainLayoutType } from "./MainLayout/Main"
@@ -21,16 +28,16 @@ type Page = {
 
 const Redux: Page = {
   id: "Redux",
-  path: "/home",
+  path: "/redux",
   header: "Redux Example",
-  icon: SearchIcon,
+  icon: ReduxIcon,
   containsHome: true,
   Component: ReduxExample,
 }
 
 const EventSearch: Page = {
   id: "Search",
-  path: "/search",
+  path: "/home",
   header: "Search Events",
   icon: SearchIcon,
   containsHome: true,
@@ -38,25 +45,59 @@ const EventSearch: Page = {
 }
 
 const PlayerDashBoard: Page = {
-  id: "Search",
+  id: "DashBoard",
   path: "/dashboard",
-  header: "Search Events",
-  icon: SearchIcon,
+  header: "DashBoard",
+  icon: DashboardIcon,
   containsHome: true,
   Component: PlayerBoard,
 }
 
 const ArenaDashBoard: Page = {
-  id: "Search",
+  id: "DashBoard",
   path: "/home",
-  header: "Search Events",
-  icon: SearchIcon,
+  header: "DashBoard",
+  icon: DashboardIcon,
   containsHome: true,
   Component: ArenaBoard,
 }
 
-const PlayerPages = [Redux, EventSearch, PlayerDashBoard]
-const ArenaPages = [ArenaDashBoard]
+const FaqRoutes: Page = {
+  id: "F.A.Q",
+  path: "/faq",
+  header: "F.A.Q",
+  icon: HelpIcon,
+  containsHome: true,
+  Component: ReduxExample,
+}
+
+const SupportRoutes: Page = {
+  id: "Support",
+  path: "/support",
+  header: "Support",
+  icon: MessageIcon,
+  containsHome: true,
+  Component: ReduxExample,
+}
+
+const SettingsRoutes: Page = {
+  id: "Settings",
+  path: "/settings",
+  header: "Settings",
+  icon: SettingsIcon,
+  containsHome: true,
+  Component: ReduxExample,
+}
+
+const PlayerPages = [
+  PlayerDashBoard,
+  EventSearch,
+  Redux,
+  SettingsRoutes,
+  FaqRoutes,
+  SupportRoutes,
+]
+const ArenaPages = [ArenaDashBoard, SupportRoutes]
 
 export const getPages = (type: string) =>
   type === "player" ? PlayerPages : ArenaPages

@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, FC } from "react"
 import { styled } from "@material-ui/core/styles"
 import { Hidden, Paper } from "@material-ui/core"
+import Helmet from "react-helmet"
 import Sidebar from "components/Sidebar"
 import Header from "components/Header"
 
@@ -35,6 +36,7 @@ const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
 
   return (
     <Root>
+      <Helmet title="Seek your Sport" />
       <Drawer>
         <Hidden mdUp implementation="js">
           <Sidebar variant="temporary" />
