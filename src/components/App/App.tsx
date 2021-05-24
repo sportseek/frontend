@@ -1,28 +1,22 @@
 import React from "react"
-import logo from "./logo.svg"
-import "./App.css"
-import Counter from "../Counter/Counter"
+import { CssBaseline, MuiThemeProvider } from "@material-ui/core"
+import { BrowserRouter as Router } from "react-router-dom"
+import { StylesProvider } from "@material-ui/styles"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  )
-}
+import Routes from "routes"
+import themes from "theme"
+
+const App = () => (
+  <>
+    <StylesProvider injectFirst>
+      <MuiThemeProvider theme={themes[0]}>
+        <CssBaseline />
+        <Router>
+          <Routes />
+        </Router>
+      </MuiThemeProvider>
+    </StylesProvider>
+  </>
+)
 
 export default App

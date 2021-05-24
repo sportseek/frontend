@@ -9,5 +9,6 @@ module.exports = merge(common, {
     compress: true,
     port: 9000,
     writeToDisk: true,
+    historyApiFallback: true,
   },
 })

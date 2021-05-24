@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-
+import React, { FC, useState } from "react"
+import { RouteComponentProps } from "react-router-dom"
 import { useAppSelector, useAppDispatch } from "redux/hooks"
 import { RootState } from "redux/store"
 import {
@@ -8,9 +8,10 @@ import {
   incrementByAmount,
   incrementAsync,
 } from "redux/reducers/counter/counterSlice"
+
 import styles from "./Counter.module.css"
 
-export default function Counter() {
+const Counter: FC<RouteComponentProps> = () => {
   const count = useAppSelector((state: RootState) => state.counter.value)
   const dispatch = useAppDispatch()
   const [incrementAmount, setIncrementAmount] = useState("2")
@@ -71,3 +72,5 @@ export default function Counter() {
     </div>
   )
 }
+
+export default Counter
