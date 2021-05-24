@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React from "react"
 import { makeStyles, styled, Theme } from "@material-ui/core/styles"
 import {
   AppBar,
@@ -10,10 +10,12 @@ import {
 } from "@material-ui/core"
 import {
   ExitToApp,
-  MenuOpen,
+  Menu,
   AccountCircle,
   Notifications,
 } from "@material-ui/icons"
+import { useAppDispatch } from "redux/hooks"
+import { openSideBar } from "redux/reducers/sidebar/sidebarSlice"
 
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
@@ -25,12 +27,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       display: "block",
     },
   },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-    },
-  },
 }))
 
 const Filler = styled("div")({
@@ -40,36 +36,33 @@ const Filler = styled("div")({
 const Header = styled(AppBar)(({ theme }) => ({
   height: theme.header.height,
   background: theme.header.background,
+  zIndex: theme.zIndex.drawer + 1,
 }))
 
-type HeaderProps = {
-  onDrawerToggle: () => void
-}
-
-const HeaderFC: FC<HeaderProps> = (props: HeaderProps) => {
+const HeaderFC = () => {
   const classes = useStyles()
 
-  const { onDrawerToggle } = props
+  const dispatch = useAppDispatch()
 
   return (
-    <Header position="sticky">
-      <Toolbar>
-        <Hidden mdUp>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-            onClick={onDrawerToggle}
-          >
-            <MenuOpen />
-          </IconButton>
-        </Hidden>
-        <Typography className={classes.title} variant="h6" noWrap>
-          SportSeek
-        </Typography>
-        <Filler />
-        <div className={classes.sectionDesktop}>
+    <>
+      <Header position="fixed">
+        <Toolbar>
+          <Hidden mdUp>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => dispatch(openSideBar())}
+            >
+              <Menu />
+            </IconButton>
+          </Hidden>
+          <Typography variant="h6" noWrap>
+            SportSeek
+          </Typography>
+          <Filler />
           <IconButton aria-label="show 17 new notifications" color="inherit">
             <Badge badgeContent={17} color="secondary">
               <Notifications />
@@ -78,22 +71,27 @@ const HeaderFC: FC<HeaderProps> = (props: HeaderProps) => {
           <IconButton aria-label="user pic" color="inherit">
             <AccountCircle />
           </IconButton>
-          <IconButton aria-label="user name" color="inherit">
-            <Typography className={classes.title} variant="h6" noWrap>
+          <IconButton
+            className={classes.title}
+            aria-label="user name"
+            color="inherit"
+          >
+            <Typography variant="h6" noWrap>
               Jhon Dee
             </Typography>
           </IconButton>
-        </div>
-        <IconButton
-          edge="end"
-          aria-label="logout"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <ExitToApp />
-        </IconButton>
-      </Toolbar>
-    </Header>
+          <IconButton
+            edge="end"
+            aria-label="logout"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <ExitToApp />
+          </IconButton>
+        </Toolbar>
+      </Header>
+      <Toolbar />
+    </>
   )
 }
 

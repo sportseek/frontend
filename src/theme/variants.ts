@@ -15,13 +15,14 @@ const lightVariant: ThemeOptions = {
   },
   header: {
     height: 60,
-    background: "#2E3543",
+    background: "#4b636e",
   },
   sidebar: {
     width: 230,
     footer: {
+      height: 20,
       color: grey[200],
-      background: "#2E3543",
+      background: "#62757f",
     },
   },
   body: {
