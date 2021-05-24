@@ -1,5 +1,6 @@
+import { FunctionComponent, ReactNode } from "react"
+import { RouteComponentProps } from "react-router-dom"
 import { Search as SearchIcon } from "@material-ui/icons"
-import { Page } from "types"
 import SignIn from "./Sign/SignIn"
 import SignUp from "./Sign/SignUp"
 import MainLayout, { MainLayoutType } from "./MainLayout/Main"
@@ -7,6 +8,16 @@ import ReduxExample from "./ReduxExample/ReduxExample"
 import Search from "./EventSearch/Search"
 import PlayerBoard from "./Dashboard/Player/PlayerPage"
 import ArenaBoard from "./Dashboard/Arena/ArenaPage"
+
+type Page = {
+  id: string
+  path: string
+  header: string
+  icon: FunctionComponent
+  containsHome: true
+  Component: FunctionComponent<RouteComponentProps>
+  children?: ReactNode
+}
 
 const Redux: Page = {
   id: "Redux",
@@ -50,6 +61,6 @@ const ArenaPages = [ArenaDashBoard]
 export const getPages = (type: string) =>
   type === "player" ? PlayerPages : ArenaPages
 
-export type { MainLayoutType }
+export type { MainLayoutType, Page as PageDataType }
 
 export { SignIn, SignUp, MainLayout }

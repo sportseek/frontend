@@ -1,6 +1,4 @@
 import { ThemeOptions as MuiThemeOptions } from "@material-ui/core"
-import React, { FunctionComponent, ReactNode } from "react"
-import { RouteComponentProps } from "react-router-dom"
 
 export interface ThemeOptions extends MuiThemeOptions {
   header: Header
@@ -14,6 +12,7 @@ export interface Header {
 }
 
 export type HeaderOptions = Partial<Header>
+
 export interface SideBar {
   width: React.CSSProperties["width"]
   footer: {
@@ -29,13 +28,3 @@ export interface Body {
 }
 
 export type BodyOptions = Partial<Body>
-
-export type Page = {
-  id: string
-  path: string
-  header: string
-  icon: FunctionComponent
-  containsHome: true
-  Component: FunctionComponent<RouteComponentProps>
-  children?: ReactNode
-}

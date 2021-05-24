@@ -1,5 +1,5 @@
-import { ThemeOptions } from "types"
 import { grey } from "@material-ui/core/colors"
+import { ThemeOptions } from "./types"
 
 const lightVariant: ThemeOptions = {
   palette: {

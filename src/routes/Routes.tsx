@@ -1,11 +1,20 @@
 import React from "react"
 import { Route, Switch, Redirect, RouteComponentProps } from "react-router-dom"
-import { SignIn, MainLayout, MainLayoutType, getPages } from "pages"
-import { Page } from "types"
+import {
+  SignIn,
+  MainLayout,
+  MainLayoutType,
+  getPages,
+  PageDataType,
+} from "pages"
 import { useAppSelector } from "redux/hooks"
 import { RootState } from "redux/store"
 
-const childRoutes = (valid: boolean, Layout: MainLayoutType, routes: Page[]) =>
+const childRoutes = (
+  valid: boolean,
+  Layout: MainLayoutType,
+  routes: PageDataType[]
+) =>
   routes.map(({ id, path, Component }) => (
     <Route
       key={id}
