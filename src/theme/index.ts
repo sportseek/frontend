@@ -1,5 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles"
-import { ThemeOptions } from "types"
+import { ThemeOptions } from "./types"
 import variants from "./variants"
 
 const createTheme = (variant: ThemeOptions) =>
@@ -12,4 +12,4 @@ const createTheme = (variant: ThemeOptions) =>
 
 const themes = variants.map((variant) => createTheme(variant))
 
-export default themes
+export default themes[0]

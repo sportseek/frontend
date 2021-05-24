@@ -5,7 +5,7 @@ import {
   SideBarOptions,
   Body,
   BodyOptions,
-} from "types"
+} from "./types"
 
 declare module "@material-ui/core/styles/createMuiTheme" {
   export interface Theme {

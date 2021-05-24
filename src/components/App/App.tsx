@@ -4,12 +4,12 @@ import { BrowserRouter as Router } from "react-router-dom"
 import { StylesProvider } from "@material-ui/styles"
 
 import Routes from "routes"
-import themes from "theme"
+import theme from "theme"
 
 const App = () => (
   <>
     <StylesProvider injectFirst>
-      <MuiThemeProvider theme={themes[0]}>
+      <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
           <Routes />
