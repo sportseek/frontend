@@ -6,7 +6,8 @@ import {
   MainLayoutType,
   getPages,
   PageDataType,
-  SignUp
+  SignUp,
+  SignUpArena,
 } from "pages"
 import { useAppSelector } from "redux/hooks"
 import { RootState } from "redux/store"
@@ -45,6 +46,7 @@ const Routes = () => {
       {childRoutes(isAuthenticated, MainLayout, getPages(userType))}
       <Route path="/signin" render={() => <SignIn />} />
       <Route path="/signup" render={() => <SignUp />} />
+      <Route path="/signuparena" render={() => <SignUpArena />} />
     </Switch>
   )
 }

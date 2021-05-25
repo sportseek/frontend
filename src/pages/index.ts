@@ -10,6 +10,7 @@ import {
 } from "@material-ui/icons"
 import SignIn from "./Sign/SignIn"
 import SignUp from "./Sign/SignUp"
+import SignUpArena from "./Sign/SignUpArena"
 import MainLayout, { MainLayoutType } from "./MainLayout/Main"
 import ReduxExample from "./ReduxExample/ReduxExample"
 import Search from "./EventSearch/Search"
@@ -104,4 +105,4 @@ export const getPages = (type: string) =>
 
 export type { MainLayoutType, Page as PageDataType }
 
-export { SignIn, SignUp, MainLayout }
+export { SignIn, SignUp, SignUpArena, MainLayout }
