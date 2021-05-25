@@ -6,6 +6,7 @@ import {
   MainLayoutType,
   getPages,
   PageDataType,
+  SignUp
 } from "pages"
 import { useAppSelector } from "redux/hooks"
 import { RootState } from "redux/store"
@@ -43,6 +44,7 @@ const Routes = () => {
       <Route path="/" exact render={() => <Redirect to="/home" />} />
       {childRoutes(isAuthenticated, MainLayout, getPages(userType))}
       <Route path="/signin" render={() => <SignIn />} />
+      <Route path="/signup" render={() => <SignUp />} />
     </Switch>
   )
 }

@@ -7,7 +7,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-  isAuthenticated: true,
+  isAuthenticated: false,
   type: "player",
   id: "12345",
 }
