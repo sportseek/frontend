@@ -6,7 +6,7 @@ import {
   MainLayoutType,
   getPages,
   PageDataType,
-  SignUp
+  SignUp,
 } from "pages"
 import { useAppSelector } from "redux/hooks"
 import { RootState } from "redux/store"
