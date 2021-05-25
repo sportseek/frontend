@@ -7,7 +7,6 @@ const SignInPage: FC = () => {
   const isAuthenticated = useAppSelector(
     (state: RootState) => state.user.isAuthenticated
   )
-  console.log(isAuthenticated)
   return isAuthenticated ? (
     <Redirect to={{ pathname: "/home" }} />
   ) : (
