@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { FC, FormEvent, useState } from "react"
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
 import CssBaseline from "@material-ui/core/CssBaseline"
@@ -62,7 +62,8 @@ const PlayerSignup = () => {
     if (name === "phone") setPhone(value)
   }
 
-  const handleSignup = () => {
+  const handleSignup = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     const payload: PlayerSignupPayload = {
       firstName: firstName,
       lastName: lastName,
@@ -73,7 +74,6 @@ const PlayerSignup = () => {
     }
 
     console.log(payload)
-    debugger;
   }
 
   return (
