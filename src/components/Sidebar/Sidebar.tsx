@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import clsx from "clsx"
 import { makeStyles, styled } from "@material-ui/core/styles"
-import { Drawer, Toolbar, Divider, Typography, Button } from "@material-ui/core"
+import { Drawer, Toolbar, Divider, List, Typography, Button } from "@material-ui/core"
 import {
   ChevronLeft as LeftIcon,
   ChevronRight as RightIcon,
@@ -9,7 +9,9 @@ import {
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { closeSideBar, openSideBar } from "redux/reducers/sidebar/sidebarSlice"
 import { RootState } from "redux/store"
-import ItemList from "./Items"
+
+import { PageDataType, getPages } from "pages"
+import NavItem from "./NavItem"
 
 const Filler = styled("div")({
   flexGrow: 1,
@@ -56,6 +58,8 @@ const SideBar: FC<SidebarProps> = (props: SidebarProps) => {
   const classes = useStyles()
   const { variant } = props
   const open = useAppSelector((state: RootState) => state.sidebar.open)
+  const userType = useAppSelector((state: RootState) => state.user.type)
+  const pages: PageDataType[] = getPages(userType)
   const dispatch = useAppDispatch()
   const SliderIcon = open ? LeftIcon : RightIcon
   const toggleDrawer = () =>
@@ -77,7 +81,9 @@ const SideBar: FC<SidebarProps> = (props: SidebarProps) => {
       onClose={() => dispatch(closeSideBar())}
     >
       <Toolbar />
-      <ItemList />
+      <List>
+        {pages.map(({path, header, icon }) => <NavItem key={path} path={path} text={header} icon={icon} />)}
+      </List>
 
       <Filler />
       <Divider />

@@ -1,5 +1,6 @@
 import { FunctionComponent, ReactNode } from "react"
 import { RouteComponentProps } from "react-router-dom"
+import { SvgIcon } from "@material-ui/core"
 import {
   PageviewRounded as SearchIcon,
   DashboardRounded as DashboardIcon,
@@ -20,7 +21,7 @@ type Page = {
   id: string
   path: string
   header: string
-  icon: FunctionComponent
+  icon: typeof SvgIcon
   containsHome: true
   Component: FunctionComponent<RouteComponentProps>
   children?: ReactNode
