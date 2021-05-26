@@ -1,12 +1,15 @@
 import React, { PropsWithChildren, FC } from "react"
 import { styled } from "@material-ui/core/styles"
 import { Box, Hidden } from "@material-ui/core"
-import withWidth, { isWidthUp, WithWidthProps } from "@material-ui/core/withWidth"
+import withWidth, {
+  isWidthUp,
+  WithWidthProps,
+} from "@material-ui/core/withWidth"
 import Helmet from "react-helmet"
 import Sidebar from "components/Sidebar"
 import Header from "components/Header"
 import Footer from "components/Footer"
-import PerfectScrollbar from 'react-perfect-scrollbar'
+import PerfectScrollbar from "react-perfect-scrollbar"
 
 const Root = styled("div")({
   display: "flex",
@@ -23,19 +26,19 @@ const AppContent = styled("div")({
   flex: 1,
   display: "flex",
   flexDirection: "column",
-  overflow: "hidden"
+  overflow: "hidden",
 })
 
 const MainContent = styled(Box)(({ theme }) => ({
   flex: 1,
   background: theme.body.background,
-  overflow: "auto"
+  overflow: "auto",
 }))
 
 export type MainLayoutProps = PropsWithChildren<WithWidthProps>
 
 const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
-  const { children, width = "xs"} = props
+  const { children, width = "xs" } = props
 
   const pad = isWidthUp("lg", width) ? 4 : 2
 
@@ -53,11 +56,9 @@ const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
       <AppContent>
         <Header />
         <PerfectScrollbar>
-        <MainContent p={pad}>
-          {children}
-        </MainContent>
+          <MainContent p={pad}>{children}</MainContent>
         </PerfectScrollbar>
-      <Footer />
+        <Footer />
       </AppContent>
     </Root>
   )
