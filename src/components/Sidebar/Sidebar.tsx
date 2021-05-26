@@ -18,15 +18,17 @@ import { closeSideBar, openSideBar } from "redux/reducers/sidebar/sidebarSlice"
 import { RootState } from "redux/store"
 
 import { PageDataType, getPages } from "pages"
+import { BUTTON_SLIDER } from "utils/constants"
 import NavItem from "./NavItem"
 
 const Filler = styled("div")({
   flexGrow: 1,
 })
 
-const Slider = styled(Button)({
+const Slider = styled(Button)(({ theme }) => ({
   textTransform: "none",
-})
+  height: theme.footer.height,
+}))
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -103,7 +105,7 @@ const SideBar: FC<SidebarProps> = (props: SidebarProps) => {
         color="default"
         startIcon={<SliderIcon />}
       >
-        {open && <Typography variant="body2">Collapse Sidebar</Typography>}
+        {open && <Typography variant="body2">{BUTTON_SLIDER}</Typography>}
       </Slider>
     </Drawer>
   )
