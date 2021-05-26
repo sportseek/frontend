@@ -5,8 +5,12 @@ import {
   Theme,
   styled,
 } from "@material-ui/core/styles"
-import {Grid, Paper} from "@material-ui/core"
+import { Grid, Paper } from "@material-ui/core"
 import Helmet from "react-helmet"
+
+import Playerdetails from "components/PlayerDetails"
+import Wallet from "components/Wallet"
+import Location from "components/Location"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2),
       textAlign: "center",
       flex: 1,
-      height: 400,
+      height: "30%",
       color: theme.palette.text.secondary,
     },
   })
@@ -29,7 +33,9 @@ const Root = styled("div")({
 
 const Column1 = styled(Grid)({})
 
-const Col1Container = styled(Grid)({})
+const ColContainer = styled(Grid)({
+  height: "87vh",
+})
 
 const Column2 = styled(Grid)({})
 
@@ -41,20 +47,30 @@ const Dashboard = () => {
       <Helmet title="Dashboard" />
       <Grid container spacing={3}>
         <Column1 item xs={12} lg={4}>
-          <Col1Container container spacing={3} direction="column" justify="space-evenly">
+          <ColContainer
+            container
+            spacing={3}
+            direction="column"
+            justify="space-around"
+          >
             <Grid item>
-              <Paper className={classes.paper}>xs=12</Paper>
+              <Playerdetails />
             </Grid>
             <Grid item>
-              <Paper className={classes.paper}>xs=12</Paper>
+              <Location />
             </Grid>
             <Grid item>
-              <Paper className={classes.paper}>xs=12</Paper>
+              <Wallet value="100" />
             </Grid>
-          </Col1Container>
+          </ColContainer>
         </Column1>
         <Column2 item xs={12} lg>
-          <Grid container spacing={3} direction="column" justify="space-between">
+          <ColContainer
+            container
+            spacing={3}
+            direction="column"
+            justify="space-between"
+          >
             <Grid item>
               <Grid container spacing={3}>
                 <Grid item lg={6}>
@@ -68,7 +84,7 @@ const Dashboard = () => {
             <Grid item>
               <Paper className={classes.paper}>xs=12</Paper>
             </Grid>
-          </Grid>
+          </ColContainer>
         </Column2>
       </Grid>
     </Root>

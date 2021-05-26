@@ -1,3 +1,3 @@
-import Details from "./Details"
+import Details from "./Wallet"
 
 export default Details

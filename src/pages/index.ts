@@ -14,7 +14,7 @@ import SignUp from "./Sign/SignUp"
 import MainLayout, { MainLayoutType } from "./MainLayout/Main"
 import ReduxExample from "./ReduxExample/ReduxExample"
 import Search from "./EventSearch/Search"
-import PlayerBoard from "./Dashboard/Player/PlayerPage"
+import PlayerBoard from "./Dashboard/Player/Dashboard"
 import ArenaBoard from "./Dashboard/Arena/ArenaPage"
 
 type Page = {

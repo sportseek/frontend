@@ -42,7 +42,11 @@ const Routes = () => {
   return (
     <Switch>
       <Route path="/" exact render={() => <Redirect to="/home" />} />
-      {childRoutes(isAuthenticated, MainLayout as MainLayoutType, getPages(userType))}
+      {childRoutes(
+        isAuthenticated,
+        MainLayout as MainLayoutType,
+        getPages(userType)
+      )}
       <Route path="/signin" render={() => <SignIn />} />
       <Route path="/signup" render={() => <SignUp />} />
     </Switch>
