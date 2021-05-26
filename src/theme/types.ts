@@ -17,7 +17,6 @@ export type HeaderOptions = Partial<Header>
 export interface SideBar {
   width: React.CSSProperties["width"]
   footer: {
-    height: React.CSSProperties["height"]
     color: React.CSSProperties["color"]
     background: React.CSSProperties["color"]
   }
@@ -30,3 +29,9 @@ export interface Body {
 }
 
 export type BodyOptions = Partial<Body>
+export interface Footer {
+  background: React.CSSProperties["background"]
+  height: React.CSSProperties["height"]
+}
+
+export type FooterOptions = Partial<Footer>

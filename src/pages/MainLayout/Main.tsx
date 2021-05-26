@@ -4,10 +4,11 @@ import { Hidden, Paper } from "@material-ui/core"
 import Helmet from "react-helmet"
 import Sidebar from "components/Sidebar"
 import Header from "components/Header"
+import Footer from "components/Footer"
 
 const Root = styled("div")({
   display: "flex",
-  minHeight: "100vh",
+  height: "100vh",
 })
 
 const Drawer = styled("div")(({ theme }) => ({
@@ -20,7 +21,6 @@ const AppContent = styled("div")(({ theme }) => ({
   flex: 1,
   display: "flex",
   flexDirection: "column",
-  paddingBottom: 28,
   [theme.breakpoints.up("lg")]: {},
 }))
 
@@ -47,7 +47,10 @@ const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
       </Drawer>
       <AppContent>
         <Header />
-        <MainContent elevation={0}>{children}</MainContent>
+        <MainContent elevation={0} square>
+          {children}
+        </MainContent>
+        <Footer />
       </AppContent>
     </Root>
   )

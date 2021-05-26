@@ -20,13 +20,16 @@ const lightVariant: ThemeOptions = {
   sidebar: {
     width: 230,
     footer: {
-      height: 20,
       color: grey[200],
       background: "#62757f",
     },
   },
   body: {
     background: "#F7F9FC",
+  },
+  footer: {
+    background: "#4b636e",
+    height: 28,
   },
 }
 

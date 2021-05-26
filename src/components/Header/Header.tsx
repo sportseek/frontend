@@ -2,7 +2,7 @@ import React from "react"
 import { makeStyles, styled, Theme } from "@material-ui/core/styles"
 import {
   AppBar,
-  Toolbar,
+  Toolbar as MuiToolbar,
   IconButton,
   Hidden,
   Typography,
@@ -34,9 +34,14 @@ const Filler = styled("div")({
 })
 
 const Header = styled(AppBar)(({ theme }) => ({
-  height: theme.header.height,
+  minHeight: theme.header.height,
   background: theme.header.background,
   zIndex: theme.zIndex.drawer + 1,
+  padding: "0 !important",
+}))
+
+const Toolbar = styled(MuiToolbar)(({ theme }) => ({
+  minHeight: theme.header.height,
 }))
 
 const HeaderFC = () => {
