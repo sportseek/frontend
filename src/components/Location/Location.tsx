@@ -3,28 +3,23 @@ import { makeStyles } from "@material-ui/core/styles"
 import Card from "@material-ui/core/Card"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
-import Typography from "@material-ui/core/Typography"
-
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 
 import { LatLngTuple } from "leaflet"
 
-const position: LatLngTuple = [51.505, -0.09]
+const position: LatLngTuple = [48.137154, 11.576124]
 
 const useStyles = makeStyles({
-  root: {
-    height: "100%",
-  },
   map: {
-    height: "100%",
+    height: 400,
   },
 })
 
 const Wallet = () => {
   const classes = useStyles()
   return (
-    <Card className={classes.root}>
-      <CardHeader title="Wallet" />
+    <Card>
+      <CardHeader title="Location" />
       <CardContent>
         <MapContainer
           className={classes.map}

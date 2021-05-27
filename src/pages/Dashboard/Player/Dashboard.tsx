@@ -14,9 +14,6 @@ import Location from "components/Location"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
     paper: {
       padding: theme.spacing(2),
       textAlign: "center",
@@ -33,11 +30,9 @@ const Root = styled("div")({
 
 const Column1 = styled(Grid)({})
 
-const ColContainer = styled(Grid)({
-  height: "87vh",
-})
-
 const Column2 = styled(Grid)({})
+
+const ColContainer = styled(Grid)({})
 
 const Dashboard = () => {
   const classes = useStyles()

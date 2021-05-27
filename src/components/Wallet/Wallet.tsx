@@ -30,7 +30,7 @@ const Wallet: FC<WalletProps> = (props: WalletProps) => {
       <CardContent>
         <Typography
           align="center"
-          variant="h2"
+          variant="h3"
           color="secondary"
           className={classes.cardValue}
         >
