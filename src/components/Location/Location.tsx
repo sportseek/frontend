@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   },
 })
 
-const Wallet = () => {
+const Location = () => {
   const classes = useStyles()
   return (
     <Card>
@@ -43,4 +43,4 @@ const Wallet = () => {
   )
 }
 
-export default Wallet
+export default Location

@@ -11,6 +11,7 @@ import Helmet from "react-helmet"
 import Playerdetails from "components/PlayerDetails"
 import Wallet from "components/Wallet"
 import Location from "components/Location"
+import Calendar from "components/Calendar"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,6 +68,10 @@ const Dashboard = () => {
             justify="space-between"
           >
             <Grid item>
+              <Calendar />
+            </Grid>
+
+            <Grid item>
               <Grid container spacing={3}>
                 <Grid item lg={6}>
                   <Paper className={classes.paper}>xs=12</Paper>
@@ -75,9 +80,6 @@ const Dashboard = () => {
                   <Paper className={classes.paper}>xs=12</Paper>
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item>
-              <Paper className={classes.paper}>xs=12</Paper>
             </Grid>
           </ColContainer>
         </Column2>

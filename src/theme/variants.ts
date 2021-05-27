@@ -25,7 +25,7 @@ const lightVariant: ThemeOptions = {
     },
   },
   body: {
-    background: "#F7F9FC",
+    background: "#efeadd ",
   },
   footer: {
     background: "#4b636e",
