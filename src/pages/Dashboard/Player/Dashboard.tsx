@@ -11,12 +11,10 @@ import Helmet from "react-helmet"
 import Playerdetails from "components/PlayerDetails"
 import Wallet from "components/Wallet"
 import Location from "components/Location"
+import Calendar from "components/Calendar"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
     paper: {
       padding: theme.spacing(2),
       textAlign: "center",
@@ -33,11 +31,9 @@ const Root = styled("div")({
 
 const Column1 = styled(Grid)({})
 
-const ColContainer = styled(Grid)({
-  height: "87vh",
-})
-
 const Column2 = styled(Grid)({})
+
+const ColContainer = styled(Grid)({})
 
 const Dashboard = () => {
   const classes = useStyles()
@@ -72,6 +68,10 @@ const Dashboard = () => {
             justify="space-between"
           >
             <Grid item>
+              <Calendar />
+            </Grid>
+
+            <Grid item>
               <Grid container spacing={3}>
                 <Grid item lg={6}>
                   <Paper className={classes.paper}>xs=12</Paper>
@@ -80,9 +80,6 @@ const Dashboard = () => {
                   <Paper className={classes.paper}>xs=12</Paper>
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item>
-              <Paper className={classes.paper}>xs=12</Paper>
             </Grid>
           </ColContainer>
         </Column2>
