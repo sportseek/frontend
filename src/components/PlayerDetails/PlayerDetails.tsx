@@ -47,7 +47,9 @@ export default function PersonalInfoCard() {
   const id = useAppSelector(selectUserId)
   const player = useAppSelector(selectUser) as Player
 
-  React.useEffect(() => { dispatch(fetchUserById(id))}, [dispatch])
+  React.useEffect(() => {
+    dispatch(fetchUserById(id))
+  }, [dispatch])
 
   const { firstName, lastName, mobilePhone, email } = player
 
