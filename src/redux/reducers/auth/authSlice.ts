@@ -31,7 +31,8 @@ export const authSlice = createSlice({
 
 export const isIfAuthenticated = (state: RootState) =>
   state.auth.isAuthenticated
-export const selectUserType = (state: RootState) => state.user.type
+export const selectUserType = (state: RootState) => state.auth.type
+export const selectUserId = (state: RootState) => state.auth.userid
 
 export const { signin, signup, logout } = authSlice.actions
 
