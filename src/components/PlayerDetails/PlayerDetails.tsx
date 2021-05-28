@@ -11,9 +11,9 @@ import {
   Card as MuiCard,
 } from "@material-ui/core"
 
-import { useAppSelector } from "redux/hooks"
-import { RootState } from "redux/store"
-import {} from "redux/reducers/user/userSlice"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
+import { fetchUserById, selectUser } from "redux/reducers/user/userSlice"
+import { selectUserId } from "redux/reducers/auth/authSlice"
 import { Player } from "types"
 
 import EditCustomerForm from "./EditDetails"
@@ -43,8 +43,13 @@ const useStyles = makeStyles({
 
 export default function PersonalInfoCard() {
   const classes = useStyles()
+  const dispatch = useAppDispatch()
+  const id = useAppSelector(selectUserId)
+  const player = useAppSelector(selectUser) as Player
 
-  const player: Player = useAppSelector((state: RootState) => state.user)
+  React.useEffect(() => {
+    dispatch(fetchUserById(id))
+  }, [dispatch])
 
   const { firstName, lastName, mobilePhone, email } = player
 

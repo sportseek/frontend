@@ -9,7 +9,10 @@ import {
   SignUp,
 } from "pages"
 import { useAppSelector } from "redux/hooks"
-import { RootState } from "redux/store"
+import {
+  isIfAuthenticated,
+  selectUserType,
+} from "redux/reducers/auth/authSlice"
 
 const childRoutes = (
   valid: boolean,
@@ -34,10 +37,8 @@ const childRoutes = (
   ))
 
 const Routes = () => {
-  const userType = useAppSelector((state: RootState) => state.user.type)
-  const isAuthenticated = useAppSelector(
-    (state: RootState) => state.user.isAuthenticated
-  )
+  const userType = useAppSelector(selectUserType)
+  const isAuthenticated = useAppSelector(isIfAuthenticated)
 
   return (
     <Switch>

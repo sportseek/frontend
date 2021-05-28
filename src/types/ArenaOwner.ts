@@ -1,4 +1,6 @@
 export default interface ArenaOwner {
-  firstname?: string
-  lastname?: string
+  firstName?: string
+  lastName?: string
+  type: string
+  id: string
 }
