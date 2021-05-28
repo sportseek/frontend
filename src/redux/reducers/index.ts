@@ -1,11 +1,14 @@
+import { combineReducers } from "@reduxjs/toolkit"
 import counterReducer from "./counter/counterSlice"
-import sidebarReducer from "./sidebar/sidebarSlice"
+import sidebarReducer from "./ui/uiSlice"
 import userReducer from "./user/userSlice"
+import authReducer from "./auth/authSlice"
 
 const reducers = {
   counter: counterReducer,
-  sidebar: sidebarReducer,
+  ui: sidebarReducer,
   user: userReducer,
+  auth: authReducer,
 }
 
-export default reducers
+export default combineReducers(reducers)

@@ -15,7 +15,7 @@ import {
   Notifications,
 } from "@material-ui/icons"
 import { useAppDispatch } from "redux/hooks"
-import { openSideBar } from "redux/reducers/sidebar/sidebarSlice"
+import { openSideBar } from "redux/reducers/ui/uiSlice"
 
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {

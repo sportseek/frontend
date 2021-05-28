@@ -1,18 +1,18 @@
 import React, { FC, useState } from "react"
 import { RouteComponentProps } from "react-router-dom"
 import { useAppSelector, useAppDispatch } from "redux/hooks"
-import { RootState } from "redux/store"
 import {
   decrement,
   increment,
   incrementByAmount,
   incrementAsync,
+  selectCount,
 } from "redux/reducers/counter/counterSlice"
 
 import styles from "./Counter.module.css"
 
 const Counter: FC<RouteComponentProps> = () => {
-  const count = useAppSelector((state: RootState) => state.counter.value)
+  const count = useAppSelector(selectCount)
   const dispatch = useAppDispatch()
   const [incrementAmount, setIncrementAmount] = useState("2")
 

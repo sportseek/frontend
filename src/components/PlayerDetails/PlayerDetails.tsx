@@ -12,8 +12,7 @@ import {
 } from "@material-ui/core"
 
 import { useAppSelector } from "redux/hooks"
-import { RootState } from "redux/store"
-import {} from "redux/reducers/user/userSlice"
+import { selectUser } from "redux/reducers/user/userSlice"
 import { Player } from "types"
 
 import EditCustomerForm from "./EditDetails"
@@ -44,7 +43,7 @@ const useStyles = makeStyles({
 export default function PersonalInfoCard() {
   const classes = useStyles()
 
-  const player: Player = useAppSelector((state: RootState) => state.user)
+  const player: Player = useAppSelector(selectUser)
 
   const { firstName, lastName, mobilePhone, email } = player
 

@@ -3,4 +3,6 @@ export default interface Player {
   lastName?: string
   email?: string
   mobilePhone?: string
+  type: string
+  id: string
 }
