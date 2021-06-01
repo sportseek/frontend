@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { Player, ArenaOwner } from "types"
 
-export interface UserState {
+interface UserState extends Player, ArenaOwner {
   isAuthenticated: boolean
   type: "player" | "arena"
   id: string
 }
 
 const initialState: UserState = {
-  isAuthenticated: false,
+  isAuthenticated: true,
   type: "player",
   id: "12345",
 }

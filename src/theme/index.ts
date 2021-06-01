@@ -8,6 +8,7 @@ const createTheme = (variant: ThemeOptions) =>
     sidebar: variant.sidebar,
     body: variant.body,
     header: variant.header,
+    footer: variant.footer,
   })
 
 const themes = variants.map((variant) => createTheme(variant))

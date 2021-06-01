@@ -1,13 +1,19 @@
 import React, { PropsWithChildren, FC } from "react"
 import { styled } from "@material-ui/core/styles"
-import { Hidden, Paper } from "@material-ui/core"
+import { Box, Hidden } from "@material-ui/core"
+import withWidth, {
+  isWidthUp,
+  WithWidthProps,
+} from "@material-ui/core/withWidth"
 import Helmet from "react-helmet"
 import Sidebar from "components/Sidebar"
 import Header from "components/Header"
+import Footer from "components/Footer"
+import PerfectScrollbar from "react-perfect-scrollbar"
 
 const Root = styled("div")({
   display: "flex",
-  minHeight: "100vh",
+  height: "100vh",
 })
 
 const Drawer = styled("div")(({ theme }) => ({
@@ -16,23 +22,25 @@ const Drawer = styled("div")(({ theme }) => ({
   },
 }))
 
-const AppContent = styled("div")(({ theme }) => ({
+const AppContent = styled("div")({
   flex: 1,
   display: "flex",
   flexDirection: "column",
-  paddingBottom: 28,
-  [theme.breakpoints.up("lg")]: {},
-}))
+  overflow: "hidden",
+})
 
-const MainContent = styled(Paper)(({ theme }) => ({
+const MainContent = styled(Box)(({ theme }) => ({
   flex: 1,
   background: theme.body.background,
+  overflow: "auto",
 }))
 
-export type MainLayoutProps = PropsWithChildren<{}>
+export type MainLayoutProps = PropsWithChildren<WithWidthProps>
 
 const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
-  const { children } = props
+  const { children, width = "xs" } = props
+
+  const pad = isWidthUp("lg", width) ? 4 : 2
 
   return (
     <Root>
@@ -47,7 +55,10 @@ const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
       </Drawer>
       <AppContent>
         <Header />
-        <MainContent elevation={0}>{children}</MainContent>
+        <PerfectScrollbar>
+          <MainContent p={pad}>{children}</MainContent>
+        </PerfectScrollbar>
+        <Footer />
       </AppContent>
     </Root>
   )
@@ -55,4 +66,4 @@ const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
 
 export type MainLayoutType = FC<MainLayoutProps>
 
-export default MainLayout
+export default withWidth()(MainLayout)

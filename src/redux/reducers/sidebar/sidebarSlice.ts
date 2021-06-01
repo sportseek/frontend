@@ -8,7 +8,7 @@ const initialState: SidebarState = {
   open: true,
 }
 
-export const counterSlice = createSlice({
+export const sidebarSlice = createSlice({
   name: "sidebar",
   initialState,
   reducers: {
@@ -21,6 +21,6 @@ export const counterSlice = createSlice({
   },
 })
 
-export const { openSideBar, closeSideBar } = counterSlice.actions
+export const { openSideBar, closeSideBar } = sidebarSlice.actions
 
-export default counterSlice.reducer
+export default sidebarSlice.reducer

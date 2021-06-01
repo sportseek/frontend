@@ -1,5 +1,6 @@
 import { FunctionComponent, ReactNode } from "react"
 import { RouteComponentProps } from "react-router-dom"
+import { SvgIcon } from "@material-ui/core"
 import {
   PageviewRounded as SearchIcon,
   DashboardRounded as DashboardIcon,
@@ -14,14 +15,14 @@ import SignUpArena from "./Sign/SignUpArena"
 import MainLayout, { MainLayoutType } from "./MainLayout/Main"
 import ReduxExample from "./ReduxExample/ReduxExample"
 import Search from "./EventSearch/Search"
-import PlayerBoard from "./Dashboard/Player/PlayerPage"
+import PlayerBoard from "./Dashboard/Player/Dashboard"
 import ArenaBoard from "./Dashboard/Arena/ArenaPage"
 
 type Page = {
   id: string
   path: string
   header: string
-  icon: FunctionComponent
+  icon: typeof SvgIcon
   containsHome: true
   Component: FunctionComponent<RouteComponentProps>
   children?: ReactNode
