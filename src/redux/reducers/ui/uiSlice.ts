@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { RootState } from "redux/store"
 
-export interface SidebarState {
-  open: boolean
+export interface UIState {
+  openSidebar: boolean
 }
 
-const initialState: SidebarState = {
-  open: true,
+const initialState: UIState = {
+  openSidebar: true,
 }
 
 export const sidebarSlice = createSlice({
@@ -13,13 +14,15 @@ export const sidebarSlice = createSlice({
   initialState,
   reducers: {
     openSideBar: (state) => {
-      state.open = true
+      state.openSidebar = true
     },
     closeSideBar: (state) => {
-      state.open = false
+      state.openSidebar = false
     },
   },
 })
+
+export const selectOpenSideBar = (state: RootState) => state.ui.openSidebar
 
 export const { openSideBar, closeSideBar } = sidebarSlice.actions
 

@@ -14,9 +14,12 @@ import {
   ChevronRight as RightIcon,
 } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { closeSideBar, openSideBar } from "redux/reducers/sidebar/sidebarSlice"
-import { RootState } from "redux/store"
-
+import {
+  closeSideBar,
+  openSideBar,
+  selectOpenSideBar,
+} from "redux/reducers/ui/uiSlice"
+import { selectUserType } from "redux/reducers/auth/authSlice"
 import { PageDataType, getPages } from "pages"
 import { BUTTON_SLIDER } from "utils/constants"
 import NavItem from "./NavItem"
@@ -66,8 +69,8 @@ type SidebarProps = {
 const SideBar: FC<SidebarProps> = (props: SidebarProps) => {
   const classes = useStyles()
   const { variant } = props
-  const open = useAppSelector((state: RootState) => state.sidebar.open)
-  const userType = useAppSelector((state: RootState) => state.user.type)
+  const open = useAppSelector(selectOpenSideBar)
+  const userType = useAppSelector(selectUserType)
   const pages: PageDataType[] = getPages(userType)
   const dispatch = useAppDispatch()
   const SliderIcon = open ? LeftIcon : RightIcon
