@@ -31,8 +31,8 @@ export const arenaSignup = createAsyncThunk("auth/arenaSignup", async (payload: 
 })
 
 const initialState: AuthState = {
-  isAuthenticated: false,
-  type: "player",
+  isAuthenticated: true,
+  type: "arena",
   userid: "12345",
   status: "idle",
   errorMsg: "",

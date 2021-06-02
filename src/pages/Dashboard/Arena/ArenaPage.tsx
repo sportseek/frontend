@@ -1,5 +1,7 @@
 import React, { FC } from "react"
 
-const SignInPage: FC = () => <div />
+const ArenaDashboard: FC = () => {
+    return <div>hello from arena dashboard</div>
+}
 
-export default SignInPage
+export default ArenaDashboard
