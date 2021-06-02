@@ -1,10 +1,8 @@
-import React, { FC, FormEvent, useState } from "react"
+import React, { FormEvent, useState } from "react"
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import TextField from "@material-ui/core/TextField"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
-import Checkbox from "@material-ui/core/Checkbox"
 import Link from "@material-ui/core/Link"
 import Grid from "@material-ui/core/Grid"
 import Box from "@material-ui/core/Box"
@@ -12,16 +10,16 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
-import { useAppDispatch } from "redux/hooks"
-import { playerSignup } from "redux/reducers/auth/authSlice"
+import {
+  userSignIn,
+  selectAuthStatus,
+  selectAuthErrors,
+} from "redux/reducers/auth/authSlice"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
 
-export interface PlayerSignupPayload {
-  firstName: string
-  lastName: string
+export interface UserSigninPayload {
   email: string
   password: string
-  address: string
-  phone: string
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -44,40 +42,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const PlayerSignup = () => {
+const Signin = () => {
   const classes = useStyles()
-
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [playerEmail, setPlayerEmail] = useState("")
-  const [address, setAddress] = useState("")
-  const [phone, setPhone] = useState("")
+
+  const authStatus = useAppSelector(selectAuthStatus)
+  const authErrors = useAppSelector(selectAuthErrors)
+
+  console.log(authStatus)
+  console.log(authErrors)
 
   const dispatch = useAppDispatch()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget
-    if (name === "firstName") setFirstName(value)
-    if (name === "lastName") setLastName(value)
-    if (name === "playerEmail") setPlayerEmail(value)
+    if (name === "email") setEmail(value)
     if (name === "password") setPassword(value)
-    if (name === "address") setAddress(value)
-    if (name === "phone") setPhone(value)
   }
 
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const payload: PlayerSignupPayload = {
-      firstName: firstName,
-      lastName: lastName,
-      email: playerEmail,
+    const payload: UserSigninPayload = {
+      email: email,
       password: password,
-      address: address,
-      phone: phone,
     }
 
-    dispatch(playerSignup(payload))
+    dispatch(userSignIn(payload))
   }
 
   return (
@@ -88,43 +79,18 @@ const PlayerSignup = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Sign in
         </Typography>
         <form className={classes.form} onSubmit={handleSignup}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                onChange={handleInputChange}
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="playerEmail"
+                id="email"
                 label="Email Address"
-                name="playerEmail"
+                name="email"
                 autoComplete="email"
                 onChange={handleInputChange}
               />
@@ -142,30 +108,6 @@ const PlayerSignup = () => {
                 onChange={handleInputChange}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="address"
-                label="Address"
-                name="address"
-                autoComplete="address"
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="phone"
-                label="Phone Number"
-                name="phone"
-                autoComplete="phone"
-                onChange={handleInputChange}
-              />
-            </Grid>
           </Grid>
           <Button
             type="submit"
@@ -174,12 +116,12 @@ const PlayerSignup = () => {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Sign In
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/signin" variant="body2">
-                Already have an account? Sign in
+              <Link href="/signup" variant="body2">
+                Don't have an account? Sign up
               </Link>
             </Grid>
           </Grid>
@@ -190,4 +132,4 @@ const PlayerSignup = () => {
   )
 }
 
-export default PlayerSignup
+export default Signin

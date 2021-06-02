@@ -9,6 +9,8 @@ import {
   MessageRounded as MessageIcon,
   SettingsRounded as SettingsIcon,
 } from "@material-ui/icons"
+
+import { UserType } from "types"
 import SignIn from "./Sign/SignIn"
 import SignUp from "./Sign/SignUp"
 import MainLayout, { MainLayoutType } from "./MainLayout/Main"
@@ -100,8 +102,17 @@ const PlayerPages = [
 ]
 const ArenaPages = [ArenaDashBoard, SupportRoutes]
 
-export const getPages = (type: string) =>
-  type === "player" ? PlayerPages : ArenaPages
+export const getPages = (type: string) => {
+  switch (type) {
+    case UserType.PLAYER:
+      return PlayerPages
+    case UserType.ARENA:
+      return ArenaPages
+    default:
+      break
+  }
+  return []
+}
 
 export type { MainLayoutType, Page as PageDataType }
 

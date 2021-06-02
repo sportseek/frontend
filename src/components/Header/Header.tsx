@@ -1,5 +1,6 @@
 import React from "react"
 import { makeStyles, styled, Theme } from "@material-ui/core/styles"
+import { NavLink } from "react-router-dom"
 import {
   AppBar,
   Toolbar as MuiToolbar,
@@ -16,6 +17,9 @@ import {
 } from "@material-ui/icons"
 import { useAppDispatch } from "redux/hooks"
 import { openSideBar } from "redux/reducers/ui/uiSlice"
+import { logout } from "redux/reducers/auth/authSlice"
+
+import authService from "utils/services/authService"
 
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
@@ -48,6 +52,11 @@ const HeaderFC = () => {
   const classes = useStyles()
 
   const dispatch = useAppDispatch()
+
+  const signout = () => {
+    authService.logout()
+    dispatch(logout())
+  }
 
   return (
     <>
@@ -90,6 +99,9 @@ const HeaderFC = () => {
             aria-label="logout"
             aria-haspopup="true"
             color="inherit"
+            onClick={signout}
+            component={NavLink}
+            to="/signin"
           >
             <ExitToApp />
           </IconButton>
