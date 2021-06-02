@@ -1,12 +1,13 @@
 import { PlayerSignupPayload } from './../../../components/PlayerSignup/PlayerSignup';
 import axios from "utils/axios"
 import { ArenaSignupPayload } from 'components/ArenaSignup/ArenaSignup';
+import { UserSigninPayload } from 'components/Signin/Signin';
 
 const authEndpoint = "auth"
 
-const signin = () => {
+const signin = (payload: UserSigninPayload) => {
   const url = `/${authEndpoint}/signin/`
-  return axios.get(url).then((response) => response)
+  return axios.post(url, payload).then((response) => response)
 }
 
 const playerSignup = (payload: PlayerSignupPayload) => {

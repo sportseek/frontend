@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import authAPI from "./authAPI"
 import { ArenaSignupPayload } from 'components/ArenaSignup/ArenaSignup';
+import { UserSigninPayload } from 'components/Signin/Signin';
 
 type AuthStatus = "idle" | "loggedIn" | "requesting" | "failed"
 
@@ -14,8 +15,8 @@ interface AuthState {
   errorMsg: string
 }
 
-export const userSignIn = createAsyncThunk("auth/signin", async () => {
-  const response = await authAPI.signin()
+export const userSignIn = createAsyncThunk("auth/signin", async (payload: UserSigninPayload) => {
+  const response = await authAPI.signin(payload)
   return response.data
 })
 
@@ -52,8 +53,11 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(userSignIn.fulfilled, (state, action) => {
-        state.isAuthenticated = action.payload
+        state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
+        state.userid = action.payload.result.userId
+        state.type = action.payload.type
+        window.localStorage.setItem("jwtToken", action.payload.result.token)
       })
       .addCase(userSignIn.pending, (state) => {
         state.status = "requesting"
@@ -61,12 +65,12 @@ export const authSlice = createSlice({
       .addCase(userSignIn.rejected, (state, action) => {
         state.isAuthenticated = false
         state.status = "failed"
-        state.errorMsg = action.payload as string
+        state.errorMsg = (action.payload as any).errors
       })
       .addCase(playerSignup.fulfilled, (state, action) => {
         state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
-        state.userid = action.payload.resultuserId
+        state.userid = action.payload.result.userId
         state.type = action.payload.type
         window.localStorage.setItem("jwtToken", action.payload.result.token)
       })
@@ -82,7 +86,7 @@ export const authSlice = createSlice({
       .addCase(arenaSignup.fulfilled, (state, action) => {
         state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
-        state.userid = action.payload.resultuserId
+        state.userid = action.payload.result.userId
         state.type = action.payload.type
         window.localStorage.setItem("jwtToken", action.payload.result.token)
       })
