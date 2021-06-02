@@ -12,11 +12,13 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
+import { useAppDispatch } from "redux/hooks"
+import { playerSignup } from "redux/reducers/auth/authSlice"
 
 export interface PlayerSignupPayload {
   firstName: string
   lastName: string
-  playerEmail: string
+  email: string
   password: string
   address: string
   phone: string
@@ -52,6 +54,9 @@ const PlayerSignup = () => {
   const [address, setAddress] = useState("")
   const [phone, setPhone] = useState("")
 
+
+  const dispatch = useAppDispatch()
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget
     if (name === "firstName") setFirstName(value)
@@ -67,13 +72,14 @@ const PlayerSignup = () => {
     const payload: PlayerSignupPayload = {
       firstName: firstName,
       lastName: lastName,
-      playerEmail: playerEmail,
+      email: playerEmail,
       password: password,
       address: address,
       phone: phone,
     }
 
     console.log(payload)
+    dispatch(playerSignup(payload))
   }
 
   return (

@@ -1,3 +1,4 @@
+import { PlayerSignupPayload } from './../../../components/PlayerSignup/PlayerSignup';
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import authAPI from "./authAPI"
@@ -13,17 +14,22 @@ interface AuthState {
 }
 
 export const userSignIn = createAsyncThunk("auth/signin", async () => {
-  const response = await authAPI.signup()
+  const response = await authAPI.signin()
   return response.data
 })
 
-export const userSignUp = createAsyncThunk("auth/signup", async () => {
-  const response = await authAPI.signup()
+export const playerSignup = createAsyncThunk("auth/signup", async (payload: PlayerSignupPayload) => {
+  const response = await authAPI.playerSignup(payload)
+  return response.data
+})
+
+export const arenaSignup = createAsyncThunk("auth/signup", async () => {
+  const response = await authAPI.arenaSignup()
   return response.data
 })
 
 const initialState: AuthState = {
-  isAuthenticated: true,
+  isAuthenticated: false,
   type: "player",
   userid: "12345",
   status: "idle",
@@ -56,16 +62,37 @@ export const authSlice = createSlice({
         state.status = "failed"
         state.errorMsg = action.payload as string
       })
-      .addCase(userSignUp.fulfilled, (state, action) => {
-        state.isAuthenticated = action.payload
+      .addCase(playerSignup.fulfilled, (state, action) => {
+        state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
+        state.userid = action.payload.resultuserId
+        state.type = action.payload.type
+        window.localStorage.setItem("jwtToken", action.payload.result.token)
+        console.log(action.payload)
       })
-      .addCase(userSignUp.rejected, (state, action) => {
+      .addCase(playerSignup.rejected, (state, action) => {
         state.isAuthenticated = false
         state.status = "failed"
         state.errorMsg = action.payload as string
       })
-      .addCase(userSignUp.pending, (state) => {
+      .addCase(playerSignup.pending, (state) => {
+        state.status = "requesting"
+      })
+
+      .addCase(arenaSignup.fulfilled, (state, action) => {
+        state.isAuthenticated = action.payload.success
+        state.status = "loggedIn"
+        state.userid = action.payload.resultuserId
+        state.type = action.payload.type
+        window.localStorage.setItem("jwtToken", action.payload.result.token)
+        console.log(action.payload)
+      })
+      .addCase(arenaSignup.rejected, (state, action) => {
+        state.isAuthenticated = false
+        state.status = "failed"
+        state.errorMsg = action.payload as string
+      })
+      .addCase(arenaSignup.pending, (state) => {
         state.status = "requesting"
       })
   },
