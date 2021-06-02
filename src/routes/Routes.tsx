@@ -7,13 +7,14 @@ import {
   getPages,
   PageDataType,
   SignUp,
-  SignUpArena,
 } from "pages"
-import { useAppSelector } from "redux/hooks"
+import { useAppSelector, useAppDispatch } from "redux/hooks"
 import {
   isIfAuthenticated,
   selectUserType,
+  setUser,
 } from "redux/reducers/auth/authSlice"
+import authService from "utils/services/authService"
 
 const childRoutes = (
   valid: boolean,
@@ -40,6 +41,16 @@ const childRoutes = (
 const Routes = () => {
   const userType = useAppSelector(selectUserType)
   const isAuthenticated = useAppSelector(isIfAuthenticated)
+  const dispatch = useAppDispatch()
+
+  /** In case when the browser page reloads */
+  React.useEffect(() => {
+    if (!isAuthenticated && authService.isAuthenticated()) {
+      const id = authService.getCurrentUserId()
+      const type = authService.getCurrentUserType()
+      dispatch(setUser({ id, type }))
+    }
+  }, [isAuthenticated])
 
   return (
     <Switch>
@@ -51,7 +62,6 @@ const Routes = () => {
       )}
       <Route path="/signin" render={() => <SignIn />} />
       <Route path="/signup" render={() => <SignUp />} />
-      <Route path="/signuparena" render={() => <SignUpArena />} />
     </Switch>
   )
 }
