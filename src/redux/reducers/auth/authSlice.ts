@@ -2,6 +2,7 @@ import { PlayerSignupPayload } from './../../../components/PlayerSignup/PlayerSi
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import authAPI from "./authAPI"
+import { ArenaSignupPayload } from 'components/ArenaSignup/ArenaSignup';
 
 type AuthStatus = "idle" | "loggedIn" | "requesting" | "failed"
 
@@ -18,13 +19,13 @@ export const userSignIn = createAsyncThunk("auth/signin", async () => {
   return response.data
 })
 
-export const playerSignup = createAsyncThunk("auth/signup", async (payload: PlayerSignupPayload) => {
+export const playerSignup = createAsyncThunk("auth/playerSignup", async (payload: PlayerSignupPayload) => {
   const response = await authAPI.playerSignup(payload)
   return response.data
 })
 
-export const arenaSignup = createAsyncThunk("auth/signup", async () => {
-  const response = await authAPI.arenaSignup()
+export const arenaSignup = createAsyncThunk("auth/arenaSignup", async (payload: ArenaSignupPayload) => {
+  const response = await authAPI.arenaSignup(payload)
   return response.data
 })
 
@@ -68,7 +69,6 @@ export const authSlice = createSlice({
         state.userid = action.payload.resultuserId
         state.type = action.payload.type
         window.localStorage.setItem("jwtToken", action.payload.result.token)
-        console.log(action.payload)
       })
       .addCase(playerSignup.rejected, (state, action) => {
         state.isAuthenticated = false
@@ -85,7 +85,6 @@ export const authSlice = createSlice({
         state.userid = action.payload.resultuserId
         state.type = action.payload.type
         window.localStorage.setItem("jwtToken", action.payload.result.token)
-        console.log(action.payload)
       })
       .addCase(arenaSignup.rejected, (state, action) => {
         state.isAuthenticated = false

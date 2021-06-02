@@ -12,10 +12,12 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
+import { arenaSignup } from "redux/reducers/auth/authSlice"
+import { useAppDispatch } from "redux/hooks"
 
 export interface ArenaSignupPayload {
   arenaName: string
-  arenaEmail: string
+  email: string
   password: string
   address: string
   phone: string
@@ -59,17 +61,19 @@ const ArenaSignup = () => {
     if (name === "phone") setPhone(value)
   }
 
+  const dispatch = useAppDispatch()
+
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const payload: ArenaSignupPayload = {
       arenaName: arenaName,
-      arenaEmail: arenaEmail,
+      email: arenaEmail,
       password: password,
       address: address,
       phone: phone,
     }
 
-    console.log(payload)
+    dispatch(arenaSignup(payload))
   }
 
   return (

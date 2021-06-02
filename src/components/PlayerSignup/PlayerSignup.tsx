@@ -78,7 +78,6 @@ const PlayerSignup = () => {
       phone: phone,
     }
 
-    console.log(payload)
     dispatch(playerSignup(payload))
   }
 
