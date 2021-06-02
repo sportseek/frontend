@@ -5,15 +5,16 @@ import { RootState } from "redux/store"
 import ArenaSignup from "components/ArenaSignup"
 
 const SignUpPageArena: FC = () => {
-  const isAuthenticated = useAppSelector(
-    (state: RootState) => state.user.isAuthenticated
-  )
-  console.log(isAuthenticated)
-  return isAuthenticated ? (
-    <Redirect to={{ pathname: "/home" }} />
-  ) : (
-    <ArenaSignup />
-  )
+  // const isAuthenticated = useAppSelector(
+  //   (state: RootState) => state.user.isAuthenticated
+  // )
+  // console.log(isAuthenticated)
+  // return isAuthenticated ? (
+  //   <Redirect to={{ pathname: "/home" }} />
+  // ) : (
+  //   <ArenaSignup />
+  // )
+  return <div></div>
 }
 
 export default SignUpPageArena

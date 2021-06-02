@@ -1,6 +1,9 @@
+import { PlayerSignupPayload } from './../../../components/PlayerSignup/PlayerSignup';
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import authAPI from "./authAPI"
+import { ArenaSignupPayload } from 'components/ArenaSignup/ArenaSignup';
+import { UserSigninPayload } from 'components/Signin/Signin';
 
 type AuthStatus = "idle" | "loggedIn" | "requesting" | "failed"
 
@@ -12,18 +15,23 @@ interface AuthState {
   errorMsg: string
 }
 
-export const userSignIn = createAsyncThunk("auth/signin", async () => {
-  const response = await authAPI.signup()
+export const userSignIn = createAsyncThunk("auth/signin", async (payload: UserSigninPayload) => {
+  const response = await authAPI.signin(payload)
   return response.data
 })
 
-export const userSignUp = createAsyncThunk("auth/signup", async () => {
-  const response = await authAPI.signup()
+export const playerSignup = createAsyncThunk("auth/playerSignup", async (payload: PlayerSignupPayload) => {
+  const response = await authAPI.playerSignup(payload)
+  return response.data
+})
+
+export const arenaSignup = createAsyncThunk("auth/arenaSignup", async (payload: ArenaSignupPayload) => {
+  const response = await authAPI.arenaSignup(payload)
   return response.data
 })
 
 const initialState: AuthState = {
-  isAuthenticated: true,
+  isAuthenticated: false,
   type: "player",
   userid: "12345",
   status: "idle",
@@ -45,8 +53,11 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(userSignIn.fulfilled, (state, action) => {
-        state.isAuthenticated = action.payload
+        state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
+        state.userid = action.payload.result.userId
+        state.type = action.payload.result.type
+        window.localStorage.setItem("jwtToken", action.payload.result.token)
       })
       .addCase(userSignIn.pending, (state) => {
         state.status = "requesting"
@@ -54,18 +65,37 @@ export const authSlice = createSlice({
       .addCase(userSignIn.rejected, (state, action) => {
         state.isAuthenticated = false
         state.status = "failed"
-        state.errorMsg = action.payload as string
+        state.errorMsg = (action.payload as any).errors
       })
-      .addCase(userSignUp.fulfilled, (state, action) => {
-        state.isAuthenticated = action.payload
+      .addCase(playerSignup.fulfilled, (state, action) => {
+        state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
+        state.userid = action.payload.result.userId
+        state.type = action.payload.result.type
+        window.localStorage.setItem("jwtToken", action.payload.result.token)
       })
-      .addCase(userSignUp.rejected, (state, action) => {
+      .addCase(playerSignup.rejected, (state, action) => {
         state.isAuthenticated = false
         state.status = "failed"
         state.errorMsg = action.payload as string
       })
-      .addCase(userSignUp.pending, (state) => {
+      .addCase(playerSignup.pending, (state) => {
+        state.status = "requesting"
+      })
+
+      .addCase(arenaSignup.fulfilled, (state, action) => {
+        state.isAuthenticated = action.payload.success
+        state.status = "loggedIn"
+        state.userid = action.payload.result.userId
+        state.type = action.payload.result.type
+        window.localStorage.setItem("jwtToken", action.payload.result.token)
+      })
+      .addCase(arenaSignup.rejected, (state, action) => {
+        state.isAuthenticated = false
+        state.status = "failed"
+        state.errorMsg = action.payload as string
+      })
+      .addCase(arenaSignup.pending, (state) => {
         state.status = "requesting"
       })
   },
