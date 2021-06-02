@@ -56,7 +56,7 @@ export const authSlice = createSlice({
         state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
         state.userid = action.payload.result.userId
-        state.type = action.payload.type
+        state.type = action.payload.result.type
         window.localStorage.setItem("jwtToken", action.payload.result.token)
       })
       .addCase(userSignIn.pending, (state) => {
@@ -71,7 +71,7 @@ export const authSlice = createSlice({
         state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
         state.userid = action.payload.result.userId
-        state.type = action.payload.type
+        state.type = action.payload.result.type
         window.localStorage.setItem("jwtToken", action.payload.result.token)
       })
       .addCase(playerSignup.rejected, (state, action) => {
@@ -87,7 +87,7 @@ export const authSlice = createSlice({
         state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
         state.userid = action.payload.result.userId
-        state.type = action.payload.type
+        state.type = action.payload.result.type
         window.localStorage.setItem("jwtToken", action.payload.result.token)
       })
       .addCase(arenaSignup.rejected, (state, action) => {
