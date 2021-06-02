@@ -1,3 +1,5 @@
+import { UserType } from "types"
+
 function isAuthenticated() {
   return !!window.localStorage.jwtToken
 }
@@ -13,7 +15,7 @@ function getCurrentUserId() {
 }
 
 function getCurrentUserType() {
-  return String(window.localStorage.userType)
+  return window.localStorage.userType as UserType
 }
 
 export default { logout, isAuthenticated, getCurrentUserId, getCurrentUserType }

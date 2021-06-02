@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
 const SignInPage: FC = () => {
   const classes = useStyles()
   const isAuthenticated = useAppSelector(isIfAuthenticated)
-  
+
   return isAuthenticated ? (
     <Redirect to={{ pathname: "/home" }} />
   ) : (

@@ -1,27 +1,47 @@
 import { PlayerSignupPayload } from "components/PlayerSignup/PlayerSignup"
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  isAnyOf,
+} from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { ArenaSignupPayload } from "components/ArenaSignup/ArenaSignup"
 import { UserSigninPayload } from "components/SigninForm/SigninForm"
+import { UserType } from "types"
 import authAPI from "./authAPI"
 
-type AuthStatus = "idle" | "loggedIn" | "requesting" | "failed"
-
-type UserType = "player" | "arena"
+enum AuthStatus {
+  IDLE = "idle",
+  DONE = "loggedIn",
+  PROCESSING = "requesting",
+  FAILED = "failed",
+}
 
 interface AuthState {
   isAuthenticated: boolean
-  userType: string
+  userType: UserType
   userId: string
   status: AuthStatus
-  errorMsg: string
+  errors: string[]
+}
+
+type ValidationErrors = {
+  success?: boolean
+  errors: string[]
 }
 
 export const userSignIn = createAsyncThunk(
   "auth/signin",
-  async (payload: UserSigninPayload) => {
-    const response = await authAPI.signin(payload)
-    return response.data
+  async (payload: UserSigninPayload, { rejectWithValue }) => {
+    try {
+      const response = await authAPI.signin(payload)
+      return response.data
+    } catch (error) {
+      if (!error.response) throw error
+
+      return rejectWithValue(error.response.data)
+    }
   }
 )
 
@@ -43,80 +63,70 @@ export const arenaSignup = createAsyncThunk(
 
 const initialState: AuthState = {
   isAuthenticated: false,
-  userType: "player",
-  userId: "12345",
-  status: "idle",
-  errorMsg: "",
+  userType: UserType.PLAYER,
+  userId: "",
+  status: AuthStatus.IDLE,
+  errors: [],
 }
 
 export const authSlice = createSlice({
-  name: "user",
+  name: "auth",
   initialState,
   reducers: {
     logout: (state) => {
       state.isAuthenticated = false
-      state.errorMsg = ""
-      state.status = "idle"
+      state.errors = []
+      state.status = AuthStatus.IDLE
       state.userId = ""
     },
-    setUser: (state, action: PayloadAction<{ id: string; type: string }>) => {
-      state.userId = action.payload.id
-      state.userType = action.payload.type
-      state.status = "loggedIn"
+    setUser: (state, action: PayloadAction<{ id: string; type: UserType }>) => {
+      const { id, type } = action.payload
+      state.userId = id
+      state.userType = type
+      state.status = AuthStatus.DONE
       state.isAuthenticated = true
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(userSignIn.fulfilled, (state, action) => {
-        const { userId, token, type } = action.payload.result
-        state.isAuthenticated = action.payload.success
-        state.status = "loggedIn"
-        state.userId = userId
-        state.userType = type
-        window.localStorage.setItem("jwtToken", token)
-        window.localStorage.setItem("userId", userId)
-        window.localStorage.setItem("userType", type)
-      })
-      .addCase(userSignIn.pending, (state) => {
-        state.status = "requesting"
-      })
-      .addCase(userSignIn.rejected, (state, action) => {
-        state.isAuthenticated = false
-        state.status = "failed"
-        state.errorMsg = (action.payload as any).errors
-      })
-      .addCase(playerSignup.fulfilled, (state, action) => {
-        state.isAuthenticated = action.payload.success
-        state.status = "loggedIn"
-        state.userId = action.payload.result.userId
-        state.userType = action.payload.result.type
-        window.localStorage.setItem("jwtToken", action.payload.result.token)
-      })
-      .addCase(playerSignup.rejected, (state, action) => {
-        state.isAuthenticated = false
-        state.status = "failed"
-        state.errorMsg = action.payload as string
-      })
-      .addCase(playerSignup.pending, (state) => {
-        state.status = "requesting"
-      })
+      .addMatcher(
+        isAnyOf(
+          userSignIn.fulfilled,
+          playerSignup.fulfilled,
+          arenaSignup.fulfilled
+        ),
+        (state, action) => {
+          const { userId, token, success, type } = action.payload.result
 
-      .addCase(arenaSignup.fulfilled, (state, action) => {
-        state.isAuthenticated = action.payload.success
-        state.status = "loggedIn"
-        state.userId = action.payload.result.userId
-        state.userType = action.payload.result.type
-        window.localStorage.setItem("jwtToken", action.payload.result.token)
-      })
-      .addCase(arenaSignup.rejected, (state, action) => {
-        state.isAuthenticated = false
-        state.status = "failed"
-        state.errorMsg = action.payload as string
-      })
-      .addCase(arenaSignup.pending, (state) => {
-        state.status = "requesting"
-      })
+          state.isAuthenticated = success
+          state.status = AuthStatus.DONE
+          state.userId = userId
+          state.userType = type
+
+          window.localStorage.setItem("jwtToken", token)
+          window.localStorage.setItem("userId", userId)
+          window.localStorage.setItem("userType", type)
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          userSignIn.rejected,
+          arenaSignup.rejected,
+          playerSignup.rejected
+        ),
+        (state, action) => {
+          const { errors } = action.payload as ValidationErrors
+          state.isAuthenticated = false
+          state.status = AuthStatus.FAILED
+          state.errors = errors
+        }
+      )
+      .addMatcher(
+        isAnyOf(arenaSignup.pending, playerSignup.pending, userSignIn.pending),
+        (state) => {
+          state.status = AuthStatus.PROCESSING
+        }
+      )
   },
 })
 
@@ -124,6 +134,8 @@ export const isIfAuthenticated = (state: RootState) =>
   state.auth.isAuthenticated
 export const selectUserType = (state: RootState) => state.auth.userType
 export const selectUserId = (state: RootState) => state.auth.userId
+export const selectAuthStatus = (state: RootState) => state.auth.status
+export const selectAuthErrors = (state: RootState) => state.auth.errors
 
 export const { logout, setUser } = authSlice.actions
 
