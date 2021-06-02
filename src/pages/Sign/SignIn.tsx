@@ -1,11 +1,11 @@
-import { makeStyles, Theme } from "@material-ui/core/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import React, { FC } from "react"
 import { Redirect } from "react-router-dom"
 import { useAppSelector } from "redux/hooks"
 import { isIfAuthenticated } from "redux/reducers/auth/authSlice"
-import Signin from "../../components/Signin"
+import SigninForm from "components/SigninForm"
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
     display: "flex",
@@ -22,13 +22,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SignInPage: FC = () => {
   const classes = useStyles()
   const isAuthenticated = useAppSelector(isIfAuthenticated)
-
+  
   return isAuthenticated ? (
     <Redirect to={{ pathname: "/home" }} />
   ) : (
     <div className={classes.root}>
       <div className={classes.signinWrapper}>
-        <Signin />
+        <SigninForm />
       </div>
     </div>
   )

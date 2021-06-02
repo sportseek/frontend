@@ -61,8 +61,6 @@ const ArenaSignup = () => {
     if (name === "phone") setPhone(value)
   }
 
-  
-
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const payload: ArenaSignupPayload = {

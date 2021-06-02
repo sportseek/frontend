@@ -56,8 +56,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tabWrapper: {
     border: "1px solid black",
-    marginTop: "32px"
-  }
+    marginTop: "32px",
+  },
 }))
 
 const SignUpPage: FC = () => {

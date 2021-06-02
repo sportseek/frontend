@@ -54,7 +54,6 @@ const PlayerSignup = () => {
   const [address, setAddress] = useState("")
   const [phone, setPhone] = useState("")
 
-
   const dispatch = useAppDispatch()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

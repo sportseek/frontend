@@ -1,7 +1,7 @@
-import { PlayerSignupPayload } from './../../../components/PlayerSignup/PlayerSignup';
 import axios from "utils/axios"
-import { ArenaSignupPayload } from 'components/ArenaSignup/ArenaSignup';
-import { UserSigninPayload } from 'components/Signin/Signin';
+import { ArenaSignupPayload } from "components/ArenaSignup/ArenaSignup"
+import { UserSigninPayload } from "components/SigninForm/SigninForm"
+import { PlayerSignupPayload } from "components/PlayerSignup/PlayerSignup"
 
 const authEndpoint = "auth"
 

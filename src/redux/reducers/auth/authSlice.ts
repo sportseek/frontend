@@ -1,39 +1,50 @@
-import { PlayerSignupPayload } from './../../../components/PlayerSignup/PlayerSignup';
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { PlayerSignupPayload } from "components/PlayerSignup/PlayerSignup"
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
+import { ArenaSignupPayload } from "components/ArenaSignup/ArenaSignup"
+import { UserSigninPayload } from "components/SigninForm/SigninForm"
 import authAPI from "./authAPI"
-import { ArenaSignupPayload } from 'components/ArenaSignup/ArenaSignup';
-import { UserSigninPayload } from 'components/Signin/Signin';
 
 type AuthStatus = "idle" | "loggedIn" | "requesting" | "failed"
 
+type UserType = "player" | "arena"
+
 interface AuthState {
   isAuthenticated: boolean
-  type: "player" | "arena"
-  userid: string
+  userType: string
+  userId: string
   status: AuthStatus
   errorMsg: string
 }
 
-export const userSignIn = createAsyncThunk("auth/signin", async (payload: UserSigninPayload) => {
-  const response = await authAPI.signin(payload)
-  return response.data
-})
+export const userSignIn = createAsyncThunk(
+  "auth/signin",
+  async (payload: UserSigninPayload) => {
+    const response = await authAPI.signin(payload)
+    return response.data
+  }
+)
 
-export const playerSignup = createAsyncThunk("auth/playerSignup", async (payload: PlayerSignupPayload) => {
-  const response = await authAPI.playerSignup(payload)
-  return response.data
-})
+export const playerSignup = createAsyncThunk(
+  "auth/playerSignup",
+  async (payload: PlayerSignupPayload) => {
+    const response = await authAPI.playerSignup(payload)
+    return response.data
+  }
+)
 
-export const arenaSignup = createAsyncThunk("auth/arenaSignup", async (payload: ArenaSignupPayload) => {
-  const response = await authAPI.arenaSignup(payload)
-  return response.data
-})
+export const arenaSignup = createAsyncThunk(
+  "auth/arenaSignup",
+  async (payload: ArenaSignupPayload) => {
+    const response = await authAPI.arenaSignup(payload)
+    return response.data
+  }
+)
 
 const initialState: AuthState = {
   isAuthenticated: false,
-  type: "player",
-  userid: "12345",
+  userType: "player",
+  userId: "12345",
   status: "idle",
   errorMsg: "",
 }
@@ -46,18 +57,26 @@ export const authSlice = createSlice({
       state.isAuthenticated = false
       state.errorMsg = ""
       state.status = "idle"
-      state.userid = ""
-      window.localStorage.removeItem("jwtToken")
+      state.userId = ""
+    },
+    setUser: (state, action: PayloadAction<{ id: string; type: string }>) => {
+      state.userId = action.payload.id
+      state.userType = action.payload.type
+      state.status = "loggedIn"
+      state.isAuthenticated = true
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(userSignIn.fulfilled, (state, action) => {
+        const { userId, token, type } = action.payload.result
         state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
-        state.userid = action.payload.result.userId
-        state.type = action.payload.result.type
-        window.localStorage.setItem("jwtToken", action.payload.result.token)
+        state.userId = userId
+        state.userType = type
+        window.localStorage.setItem("jwtToken", token)
+        window.localStorage.setItem("userId", userId)
+        window.localStorage.setItem("userType", type)
       })
       .addCase(userSignIn.pending, (state) => {
         state.status = "requesting"
@@ -70,8 +89,8 @@ export const authSlice = createSlice({
       .addCase(playerSignup.fulfilled, (state, action) => {
         state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
-        state.userid = action.payload.result.userId
-        state.type = action.payload.result.type
+        state.userId = action.payload.result.userId
+        state.userType = action.payload.result.type
         window.localStorage.setItem("jwtToken", action.payload.result.token)
       })
       .addCase(playerSignup.rejected, (state, action) => {
@@ -86,8 +105,8 @@ export const authSlice = createSlice({
       .addCase(arenaSignup.fulfilled, (state, action) => {
         state.isAuthenticated = action.payload.success
         state.status = "loggedIn"
-        state.userid = action.payload.result.userId
-        state.type = action.payload.result.type
+        state.userId = action.payload.result.userId
+        state.userType = action.payload.result.type
         window.localStorage.setItem("jwtToken", action.payload.result.token)
       })
       .addCase(arenaSignup.rejected, (state, action) => {
@@ -103,9 +122,9 @@ export const authSlice = createSlice({
 
 export const isIfAuthenticated = (state: RootState) =>
   state.auth.isAuthenticated
-export const selectUserType = (state: RootState) => state.auth.type
-export const selectUserId = (state: RootState) => state.auth.userid
+export const selectUserType = (state: RootState) => state.auth.userType
+export const selectUserId = (state: RootState) => state.auth.userId
 
-export const { logout } = authSlice.actions
+export const { logout, setUser } = authSlice.actions
 
 export default authSlice.reducer
