@@ -15,11 +15,12 @@ import {
   AccountCircle,
   Notifications,
 } from "@material-ui/icons"
-import { useAppDispatch } from "redux/hooks"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { openSideBar } from "redux/reducers/ui/uiSlice"
-import { logout } from "redux/reducers/auth/authSlice"
-
+import { logout, selectUserId, selectUserType } from "redux/reducers/auth/authSlice"
+import { fetchUserById, selectUser } from "redux/reducers/user/userSlice"
 import authService from "utils/services/authService"
+import {getUserName} from "utils/stringUtils"
 
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
@@ -58,6 +59,16 @@ const HeaderFC = () => {
     dispatch(logout())
   }
 
+  const id = useAppSelector(selectUserId)
+  const type = useAppSelector(selectUserType)
+  const user = useAppSelector(selectUser)
+
+  const name = getUserName(user)
+
+  React.useEffect(() => {
+    dispatch(fetchUserById({id, type}))
+  }, [dispatch])
+
   return (
     <>
       <Header position="fixed">
@@ -91,7 +102,7 @@ const HeaderFC = () => {
             color="inherit"
           >
             <Typography variant="h6" noWrap>
-              Jhon Dee
+              {name}
             </Typography>
           </IconButton>
           <IconButton
