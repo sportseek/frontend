@@ -7,4 +7,6 @@ export enum UserType {
   ARENA = "arena",
 }
 
-export type { ArenaOwner, Event, Player }
+type User = ArenaOwner | Player | null
+
+export type { ArenaOwner, Event, Player, User }

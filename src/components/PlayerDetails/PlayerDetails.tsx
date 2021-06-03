@@ -13,7 +13,7 @@ import {
 
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { fetchUserById, selectUser } from "redux/reducers/user/userSlice"
-import { selectUserId } from "redux/reducers/auth/authSlice"
+import { selectUserId, selectUserType } from "redux/reducers/auth/authSlice"
 import { Player } from "types"
 
 import EditCustomerForm from "./EditDetails"
@@ -45,10 +45,11 @@ export default function PersonalInfoCard() {
   const classes = useStyles()
   const dispatch = useAppDispatch()
   const id = useAppSelector(selectUserId)
+  const type = useAppSelector(selectUserType)
   const player = useAppSelector(selectUser) as Player
 
   React.useEffect(() => {
-    dispatch(fetchUserById(id))
+    dispatch(fetchUserById({id, type}))
   }, [dispatch])
 
   const { firstName, lastName, mobilePhone, email } = player
