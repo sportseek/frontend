@@ -8,7 +8,9 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  loggedInUser: null,
+  loggedInUser: {
+    
+  },
 }
 
 type Payload = {id: string, type: string}
