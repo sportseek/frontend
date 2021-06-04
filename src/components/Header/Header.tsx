@@ -19,7 +19,6 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { openSideBar } from "redux/reducers/ui/uiSlice"
 import { logout, selectUserId, selectUserType } from "redux/reducers/auth/authSlice"
 import { fetchUserById, selectUser } from "redux/reducers/user/userSlice"
-import authService from "utils/services/authService"
 import {getUserName} from "utils/stringUtils"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -55,7 +54,6 @@ const HeaderFC = () => {
   const dispatch = useAppDispatch()
 
   const signout = () => {
-    authService.logout()
     dispatch(logout())
   }
 
@@ -67,7 +65,7 @@ const HeaderFC = () => {
 
   React.useEffect(() => {
     dispatch(fetchUserById({id, type}))
-  }, [dispatch])
+  }, [dispatch, id, type])
 
   return (
     <>

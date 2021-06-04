@@ -1,10 +1,5 @@
 import { PlayerSignupPayload } from "components/PlayerSignup/PlayerSignup"
-import {
-  createSlice,
-  createAsyncThunk,
-  PayloadAction,
-  isAnyOf,
-} from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { ArenaSignupPayload } from "components/ArenaSignup/ArenaSignup"
 import { UserSigninPayload } from "components/SigninForm/SigninForm"
@@ -78,13 +73,8 @@ export const authSlice = createSlice({
       state.errors = []
       state.status = AuthStatus.IDLE
       state.userId = ""
-    },
-    setUser: (state, action: PayloadAction<{ id: string; type: UserType }>) => {
-      const { id, type } = action.payload
-      state.userId = id
-      state.userType = type
-      state.status = AuthStatus.DONE
-      state.isAuthenticated = true
+
+      window.localStorage.removeItem("jwtToken")
     },
   },
   extraReducers: (builder) => {
@@ -96,16 +86,14 @@ export const authSlice = createSlice({
           arenaSignup.fulfilled
         ),
         (state, action) => {
-          const { userId, token, success, type } = action.payload.result
+          const { userId, token, type } = action.payload.result
 
-          state.isAuthenticated = success
+          state.isAuthenticated = true
           state.status = AuthStatus.DONE
           state.userId = userId
           state.userType = type
 
           window.localStorage.setItem("jwtToken", token)
-          window.localStorage.setItem("userId", userId)
-          window.localStorage.setItem("userType", type)
         }
       )
       .addMatcher(
@@ -137,6 +125,6 @@ export const selectUserId = (state: RootState) => state.auth.userId
 export const selectAuthStatus = (state: RootState) => state.auth.status
 export const selectAuthErrors = (state: RootState) => state.auth.errors
 
-export const { logout, setUser } = authSlice.actions
+export const { logout } = authSlice.actions
 
 export default authSlice.reducer
