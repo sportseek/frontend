@@ -11,7 +11,6 @@ export interface CreateEventPayload {
   eventTitle: string
   sportType: string
   eventDescription: string
-  eventDate: string
   eventStartTime: string
   eventEndTime: string
   entryFee: number
@@ -23,7 +22,6 @@ export interface ArenaEvent {
   eventTitle: string
   sportType: string
   eventDescription: string
-  eventDate: string
   eventStartTime: string
   eventEndTime: string
   entryFee: number

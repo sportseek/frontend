@@ -6,6 +6,7 @@ import Dialog from "@material-ui/core/Dialog"
 import TextField from "@material-ui/core/TextField"
 import { InputLabel, Select, MenuItem } from "@material-ui/core"
 import { ArenaEvent, CreateEventPayload } from "types/ArenaOwner"
+import moment from "moment"
 
 const useStyles = makeStyles({
   createEventDialog: {
@@ -69,9 +70,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   const [eventTitle, setEventTitle] = useState("")
   const [sportType, setSportType] = useState("")
   const [eventDescription, setEventDescription] = useState("")
-  const [eventDate, setEventDate] = useState("2017-05-24")
-  const [eventStartTime, setEventStartTime] = useState("07:30")
-  const [eventEndTime, setEventEndTime] = useState("07:30")
+  const [eventStartTime, setEventStartTime] = useState(moment().format('YYYY-MM-DDTHH:MM'))
+  const [eventEndTime, setEventEndTime] = useState(moment().format('YYYY-MM-DDTHH:MM'))
   const [entryFee, setEntryFee] = useState("")
   const [maximumParticipants, setMaximumParticipants] = useState("")
   const [minimumParticipants, setMinimumParticipants] = useState("")
@@ -81,7 +81,6 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
       setEventTitle(selectedEvent.eventTitle)
       setSportType(selectedEvent.sportType)
       setEventDescription(selectedEvent.eventDescription)
-      setEventDate(selectedEvent.eventDate)
       setEventStartTime(selectedEvent.eventStartTime)
       setEventEndTime(selectedEvent.eventEndTime)
       setEntryFee(selectedEvent.entryFee.toString())
@@ -99,7 +98,6 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     if (name === "eventTitle") setEventTitle(value)
     if (name === "sportType") setSportType(value)
     if (name === "eventDescription") setEventDescription(value)
-    if (name === "eventDate") setEventDate(value)
     if (name === "eventStartTime") setEventStartTime(value)
     if (name === "eventEndTime") setEventEndTime(value)
     if (name === "entryFee") setEntryFee(value)
@@ -114,7 +112,6 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
       eventTitle: eventTitle,
       sportType: sportType,
       eventDescription: eventDescription,
-      eventDate: eventDate,
       eventStartTime: eventStartTime,
       eventEndTime: eventEndTime,
       entryFee: +entryFee,
@@ -187,43 +184,30 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
             />
 
             <TextField
-              className={classes.formInput}
-              id="eventDate"
-              name="eventDate"
-              label="Event Date"
-              type="date"
-              defaultValue={eventDate}
+              id="eventStartTime"
+              name="eventStartTime"
+              label="Event Start"
+              type="datetime-local"
+              defaultValue={eventStartTime}
               onChange={handleInputChange}
+              className={classes.formInput}
               InputLabelProps={{
                 shrink: true,
               }}
             />
 
-            <div className={classes.eventTime}>
-              <TextField
-                id="eventStartTime"
-                name="eventStartTime"
-                label="Event Start"
-                type="time"
-                defaultValue={eventStartTime}
-                onChange={handleInputChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-
-              <TextField
-                id="eventEndTime"
-                name="eventEndTime"
-                label="Event End"
-                type="time"
-                defaultValue={eventEndTime}
-                onChange={handleInputChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
+            <TextField
+              id="eventEndTime"
+              name="eventEndTime"
+              label="Event End"
+              type="datetime-local"
+              defaultValue={eventEndTime}
+              onChange={handleInputChange}
+              className={classes.formInput}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
 
             <TextField
               name="entryFee"

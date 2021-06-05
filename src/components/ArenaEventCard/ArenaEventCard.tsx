@@ -7,6 +7,7 @@ import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import CreateEventDialog from "components/CreateEventDialog"
 import Chip from "@material-ui/core/Chip"
+import moment from "moment"
 
 const useStyles = makeStyles({
   arenaEventCardWrapper: {
@@ -86,13 +87,10 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
         <b>Entry fee:</b> {event.entryFee}
       </div>
       <div>
-        <b>Event date:</b> {event.eventDate}
+        <b>Start Time:</b> {moment(event.eventStartTime).format('LLLL')}
       </div>
       <div>
-        <b>Start Time:</b> {event.eventStartTime}
-      </div>
-      <div>
-        <b>End Time:</b> {event.eventEndTime}
+        <b>End Time:</b> {moment(event.eventEndTime).format('LLLL')}
       </div>
       <div>
         <b>Maximum Participants:</b> {event.maximumParticipants}
