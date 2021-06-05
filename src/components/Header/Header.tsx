@@ -1,5 +1,6 @@
 import React from "react"
 import { makeStyles, styled, Theme } from "@material-ui/core/styles"
+import { NavLink } from "react-router-dom"
 import {
   AppBar,
   Toolbar as MuiToolbar,
@@ -14,8 +15,11 @@ import {
   AccountCircle,
   Notifications,
 } from "@material-ui/icons"
-import { useAppDispatch } from "redux/hooks"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { openSideBar } from "redux/reducers/ui/uiSlice"
+import { logout, selectUserId, selectUserType } from "redux/reducers/auth/authSlice"
+import { fetchUserById, selectUser } from "redux/reducers/user/userSlice"
+import {getUserName} from "utils/stringUtils"
 
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
@@ -48,6 +52,20 @@ const HeaderFC = () => {
   const classes = useStyles()
 
   const dispatch = useAppDispatch()
+
+  const signout = () => {
+    dispatch(logout())
+  }
+
+  const id = useAppSelector(selectUserId)
+  const type = useAppSelector(selectUserType)
+  const user = useAppSelector(selectUser)
+
+  const name = getUserName(user)
+
+  React.useEffect(() => {
+    dispatch(fetchUserById({id, type}))
+  }, [dispatch, id, type])
 
   return (
     <>
@@ -82,7 +100,7 @@ const HeaderFC = () => {
             color="inherit"
           >
             <Typography variant="h6" noWrap>
-              Jhon Dee
+              {name}
             </Typography>
           </IconButton>
           <IconButton
@@ -90,6 +108,9 @@ const HeaderFC = () => {
             aria-label="logout"
             aria-haspopup="true"
             color="inherit"
+            onClick={signout}
+            component={NavLink}
+            to="/signin"
           >
             <ExitToApp />
           </IconButton>

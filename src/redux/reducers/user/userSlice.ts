@@ -1,20 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
-import { Player, ArenaOwner } from "types"
+import { User } from "types"
 import userAPI from "./userAPI"
 
 interface UserState {
-  loggedInUser: Player | ArenaOwner | {}
+  loggedInUser: User
 }
 
 const initialState: UserState = {
-  loggedInUser: {},
+  loggedInUser: {
+    
+  },
 }
+
+type Payload = {id: string, type: string}
 
 export const fetchUserById = createAsyncThunk(
   "users/fetchById",
-  async (userId: string) => {
-    const response = await userAPI.fetchById(userId)
+  async (payload: Payload) => {
+    const { id, type} = payload
+    const response = await userAPI.fetchById(id, type)
     return response.data
   }
 )
@@ -25,7 +30,8 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      state.loggedInUser = action.payload
+      console.log(action.payload)
+      state.loggedInUser = action.payload.user
     })
   },
 })

@@ -7,7 +7,6 @@ import {
   getPages,
   PageDataType,
   SignUp,
-  SignUpArena,
 } from "pages"
 import { useAppSelector } from "redux/hooks"
 import {
@@ -41,6 +40,7 @@ const Routes = () => {
   const userType = useAppSelector(selectUserType)
   const isAuthenticated = useAppSelector(isIfAuthenticated)
 
+
   return (
     <Switch>
       <Route path="/" exact render={() => <Redirect to="/home" />} />
@@ -51,7 +51,6 @@ const Routes = () => {
       )}
       <Route path="/signin" render={() => <SignIn />} />
       <Route path="/signup" render={() => <SignUp />} />
-      <Route path="/signuparena" render={() => <SignUpArena />} />
     </Switch>
   )
 }

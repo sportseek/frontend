@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useState } from "react"
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
 import CssBaseline from "@material-ui/core/CssBaseline"
@@ -10,8 +10,12 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
-import { userSignIn } from "redux/reducers/auth/authSlice"
-import { useAppDispatch } from "redux/hooks"
+import {
+  userSignIn,
+  selectAuthStatus,
+  selectAuthErrors,
+} from "redux/reducers/auth/authSlice"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
 
 export interface UserSigninPayload {
   email: string
@@ -39,10 +43,16 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Signin = () => {
-    const classes = useStyles()
-    const [email, setEmail] = useState("")
+  const classes = useStyles()
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  
+
+  const authStatus = useAppSelector(selectAuthStatus)
+  const authErrors = useAppSelector(selectAuthErrors)
+
+  console.log(authStatus)
+  console.log(authErrors)
+
   const dispatch = useAppDispatch()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,8 +71,8 @@ const Signin = () => {
     dispatch(userSignIn(payload))
   }
 
-    return (
-        <Container component="main" maxWidth="xs">
+  return (
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -73,8 +83,6 @@ const Signin = () => {
         </Typography>
         <form className={classes.form} onSubmit={handleSignup}>
           <Grid container spacing={2}>
-            
-
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -100,7 +108,6 @@ const Signin = () => {
                 onChange={handleInputChange}
               />
             </Grid>
-            
           </Grid>
           <Button
             type="submit"
@@ -122,7 +129,7 @@ const Signin = () => {
       </div>
       <Box mt={5}>{/* <Copyright /> */}</Box>
     </Container>
-    )
+  )
 }
 
-export default Signin;
+export default Signin
