@@ -27,6 +27,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: 4,
     paddingLeft: 24,
     paddingBottom: 0,
+    maxHeight: "70vh",
+    overflowY: "scroll",
   },
   cardActions: {
     paddingTop: 0,

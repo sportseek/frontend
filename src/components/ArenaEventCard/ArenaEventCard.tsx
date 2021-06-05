@@ -6,6 +6,7 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import CreateEventDialog from "components/CreateEventDialog"
+import Chip from "@material-ui/core/Chip"
 
 const useStyles = makeStyles({
   arenaEventCardWrapper: {
@@ -68,7 +69,7 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
           onClose={handleCloseMenu}
         >
           <MenuItem onClick={handleClickOpenDialog}>Update</MenuItem>
-          <MenuItem onClick={handleCloseMenu}>Delete</MenuItem>
+          <MenuItem onClick={handleCloseMenu}>Cancel</MenuItem>
         </Menu>
         <CreateEventDialog
           open={openDialog}
@@ -77,7 +78,9 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
           selectedEvent={event}
         />
       </div>
-      {event.sportType}
+      <div style={{width: "40%"}}>
+        <Chip label={event.sportType} />
+      </div>
       <p>{event.eventDescription}</p>
       <div>
         <b>Entry fee:</b> {event.entryFee}

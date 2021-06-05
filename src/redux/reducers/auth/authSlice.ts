@@ -57,8 +57,8 @@ export const arenaSignup = createAsyncThunk(
 )
 
 const initialState: AuthState = {
-  isAuthenticated: false,
-  userType: UserType.PLAYER,
+  isAuthenticated: true,
+  userType: UserType.ARENA,
   userId: "",
   status: AuthStatus.IDLE,
   errors: [],

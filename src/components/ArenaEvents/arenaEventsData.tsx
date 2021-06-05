@@ -23,4 +23,16 @@ export const eventsData: ArenaEvent[] = [
     minimumParticipants: 10,
     sportType: "cricket",
   },
+  {
+    entryFee: 4.5,
+    eventDate: "2020-05-24",
+    eventDescription: "some desc",
+    eventEndTime: "21:32",
+    eventStartTime: "20:30",
+    eventTitle: "Event 3",
+    maximumParticipants: 20,
+    minimumParticipants: 10,
+    sportType: "football",
+  },
+
 ]
