@@ -1,5 +1,5 @@
 export default interface ArenaOwner {
-  arenaName: any;
+  arenaName: string
   firstName?: string
   lastName?: string
   type: string

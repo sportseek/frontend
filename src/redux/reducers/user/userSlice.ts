@@ -8,17 +8,15 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  loggedInUser: {
-    
-  },
+  loggedInUser: {},
 }
 
-type Payload = {id: string, type: string}
+type Payload = { id: string; type: string }
 
 export const fetchUserById = createAsyncThunk(
   "users/fetchById",
   async (payload: Payload) => {
-    const { id, type} = payload
+    const { id, type } = payload
     const response = await userAPI.fetchById(id, type)
     return response.data
   }
@@ -30,7 +28,6 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      console.log(action.payload)
       state.loggedInUser = action.payload.user
     })
   },
