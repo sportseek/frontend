@@ -1,10 +1,11 @@
-import React, { FormEvent, useState } from "react"
+import React, { FormEvent, useEffect, useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Dialog from "@material-ui/core/Dialog"
 import TextField from "@material-ui/core/TextField"
 import { InputLabel, Select, MenuItem } from "@material-ui/core"
+import { ArenaEvent, CreateEventPayload } from "types/ArenaOwner"
 
 const useStyles = makeStyles({
   createEventDialog: {
@@ -43,21 +44,11 @@ const useStyles = makeStyles({
   },
 })
 
-export interface CreateEventPayload {
-  eventTitle: string
-  sportType: string
-  eventDescription: string
-  eventDate: string
-  eventStartTime: string
-  eventEndTime: string
-  entryFee: number
-  maximumParticipants: number
-  minimumParticipants: number
-}
-
 export interface CreateEventDialogProps {
   open: boolean
   onClose: () => void
+  isUpdate: boolean
+  selectedEvent?: ArenaEvent
 }
 
 const sportTypes = [
@@ -73,17 +64,31 @@ const sportTypes = [
 
 const CreateEventDialog = (props: CreateEventDialogProps) => {
   const classes = useStyles()
-  const { onClose, open } = props
+  const { onClose, open, isUpdate, selectedEvent } = props
 
   const [eventTitle, setEventTitle] = useState("")
   const [sportType, setSportType] = useState("")
   const [eventDescription, setEventDescription] = useState("")
-  const [eventDate, setEventDate] = useState("")
-  const [eventStartTime, setEventStartTime] = useState("")
-  const [eventEndTime, setEventEndTime] = useState("")
-  const [entryFee, setEntryFee] = useState(0)
-  const [maximumParticipants, setMaximumParticipants] = useState(0)
-  const [minimumParticipants, setMinimumParticipants] = useState(0)
+  const [eventDate, setEventDate] = useState("2017-05-24")
+  const [eventStartTime, setEventStartTime] = useState("07:30")
+  const [eventEndTime, setEventEndTime] = useState("07:30")
+  const [entryFee, setEntryFee] = useState("")
+  const [maximumParticipants, setMaximumParticipants] = useState("")
+  const [minimumParticipants, setMinimumParticipants] = useState("")
+
+  useEffect(() => {
+    if (isUpdate && selectedEvent) {
+      setEventTitle(selectedEvent.eventTitle)
+      setSportType(selectedEvent.sportType)
+      setEventDescription(selectedEvent.eventDescription)
+      setEventDate(selectedEvent.eventDate)
+      setEventStartTime(selectedEvent.eventStartTime)
+      setEventEndTime(selectedEvent.eventEndTime)
+      setEntryFee(selectedEvent.entryFee.toString())
+      setMaximumParticipants(selectedEvent.maximumParticipants.toString())
+      setMinimumParticipants(selectedEvent.minimumParticipants.toString())
+    }
+  }, [isUpdate])
 
   const handleClose = () => {
     onClose()
@@ -97,9 +102,9 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     if (name === "eventDate") setEventDate(value)
     if (name === "eventStartTime") setEventStartTime(value)
     if (name === "eventEndTime") setEventEndTime(value)
-    if (name === "entryFee") setEntryFee(+value)
-    if (name === "maximumParticipants") setMaximumParticipants(+value)
-    if (name === "minimumParticipants") setMinimumParticipants(+value)
+    if (name === "entryFee") setEntryFee(value)
+    if (name === "maximumParticipants") setMaximumParticipants(value)
+    if (name === "minimumParticipants") setMinimumParticipants(value)
   }
 
   const handleCreateEvent = (e: FormEvent<HTMLFormElement>) => {
@@ -112,9 +117,9 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
       eventDate: eventDate,
       eventStartTime: eventStartTime,
       eventEndTime: eventEndTime,
-      entryFee: entryFee,
-      maximumParticipants: maximumParticipants,
-      minimumParticipants: minimumParticipants,
+      entryFee: +entryFee,
+      maximumParticipants: +maximumParticipants,
+      minimumParticipants: +minimumParticipants,
     }
 
     console.log(payload)
@@ -127,7 +132,9 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
       open={open}
     >
       <div className={classes.createEventDialog}>
-        <DialogTitle id="simple-dialog-title">Create Event</DialogTitle>
+        <DialogTitle id="simple-dialog-title">
+          {isUpdate ? "Update Event" : "Create Event"}
+        </DialogTitle>
         <div className={classes.eventInputs}>
           <form onSubmit={handleCreateEvent}>
             <TextField
@@ -138,6 +145,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               fullWidth
               id="eventTitle"
               label="Event Title"
+              value={eventTitle}
               onChange={handleInputChange}
               className={classes.formInput}
             />
@@ -170,6 +178,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               required
               fullWidth
               id="eventDescription"
+              value={eventDescription}
               label="Event Description"
               multiline
               rows={3}
@@ -183,7 +192,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               name="eventDate"
               label="Event Date"
               type="date"
-              defaultValue="2017-05-24"
+              defaultValue={eventDate}
               onChange={handleInputChange}
               InputLabelProps={{
                 shrink: true,
@@ -196,13 +205,10 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 name="eventStartTime"
                 label="Event Start"
                 type="time"
-                defaultValue="07:30"
+                defaultValue={eventStartTime}
                 onChange={handleInputChange}
                 InputLabelProps={{
                   shrink: true,
-                }}
-                inputProps={{
-                  step: 300, // 5 min
                 }}
               />
 
@@ -211,13 +217,10 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 name="eventEndTime"
                 label="Event End"
                 type="time"
-                defaultValue="07:30"
+                defaultValue={eventEndTime}
                 onChange={handleInputChange}
                 InputLabelProps={{
                   shrink: true,
-                }}
-                inputProps={{
-                  step: 300, // 5 min
                 }}
               />
             </div>
@@ -229,6 +232,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               fullWidth
               id="entryFee"
               label="Entry Fee"
+              value={entryFee}
               onChange={handleInputChange}
               className={classes.formInput}
             />
@@ -241,6 +245,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 fullWidth
                 id="maximumParticipants"
                 label="Maximum Participants"
+                value={maximumParticipants}
                 onChange={handleInputChange}
                 className={classes.formInput}
               />
@@ -251,6 +256,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 fullWidth
                 id="minimumParticipants"
                 label="Minimum Participants"
+                value={minimumParticipants}
                 onChange={handleInputChange}
                 className={classes.formInput}
               />

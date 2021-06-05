@@ -7,8 +7,11 @@ import {
   Typography,
 } from "@material-ui/core"
 import { makeStyles, Theme } from "@material-ui/core/styles"
+import ArenaEventCard from "components/ArenaEventCard"
 import CreateEventDialog from "components/CreateEventDialog"
 import React, { useState } from "react"
+
+import { eventsData } from "./arenaEventsData"
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -34,31 +37,29 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ArenaEvents = () => {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
   return (
     <div>
       <Card className={classes.card}>
         <CardHeader className={classes.cardHeader} title="Events" />
         <CardActions className={classes.cardActions}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleClickOpen}
-          >
+          <Button variant="contained" color="primary" onClick={handleClickOpen}>
             Create Event
           </Button>
-          <CreateEventDialog open={open} onClose={handleClose}/>
+          <CreateEventDialog open={open} onClose={handleClose} isUpdate={false} />
         </CardActions>
         <CardContent className={classes.cardContent}>
-          hello from arena events
+          {eventsData.map((item, idx) => (
+            <ArenaEventCard key={idx} event={item}/>
+          ))}
         </CardContent>
       </Card>
     </div>
