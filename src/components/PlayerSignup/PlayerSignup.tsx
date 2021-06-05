@@ -20,7 +20,7 @@ export interface PlayerSignupPayload {
   lastName: string
   email: string
   password: string
-  address: string
+  // address: string
   phone: string
 }
 
@@ -73,7 +73,7 @@ const PlayerSignup = () => {
       lastName: lastName,
       email: playerEmail,
       password: password,
-      address: address,
+      // address: address,
       phone: phone,
     }
 
@@ -142,7 +142,7 @@ const PlayerSignup = () => {
                 onChange={handleInputChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
@@ -153,7 +153,7 @@ const PlayerSignup = () => {
                 autoComplete="address"
                 onChange={handleInputChange}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
