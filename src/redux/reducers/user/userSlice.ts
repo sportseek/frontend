@@ -8,7 +8,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  loggedInUser: {_id: "", location: {lat: 48.137154, lng: 11.576124}},
+  loggedInUser: { _id: "", location: { lat: 48.137154, lng: 11.576124 } },
 }
 
 type FetchPayload = { id: string; type: string }
@@ -35,15 +35,18 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      state.loggedInUser = action.payload.user
-    }).addCase(updateUser.fulfilled, (state, action) => {
-      state.loggedInUser = action.payload.user
-    }) 
+    builder
+      .addCase(fetchUserById.fulfilled, (state, action) => {
+        state.loggedInUser = action.payload.user
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.loggedInUser = action.payload.user
+      })
   },
 })
 
 export const selectUser = (state: RootState) => state.user.loggedInUser
-export const selectUserLocation = (state: RootState) => state.user.loggedInUser.location
+export const selectUserLocation = (state: RootState) =>
+  state.user.loggedInUser.location
 
 export default userSlice.reducer

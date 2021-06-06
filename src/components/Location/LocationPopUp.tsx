@@ -12,9 +12,13 @@ import { EDIT_LOCATION_HEADER } from "utils/constants"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { Marker as LeafletMarker } from "leaflet"
 
-import { updateUser, selectUser, selectUserLocation } from "redux/reducers/user/userSlice"
+import {
+  updateUser,
+  selectUser,
+  selectUserLocation,
+} from "redux/reducers/user/userSlice"
 
-import {Location} from "types"
+import { Location } from "types"
 
 const useStyles = makeStyles({
   map: {
@@ -43,8 +47,7 @@ const EditLocation = (props: Props) => {
   const dispatch = useAppDispatch()
 
   const [pinPosition, setPinPos] = useState<Location>(userPosition)
-  
-  
+
   useEffect(() => {
     setPinPos(userPosition)
   }, [userPosition])
@@ -56,11 +59,11 @@ const EditLocation = (props: Props) => {
   }
 
   const handleSave = () => {
-    const modUser = {...user}  
+    const modUser = { ...user }
     modUser.location = pinPosition
-      console.log(modUser)
-      dispatch(updateUser(modUser))
-    
+    console.log(modUser)
+    dispatch(updateUser(modUser))
+
     handleClose()
   }
 
@@ -69,13 +72,13 @@ const EditLocation = (props: Props) => {
       dragend() {
         const marker = markerRef.current
         if (marker != null) {
-          const newPinPos = marker.getLatLng();
+          const newPinPos = marker.getLatLng()
           console.log(newPinPos)
           setPinPos(marker.getLatLng())
         }
       },
     }),
-    [],
+    []
   )
 
   return (
@@ -104,7 +107,12 @@ const EditLocation = (props: Props) => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          <Marker draggable eventHandlers={eventHandlers} position={pinPosition} ref={markerRef} />
+          <Marker
+            draggable
+            eventHandlers={eventHandlers}
+            position={pinPosition}
+            ref={markerRef}
+          />
         </MapContainer>
       </DialogContent>
       <DialogActions>

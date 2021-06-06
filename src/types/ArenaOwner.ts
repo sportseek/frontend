@@ -6,5 +6,5 @@ export default interface ArenaOwner {
   lastName?: string
   type: string
   _id: string
-  location? : Location
+  location?: Location
 }

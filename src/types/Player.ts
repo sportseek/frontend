@@ -7,5 +7,5 @@ export default interface Player {
   mobilePhone?: string
   type: string
   _id: string
-  location? : Location
+  location?: Location
 }

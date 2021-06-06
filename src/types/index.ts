@@ -8,6 +8,6 @@ export enum UserType {
   ARENA = "arena",
 }
 
-type User = ArenaOwner | Player | {"_id" : string, location: Location }
+type User = ArenaOwner | Player | { _id: string; location: Location }
 
 export type { ArenaOwner, Event, Player, User, Location }

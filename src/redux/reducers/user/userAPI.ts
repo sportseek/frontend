@@ -1,5 +1,5 @@
 import axios from "utils/axios"
-import {User} from "types"
+import { User } from "types"
 
 const userEndpoint = "user"
 

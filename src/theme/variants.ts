@@ -15,8 +15,8 @@ const lightVariant: ThemeOptions = {
   },
   typography: {
     button: {
-      textTransform: 'none'
-    }
+      textTransform: "none",
+    },
   },
   header: {
     height: 60,
