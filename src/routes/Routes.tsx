@@ -40,7 +40,6 @@ const Routes = () => {
   const userType = useAppSelector(selectUserType)
   const isAuthenticated = useAppSelector(isIfAuthenticated)
 
-
   return (
     <Switch>
       <Route path="/" exact render={() => <Redirect to="/home" />} />
