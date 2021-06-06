@@ -4,11 +4,13 @@ import { Card, IconButton } from "@material-ui/core"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
 import { EditLocationRounded as Edit } from "@material-ui/icons"
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
+import {useAppSelector} from "redux/hooks"
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet"
+import { isEmpty } from "utils/stringUtils"
+import {Location} from "types"
 
+import { selectUserLocation } from "redux/reducers/user/userSlice"
 import EditLocationDialog from "./LocationPopUp"
-
-const center = { lat: 48.137154, lng: 11.576124 }
 
 const useStyles = makeStyles({
   map: {
@@ -16,14 +18,35 @@ const useStyles = makeStyles({
   },
   cardHeader: {
     paddingBottom: 0,
-  },
-  cardContent: {},
+  }
 })
 
-const Location = () => {
+
+function LocationMarker() {
+  const [position, setPosition] = useState({lat: 0, lng: 0})
+  const map = useMapEvents({
+    click() {
+      map.locate()
+    },
+    locationfound(e) {
+      setPosition(e.latlng)
+      map.flyTo(e.latlng, map.getZoom())
+    },
+  })
+
+  return isEmpty(position) ? null : (
+    <Marker position={position}>
+      <Popup>You are here</Popup>
+    </Marker>
+  )
+}
+
+const LocationCard = () => {
   const classes = useStyles()
 
-  const [position, setPosition] = useState(center)
+  const position = useAppSelector(selectUserLocation) as Location
+
+  console.log(position)
 
   const [open, setOpen] = useState(false)
 
@@ -53,16 +76,12 @@ const Location = () => {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={position}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
+          <Marker position={position}/>
         </MapContainer>
-        {open && <EditLocationDialog open={open} setOpen={setOpen} />}
+        <EditLocationDialog open={open} setOpen={setOpen} />
       </CardContent>
     </Card>
   )
 }
 
-export default Location
+export default LocationCard
