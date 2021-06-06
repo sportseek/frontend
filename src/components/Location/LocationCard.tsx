@@ -1,22 +1,20 @@
 import React, { useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
-import { Card, IconButton } from "@material-ui/core"
-import CardHeader from "@material-ui/core/CardHeader"
-import CardContent from "@material-ui/core/CardContent"
+import { Card, CardHeader, CardContent, IconButton } from "@material-ui/core"
 import { EditLocationRounded as Edit } from "@material-ui/icons"
-import { useAppSelector } from "redux/hooks"
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvents,
-} from "react-leaflet"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet"
+
 import { isEmpty } from "utils/stringUtils"
 import { Location } from "types"
 
-import { selectUserLocation } from "redux/reducers/user/userSlice"
-import EditLocationDialog from "./LocationPopUp"
+import {
+  selectUser,
+  selectUserLocation,
+  updateUser,
+} from "redux/reducers/user/userSlice"
+
+import EditLocationDialog from "./EditLocationPopUp"
 
 const useStyles = makeStyles({
   map: {
@@ -27,33 +25,33 @@ const useStyles = makeStyles({
   },
 })
 
-function LocationMarker() {
-  const [position, setPosition] = useState({ lat: 0, lng: 0 })
-  const map = useMapEvents({
-    click() {
-      map.locate()
-    },
-    locationfound(e) {
-      setPosition(e.latlng)
-      map.flyTo(e.latlng, map.getZoom())
-    },
-  })
+type MarkerProps = {
+  position: Location
+}
 
-  return isEmpty(position) ? null : (
-    <Marker position={position}>
-      <Popup>You are here</Popup>
-    </Marker>
-  )
+function LocationMarker(props: MarkerProps) {
+  const { position } = props
+
+  const map = useMap()
+
+  map.flyTo(position, map.getZoom())
+
+  return isEmpty(position) ? null : <Marker position={position} />
 }
 
 const LocationCard = () => {
   const classes = useStyles()
-
-  const position = useAppSelector(selectUserLocation) as Location
-
-  console.log(position)
+  const user = useAppSelector(selectUser)
+  const userPosition = useAppSelector(selectUserLocation) as Location
+  const dispatch = useAppDispatch()
 
   const [open, setOpen] = useState(false)
+
+  const updatePos = (pinPosition: Location) => {
+    const modUser = { ...user }
+    modUser.location = pinPosition
+    dispatch(updateUser(modUser))
+  }
 
   return (
     <Card>
@@ -73,7 +71,7 @@ const LocationCard = () => {
       <CardContent>
         <MapContainer
           className={classes.map}
-          center={position}
+          center={userPosition}
           zoom={13}
           scrollWheelZoom={false}
         >
@@ -81,9 +79,16 @@ const LocationCard = () => {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={position} />
+          <LocationMarker position={userPosition} />
         </MapContainer>
-        <EditLocationDialog open={open} setOpen={setOpen} />
+        {open && (
+          <EditLocationDialog
+            open={open}
+            setOpen={setOpen}
+            updatePos={updatePos}
+            position={userPosition}
+          />
+        )}
       </CardContent>
     </Card>
   )

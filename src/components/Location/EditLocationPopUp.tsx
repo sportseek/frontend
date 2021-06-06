@@ -1,24 +1,21 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { FC, useMemo, useRef, useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
-import Button from "@material-ui/core/Button"
-import Dialog from "@material-ui/core/Dialog"
-import DialogActions from "@material-ui/core/DialogActions"
-import DialogContent from "@material-ui/core/DialogContent"
-import { MapContainer, TileLayer, Marker } from "react-leaflet"
-import DialogTitle from "@material-ui/core/DialogTitle"
-import Slide from "@material-ui/core/Slide"
-import { TransitionProps } from "@material-ui/core/transitions"
-import { EDIT_LOCATION_HEADER } from "utils/constants"
-import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { Marker as LeafletMarker } from "leaflet"
-
 import {
-  updateUser,
-  selectUser,
-  selectUserLocation,
-} from "redux/reducers/user/userSlice"
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Slide,
+} from "@material-ui/core"
+import { MapContainer, TileLayer } from "react-leaflet"
+import { Marker as LeafletMarker } from "leaflet"
+import { TransitionProps } from "@material-ui/core/transitions"
 
+import { EDIT_LOCATION_HEADER } from "utils/constants"
 import { Location } from "types"
+
+import DraggableMarker from "./DraggableMarker"
 
 const useStyles = makeStyles({
   map: {
@@ -34,23 +31,17 @@ const Transition = React.forwardRef(
 
 type Props = {
   open: boolean
+  position: Location
+  updatePos: (pos: Location) => void
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const EditLocation = (props: Props) => {
+const EditLocation: FC<Props> = (props: Props) => {
   const classes = useStyles()
 
-  const { open, setOpen } = props
+  const { updatePos, open, setOpen, position } = props
 
-  const user = useAppSelector(selectUser)
-  const userPosition = useAppSelector(selectUserLocation) as Location
-  const dispatch = useAppDispatch()
-
-  const [pinPosition, setPinPos] = useState<Location>(userPosition)
-
-  useEffect(() => {
-    setPinPos(userPosition)
-  }, [userPosition])
+  const [pinPos, setPinPos] = useState<Location>(position)
 
   const markerRef = useRef<LeafletMarker>(null)
 
@@ -59,11 +50,7 @@ const EditLocation = (props: Props) => {
   }
 
   const handleSave = () => {
-    const modUser = { ...user }
-    modUser.location = pinPosition
-    console.log(modUser)
-    dispatch(updateUser(modUser))
-
+    updatePos(pinPos as Location)
     handleClose()
   }
 
@@ -73,8 +60,7 @@ const EditLocation = (props: Props) => {
         const marker = markerRef.current
         if (marker != null) {
           const newPinPos = marker.getLatLng()
-          console.log(newPinPos)
-          setPinPos(marker.getLatLng())
+          setPinPos(newPinPos)
         }
       },
     }),
@@ -98,7 +84,7 @@ const EditLocation = (props: Props) => {
       <DialogContent>
         <MapContainer
           className={classes.map}
-          center={pinPosition}
+          center={position}
           zoom={13}
           scrollWheelZoom={false}
         >
@@ -107,11 +93,10 @@ const EditLocation = (props: Props) => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          <Marker
-            draggable
+          <DraggableMarker
             eventHandlers={eventHandlers}
-            position={pinPosition}
-            ref={markerRef}
+            position={position}
+            markerRef={markerRef}
           />
         </MapContainer>
       </DialogContent>
