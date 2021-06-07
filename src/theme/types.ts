@@ -4,6 +4,7 @@ import React from "react"
 export interface ThemeOptions extends MuiThemeOptions {
   header: Header
   sidebar: SideBar
+  filterbar: FilterBar
   body: Body
 }
 
@@ -23,6 +24,16 @@ export interface SideBar {
 }
 
 export type SideBarOptions = Partial<SideBar>
+
+export interface FilterBar {
+  width: React.CSSProperties["width"]
+  footer: {
+    color: React.CSSProperties["color"]
+    background: React.CSSProperties["color"]
+  }
+}
+
+export type FilterBarOptions = Partial<FilterBar>
 
 export interface Body {
   background: React.CSSProperties["background"]

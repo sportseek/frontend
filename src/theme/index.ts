@@ -6,6 +6,7 @@ const createTheme = (variant: ThemeOptions) =>
   createMuiTheme({
     palette: variant.palette,
     sidebar: variant.sidebar,
+    filterbar: variant.filterbar,
     body: variant.body,
     header: variant.header,
     footer: variant.footer,

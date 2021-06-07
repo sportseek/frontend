@@ -24,6 +24,13 @@ const lightVariant: ThemeOptions = {
       background: "#62757f",
     },
   },
+  filterbar: {
+    width: 250,
+    footer: {
+      color: grey[200],
+      background: "#62757f",
+    },
+  },
   body: {
     background: "#efeadd ",
   },
