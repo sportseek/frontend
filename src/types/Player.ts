@@ -8,4 +8,6 @@ export default interface Player {
   type: string
   _id: string
   location?: Location
+  registeredEvents?: string[]
+  interestedEvents?: string[]
 }

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
-import { User } from "types"
+import { User, Player } from "types"
 import userAPI from "./userAPI"
 
 interface UserState {
@@ -48,5 +48,9 @@ export const userSlice = createSlice({
 export const selectUser = (state: RootState) => state.user.loggedInUser
 export const selectUserLocation = (state: RootState) =>
   state.user.loggedInUser.location
+export const selectRegtedEventIds = (state: RootState) =>
+  (state.user.loggedInUser as Player).registeredEvents
+export const selectInstedEventIds = (state: RootState) =>
+  (state.user.loggedInUser as Player).interestedEvents
 
 export default userSlice.reducer

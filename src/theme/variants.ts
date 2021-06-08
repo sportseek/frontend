@@ -32,6 +32,10 @@ const lightVariant: ThemeOptions = {
   body: {
     background: "#efeadd ",
   },
+  calendar: {
+    interestedEventColor: "#8835",
+    registeredEventColor: "#842",
+  },
   footer: {
     background: "#4b636e",
     height: 28,

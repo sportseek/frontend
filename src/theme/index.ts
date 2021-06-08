@@ -8,6 +8,7 @@ const createTheme = (variant: ThemeOptions) =>
     typography: variant.typography,
     sidebar: variant.sidebar,
     body: variant.body,
+    calendar: variant.calendar,
     header: variant.header,
     footer: variant.footer,
   })
