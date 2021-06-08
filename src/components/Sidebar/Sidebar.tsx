@@ -1,6 +1,6 @@
-import React, { FC } from "react"
+import React, { FC, useEffect } from "react"
 import clsx from "clsx"
-import { makeStyles, styled } from "@material-ui/core/styles"
+import { makeStyles, styled, useTheme } from "@material-ui/core/styles"
 import {
   Drawer,
   Toolbar,
@@ -8,6 +8,7 @@ import {
   List,
   Typography,
   Button,
+  useMediaQuery,
 } from "@material-ui/core"
 import {
   ChevronLeft as LeftIcon,
@@ -69,6 +70,8 @@ type SidebarProps = {
 const SideBar: FC<SidebarProps> = (props: SidebarProps) => {
   const classes = useStyles()
   const { variant } = props
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down("sm"))
   const open = useAppSelector(selectOpenSideBar)
   const userType = useAppSelector(selectUserType)
   const pages: PageDataType[] = getPages(userType)
@@ -76,6 +79,12 @@ const SideBar: FC<SidebarProps> = (props: SidebarProps) => {
   const SliderIcon = open ? LeftIcon : RightIcon
   const toggleDrawer = () =>
     open ? dispatch(closeSideBar()) : dispatch(openSideBar())
+
+  useEffect(() => {
+    if (matches) dispatch(closeSideBar())
+    else dispatch(openSideBar())
+  }, [dispatch, matches])
+
   return (
     <Drawer
       variant={variant}
