@@ -11,10 +11,9 @@ import Slider from "@material-ui/core/Slider"
 import {
   LocationOn,
   SportsBasketball,
-  DateRange,
-  QueryBuilder,
   Euro,
   People,
+  Search
 } from "@material-ui/icons"
 
 const drawerWidth = 240
@@ -88,7 +87,7 @@ const FilterEvents = () => {
   }
 
   function valuetext(value: number) {
-    return `${value} €`;
+    return `${value} €`
   }
 
   return (
@@ -107,6 +106,17 @@ const FilterEvents = () => {
           <Divider />
           <div className={classes.margin}>
             <Grid container spacing={2} alignItems="flex-end">
+              <Grid item xs={12}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Filters
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <TextField label="Search" className={classes.textField} />
+              </Grid>
+              <Grid item xs={2}>
+                <Search />
+              </Grid>
               <Grid item xs={10}>
                 <TextField label="Location" className={classes.textField} />
               </Grid>
@@ -160,9 +170,7 @@ const FilterEvents = () => {
             <div className={classes.emptyDiv} />
             <Grid container spacing={2} alignItems="flex-end">
               <Grid item xs={12}>
-                <Typography gutterBottom>
-                  Price Range (€)
-                </Typography>
+                <Typography gutterBottom>Price Range (€)</Typography>
                 <Slider
                   value={value}
                   onChange={handleChangePrice}
