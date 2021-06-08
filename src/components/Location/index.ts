@@ -1,3 +1,3 @@
-import Location from "./Location"
+import LocationCard from "./LocationCard"
 
-export default Location
+export default LocationCard

@@ -8,16 +8,24 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  loggedInUser: null,
+  loggedInUser: { _id: "", location: { lat: 48.137154, lng: 11.576124 } },
 }
 
-type Payload = {id: string, type: string}
+type FetchPayload = { id: string; type: string }
 
 export const fetchUserById = createAsyncThunk(
   "users/fetchById",
-  async (payload: Payload) => {
-    const { id, type} = payload
+  async (payload: FetchPayload) => {
+    const { id, type } = payload
     const response = await userAPI.fetchById(id, type)
+    return response.data
+  }
+)
+
+export const updateUser = createAsyncThunk(
+  "user/setLocation",
+  async (user: User) => {
+    const response = await userAPI.update(user)
     return response.data
   }
 )
@@ -27,13 +35,18 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      console.log(action.payload)
-      state.loggedInUser = action.payload.user
-    })
+    builder
+      .addCase(fetchUserById.fulfilled, (state, action) => {
+        state.loggedInUser = action.payload.user
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.loggedInUser = action.payload.user
+      })
   },
 })
 
 export const selectUser = (state: RootState) => state.user.loggedInUser
+export const selectUserLocation = (state: RootState) =>
+  state.user.loggedInUser.location
 
 export default userSlice.reducer

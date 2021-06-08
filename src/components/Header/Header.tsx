@@ -17,10 +17,13 @@ import {
 } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { openSideBar } from "redux/reducers/ui/uiSlice"
-import { logout, selectUserId, selectUserType } from "redux/reducers/auth/authSlice"
+import {
+  logout,
+  selectUserId,
+  selectUserType,
+} from "redux/reducers/auth/authSlice"
 import { fetchUserById, selectUser } from "redux/reducers/user/userSlice"
-import authService from "utils/services/authService"
-import {getUserName} from "utils/stringUtils"
+import { getUserName } from "utils/stringUtils"
 
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
@@ -55,7 +58,6 @@ const HeaderFC = () => {
   const dispatch = useAppDispatch()
 
   const signout = () => {
-    authService.logout()
     dispatch(logout())
   }
 
@@ -66,8 +68,8 @@ const HeaderFC = () => {
   const name = getUserName(user)
 
   React.useEffect(() => {
-    dispatch(fetchUserById({id, type}))
-  }, [dispatch])
+    dispatch(fetchUserById({ id, type }))
+  }, [dispatch, id, type])
 
   return (
     <>

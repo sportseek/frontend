@@ -5,6 +5,7 @@ import variants from "./variants"
 const createTheme = (variant: ThemeOptions) =>
   createMuiTheme({
     palette: variant.palette,
+    typography: variant.typography,
     sidebar: variant.sidebar,
     filterbar: variant.filterbar,
     body: variant.body,

@@ -13,6 +13,11 @@ const lightVariant: ThemeOptions = {
       contrastText: "#FFF",
     },
   },
+  typography: {
+    button: {
+      textTransform: "none",
+    },
+  },
   header: {
     height: 60,
     background: "#4b636e",
