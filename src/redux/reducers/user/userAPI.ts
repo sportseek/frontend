@@ -1,4 +1,5 @@
 import axios from "utils/axios"
+import { User } from "types"
 
 const userEndpoint = "user"
 
@@ -7,4 +8,9 @@ const fetchById = (id: string, type: string) => {
   return axios.get(url).then((response) => response)
 }
 
-export default { fetchById }
+const update = (user: User) => {
+  const url = `/${userEndpoint}/update/${user._id}`
+  return axios.put(url, user).then((response) => response)
+}
+
+export default { fetchById, update }
