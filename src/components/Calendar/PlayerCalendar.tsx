@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { Calendar, momentLocalizer } from "react-big-calendar"
-import { useAppSelector } from "redux/hooks"
+import { useAppSelector, useAppDispatch } from "redux/hooks"
 import { useTheme } from "@material-ui/core/styles"
 import moment from "moment"
 import { Card, CardHeader, CardContent } from "@material-ui/core"
@@ -9,8 +9,14 @@ import {
   selectRegtedEventIds,
   selectInstedEventIds,
 } from "redux/reducers/user/userSlice"
+
+
+import {  
+  fetchEventById
+} from "redux/reducers/event/eventSlice"  
+
+
 import { Event } from "types"
-import { ModifyEvent } from "components/EventForm"
 import { findEventById, getEventDetails } from "services/eventService"
 
 const localizer = momentLocalizer(moment)
@@ -25,11 +31,16 @@ const placeholderEvents: Event[] = [
   },
 ]
 
-const PlayerCalendar = () => {
-  const theme = useTheme()
+type CalendarProps = {
+  goto: () => void
+}
 
-  const [open, setOpen] = React.useState(false)
-  const [selectedEvent, setSelectedEvent] = React.useState<Event>()
+const PlayerCalendar = (props: CalendarProps) => {
+
+  const { goto : gotoEventDetails } = props
+
+  const theme = useTheme()
+  const dispatch = useAppDispatch()
   const [events, setEvents] = useState<Event[]>(placeholderEvents)
 
   const interestedEventIds = useAppSelector(selectInstedEventIds)
@@ -75,8 +86,8 @@ const PlayerCalendar = () => {
   }, [eventDetails])
 
   const openEventDetails = (event: Event) => {
-    setOpen(true)
-    setSelectedEvent(event)
+    dispatch(fetchEventById(event._id))
+    gotoEventDetails()
   }
 
   return (
@@ -101,13 +112,6 @@ const PlayerCalendar = () => {
           />
         </PerfectScrollbar>
       </CardContent>
-      {open && (
-        <ModifyEvent
-          open={open}
-          setOpen={setOpen}
-          event={selectedEvent as Event}
-        />
-      )}
     </Card>
   )
 }

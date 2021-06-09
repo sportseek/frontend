@@ -23,7 +23,7 @@ export const fetchUserById = createAsyncThunk(
 )
 
 export const updateUser = createAsyncThunk(
-  "user/setLocation",
+  "user/update",
   async (user: User) => {
     const response = await userAPI.update(user)
     return response.data
