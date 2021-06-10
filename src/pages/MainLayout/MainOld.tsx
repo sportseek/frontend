@@ -47,10 +47,10 @@ const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
       <Helmet title="Seek your Sport" />
       <Drawer>
         <Hidden mdUp implementation="js">
-          <Sidebar variant="temporary" />
+          <Sidebar />
         </Hidden>
         <Hidden smDown implementation="css">
-          <Sidebar variant="permanent" />
+          <Sidebar />
         </Hidden>
       </Drawer>
       <AppContent>

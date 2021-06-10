@@ -1,13 +1,15 @@
-import React, { FC, useEffect } from "react"
+import React, { useEffect } from "react"
 import clsx from "clsx"
 import { makeStyles, styled, useTheme } from "@material-ui/core/styles"
 import {
   Drawer,
+  Hidden,
   Toolbar,
   List,
   Typography,
   Button,
-  useMediaQuery,
+  withWidth,
+  WithWidthProps,
 } from "@material-ui/core"
 import {
   ChevronLeft as LeftIcon,
@@ -17,12 +19,21 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   closeSideBar,
   openSideBar,
+  openSideBarMobile,
+  closeSideBarMobile,
   selectOpenSideBar,
+  selectOpenSideBarMobile,
 } from "redux/reducers/ui/uiSlice"
 import { selectUserType } from "redux/reducers/auth/authSlice"
 import { PageDataType, getPages } from "pages"
 import { BUTTON_SLIDER } from "utils/constants"
 import NavItem from "./NavItem"
+
+const Root = styled("nav")(({ theme }) => ({
+  [theme.breakpoints.up("md")]: {
+    flexShrink: 0,
+  },
+}))
 
 const Filler = styled("div")({
   flexGrow: 1,
@@ -39,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
     width: theme.sidebar.width,
     flexShrink: 0,
     whiteSpace: "nowrap",
+  },
+  list: {
+    width: theme.sidebar.width,
   },
   drawerPaper: {
     overflow: "hidden",
@@ -63,16 +77,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-type SidebarProps = {
-  variant: "permanent" | "temporary" | "persistent" | undefined
-}
-
-const SideBar: FC<SidebarProps> = (props: SidebarProps) => {
+const SideBar = (props: WithWidthProps) => {
   const classes = useStyles()
-  const { variant } = props
   const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down("sm"))
+  const { width } = props
   const open = useAppSelector(selectOpenSideBar)
+  const mobileOpen = useAppSelector(selectOpenSideBarMobile)
   const userType = useAppSelector(selectUserType)
   const pages: PageDataType[] = getPages(userType)
   const dispatch = useAppDispatch()
@@ -80,46 +90,101 @@ const SideBar: FC<SidebarProps> = (props: SidebarProps) => {
   const toggleDrawer = () =>
     open ? dispatch(closeSideBar()) : dispatch(openSideBar())
 
+  const toggleDrawerMobile = (
+    event: React.KeyboardEvent | React.MouseEvent
+  ) => {
+    if (
+      event.type === "keydown" &&
+      ((event as React.KeyboardEvent).key === "Tab" ||
+        (event as React.KeyboardEvent).key === "Shift")
+    ) {
+      return
+    }
+
+    if (mobileOpen) dispatch(closeSideBarMobile())
+    else dispatch(openSideBarMobile())
+  }
+
+  const container =
+    window !== undefined ? () => window.document.body : undefined
+
   useEffect(() => {
-    if (matches) dispatch(closeSideBar())
-    else dispatch(openSideBar())
-  }, [dispatch, matches])
+    dispatch(closeSideBarMobile())
+  }, [dispatch, width])
 
   return (
-    <Drawer
-      variant={variant}
-      open={open}
-      className={clsx(classes.drawer, {
-        [classes.drawerOpen]: open,
-        [classes.drawerClose]: !open,
-      })}
-      classes={{
-        paper: clsx(classes.drawerPaper, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        }),
-      }}
-      onClose={() => dispatch(closeSideBar())}
-    >
-      <Toolbar />
-      <List>
-        {pages.map(({ path, header, icon }) => (
-          <NavItem key={path} path={path} text={header} icon={icon} />
-        ))}
-      </List>
-
-      <Filler />
-
-      <Slider
-        variant="contained"
-        onClick={toggleDrawer}
-        color="default"
-        startIcon={<SliderIcon />}
-      >
-        {open && <Typography variant="body2">{BUTTON_SLIDER}</Typography>}
-      </Slider>
-    </Drawer>
+    <Root>
+      <Hidden mdUp implementation="css">
+        <Drawer
+          container={container}
+          variant="temporary"
+          anchor={theme.direction === "rtl" ? "right" : "left"}
+          open={mobileOpen}
+          onClose={() => dispatch(closeSideBarMobile())}
+          className={clsx(classes.drawer, {
+            [classes.drawerOpen]: mobileOpen,
+            [classes.drawerClose]: !mobileOpen,
+          })}
+          classes={{
+            paper: clsx(classes.drawerPaper, {
+              [classes.drawerOpen]: mobileOpen,
+              [classes.drawerClose]: !mobileOpen,
+            }),
+          }}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+        >
+          <Toolbar />
+          <div
+            className={classes.list}
+            role="presentation"
+            onClick={toggleDrawerMobile}
+            onKeyDown={toggleDrawerMobile}
+          >
+            <List>
+              {pages.map(({ path, header, icon }) => (
+                <NavItem key={path} path={path} text={header} icon={icon} />
+              ))}
+            </List>
+          </div>
+        </Drawer>
+      </Hidden>
+      <Hidden smDown implementation="css">
+        <Drawer
+          className={clsx(classes.drawer, {
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          })}
+          classes={{
+            paper: clsx(classes.drawerPaper, {
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            }),
+          }}
+          onClose={toggleDrawer}
+          variant="permanent"
+          open
+        >
+          <Toolbar />
+          <List>
+            {pages.map(({ path, header, icon }) => (
+              <NavItem key={path} path={path} text={header} icon={icon} />
+            ))}
+          </List>
+          <Filler />
+          <Slider
+            variant="contained"
+            onClick={toggleDrawer}
+            color="default"
+            startIcon={<SliderIcon />}
+          >
+            {open && <Typography variant="body2">{BUTTON_SLIDER}</Typography>}
+          </Slider>
+        </Drawer>
+      </Hidden>
+    </Root>
   )
 }
 
-export default SideBar
+export default withWidth()(SideBar)

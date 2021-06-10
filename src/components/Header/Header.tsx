@@ -16,7 +16,7 @@ import {
   Notifications,
 } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { openSideBar } from "redux/reducers/ui/uiSlice"
+import { openSideBarMobile } from "redux/reducers/ui/uiSlice"
 import {
   logout,
   selectUserId,
@@ -80,7 +80,7 @@ const HeaderFC = () => {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={() => dispatch(openSideBar())}
+            onClick={() => dispatch(openSideBarMobile())}
           >
             <Menu />
           </IconButton>

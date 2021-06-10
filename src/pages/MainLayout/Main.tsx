@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren } from "react"
 import { styled } from "@material-ui/core/styles"
-import { Hidden, Toolbar as MuiToolbar } from "@material-ui/core"
+import { Toolbar as MuiToolbar } from "@material-ui/core"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import PerfectScrollbar from "react-perfect-scrollbar"
 import Header from "components/Header"
@@ -33,12 +33,6 @@ const Toolbar = styled(MuiToolbar)(({ theme }) => ({
   minHeight: theme.header.height,
 }))
 
-const Drawer = styled("div")(({ theme }) => ({
-  [theme.breakpoints.up("md")]: {
-    flexShrink: 0,
-  },
-}))
-
 type MainLayoutProps = PropsWithChildren<{}>
 
 export default function MainLayoutView(props: MainLayoutProps) {
@@ -48,14 +42,7 @@ export default function MainLayoutView(props: MainLayoutProps) {
     <Root>
       <CssBaseline />
       <Header />
-      <Drawer>
-        <Hidden mdUp implementation="js">
-          <Sidebar variant="temporary" />
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Sidebar variant="permanent" />
-        </Hidden>
-      </Drawer>
+      <Sidebar />
       <MainContent>
         <Toolbar />
         <PerfectScrollbar>
