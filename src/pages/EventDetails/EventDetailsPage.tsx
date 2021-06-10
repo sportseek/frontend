@@ -10,11 +10,11 @@ import EventDetails from "components/EventDetails"
 import { EVENT_DETAILS_HEADER } from "utils/constants"
 
 const Header = styled(Grid)({
-    display: "flex",
-    alignContent: "center",
-    alignItems: "center",
-    justifyContent: "space-between"
-  })
+  display: "flex",
+  alignContent: "center",
+  alignItems: "center",
+  justifyContent: "space-between",
+})
 
 type EventDetailsProps = {
   parentPage: string
@@ -31,9 +31,11 @@ const EventDetailsPage = (props: EventDetailsProps) => {
       <Helmet title={EVENT_DETAILS_HEADER} />
       <Header item xs={12} lg={4}>
         <Breadcrumbs aria-label="Breadcrumb">
-          <Typography variant="subtitle2" >{parentPage}</Typography>
-          <Typography variant="subtitle2" > {EVENT_DETAILS_HEADER} </Typography>
-          <Typography variant="subtitle2" color="secondary">{event.title}</Typography>
+          <Typography variant="subtitle2">{parentPage}</Typography>
+          <Typography variant="subtitle2"> {EVENT_DETAILS_HEADER} </Typography>
+          <Typography variant="subtitle2" color="secondary">
+            {event.title}
+          </Typography>
         </Breadcrumbs>
 
         <Button
@@ -42,11 +44,11 @@ const EventDetailsPage = (props: EventDetailsProps) => {
           startIcon={<ChevronLeft />}
           onClick={goBack}
         >
-          <Typography variant="subtitle2" >Back</Typography>
+          <Typography variant="subtitle2">Back</Typography>
         </Button>
       </Header>
       <Grid item xs lg={12}>
-        <EventDetails event={event}/>
+        <EventDetails event={event} />
       </Grid>
     </Grid>
   )

@@ -21,7 +21,6 @@ import ArenaBoard from "./Dashboard/Arena/ArenaPage"
 
 import DummyPage from "./Dummy/DummyPage"
 
-
 type Page = {
   id: string
   path: string

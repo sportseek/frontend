@@ -10,11 +10,7 @@ import {
   selectInstedEventIds,
 } from "redux/reducers/user/userSlice"
 
-
-import {  
-  fetchEventById
-} from "redux/reducers/event/eventSlice"  
-
+import { fetchEventById } from "redux/reducers/event/eventSlice"
 
 import { Event } from "types"
 import { findEventById, getEventDetails } from "services/eventService"
@@ -36,8 +32,7 @@ type CalendarProps = {
 }
 
 const PlayerCalendar = (props: CalendarProps) => {
-
-  const { goto : gotoEventDetails } = props
+  const { goto: gotoEventDetails } = props
 
   const theme = useTheme()
   const dispatch = useAppDispatch()

@@ -76,7 +76,7 @@ const Dashboard = () => {
               justify="space-between"
             >
               <Grid item>
-                <Calendar goto={goEventDetails}/>
+                <Calendar goto={goEventDetails} />
               </Grid>
 
               <Grid item>
@@ -94,7 +94,7 @@ const Dashboard = () => {
         </Grid>
       </TabPanel>
       <TabPanel value={tabIndex} index={1}>
-        <EventDetailsView goBack={goBack} parentPage="DashBoard"/>
+        <EventDetailsView goBack={goBack} parentPage="DashBoard" />
       </TabPanel>
     </Root>
   )

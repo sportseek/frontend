@@ -8,7 +8,7 @@ interface EventState {
 }
 
 const initialState: EventState = {
-  currentEvent: { "_id": "" }
+  currentEvent: { _id: "" },
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -32,10 +32,12 @@ export const eventSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addMatcher(isAnyOf(fetchEventById.fulfilled, updateEvent.fulfilled),
-    (state, action) => {
-      state.currentEvent = action.payload.event
-    })
+    builder.addMatcher(
+      isAnyOf(fetchEventById.fulfilled, updateEvent.fulfilled),
+      (state, action) => {
+        state.currentEvent = action.payload.event
+      }
+    )
   },
 })
 

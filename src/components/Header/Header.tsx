@@ -72,56 +72,53 @@ const HeaderFC = () => {
   }, [dispatch, id, type])
 
   return (
-    <>
-      <Header position="fixed">
-        <Toolbar>
-          <Hidden mdUp>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={() => dispatch(openSideBar())}
-            >
-              <Menu />
-            </IconButton>
-          </Hidden>
+    <Header position="fixed">
+      <Toolbar>
+        <Hidden mdUp>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="open drawer"
+            onClick={() => dispatch(openSideBar())}
+          >
+            <Menu />
+          </IconButton>
+        </Hidden>
+        <Typography variant="h6" noWrap>
+          SportSeek
+        </Typography>
+        <Filler />
+        <IconButton aria-label="show 17 new notifications" color="inherit">
+          <Badge badgeContent={17} color="secondary">
+            <Notifications />
+          </Badge>
+        </IconButton>
+        <IconButton aria-label="user pic" color="inherit">
+          <AccountCircle />
+        </IconButton>
+        <IconButton
+          className={classes.title}
+          aria-label="user name"
+          color="inherit"
+        >
           <Typography variant="h6" noWrap>
-            SportSeek
+            {name}
           </Typography>
-          <Filler />
-          <IconButton aria-label="show 17 new notifications" color="inherit">
-            <Badge badgeContent={17} color="secondary">
-              <Notifications />
-            </Badge>
-          </IconButton>
-          <IconButton aria-label="user pic" color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <IconButton
-            className={classes.title}
-            aria-label="user name"
-            color="inherit"
-          >
-            <Typography variant="h6" noWrap>
-              {name}
-            </Typography>
-          </IconButton>
-          <IconButton
-            edge="end"
-            aria-label="logout"
-            aria-haspopup="true"
-            color="inherit"
-            onClick={signout}
-            component={NavLink}
-            to="/signin"
-          >
-            <ExitToApp />
-          </IconButton>
-        </Toolbar>
-      </Header>
-      <Toolbar />
-    </>
+        </IconButton>
+        <IconButton
+          edge="end"
+          aria-label="logout"
+          aria-haspopup="true"
+          color="inherit"
+          onClick={signout}
+          component={NavLink}
+          to="/signin"
+        >
+          <ExitToApp />
+        </IconButton>
+      </Toolbar>
+    </Header>
   )
 }
 

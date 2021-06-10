@@ -4,7 +4,6 @@ import { makeStyles, styled, useTheme } from "@material-ui/core/styles"
 import {
   Drawer,
   Toolbar,
-  Divider,
   List,
   Typography,
   Button,
@@ -31,6 +30,7 @@ const Filler = styled("div")({
 
 const Slider = styled(Button)(({ theme }) => ({
   textTransform: "none",
+  borderRadius: 0,
   height: theme.footer.height,
 }))
 
@@ -109,7 +109,6 @@ const SideBar: FC<SidebarProps> = (props: SidebarProps) => {
       </List>
 
       <Filler />
-      <Divider />
 
       <Slider
         variant="contained"

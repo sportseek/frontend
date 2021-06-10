@@ -7,7 +7,6 @@ type TabProps = {
 }
 
 export default function TabPanel(props: PropsWithChildren<TabProps>) {
-    
   const { children, value, index, ...other } = props
 
   return (

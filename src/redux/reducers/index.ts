@@ -10,7 +10,7 @@ const reducers = {
   ui: sidebarReducer,
   user: userReducer,
   auth: authReducer,
-  event: eventReducer
+  event: eventReducer,
 }
 
 export default combineReducers(reducers)
