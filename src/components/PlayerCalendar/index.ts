@@ -1,3 +1,3 @@
-import PlayerCalendar from "./PlayerCalendar"
+import PlayerCalendar from "./CalendarCard"
 
 export default PlayerCalendar

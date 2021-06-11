@@ -2,7 +2,8 @@ import axios from "utils/axios"
 
 const eventEndPoint = "event"
 
-const findEventById = async (id: string) => {
+// eslint-disable-next-line import/prefer-default-export
+export const findEventById = async (id: string) => {
   const url = `/${eventEndPoint}/findById/${id}`
 
   const response = await axios
@@ -12,13 +13,3 @@ const findEventById = async (id: string) => {
 
   return response.data
 }
-
-const getEventDetails = (
-  idList: string[] | undefined,
-  color: React.CSSProperties["color"]
-) => {
-  if (idList === undefined) return []
-
-  return idList.map((id) => ({ _id: id, color }))
-}
-export { findEventById, getEventDetails }

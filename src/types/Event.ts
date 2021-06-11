@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import { Event as BigCalendarEvent } from "react-big-calendar"
 
 export interface ICalendarEvent extends BigCalendarEvent {

@@ -1,6 +1,6 @@
 import IPlayer from "./Player"
 import IArenaOwner from "./ArenaOwner"
-import {IEvent, ICalendarEvent } from "./Event"
+import { IEvent, ICalendarEvent } from "./Event"
 import ILocation from "./location"
 
 export enum UserType {

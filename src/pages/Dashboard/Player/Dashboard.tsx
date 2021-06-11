@@ -41,8 +41,12 @@ const Dashboard = () => {
   const classes = useStyles()
 
   const [tabIndex, setTabIndex] = React.useState(0)
+  const [eventId, setEventId] = React.useState("")
 
-  const goEventDetails = () => setTabIndex(1)
+  const goEventDetails = (id: string) => {
+    setEventId(id)
+    setTabIndex(1)
+  }
   const goBack = () => setTabIndex(0)
 
   return (
@@ -94,7 +98,7 @@ const Dashboard = () => {
         </Grid>
       </TabPanel>
       <TabPanel value={tabIndex} index={1}>
-        <EventDetailsView goBack={goBack} parentPage="DashBoard" />
+        <EventDetailsView goBack={goBack} parentPage="DashBoard" id={eventId} />
       </TabPanel>
     </Root>
   )
