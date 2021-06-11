@@ -11,7 +11,7 @@ import Helmet from "react-helmet"
 import Playerdetails from "components/PlayerDetails"
 import Wallet from "components/Wallet"
 import Location from "components/Location"
-import Calendar from "components/Calendar"
+import Calendar from "components/PlayerCalendar"
 import TabPanel from "components/Common/TabPanel"
 import EventDetailsView from "../../EventDetails"
 
