@@ -1,69 +1,57 @@
-import React, { PropsWithChildren, FC } from "react"
+import React, { FC, PropsWithChildren } from "react"
 import { styled } from "@material-ui/core/styles"
-import { Box, Hidden } from "@material-ui/core"
-import withWidth, {
-  isWidthUp,
-  WithWidthProps,
-} from "@material-ui/core/withWidth"
-import Helmet from "react-helmet"
-import Sidebar from "components/Sidebar"
-import Header from "components/Header"
-import Footer from "components/Footer"
+import { Toolbar as MuiToolbar } from "@material-ui/core"
+import CssBaseline from "@material-ui/core/CssBaseline"
 import PerfectScrollbar from "react-perfect-scrollbar"
+import Header from "components/Header"
+import Sidebar from "components/Sidebar"
+import Footer from "components/Footer"
 
 const Root = styled("div")({
   display: "flex",
   height: "100vh",
 })
 
-const Drawer = styled("div")(({ theme }) => ({
-  [theme.breakpoints.up("md")]: {
-    flexShrink: 0,
-  },
-}))
-
-const AppContent = styled("div")({
-  flex: 1,
+const MainContent = styled("main")({
+  flexGrow: 1,
   display: "flex",
   flexDirection: "column",
   overflow: "hidden",
+  background: "red",
 })
 
-const MainContent = styled(Box)(({ theme }) => ({
-  flex: 1,
+const Page = styled("div")(({ theme }) => ({
+  flexGrow: 1,
   background: theme.body.background,
-  overflow: "auto",
+  padding: theme.spacing(2),
+  overflowY: "auto",
+  overflowX: "hidden",
+  height: "100%",
 }))
 
-export type MainLayoutProps = PropsWithChildren<WithWidthProps>
+const Toolbar = styled(MuiToolbar)(({ theme }) => ({
+  minHeight: theme.header.height,
+}))
 
-const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
-  const { children, width = "xs" } = props
+type MainLayoutProps = PropsWithChildren<{}>
 
-  const pad = isWidthUp("lg", width) ? 4 : 2
+export default function MainLayoutView(props: MainLayoutProps) {
+  const { children } = props
 
   return (
     <Root>
-      <Helmet title="Seek your Sport" />
-      <Drawer>
-        <Hidden mdUp implementation="js">
-          <Sidebar variant="temporary" />
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Sidebar variant="permanent" />
-        </Hidden>
-      </Drawer>
-      <AppContent>
-        <Header />
+      <CssBaseline />
+      <Header />
+      <Sidebar />
+      <MainContent>
+        <Toolbar />
         <PerfectScrollbar>
-          <MainContent p={pad}>{children}</MainContent>
+          <Page>{children}</Page>
         </PerfectScrollbar>
         <Footer />
-      </AppContent>
+      </MainContent>
     </Root>
   )
 }
 
 export type MainLayoutType = FC<MainLayoutProps>
-
-export default withWidth()(MainLayout)

@@ -6,7 +6,8 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet"
 
 import { isEmpty } from "utils/stringUtils"
-import { Location } from "types"
+import { ILocation } from "types"
+import Tooltip from "components/Common/Tooltip"
 
 import {
   selectUser,
@@ -26,14 +27,14 @@ const useStyles = makeStyles({
 })
 
 type MarkerProps = {
-  position: Location
+  position: ILocation
 }
 
 function LocationMarker(props: MarkerProps) {
   const { position } = props
 
   const map = useMap()
-
+  //map.setView(position, map.getZoom());
   map.flyTo(position, map.getZoom())
 
   return isEmpty(position) ? null : <Marker position={position} />
@@ -42,12 +43,12 @@ function LocationMarker(props: MarkerProps) {
 const LocationCard = () => {
   const classes = useStyles()
   const user = useAppSelector(selectUser)
-  const userPosition = useAppSelector(selectUserLocation) as Location
+  const userPosition = useAppSelector(selectUserLocation) as ILocation
   const dispatch = useAppDispatch()
 
   const [open, setOpen] = useState(false)
 
-  const updatePos = (pinPosition: Location) => {
+  const updatePos = (pinPosition: ILocation) => {
     const modUser = { ...user }
     modUser.location = pinPosition
     dispatch(updateUser(modUser))
@@ -59,13 +60,15 @@ const LocationCard = () => {
         className={classes.cardHeader}
         title="Location"
         action={
-          <IconButton
-            color="secondary"
-            aria-label="edit location"
-            onClick={() => setOpen(true)}
-          >
-            <Edit />
-          </IconButton>
+          <Tooltip title="Edit location" placement="left">
+            <IconButton
+              color="secondary"
+              aria-label="edit location"
+              onClick={() => setOpen(true)}
+            >
+              <Edit />
+            </IconButton>
+          </Tooltip>
         }
       />
       <CardContent>

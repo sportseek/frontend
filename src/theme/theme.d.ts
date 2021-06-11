@@ -5,6 +5,8 @@ import {
   SideBarOptions,
   Body,
   BodyOptions,
+  Calendar,
+  CalendarOptions,
   Footer,
   FooterOptions,
 } from "./types"
@@ -14,6 +16,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
     header: Header
     sidebar: SideBar
     body: Body
+    calendar: Calendar
     footer: Footer
   }
   // allow configuration using `createMuiTheme`
@@ -21,6 +24,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
     sidebar?: SideBarOptions
     header?: HeaderOptions
     body?: BodyOptions
+    calendar?: CalendarOptions
     footer?: FooterOptions
   }
 }
