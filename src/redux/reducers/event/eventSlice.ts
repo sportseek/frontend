@@ -27,6 +27,14 @@ export const updateEvent = createAsyncThunk(
   }
 )
 
+export const createEvent = createAsyncThunk(
+  "event/create",
+  async (event: IEvent) => {
+    const response = await eventAPI.create(event)
+    return response.data
+  }
+)
+
 export const eventSlice = createSlice({
   name: "event",
   initialState,

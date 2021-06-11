@@ -7,6 +7,7 @@ import {
   momentLocalizer,
   View,
   ViewsProps,
+  SlotInfo,
   Formats,
 } from "react-big-calendar"
 import { useAppSelector, useAppDispatch } from "redux/hooks"
@@ -32,9 +33,11 @@ import Tooltip from "components/Common/Tooltip"
 import { findEventById, getEventDetails } from "services/eventService"
 import { ScheduleOutlined } from "@material-ui/icons"
 
+import AddEventPopUp from "./AddEvent"
+
 const InterestedChip = styled(Chip)(({ theme }) => ({
   background: theme.calendar.interestedEventColor,
-  marginRight: theme.spacing(2),
+  marginRight: theme.spacing(1),
   marginBottom: theme.spacing(2),
 }))
 
@@ -44,7 +47,7 @@ const CardHeader = styled(MuiCardHeader)({
 
 const RegisteredChip = styled(Chip)(({ theme }) => ({
   background: theme.calendar.registeredEventColor,
-  marginLeft: theme.spacing(2),
+  marginLeft: theme.spacing(1),
   marginBottom: theme.spacing(2),
 }))
 
@@ -108,11 +111,15 @@ type CalendarProps = {
 const PlayerCalendar = (props: CalendarProps) => {
   const { goto: gotoEventDetails } = props
   const theme = useTheme()
+  const [ open, setOpen ] = useState(false)
+  const [selectable, setSelectable ] = useState(false)
   const [view, setView] = useState<View>("week")
   const [views, setViews] = useState<ViewsProps>()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
   const dispatch = useAppDispatch()
   const [events, setEvents] = useState<IEvent[]>(placeholderEvents)
+
+  const handlePopup = () => setOpen(!open) 
 
   const interestedEventIds = useAppSelector(selectInstedEventIds)
   const registeredEventIds = useAppSelector(selectRegtedEventIds)
@@ -180,6 +187,17 @@ const PlayerCalendar = (props: CalendarProps) => {
     gotoEventDetails()
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const handleSelect = ({start, end }: SlotInfo) => {
+  
+    const title = window.prompt('New Event name')
+    if (title)
+      {
+       console.log(start)
+       console.log(end)
+      }
+  }
+
   return (
     <Card>
       <CardHeader
@@ -187,7 +205,7 @@ const PlayerCalendar = (props: CalendarProps) => {
         action={
           !isSmallScreen && (
             <Tooltip title="Manage Schedule" placement="left">
-              <IconButton color="secondary" aria-label="manage Schedule">
+              <IconButton color="secondary" aria-label="manage Schedule" onClick={handlePopup}>
                 <ScheduleOutlined />
               </IconButton>
             </Tooltip>
@@ -196,12 +214,12 @@ const PlayerCalendar = (props: CalendarProps) => {
       />
       <CardContent>
         <SubHeader>
-          <InterestedChip variant="outlined" size="small" label="interested" />
-          <RegisteredChip variant="outlined" size="small" label="registered" />
+          <InterestedChip variant="outlined" size="small" label="Interested" />
+          <RegisteredChip variant="outlined" size="small" label="Registered" />
         </SubHeader>
         <PerfectScrollbar>
           <Calendar
-            selectable
+            selectable={selectable}
             localizer={localizer}
             events={events}
             startAccessor="start"
@@ -210,6 +228,7 @@ const PlayerCalendar = (props: CalendarProps) => {
             views={views}
             onView={handleViewChange}
             style={{ height: 600 }}
+            onSelectSlot={handleSelect}
             onSelectEvent={(event) => openEventDetails(event)}
             eventPropGetter={(event) => ({
               style: {
@@ -218,6 +237,7 @@ const PlayerCalendar = (props: CalendarProps) => {
             })}
           />
         </PerfectScrollbar>
+        <AddEventPopUp open={open} setOpen={setOpen} setSelectable={setSelectable}/>
       </CardContent>
     </Card>
   )

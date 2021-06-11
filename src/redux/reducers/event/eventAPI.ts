@@ -15,4 +15,10 @@ const update = async (event: IEvent) => {
   return response
 }
 
-export default { fetchById, update }
+const create = async (event: IEvent) => {
+  const url = `/${eventEndpoint}/create/`
+  const response = await axios.post(url, event)
+  return response
+}
+
+export default { create, fetchById, update }
