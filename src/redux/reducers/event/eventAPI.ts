@@ -1,5 +1,5 @@
 import axios from "utils/axios"
-import { Event } from "types"
+import { IEvent } from "types"
 
 const eventEndpoint = "event"
 
@@ -9,7 +9,7 @@ const fetchById = async (id: string) => {
   return response
 }
 
-const update = async (event: Event) => {
+const update = async (event: IEvent) => {
   const url = `/${eventEndpoint}/update/${event._id}`
   const response = await axios.put(url, event)
   return response

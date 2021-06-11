@@ -7,7 +7,7 @@ export interface UIState {
 }
 
 const initialState: UIState = {
-  openSidebar: true,
+  openSidebar: false,
   openSidebarMobile: false,
 }
 

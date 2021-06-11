@@ -1,3 +1,3 @@
 import { LatLngLiteral } from "leaflet"
 
-export default interface LocationType extends LatLngLiteral {}
+export default interface ILocationType extends LatLngLiteral {}

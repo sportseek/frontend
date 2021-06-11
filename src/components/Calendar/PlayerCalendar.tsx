@@ -1,23 +1,71 @@
 import React, { useEffect, useMemo, useState } from "react"
-import { Calendar, momentLocalizer } from "react-big-calendar"
+import {
+  Calendar,
+  Culture,
+  DateRange,
+  DateLocalizer,
+  momentLocalizer,
+  View,
+  ViewsProps,
+  Formats,
+} from "react-big-calendar"
 import { useAppSelector, useAppDispatch } from "redux/hooks"
-import { useTheme } from "@material-ui/core/styles"
+import { styled, useTheme } from "@material-ui/core/styles"
 import moment from "moment"
-import { Card, CardHeader, CardContent } from "@material-ui/core"
+import {
+  Card,
+  CardHeader as MuiCardHeader,
+  CardContent,
+  Chip,
+  IconButton,
+  useMediaQuery,
+} from "@material-ui/core"
 import PerfectScrollbar from "react-perfect-scrollbar"
 import {
   selectRegtedEventIds,
   selectInstedEventIds,
 } from "redux/reducers/user/userSlice"
-
 import { fetchEventById } from "redux/reducers/event/eventSlice"
 
-import { Event } from "types"
+import { IEvent } from "types"
+import Tooltip from "components/Common/Tooltip"
 import { findEventById, getEventDetails } from "services/eventService"
+import { ScheduleOutlined } from "@material-ui/icons"
+
+const InterestedChip = styled(Chip)(({ theme }) => ({
+  background: theme.calendar.interestedEventColor,
+  marginRight: theme.spacing(2),
+  marginBottom: theme.spacing(2),
+}))
+
+const CardHeader = styled(MuiCardHeader)({
+  paddingBottom: 0,
+})
+
+const RegisteredChip = styled(Chip)(({ theme }) => ({
+  background: theme.calendar.registeredEventColor,
+  marginLeft: theme.spacing(2),
+  marginBottom: theme.spacing(2),
+}))
+
+const SubHeader = styled("div")({
+  display: "flex",
+  flex: 1,
+  margin: "auto",
+  alignItems: "center",
+  justifyContent: "flex-end",
+})
+
+moment.locale("de", {
+  week: {
+    dow: 1,
+    doy: 1,
+  },
+})
 
 const localizer = momentLocalizer(moment)
 
-const placeholderEvents: Event[] = [
+const placeholderEvents: IEvent[] = [
   {
     _id: "123",
     allDay: false,
@@ -27,21 +75,49 @@ const placeholderEvents: Event[] = [
   },
 ]
 
+const fullScreenViews = {
+  day: true,
+  week: true,
+  month: true,
+}
+
+const smallScreenViews = {
+  agenda: true,
+  day: true,
+}
+
+const formats: Formats = {
+  agendaHeaderFormat: (
+    range: DateRange,
+    culture?: Culture,
+    datelocalizer?: DateLocalizer
+  ) =>
+    datelocalizer && culture
+      ? `${datelocalizer.format(
+          range.start,
+          "MMM Do YY",
+          culture
+        )} - ${datelocalizer.format(range.end, "MMM Do YY", culture)}`
+      : "",
+}
+
 type CalendarProps = {
   goto: () => void
 }
 
 const PlayerCalendar = (props: CalendarProps) => {
   const { goto: gotoEventDetails } = props
-
   const theme = useTheme()
+  const [view, setView] = useState<View>("week")
+  const [views, setViews] = useState<ViewsProps>()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
   const dispatch = useAppDispatch()
-  const [events, setEvents] = useState<Event[]>(placeholderEvents)
+  const [events, setEvents] = useState<IEvent[]>(placeholderEvents)
 
   const interestedEventIds = useAppSelector(selectInstedEventIds)
   const registeredEventIds = useAppSelector(selectRegtedEventIds)
 
-  const eventDetails: Event[] = useMemo(() => {
+  const eventDetails: IEvent[] = useMemo(() => {
     const { interestedEventColor, registeredEventColor } = theme.calendar
     return [
       ...getEventDetails(interestedEventIds, interestedEventColor),
@@ -50,7 +126,9 @@ const PlayerCalendar = (props: CalendarProps) => {
   }, [interestedEventIds, registeredEventIds, theme.calendar])
 
   useEffect(() => {
-    const fetch = async (details: Event[]) => {
+    let running = true
+
+    const fetch = async (details: IEvent[]) => {
       const promises = []
 
       for (let i = 0; i < details.length; i += 1) {
@@ -64,6 +142,7 @@ const PlayerCalendar = (props: CalendarProps) => {
         const { success, event } = result[i]
         if (success) {
           const { allDay, start, end, title } = event
+
           res.push({
             allDay,
             start: moment(start).toDate(),
@@ -74,21 +153,52 @@ const PlayerCalendar = (props: CalendarProps) => {
         }
       }
 
-      setEvents(res)
+      if (running) setEvents(res)
     }
 
     fetch(eventDetails)
+
+    return () => {
+      running = false
+    }
   }, [eventDetails])
 
-  const openEventDetails = (event: Event) => {
+  useEffect(() => {
+    if (isSmallScreen) {
+      setViews(smallScreenViews)
+      setView("agenda")
+    } else {
+      setViews(fullScreenViews)
+      setView("week")
+    }
+  }, [isSmallScreen])
+
+  const handleViewChange = (v: View) => setView(v)
+
+  const openEventDetails = (event: IEvent) => {
     dispatch(fetchEventById(event._id))
     gotoEventDetails()
   }
 
   return (
     <Card>
-      <CardHeader title="Upcoming events" />
+      <CardHeader
+        title="Upcoming events"
+        action={
+          !isSmallScreen && (
+            <Tooltip title="Manage Schedule" placement="left">
+              <IconButton color="secondary" aria-label="manage Schedule">
+                <ScheduleOutlined />
+              </IconButton>
+            </Tooltip>
+          )
+        }
+      />
       <CardContent>
+        <SubHeader>
+          <InterestedChip variant="outlined" size="small" label="interested" />
+          <RegisteredChip variant="outlined" size="small" label="registered" />
+        </SubHeader>
         <PerfectScrollbar>
           <Calendar
             selectable
@@ -96,7 +206,9 @@ const PlayerCalendar = (props: CalendarProps) => {
             events={events}
             startAccessor="start"
             endAccessor="end"
-            defaultView="week"
+            view={view}
+            views={views}
+            onView={handleViewChange}
             style={{ height: 600 }}
             onSelectEvent={(event) => openEventDetails(event)}
             eventPropGetter={(event) => ({

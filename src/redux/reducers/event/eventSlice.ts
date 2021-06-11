@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
-import { Event } from "types"
+import { IEvent } from "types"
 import eventAPI from "./eventAPI"
 
 interface EventState {
-  currentEvent: Event
+  currentEvent: IEvent
 }
 
 const initialState: EventState = {
@@ -21,7 +21,7 @@ export const fetchEventById = createAsyncThunk(
 
 export const updateEvent = createAsyncThunk(
   "event/update",
-  async (event: Event) => {
+  async (event: IEvent) => {
     const response = await eventAPI.update(event)
     return response.data
   }

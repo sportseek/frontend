@@ -27,6 +27,7 @@ import {
 import { selectUserType } from "redux/reducers/auth/authSlice"
 import { PageDataType, getPages } from "pages"
 import { BUTTON_SLIDER } from "utils/constants"
+import Tooltip from "components/Common/Tooltip"
 import NavItem from "./NavItem"
 
 const Root = styled("nav")(({ theme }) => ({
@@ -169,18 +170,26 @@ const SideBar = (props: WithWidthProps) => {
           <Toolbar />
           <List>
             {pages.map(({ path, header, icon }) => (
-              <NavItem key={path} path={path} text={header} icon={icon} />
+              <NavItem
+                key={path}
+                path={path}
+                text={header}
+                icon={icon}
+                showTooltip={!open}
+              />
             ))}
           </List>
           <Filler />
-          <Slider
-            variant="contained"
-            onClick={toggleDrawer}
-            color="default"
-            startIcon={<SliderIcon />}
-          >
-            {open && <Typography variant="body2">{BUTTON_SLIDER}</Typography>}
-          </Slider>
+          <Tooltip title={open ? "" : "Open sidebar"}>
+            <Slider
+              variant="contained"
+              onClick={toggleDrawer}
+              color="default"
+              startIcon={<SliderIcon />}
+            >
+              {open && <Typography variant="body2">{BUTTON_SLIDER}</Typography>}
+            </Slider>
+          </Tooltip>
         </Drawer>
       </Hidden>
     </Root>

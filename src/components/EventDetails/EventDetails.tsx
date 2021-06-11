@@ -1,9 +1,9 @@
 import React from "react"
 
-import { Event } from "types"
+import { IEvent } from "types"
 
 type EventDetailsProps = {
-  event: Event
+  event: IEvent
 }
 
 const EventDetails = (props: EventDetailsProps) => {

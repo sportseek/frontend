@@ -1,5 +1,5 @@
 import axios from "utils/axios"
-import { User } from "types"
+import { IUser } from "types"
 
 const userEndpoint = "user"
 
@@ -8,7 +8,7 @@ const fetchById = (id: string, type: string) => {
   return axios.get(url).then((response) => response)
 }
 
-const update = (user: User) => {
+const update = (user: IUser) => {
   const url = `/${userEndpoint}/update/${user._id}`
   return axios.put(url, user).then((response) => response)
 }
