@@ -13,4 +13,9 @@ const update = (user: IUser) => {
   return axios.put(url, user).then((response) => response)
 }
 
-export default { fetchById, update }
+const updateArenaImage = (imagePayload: any) => {
+  const url = `/${userEndpoint}/updateArenaImage/${imagePayload.userId}`
+  return axios.put(url, imagePayload.formData).then((response) => response)
+}
+
+export default { fetchById, update, updateArenaImage }
