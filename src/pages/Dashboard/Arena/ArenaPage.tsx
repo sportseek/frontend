@@ -1,6 +1,8 @@
 import { makeStyles, Theme } from "@material-ui/core/styles"
+import ArenaDetails from "components/ArenaDetails"
 import ArenaEvents from "components/ArenaEvents"
 import ArenaImage from "components/ArenaImage/ArenaImage"
+import Location from "components/Location"
 import React, { FC } from "react"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "40%",
     display: "flex",
     flexDirection: "column",
+    justifyContent: "space-around"
   },
 }))
 
@@ -35,6 +38,8 @@ const ArenaDashboard: FC = () => {
       </div>
       <div className={classes.arenaDetails}>
         <ArenaImage />
+        <ArenaDetails />
+        {/* <Location /> */}
       </div>
     </div>
   )

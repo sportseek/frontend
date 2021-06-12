@@ -2,6 +2,8 @@ import Location from "./location"
 
 export default interface IArenaOwner {
   arenaName: string
+  email: string
+  phone: string
   firstName?: string
   lastName?: string
   type: string

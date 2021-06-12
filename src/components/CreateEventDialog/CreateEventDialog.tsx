@@ -253,7 +253,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 type="submit"
                 className={classes.dialogBtn}
               >
-                Create Event
+                {isUpdate ? "Update Event" : "Create Event"}
               </Button>
 
               <Button
