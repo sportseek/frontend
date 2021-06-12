@@ -1,3 +1,4 @@
+import { CreateEventPayload } from 'types/ArenaOwner';
 import axios from "utils/axios"
 import { IEvent } from "types"
 
@@ -9,10 +10,16 @@ const fetchById = async (id: string) => {
   return response
 }
 
+const create = async (payload: CreateEventPayload) => {
+  const url = `/${eventEndpoint}/create`
+  const response = await axios.post(url, payload)
+  return response
+}
+
 const update = async (event: IEvent) => {
   const url = `/${eventEndpoint}/update/${event._id}`
   const response = await axios.put(url, event)
   return response
 }
 
-export default { fetchById, update }
+export default { fetchById, update, create }

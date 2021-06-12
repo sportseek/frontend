@@ -5,8 +5,11 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Dialog from "@material-ui/core/Dialog"
 import TextField from "@material-ui/core/TextField"
 import { InputLabel, Select, MenuItem } from "@material-ui/core"
-import { ArenaEvent, CreateEventPayload } from "types/ArenaOwner"
+import IArenaOwner, { ArenaEvent, CreateEventPayload } from "types/ArenaOwner"
 import moment from "moment"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
+import { selectUser } from "redux/reducers/user/userSlice"
+import { createEvent } from "redux/reducers/event/eventSlice"
 
 const useStyles = makeStyles({
   createEventDialog: {
@@ -66,7 +69,10 @@ const sportTypes = [
 const CreateEventDialog = (props: CreateEventDialogProps) => {
   const classes = useStyles()
   const { onClose, open, isUpdate, selectedEvent } = props
+  const user = useAppSelector(selectUser) as IArenaOwner
+  const dispatch = useAppDispatch()
 
+  
   const [eventTitle, setEventTitle] = useState("")
   const [sportType, setSportType] = useState("")
   const [eventDescription, setEventDescription] = useState("")
@@ -109,17 +115,19 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     e.preventDefault()
 
     const payload: CreateEventPayload = {
-      eventTitle: eventTitle,
+      creator: user._id,
+      title: eventTitle,
       sportType: sportType,
-      eventDescription: eventDescription,
-      eventStartTime: eventStartTime,
-      eventEndTime: eventEndTime,
+      description: eventDescription,
+      start: new Date(eventStartTime).toISOString(),
+      end: new Date(eventEndTime).toISOString(),
       entryFee: +entryFee,
-      maximumParticipants: +maximumParticipants,
-      minimumParticipants: +minimumParticipants,
+      maxPlayers: +maximumParticipants,
+      minPlayers: +minimumParticipants,
+      allDay: false,
     }
 
-    console.log(payload)
+    dispatch(createEvent(payload))
   }
 
   return (

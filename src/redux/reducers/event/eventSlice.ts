@@ -1,3 +1,4 @@
+import { CreateEventPayload } from 'types/ArenaOwner';
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IEvent } from "types"
@@ -23,6 +24,14 @@ export const updateEvent = createAsyncThunk(
   "event/update",
   async (event: IEvent) => {
     const response = await eventAPI.update(event)
+    return response.data
+  }
+)
+
+export const createEvent = createAsyncThunk(
+  "events/create",
+  async (payload: CreateEventPayload) => {
+    const response = await eventAPI.create(payload)
     return response.data
   }
 )

@@ -14,14 +14,16 @@ export default interface IArenaOwner {
 
 
 export interface CreateEventPayload {
-  eventTitle: string
+  creator: string
+  description: string
   sportType: string
-  eventDescription: string
-  eventStartTime: string
-  eventEndTime: string
   entryFee: number
-  maximumParticipants: number
-  minimumParticipants: number
+  minPlayers: number
+  maxPlayers: number
+  allDay: Boolean
+  title: string
+  start: string
+  end: string
 }
 
 export interface ArenaEvent {
