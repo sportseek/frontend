@@ -11,7 +11,7 @@ const Footer = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   background: theme.footer.background,
-  height: theme.footer.height,
+  minHeight: theme.footer.height,
 }))
 
 const FooterFC = () => {

@@ -6,10 +6,12 @@ const lightVariant: ThemeOptions = {
     type: "light",
     primary: {
       main: "#3A4458",
+      light: "#9fb0d1",
       contrastText: "#FFF",
     },
     secondary: {
       main: "#5B9DD2",
+      light: "#abe4eb",
       contrastText: "#FFF",
     },
   },
@@ -31,6 +33,10 @@ const lightVariant: ThemeOptions = {
   },
   body: {
     background: "#efeadd ",
+  },
+  calendar: {
+    interestedEventColor: "#8835",
+    registeredEventColor: "#842",
   },
   footer: {
     background: "#4b636e",

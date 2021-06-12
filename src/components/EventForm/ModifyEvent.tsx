@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography"
 import CloseIcon from "@material-ui/icons/Close"
 import Slide from "@material-ui/core/Slide"
 import { TransitionProps } from "@material-ui/core/transitions"
-import { Event } from "types"
+import { IEvent } from "types"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,7 +36,7 @@ const Transition = React.forwardRef(
 type Props = {
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  event: Event
+  event: IEvent
 }
 
 const ModifyEventDailog: FC<Props> = (props: Props) => {

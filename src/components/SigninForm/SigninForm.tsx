@@ -50,9 +50,6 @@ const Signin = () => {
   const authStatus = useAppSelector(selectAuthStatus)
   const authErrors = useAppSelector(selectAuthErrors)
 
-  console.log(authStatus)
-  console.log(authErrors)
-
   const dispatch = useAppDispatch()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,16 +1,16 @@
-import { ArenaOwner, Player, User } from "types"
+import { IArenaOwner, IPlayer, IUser } from "types"
 
 export const isEmpty = (obj: Object) => JSON.stringify(obj) === "{}"
 
-export const isEmptyUser = (user: User) =>
+export const isEmptyUser = (user: IUser) =>
   JSON.stringify(user) === "{}" || user._id === ""
 
-export const isArenaAccount = (user: User): user is ArenaOwner =>
-  (user as ArenaOwner).arenaName !== undefined
+export const isArenaAccount = (user: IUser): user is IArenaOwner =>
+  (user as IArenaOwner).arenaName !== undefined
 
-export const getUserName = (user: User) => {
+export const getUserName = (user: IUser) => {
   if (isEmptyUser(user)) return ""
   return isArenaAccount(user)
-    ? (user as ArenaOwner).arenaName
-    : `${(user as Player).firstName} ${(user as Player).lastName}`
+    ? (user as IArenaOwner).arenaName
+    : `${(user as IPlayer).firstName} ${(user as IPlayer).lastName}`
 }

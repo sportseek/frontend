@@ -1,14 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
-import { User } from "types"
+import { IUser, IPlayer } from "types"
 import userAPI from "./userAPI"
 
 interface UserState {
-  loggedInUser: User
+  loggedInUser: IUser
 }
 
 const initialState: UserState = {
-  loggedInUser: { _id: "", location: { lat: 48.137154, lng: 11.576124 } },
+  loggedInUser: {
+    _id: "",
+    location: { lat: 48.137154, lng: 11.576124 },
+    profileImageUrl: "",
+  },
 }
 
 type FetchPayload = { id: string; type: string }
@@ -23,8 +27,8 @@ export const fetchUserById = createAsyncThunk(
 )
 
 export const updateUser = createAsyncThunk(
-  "user/setLocation",
-  async (user: User) => {
+  "user/update",
+  async (user: IUser) => {
     const response = await userAPI.update(user)
     return response.data
   }
@@ -48,5 +52,9 @@ export const userSlice = createSlice({
 export const selectUser = (state: RootState) => state.user.loggedInUser
 export const selectUserLocation = (state: RootState) =>
   state.user.loggedInUser.location
+export const selectRegtedEventIds = (state: RootState) =>
+  (state.user.loggedInUser as IPlayer).registeredEvents
+export const selectInstedEventIds = (state: RootState) =>
+  (state.user.loggedInUser as IPlayer).interestedEvents
 
 export default userSlice.reducer
