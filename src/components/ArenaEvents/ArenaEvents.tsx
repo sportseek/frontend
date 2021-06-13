@@ -55,7 +55,8 @@ const ArenaEvents = () => {
 
   useEffect(() => {
     dispatch(getArenaEvents())
-  }, [reloadEvents])
+  }, [dispatch, reloadEvents])
+
   const handleClickOpen = () => {
     setOpen(true)
   }
