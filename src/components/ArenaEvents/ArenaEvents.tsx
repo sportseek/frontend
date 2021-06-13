@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingLeft: 24,
     paddingBottom: 0,
     maxHeight: "70vh",
-    overflowY: "scroll",
+    overflowY: "auto",
   },
   cardActions: {
     paddingTop: 0,
@@ -70,9 +70,14 @@ const ArenaEvents = () => {
           <CreateEventDialog open={open} onClose={handleClose} isUpdate={false} />
         </CardActions>
         <CardContent className={classes.cardContent}>
-          {arenaEvents.map((item, idx) => (
+          {arenaEvents.map.length > 0 && arenaEvents.map((item, idx) => (
             <ArenaEventCard key={idx} event={item}/>
           ))}
+          {arenaEvents.length === 0 && <div>
+            <h3>
+              You have not created any events yet
+            </h3>
+          </div> }
         </CardContent>
       </Card>
     </div>

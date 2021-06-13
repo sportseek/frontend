@@ -38,7 +38,7 @@ const ArenaDashboard: FC = () => {
       <div className={classes.arenaDetails}>
         <ArenaImage />
         <ArenaDetails />
-        {/* <Location /> */}
+        <Location />
       </div>
     </div>
   )
