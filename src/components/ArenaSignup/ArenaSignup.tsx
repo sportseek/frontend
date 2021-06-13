@@ -17,7 +17,7 @@ export interface ArenaSignupPayload {
   arenaName: string
   email: string
   password: string
-  address: string
+  // address: string
   phone: string
 }
 
@@ -67,7 +67,7 @@ const ArenaSignup = () => {
       arenaName: arenaName,
       email: arenaEmail,
       password: password,
-      address: address,
+      // address: address,
       phone: phone,
     }
 
@@ -125,7 +125,7 @@ const ArenaSignup = () => {
                 onChange={handleInputChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
@@ -136,7 +136,7 @@ const ArenaSignup = () => {
                 autoComplete="address"
                 onChange={handleInputChange}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"

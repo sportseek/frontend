@@ -26,13 +26,13 @@ const useStyles = makeStyles({
   },
 })
 
+
 type MarkerProps = {
   position: ILocation
 }
 
 function LocationMarker(props: MarkerProps) {
-  const { position } = props
-
+  let { position } = props
   const map = useMap()
   map.flyTo(position, map.getZoom())
 
