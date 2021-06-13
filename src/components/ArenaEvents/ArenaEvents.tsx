@@ -64,9 +64,12 @@ const ArenaEvents = () => {
       <Card className={classes.card}>
         <CardHeader className={classes.cardHeader} title="Events" />
         <CardActions className={classes.cardActions}>
-          <Button variant="contained" color="primary" onClick={handleClickOpen}>
+          <Button variant="contained" color="primary" disabled={user.profileImageUrl ? false : true} onClick={handleClickOpen}>
             Create Event
           </Button>
+          {!user.profileImageUrl && <h4>
+            Upload your arena image and setup arena location to start creating events
+          </h4> }
           <CreateEventDialog open={open} onClose={handleClose} isUpdate={false} />
         </CardActions>
         <CardContent className={classes.cardContent}>
