@@ -63,10 +63,14 @@ export const eventSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addMatcher(isAnyOf(fetchEventById.fulfilled), (state, action) => {
+      .addCase(fetchEventById.fulfilled, (state, action) => {
         state.currentEvent = action.payload.event
       })
-      .addMatcher(isAnyOf(getArenaEvents.fulfilled), (state, action) => {
+      .addCase(updateEvent.fulfilled, (state, action) => {
+        state.currentEvent = action.payload.event
+        state.reloadEvents = true
+      })
+      .addCase(getArenaEvents.fulfilled, (state, action) => {
         state.arenaEvents = action.payload.arenaEvents
         state.reloadEvents = false
       })

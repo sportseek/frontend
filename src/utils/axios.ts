@@ -1,10 +1,17 @@
 import axios from "axios"
 
 const host = process.env.BACKEND_URL
-const token = window.localStorage.jwtToken
 
-const axiosAPI = axios.create({
+const instance = axios.create({
   baseURL: host,
 })
 
-export default axiosAPI
+export const setToken = (token: string) => {
+  instance.defaults.headers.common.Authorization = `Bearer ${token}`
+}
+
+export const deleteToken = () => {
+  delete axios.defaults.headers.common.Authorization
+}
+
+export default instance
