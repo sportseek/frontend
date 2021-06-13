@@ -56,7 +56,6 @@ export default function ArenaDetails() {
     setOpen(false)
   }
 
-
   return (
     <Card className={classes.card}>
       <CardHeader className={classes.cardHeader} title="Personal info" />
@@ -92,7 +91,12 @@ export default function ArenaDetails() {
         <Button onClick={handleClickOpen} size="small">
           <Typography>Edit details</Typography>
         </Button>
-        <UpdateArenaDialog open={open} onClose={handleClose} isUpdate={true} arenaDetails={arena} />
+        <UpdateArenaDialog
+          open={open}
+          onClose={handleClose}
+          isUpdate={true}
+          arenaDetails={arena}
+        />
       </CardActions>
     </Card>
   )

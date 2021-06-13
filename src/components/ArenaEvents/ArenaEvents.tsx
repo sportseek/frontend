@@ -11,7 +11,11 @@ import ArenaEventCard from "components/ArenaEventCard"
 import CreateEventDialog from "components/CreateEventDialog"
 import React, { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { getArenaEvents, selectArenaEvents, selectReloadEvents } from "redux/reducers/event/eventSlice"
+import {
+  getArenaEvents,
+  selectArenaEvents,
+  selectReloadEvents,
+} from "redux/reducers/event/eventSlice"
 import { selectUser } from "redux/reducers/user/userSlice"
 import { IArenaOwner } from "types"
 
@@ -48,7 +52,7 @@ const ArenaEvents = () => {
   const arenaEvents = useAppSelector(selectArenaEvents)
   const reloadEvents = useAppSelector(selectReloadEvents)
   const dispatch = useAppDispatch()
-  
+
   useEffect(() => {
     dispatch(getArenaEvents())
   }, [reloadEvents])
@@ -64,23 +68,36 @@ const ArenaEvents = () => {
       <Card className={classes.card}>
         <CardHeader className={classes.cardHeader} title="Events" />
         <CardActions className={classes.cardActions}>
-          <Button variant="contained" color="primary" disabled={user.profileImageUrl ? false : true} onClick={handleClickOpen}>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={user.profileImageUrl ? false : true}
+            onClick={handleClickOpen}
+          >
             Create Event
           </Button>
-          {!user.profileImageUrl && <h4>
-            Upload your arena image and setup arena location to start creating events
-          </h4> }
-          <CreateEventDialog open={open} onClose={handleClose} isUpdate={false} />
+          {!user.profileImageUrl && (
+            <h4>
+              Upload your arena image and setup arena location to start creating
+              events
+            </h4>
+          )}
+          <CreateEventDialog
+            open={open}
+            onClose={handleClose}
+            isUpdate={false}
+          />
         </CardActions>
         <CardContent className={classes.cardContent}>
-          {arenaEvents.map.length > 0 && arenaEvents.map((item, idx) => (
-            <ArenaEventCard key={idx} event={item}/>
-          ))}
-          {arenaEvents.length === 0 && <div>
-            <h3>
-              You have not created any events yet
-            </h3>
-          </div> }
+          {arenaEvents.map.length > 0 &&
+            arenaEvents.map((item, idx) => (
+              <ArenaEventCard key={idx} event={item} />
+            ))}
+          {arenaEvents.length === 0 && (
+            <div>
+              <h3>You have not created any events yet</h3>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

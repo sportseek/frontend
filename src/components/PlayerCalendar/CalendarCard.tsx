@@ -86,11 +86,10 @@ const PlayerCalendar = (props: CalendarProps) => {
       const event = {
         creator: user._id,
         location: user.location,
-        start : moment(start).toDate(),
-        end : moment(end).toDate(),
+        start: moment(start).toDate(),
+        end: moment(end).toDate(),
         title,
       }
-
     }
   }
 

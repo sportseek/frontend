@@ -71,7 +71,9 @@ const HeaderFC = () => {
   const name = getUserName(user)
 
   React.useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("jwtToken")}`
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${localStorage.getItem("jwtToken")}`
     dispatch(fetchUserById({ id, type }))
   }, [dispatch, id, type])
 

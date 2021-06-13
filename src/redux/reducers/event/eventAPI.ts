@@ -1,4 +1,4 @@
-import { CreateEventPayload } from 'types/ArenaOwner';
+import { CreateEventPayload } from "types/ArenaOwner"
 import axios from "utils/axios"
 
 const eventEndpoint = "event"

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { FC, useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import { Card, CardHeader, CardContent, IconButton } from "@material-ui/core"
 import { EditLocationRounded as Edit } from "@material-ui/icons"
@@ -26,20 +26,24 @@ const useStyles = makeStyles({
   },
 })
 
-
 type MarkerProps = {
   position: ILocation
 }
 
 function LocationMarker(props: MarkerProps) {
-  let { position } = props
+  const { position } = props
   const map = useMap()
   map.flyTo(position, map.getZoom())
 
   return isEmpty(position) ? null : <Marker position={position} />
 }
 
-const LocationCard = () => {
+type LocationCardProps = {
+  editable?: boolean
+}
+
+const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
+  const { editable } = props
   const classes = useStyles()
   const user = useAppSelector(selectUser)
   const userPosition = useAppSelector(selectUserLocation) as ILocation
@@ -59,15 +63,17 @@ const LocationCard = () => {
         className={classes.cardHeader}
         title="Location"
         action={
-          <Tooltip title="Edit location" placement="left">
-            <IconButton
-              color="secondary"
-              aria-label="edit location"
-              onClick={() => setOpen(true)}
-            >
-              <Edit />
-            </IconButton>
-          </Tooltip>
+          editable && (
+            <Tooltip title="Edit location" placement="left">
+              <IconButton
+                color="secondary"
+                aria-label="edit location"
+                onClick={() => setOpen(true)}
+              >
+                <Edit />
+              </IconButton>
+            </Tooltip>
+          )
         }
       />
       <CardContent>
@@ -94,6 +100,10 @@ const LocationCard = () => {
       </CardContent>
     </Card>
   )
+}
+
+LocationCard.defaultProps = {
+  editable: true,
 }
 
 export default LocationCard
