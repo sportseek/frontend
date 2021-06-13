@@ -2,17 +2,16 @@ import { CreateEventPayload } from "types/ArenaOwner"
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IEvent } from "types"
-import { EventFullDetails } from "types/Event"
 import eventAPI from "./eventAPI"
 
 interface EventState {
   currentEvent: IEvent
-  arenaEvents: EventFullDetails[]
+  arenaEvents: IEvent[]
   reloadEvents: boolean
 }
 
 const initialState: EventState = {
-  currentEvent: { _id: "" },
+  currentEvent: {} as IEvent,
   arenaEvents: [],
   reloadEvents: false,
 }

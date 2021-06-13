@@ -2,6 +2,7 @@ import IPlayer from "./Player"
 import IArenaOwner from "./ArenaOwner"
 import { IEvent, ICalendarEvent } from "./Event"
 import ILocation from "./location"
+import IAddress from "./Address"
 
 export enum UserType {
   PLAYER = "player",
@@ -13,4 +14,12 @@ type IUser =
   | IPlayer
   | { _id: string; location: ILocation; profileImageUrl: "" }
 
-export type { IArenaOwner, IEvent, ICalendarEvent, IPlayer, IUser, ILocation }
+export type {
+  IAddress,
+  IArenaOwner,
+  IEvent,
+  ICalendarEvent,
+  IPlayer,
+  IUser,
+  ILocation,
+}

@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem"
 import CreateEventDialog from "components/CreateEventDialog"
 import Chip from "@material-ui/core/Chip"
 import moment from "moment"
-import { EventFullDetails } from "types/Event"
+import { IEvent } from "types"
 import { useAppDispatch } from "redux/hooks"
 import { cancelEvent } from "redux/reducers/event/eventSlice"
 
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 })
 
 export interface ArenaEventCardProps {
-  event: EventFullDetails
+  event: IEvent
 }
 const ArenaEventCard = (props: ArenaEventCardProps) => {
   const classes = useStyles()
