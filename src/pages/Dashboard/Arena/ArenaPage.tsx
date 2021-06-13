@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   arenaDashboardWrapper: {
     border: "1px solid black",
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "40%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
 }))
 

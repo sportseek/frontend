@@ -45,17 +45,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ArenaImage = () => {
   const classes = useStyles()
-  const defaultImage = "https://res.cloudinary.com/fshahriar008/image/upload/v1609701702/user_bccush.png"
+  const defaultImage =
+    "https://res.cloudinary.com/fshahriar008/image/upload/v1609701702/user_bccush.png"
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectUser) as IArenaOwner
-  const [imageUrl, setImageUrl] = useState(
-    defaultImage
-  )
+  const [imageUrl, setImageUrl] = useState(defaultImage)
   const hidden = true
 
   useEffect(() => {
-    if(user.profileImageUrl) setImageUrl(user.profileImageUrl)
-    else{
+    if (user.profileImageUrl) setImageUrl(user.profileImageUrl)
+    else {
       setImageUrl(defaultImage)
     }
   }, [user.profileImageUrl])
@@ -71,8 +70,8 @@ const ArenaImage = () => {
     formData.append("userId", user._id)
     formData.append("image", image)
     const payload: any = {
-        userId: user._id,
-        formData: formData
+      userId: user._id,
+      formData: formData,
     }
     dispatch(updateArenaImage(payload))
   }

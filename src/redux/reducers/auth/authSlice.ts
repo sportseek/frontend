@@ -32,7 +32,9 @@ export const userSignIn = createAsyncThunk(
   async (payload: UserSigninPayload, { rejectWithValue }) => {
     try {
       const response = await authAPI.signin(payload)
-      axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.result.token}`
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.result.token}`
       return response.data
     } catch (error) {
       if (!error.response) throw error
@@ -46,7 +48,9 @@ export const playerSignup = createAsyncThunk(
   "auth/playerSignup",
   async (payload: PlayerSignupPayload) => {
     const response = await authAPI.playerSignup(payload)
-    axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.result.token}`
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${response.data.result.token}`
     return response.data
   }
 )
@@ -55,7 +59,9 @@ export const arenaSignup = createAsyncThunk(
   "auth/arenaSignup",
   async (payload: ArenaSignupPayload) => {
     const response = await authAPI.arenaSignup(payload)
-    axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.result.token}`
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${response.data.result.token}`
     return response.data
   }
 )
@@ -77,7 +83,7 @@ export const authSlice = createSlice({
       state.errors = []
       state.status = AuthStatus.IDLE
       state.userId = ""
-      delete axios.defaults.headers.common["Authorization"];
+      delete axios.defaults.headers.common["Authorization"]
       window.localStorage.removeItem("jwtToken")
     },
   },
@@ -98,7 +104,6 @@ export const authSlice = createSlice({
           state.userType = type
 
           window.localStorage.setItem("jwtToken", token)
-          
         }
       )
       .addMatcher(
