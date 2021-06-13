@@ -5,6 +5,7 @@ import { ArenaSignupPayload } from "components/ArenaSignup/ArenaSignup"
 import { UserSigninPayload } from "components/SigninForm/SigninForm"
 import { UserType } from "types"
 import authAPI from "./authAPI"
+import axios from "axios"
 
 enum AuthStatus {
   IDLE = "idle",
@@ -31,6 +32,7 @@ export const userSignIn = createAsyncThunk(
   async (payload: UserSigninPayload, { rejectWithValue }) => {
     try {
       const response = await authAPI.signin(payload)
+      axios.defaults.headers.common["Authorization"] = response.data.result.token
       return response.data
     } catch (error) {
       if (!error.response) throw error
@@ -94,6 +96,7 @@ export const authSlice = createSlice({
           state.userType = type
 
           window.localStorage.setItem("jwtToken", token)
+          
         }
       )
       .addMatcher(

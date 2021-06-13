@@ -8,7 +8,6 @@ import React, { FC } from "react"
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: "100%",
-    height: "100vh",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"

@@ -14,8 +14,6 @@ import {
 import { useAppSelector } from "redux/hooks"
 import { selectUser } from "redux/reducers/user/userSlice"
 import { IArenaOwner, IPlayer } from "types"
-
-import EditCustomerForm from "./EditDetails"
 import UpdateArenaDialog from "components/UpdateArenaDialog"
 
 const Card = styled(MuiCard)(spacing)
@@ -37,7 +35,8 @@ const useStyles = makeStyles({
     justifyContent: "flex-end",
   },
   card: {
-    marginTop: "16px"
+    marginTop: "16px",
+    marginBottom: "16px",
   },
 })
 

@@ -26,13 +26,15 @@ const useStyles = makeStyles({
   },
 })
 
+const defaultPosition = { lat: 48.137154, lng: 11.576124 }
+
 type MarkerProps = {
   position: ILocation
 }
 
 function LocationMarker(props: MarkerProps) {
-  const { position } = props
-
+  let { position } = props
+  position = position ? position : defaultPosition
   const map = useMap()
   //map.setView(position, map.getZoom());
   map.flyTo(position, map.getZoom())
