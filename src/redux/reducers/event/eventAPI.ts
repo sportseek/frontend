@@ -1,3 +1,4 @@
+import { EventFullDetails } from 'types/Event';
 import { CreateEventPayload } from 'types/ArenaOwner';
 import axios from "utils/axios"
 import { IEvent } from "types"
@@ -16,7 +17,7 @@ const create = async (payload: CreateEventPayload) => {
   return response
 }
 
-const update = async (event: IEvent) => {
+const update = async (event: CreateEventPayload) => {
   const url = `/${eventEndpoint}/update/${event._id}`
   const response = await axios.put(url, event)
   return response

@@ -9,7 +9,7 @@ import IArenaOwner, { ArenaEvent, CreateEventPayload } from "types/ArenaOwner"
 import moment from "moment"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { selectUser } from "redux/reducers/user/userSlice"
-import { createEvent } from "redux/reducers/event/eventSlice"
+import { createEvent, getArenaEvents, updateEvent } from "redux/reducers/event/eventSlice"
 import { EventFullDetails } from "types/Event"
 
 const useStyles = makeStyles({
@@ -131,7 +131,15 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
       allDay: false,
     }
 
-    dispatch(createEvent(payload))
+    if(isUpdate && selectedEvent) {
+      payload._id = selectedEvent._id
+      dispatch(updateEvent(payload))
+    }
+    else {
+      dispatch(createEvent(payload))
+    }
+
+    handleClose()
   }
 
   return (

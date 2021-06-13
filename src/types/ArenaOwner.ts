@@ -14,6 +14,7 @@ export default interface IArenaOwner {
 
 
 export interface CreateEventPayload {
+  _id?: string
   creator: string
   description: string
   sportType: string

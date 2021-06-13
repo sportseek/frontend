@@ -7,12 +7,14 @@ import { EventFullDetails } from "types/Event"
 
 interface EventState {
   currentEvent: IEvent
-  arenaEvents: EventFullDetails[],
+  arenaEvents: EventFullDetails[]
+  reloadEvents: boolean
 }
 
 const initialState: EventState = {
   currentEvent: { _id: "" },
   arenaEvents: [],
+  reloadEvents: false,
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -25,7 +27,7 @@ export const fetchEventById = createAsyncThunk(
 
 export const updateEvent = createAsyncThunk(
   "event/update",
-  async (event: IEvent) => {
+  async (event: CreateEventPayload) => {
     const response = await eventAPI.update(event)
     return response.data
   }
@@ -54,7 +56,7 @@ export const eventSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(
-        isAnyOf(fetchEventById.fulfilled, updateEvent.fulfilled),
+        isAnyOf(fetchEventById.fulfilled),
         (state, action) => {
           state.currentEvent = action.payload.event
         }
@@ -63,6 +65,13 @@ export const eventSlice = createSlice({
         isAnyOf(getArenaEvents.fulfilled),
         (state, action) => {
           state.arenaEvents = action.payload.arenaEvents
+          state.reloadEvents = false
+        }
+      )
+      .addMatcher(
+        isAnyOf(createEvent.fulfilled, updateEvent.fulfilled),
+        (state, action) => {
+          state.reloadEvents = true
         }
       )
   },
@@ -70,5 +79,6 @@ export const eventSlice = createSlice({
 
 export const selectCurrentEvent = (state: RootState) => state.event.currentEvent
 export const selectArenaEvents = (state: RootState) => state.event.arenaEvents
+export const selectReloadEvents = (state: RootState) => state.event.reloadEvents
 
 export default eventSlice.reducer

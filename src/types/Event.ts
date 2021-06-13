@@ -20,6 +20,7 @@ export interface Address {
   country: string
 }
 export interface EventFullDetails {
+  _id: string
   creator: string
   location: Location
   description: string
