@@ -23,10 +23,16 @@ const update = async (event: CreateEventPayload) => {
   return response
 }
 
+const cancel = async (eventId: string) => {
+  const url = `/${eventEndpoint}/cancel/${eventId}`
+  const response = await axios.put(url, event)
+  return response
+}
+
 const getArenaEvents = async () => {
   const url = `/${eventEndpoint}/getArenaEvents`
   const response = await axios.get(url)
   return response
 }
 
-export default { fetchById, update, create, getArenaEvents }
+export default { fetchById, update, create, cancel, getArenaEvents }

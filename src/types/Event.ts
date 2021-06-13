@@ -36,4 +36,5 @@ export interface EventFullDetails {
   title: string
   start: string
   end: string
+  status: string
 }

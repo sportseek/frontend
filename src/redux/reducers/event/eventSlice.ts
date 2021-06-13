@@ -41,6 +41,14 @@ export const createEvent = createAsyncThunk(
   }
 )
 
+export const cancelEvent = createAsyncThunk(
+  "event/cancel",
+  async (eventId: string) => {
+    const response = await eventAPI.cancel(eventId)
+    return response.data
+  }
+)
+
 export const getArenaEvents = createAsyncThunk(
   "events/getArenaEvents",
   async () => {
@@ -69,7 +77,7 @@ export const eventSlice = createSlice({
         }
       )
       .addMatcher(
-        isAnyOf(createEvent.fulfilled, updateEvent.fulfilled),
+        isAnyOf(createEvent.fulfilled, updateEvent.fulfilled, cancelEvent.fulfilled),
         (state, action) => {
           state.reloadEvents = true
         }

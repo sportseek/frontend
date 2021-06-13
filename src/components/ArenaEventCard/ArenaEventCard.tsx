@@ -9,6 +9,8 @@ import CreateEventDialog from "components/CreateEventDialog"
 import Chip from "@material-ui/core/Chip"
 import moment from "moment"
 import { EventFullDetails } from "types/Event"
+import { useAppDispatch } from "redux/hooks"
+import { cancelEvent } from "redux/reducers/event/eventSlice"
 
 const useStyles = makeStyles({
   arenaEventCardWrapper: {
@@ -31,6 +33,8 @@ export interface ArenaEventCardProps {
 }
 const ArenaEventCard = (props: ArenaEventCardProps) => {
   const classes = useStyles()
+  const dispatch = useAppDispatch()
+  
   const { event } = props
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -52,6 +56,11 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
   const handleCloseDialog = () => {
     setOpenDialog(false)
   }
+
+  const handleCancelEvent = () => {
+    dispatch(cancelEvent(event._id))
+    handleCloseMenu()
+  }
   return (
     <div className={classes.arenaEventCardWrapper}>
       <div className={classes.eventHeader}>
@@ -70,7 +79,7 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
           onClose={handleCloseMenu}
         >
           <MenuItem onClick={handleClickOpenDialog}>Update</MenuItem>
-          <MenuItem onClick={handleCloseMenu}>Cancel</MenuItem>
+          <MenuItem onClick={handleCancelEvent}>Cancel</MenuItem>
         </Menu>
         <CreateEventDialog
           open={openDialog}
@@ -97,6 +106,9 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
       </div>
       <div>
         <b>Minimum Participants:</b> {event.minPlayers}
+      </div>
+      <div>
+        <b>Status:</b> <Chip label={event.status} color={event.status === "active" ? "primary" : "secondary"} />
       </div>
     </div>
   )
