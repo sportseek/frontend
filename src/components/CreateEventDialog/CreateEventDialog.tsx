@@ -14,7 +14,7 @@ import {
   getArenaEvents,
   updateEvent,
 } from "redux/reducers/event/eventSlice"
-import { EventFullDetails } from "types/Event"
+import { IEvent } from "types"
 
 const useStyles = makeStyles({
   createEventDialog: {
@@ -57,7 +57,7 @@ export interface CreateEventDialogProps {
   open: boolean
   onClose: () => void
   isUpdate: boolean
-  selectedEvent?: EventFullDetails
+  selectedEvent?: IEvent
 }
 
 const sportTypes = [
@@ -92,7 +92,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
 
   useEffect(() => {
     if (isUpdate && selectedEvent) {
-      setEventTitle(selectedEvent.title)
+      setEventTitle(selectedEvent.title as string)
       setSportType(selectedEvent.sportType)
       setEventDescription(selectedEvent.description)
       setEventStartTime(moment(selectedEvent.start).format("YYYY-MM-DDTHH:MM"))

@@ -1,8 +1,8 @@
 import { momentLocalizer } from "react-big-calendar"
 import moment from "moment"
-import { IEvent } from "types"
+import { ICalendarEvent } from "types"
 
-export const placeholderEvents: IEvent[] = [
+export const placeholderEvents: ICalendarEvent[] = [
   {
     _id: "123",
     allDay: false,
@@ -43,12 +43,15 @@ export const getEventDetails = (
   list2: string[] | undefined,
   color1: React.CSSProperties["color"],
   color2: React.CSSProperties["color"]
-) => [
+): ICalendarEvent[] => [
   ...getEventDetailsWithColor(list1, color1),
   ...getEventDetailsWithColor(list2, color2),
 ]
 
-export const getCalendarEvents = (colors: IEvent[], database: any[]) => {
+export const getCalendarEvents = (
+  colors: ICalendarEvent[],
+  database: any[]
+): ICalendarEvent[] => {
   const events = []
 
   for (let i = 0; i < database.length; i += 1) {

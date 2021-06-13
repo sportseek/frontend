@@ -9,8 +9,8 @@ import {
   selectInstedEventIds,
 } from "redux/reducers/user/userSlice"
 import moment from "moment"
-import { IEvent } from "types"
-import { createEvent, findEventById } from "services/eventService"
+import { ICalendarEvent } from "types"
+import { findEventById } from "services/eventService"
 import CardHeader from "./CardHeader"
 import SubHeader from "./CardSubHeader"
 import AddEventPopUp from "./AddEvent"
@@ -34,7 +34,7 @@ const PlayerCalendar = (props: CalendarProps) => {
   const [selectable, setSelectable] = useState(false)
   const [view, setView] = useState<View>()
   const [views, setViews] = useState<ViewsProps>()
-  const [events, setEvents] = useState<IEvent[]>([])
+  const [events, setEvents] = useState<ICalendarEvent[]>([])
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
 
@@ -44,7 +44,7 @@ const PlayerCalendar = (props: CalendarProps) => {
   const interestedEventIds = useAppSelector(selectInstedEventIds)
   const registeredEventIds = useAppSelector(selectRegtedEventIds)
 
-  const eventDetails: IEvent[] = useMemo(
+  const eventDetails: ICalendarEvent[] = useMemo(
     () =>
       getEventDetails(
         interestedEventIds,
@@ -58,7 +58,7 @@ const PlayerCalendar = (props: CalendarProps) => {
   useEffect(() => {
     let running = true
 
-    const fetchEvents = async (details: IEvent[]) => {
+    const fetchEvents = async (details: ICalendarEvent[]) => {
       const promises = details.map(({ _id }) => findEventById(_id))
       const result = await Promise.all(promises)
       const res = getCalendarEvents(details, result)
