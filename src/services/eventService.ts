@@ -1,24 +1,21 @@
-import axios from "utils/axios"
+import eventAPI from "redux/reducers/event/eventAPI" 
+import { IEvent } from "types"
+ 
+export const findEventById = async (id: string) => {
 
-const eventEndPoint = "event"
-
-const findEventById = async (id: string) => {
-  const url = `/${eventEndPoint}/findById/${id}`
-
-  const response = await axios
-    .get(url)
+  const response = await eventAPI.fetchById(id)
     .then((res) => res)
     .catch((err) => ({ data: { success: false, error: err } }))
 
   return response.data
 }
 
-const getEventDetails = (
-  idList: string[] | undefined,
-  color: React.CSSProperties["color"]
-) => {
-  if (idList === undefined) return []
+export const createEvent = async (event: any) => {
 
-  return idList.map((id) => ({ _id: id, color }))
+  const response = await eventAPI.create(event)
+    .then((res) => res)
+    .catch((err) => ({ data: { success: false, error: err } }))
+
+  return response.data
 }
-export { findEventById, getEventDetails }
+

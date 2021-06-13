@@ -1,10 +1,13 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Helmet from "react-helmet"
 import { styled } from "@material-ui/core/styles"
 import { Breadcrumbs, Button, Grid, Typography } from "@material-ui/core"
 import { ChevronLeft } from "@material-ui/icons"
-import { useAppSelector } from "redux/hooks"
-import { selectCurrentEvent } from "redux/reducers/event/eventSlice"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
+import {
+  selectCurrentEvent,
+  fetchEventById,
+} from "redux/reducers/event/eventSlice"
 
 import EventDetails from "components/EventDetails"
 import { EVENT_DETAILS_HEADER } from "utils/constants"
@@ -17,14 +20,19 @@ const Header = styled(Grid)({
 })
 
 type EventDetailsProps = {
+  id: string
   parentPage: string
   goBack: () => void
 }
 
 const EventDetailsPage = (props: EventDetailsProps) => {
-  const { goBack, parentPage } = props
-
+  const { id, goBack, parentPage } = props
+  const dispatch = useAppDispatch()
   const event = useAppSelector(selectCurrentEvent)
+
+  useEffect(() => {
+    dispatch(fetchEventById(id))
+  }, [dispatch, id])
 
   return (
     <Grid container spacing={1}>

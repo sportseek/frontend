@@ -26,15 +26,14 @@ const useStyles = makeStyles({
   },
 })
 
+
 type MarkerProps = {
   position: ILocation
 }
 
 function LocationMarker(props: MarkerProps) {
-  const { position } = props
-
+  let { position } = props
   const map = useMap()
-  //map.setView(position, map.getZoom());
   map.flyTo(position, map.getZoom())
 
   return isEmpty(position) ? null : <Marker position={position} />

@@ -34,6 +34,14 @@ export const updateUser = createAsyncThunk(
   }
 )
 
+export const updateArenaImage = createAsyncThunk(
+  "user/updateArena",
+  async (imagePayload: any) => {
+    const response = await userAPI.updateArenaImage(imagePayload)
+    return response.data
+  }
+)
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -44,6 +52,9 @@ export const userSlice = createSlice({
         state.loggedInUser = action.payload.user
       })
       .addCase(updateUser.fulfilled, (state, action) => {
+        state.loggedInUser = action.payload.user
+      })
+      .addCase(updateArenaImage.fulfilled, (state, action) => {
         state.loggedInUser = action.payload.user
       })
   },
