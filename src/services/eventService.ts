@@ -1,15 +1,21 @@
-import axios from "utils/axios"
-
-const eventEndPoint = "event"
-
-// eslint-disable-next-line import/prefer-default-export
+import eventAPI from "redux/reducers/event/eventAPI" 
+import { IEvent } from "types"
+ 
 export const findEventById = async (id: string) => {
-  const url = `/${eventEndPoint}/findById/${id}`
 
-  const response = await axios
-    .get(url)
+  const response = await eventAPI.fetchById(id)
     .then((res) => res)
     .catch((err) => ({ data: { success: false, error: err } }))
 
   return response.data
 }
+
+export const createEvent = async (event: any) => {
+
+  const response = await eventAPI.create(event)
+    .then((res) => res)
+    .catch((err) => ({ data: { success: false, error: err } }))
+
+  return response.data
+}
+

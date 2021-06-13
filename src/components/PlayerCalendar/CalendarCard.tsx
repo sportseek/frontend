@@ -4,11 +4,13 @@ import { useAppSelector } from "redux/hooks"
 import { useTheme } from "@material-ui/core/styles"
 import { Card, CardContent, useMediaQuery } from "@material-ui/core"
 import {
+  selectUser,
   selectRegtedEventIds,
   selectInstedEventIds,
 } from "redux/reducers/user/userSlice"
+import moment from "moment"
 import { IEvent } from "types"
-import { findEventById } from "services/eventService"
+import { createEvent, findEventById } from "services/eventService"
 import CardHeader from "./CardHeader"
 import SubHeader from "./CardSubHeader"
 import AddEventPopUp from "./AddEvent"
@@ -38,6 +40,7 @@ const PlayerCalendar = (props: CalendarProps) => {
 
   const handlePopup = () => setOpen(!open)
 
+  const user = useAppSelector(selectUser)
   const interestedEventIds = useAppSelector(selectInstedEventIds)
   const registeredEventIds = useAppSelector(selectRegtedEventIds)
 
@@ -80,6 +83,14 @@ const PlayerCalendar = (props: CalendarProps) => {
     if (title) {
       console.log(start)
       console.log(end)
+      const event = {
+        creator: user._id,
+        location: user.location,
+        start : moment(start).toDate(),
+        end : moment(end).toDate(),
+        title,
+      }
+
     }
   }
 
