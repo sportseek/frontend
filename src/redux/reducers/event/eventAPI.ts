@@ -1,7 +1,5 @@
-import { EventFullDetails } from 'types/Event';
 import { CreateEventPayload } from 'types/ArenaOwner';
 import axios from "utils/axios"
-import { IEvent } from "types"
 
 const eventEndpoint = "event"
 
@@ -25,7 +23,7 @@ const update = async (event: CreateEventPayload) => {
 
 const cancel = async (eventId: string) => {
   const url = `/${eventEndpoint}/cancel/${eventId}`
-  const response = await axios.put(url, event)
+  const response = await axios.put(url)
   return response
 }
 

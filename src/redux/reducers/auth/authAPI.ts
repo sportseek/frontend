@@ -5,19 +5,22 @@ import { PlayerSignupPayload } from "components/PlayerSignup/PlayerSignup"
 
 const authEndpoint = "auth"
 
-const signin = (payload: UserSigninPayload) => {
+const signin = async (payload: UserSigninPayload) => {
   const url = `/${authEndpoint}/signin/`
-  return axios.post(url, payload).then((response) => response)
+  const response = await axios.post(url, payload)
+  return response
 }
 
-const playerSignup = (payload: PlayerSignupPayload) => {
+const playerSignup = async (payload: PlayerSignupPayload) => {
   const url = `/${authEndpoint}/playerSignup/`
-  return axios.post(url, payload).then((response) => response)
+  const response = await axios.post(url, payload)
+  return response
 }
 
-const arenaSignup = (payload: ArenaSignupPayload) => {
+const arenaSignup = async (payload: ArenaSignupPayload) => {
   const url = `/${authEndpoint}/arenaSignup/`
-  return axios.post(url, payload).then((response) => response)
+  const response = await axios.post(url, payload)
+  return response
 }
 
 export default { playerSignup, arenaSignup, signin }

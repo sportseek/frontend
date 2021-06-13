@@ -25,7 +25,7 @@ const lightVariant: ThemeOptions = {
     background: "#4b636e",
   },
   sidebar: {
-    width: 230,
+    width: 210,
     footer: {
       color: grey[200],
       background: "#62757f",

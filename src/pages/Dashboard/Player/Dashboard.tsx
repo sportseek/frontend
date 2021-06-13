@@ -11,7 +11,7 @@ import Helmet from "react-helmet"
 import Playerdetails from "components/PlayerDetails"
 import Wallet from "components/Wallet"
 import Location from "components/Location"
-import Calendar from "components/Calendar"
+import Calendar from "components/PlayerCalendar"
 import TabPanel from "components/Common/TabPanel"
 import EventDetailsView from "../../EventDetails"
 
@@ -41,8 +41,12 @@ const Dashboard = () => {
   const classes = useStyles()
 
   const [tabIndex, setTabIndex] = React.useState(0)
+  const [eventId, setEventId] = React.useState("")
 
-  const goEventDetails = () => setTabIndex(1)
+  const goEventDetails = (id: string) => {
+    setEventId(id)
+    setTabIndex(1)
+  }
   const goBack = () => setTabIndex(0)
 
   return (
@@ -94,7 +98,7 @@ const Dashboard = () => {
         </Grid>
       </TabPanel>
       <TabPanel value={tabIndex} index={1}>
-        <EventDetailsView goBack={goBack} parentPage="DashBoard" />
+        <EventDetailsView goBack={goBack} parentPage="DashBoard" id={eventId} />
       </TabPanel>
     </Root>
   )

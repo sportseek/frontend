@@ -34,7 +34,6 @@ type MarkerProps = {
 function LocationMarker(props: MarkerProps) {
   let { position } = props
   const map = useMap()
-  //map.setView(position, map.getZoom());
   map.flyTo(position, map.getZoom())
 
   return isEmpty(position) ? null : <Marker position={position} />

@@ -2,8 +2,8 @@ import { CreateEventPayload } from "types/ArenaOwner"
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IEvent } from "types"
-import eventAPI from "./eventAPI"
 import { EventFullDetails } from "types/Event"
+import eventAPI from "./eventAPI"
 
 interface EventState {
   currentEvent: IEvent
@@ -78,7 +78,7 @@ export const eventSlice = createSlice({
       )
       .addMatcher(
         isAnyOf(createEvent.fulfilled, updateEvent.fulfilled, cancelEvent.fulfilled),
-        (state, action) => {
+        (state) => {
           state.reloadEvents = true
         }
       )

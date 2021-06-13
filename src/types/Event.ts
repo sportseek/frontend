@@ -1,13 +1,15 @@
-import { Event as CalenderEvent } from "react-big-calendar"
+import React from "react"
+import { Event as BigCalendarEvent } from "react-big-calendar"
+import { ILocation } from "types"
 
-export default interface IEvent extends CalenderEvent {
-  _id: string
+export interface ICalendarEvent extends BigCalendarEvent {
   color?: React.CSSProperties["color"]
 }
 
-export interface Location {
-  lat: Number
-  lng: Number
+export interface IEvent extends ICalendarEvent {
+  _id: string
+  creator?: string
+  location?: ILocation
 }
 
 export interface Address {
@@ -22,7 +24,7 @@ export interface Address {
 export interface EventFullDetails {
   _id: string
   creator: string
-  location: Location
+  location: ILocation
   description: string
   sportType: string
   entryFee: number
