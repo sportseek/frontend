@@ -22,7 +22,6 @@ import { fetchUserById, selectUser } from "redux/reducers/user/userSlice"
 import { getUserName } from "utils/stringUtils"
 import Tooltip from "components/Common/Tooltip"
 import { deepOrange } from "@material-ui/core/colors"
-import axios from "utils/axios"
 
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
@@ -71,7 +70,6 @@ const HeaderFC = () => {
   const name = getUserName(user)
 
   React.useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("jwtToken")}`
     dispatch(fetchUserById({ id, type }))
   }, [dispatch, id, type])
 

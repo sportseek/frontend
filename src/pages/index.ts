@@ -102,7 +102,7 @@ const PlayerPages = [
   FaqRoutes,
   SupportRoutes,
 ]
-const ArenaPages = [ArenaDashBoard, SupportRoutes]
+const ArenaPages = [ArenaDashBoard, SettingsRoutes, FaqRoutes, SupportRoutes]
 
 export const getPages = (type: string) => {
   switch (type) {

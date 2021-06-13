@@ -4,8 +4,8 @@ import { RootState } from "redux/store"
 import { ArenaSignupPayload } from "components/ArenaSignup/ArenaSignup"
 import { UserSigninPayload } from "components/SigninForm/SigninForm"
 import { UserType } from "types"
+import { setToken, deleteToken } from "utils/axios"
 import authAPI from "./authAPI"
-import axios from "utils/axios"
 
 enum AuthStatus {
   IDLE = "idle",
@@ -32,7 +32,6 @@ export const userSignIn = createAsyncThunk(
   async (payload: UserSigninPayload, { rejectWithValue }) => {
     try {
       const response = await authAPI.signin(payload)
-      axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.result.token}`
       return response.data
     } catch (error) {
       if (!error.response) throw error
@@ -46,7 +45,6 @@ export const playerSignup = createAsyncThunk(
   "auth/playerSignup",
   async (payload: PlayerSignupPayload) => {
     const response = await authAPI.playerSignup(payload)
-    axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.result.token}`
     return response.data
   }
 )
@@ -55,14 +53,13 @@ export const arenaSignup = createAsyncThunk(
   "auth/arenaSignup",
   async (payload: ArenaSignupPayload) => {
     const response = await authAPI.arenaSignup(payload)
-    axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.result.token}`
     return response.data
   }
 )
 
 const initialState: AuthState = {
-  isAuthenticated: true,
-  userType: UserType.ARENA,
+  isAuthenticated: false,
+  userType: UserType.PLAYER,
   userId: "",
   status: AuthStatus.IDLE,
   errors: [],
@@ -77,8 +74,7 @@ export const authSlice = createSlice({
       state.errors = []
       state.status = AuthStatus.IDLE
       state.userId = ""
-      delete axios.defaults.headers.common["Authorization"];
-      window.localStorage.removeItem("jwtToken")
+      deleteToken()
     },
   },
   extraReducers: (builder) => {
@@ -96,9 +92,7 @@ export const authSlice = createSlice({
           state.status = AuthStatus.DONE
           state.userId = userId
           state.userType = type
-
-          window.localStorage.setItem("jwtToken", token)
-          
+          setToken(token)
         }
       )
       .addMatcher(

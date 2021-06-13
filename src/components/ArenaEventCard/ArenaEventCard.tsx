@@ -34,7 +34,7 @@ export interface ArenaEventCardProps {
 const ArenaEventCard = (props: ArenaEventCardProps) => {
   const classes = useStyles()
   const dispatch = useAppDispatch()
-  
+
   const { event } = props
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -65,10 +65,7 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
     <div className={classes.arenaEventCardWrapper}>
       <div className={classes.eventHeader}>
         <h3>{event.title}</h3>
-        <IconButton
-          color="primary"
-          onClick={handleClickMenu}
-        >
+        <IconButton color="primary" onClick={handleClickMenu}>
           <MoreHorizIcon />
         </IconButton>
         <Menu
@@ -88,7 +85,7 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
           selectedEvent={event}
         />
       </div>
-      <div style={{width: "40%"}}>
+      <div style={{ width: "40%" }}>
         <Chip label={event.sportType} />
       </div>
       <p>{event.description}</p>
@@ -96,10 +93,10 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
         <b>Entry fee:</b> {event.entryFee}
       </div>
       <div>
-        <b>Start Time:</b> {moment(event.start).format('LLLL')}
+        <b>Start Time:</b> {moment(event.start).format("LLLL")}
       </div>
       <div>
-        <b>End Time:</b> {moment(event.end).format('LLLL')}
+        <b>End Time:</b> {moment(event.end).format("LLLL")}
       </div>
       <div>
         <b>Maximum Participants:</b> {event.maxPlayers}
@@ -108,7 +105,11 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
         <b>Minimum Participants:</b> {event.minPlayers}
       </div>
       <div>
-        <b>Status:</b> <Chip label={event.status} color={event.status === "active" ? "primary" : "secondary"} />
+        <b>Status:</b>{" "}
+        <Chip
+          label={event.status}
+          color={event.status === "active" ? "primary" : "secondary"}
+        />
       </div>
     </div>
   )

@@ -12,7 +12,6 @@ export default interface IArenaOwner {
   profileImageUrl?: string
 }
 
-
 export interface CreateEventPayload {
   _id?: string
   creator: string
