@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem"
 import CreateEventDialog from "components/CreateEventDialog"
 import Chip from "@material-ui/core/Chip"
 import moment from "moment"
+import { EventFullDetails } from "types/Event"
 
 const useStyles = makeStyles({
   arenaEventCardWrapper: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
 })
 
 export interface ArenaEventCardProps {
-  event: ArenaEvent
+  event: EventFullDetails
 }
 const ArenaEventCard = (props: ArenaEventCardProps) => {
   const classes = useStyles()
@@ -54,10 +55,9 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
   return (
     <div className={classes.arenaEventCardWrapper}>
       <div className={classes.eventHeader}>
-        <h3>{event.eventTitle}</h3>
+        <h3>{event.title}</h3>
         <IconButton
           color="primary"
-          aria-label="add to shopping cart"
           onClick={handleClickMenu}
         >
           <MoreHorizIcon />
@@ -82,21 +82,21 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
       <div style={{width: "40%"}}>
         <Chip label={event.sportType} />
       </div>
-      <p>{event.eventDescription}</p>
+      <p>{event.description}</p>
       <div>
         <b>Entry fee:</b> {event.entryFee}
       </div>
       <div>
-        <b>Start Time:</b> {moment(event.eventStartTime).format('LLLL')}
+        <b>Start Time:</b> {moment(event.start).format('LLLL')}
       </div>
       <div>
-        <b>End Time:</b> {moment(event.eventEndTime).format('LLLL')}
+        <b>End Time:</b> {moment(event.end).format('LLLL')}
       </div>
       <div>
-        <b>Maximum Participants:</b> {event.maximumParticipants}
+        <b>Maximum Participants:</b> {event.maxPlayers}
       </div>
       <div>
-        <b>Minimum Participants:</b> {event.minimumParticipants}
+        <b>Minimum Participants:</b> {event.minPlayers}
       </div>
     </div>
   )

@@ -10,6 +10,7 @@ import moment from "moment"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { selectUser } from "redux/reducers/user/userSlice"
 import { createEvent } from "redux/reducers/event/eventSlice"
+import { EventFullDetails } from "types/Event"
 
 const useStyles = makeStyles({
   createEventDialog: {
@@ -52,7 +53,7 @@ export interface CreateEventDialogProps {
   open: boolean
   onClose: () => void
   isUpdate: boolean
-  selectedEvent?: ArenaEvent
+  selectedEvent?: EventFullDetails
 }
 
 const sportTypes = [
@@ -72,26 +73,29 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   const user = useAppSelector(selectUser) as IArenaOwner
   const dispatch = useAppDispatch()
 
-  
   const [eventTitle, setEventTitle] = useState("")
   const [sportType, setSportType] = useState("")
   const [eventDescription, setEventDescription] = useState("")
-  const [eventStartTime, setEventStartTime] = useState(moment().format('YYYY-MM-DDTHH:MM'))
-  const [eventEndTime, setEventEndTime] = useState(moment().format('YYYY-MM-DDTHH:MM'))
+  const [eventStartTime, setEventStartTime] = useState(
+    moment().format("YYYY-MM-DDTHH:MM")
+  )
+  const [eventEndTime, setEventEndTime] = useState(
+    moment().format("YYYY-MM-DDTHH:MM")
+  )
   const [entryFee, setEntryFee] = useState("")
   const [maximumParticipants, setMaximumParticipants] = useState("")
   const [minimumParticipants, setMinimumParticipants] = useState("")
 
   useEffect(() => {
     if (isUpdate && selectedEvent) {
-      setEventTitle(selectedEvent.eventTitle)
+      setEventTitle(selectedEvent.title)
       setSportType(selectedEvent.sportType)
-      setEventDescription(selectedEvent.eventDescription)
-      setEventStartTime(selectedEvent.eventStartTime)
-      setEventEndTime(selectedEvent.eventEndTime)
+      setEventDescription(selectedEvent.description)
+      setEventStartTime(moment(selectedEvent.start).format("YYYY-MM-DDTHH:MM"))
+      setEventEndTime(moment(selectedEvent.end).format("YYYY-MM-DDTHH:MM"))
       setEntryFee(selectedEvent.entryFee.toString())
-      setMaximumParticipants(selectedEvent.maximumParticipants.toString())
-      setMinimumParticipants(selectedEvent.minimumParticipants.toString())
+      setMaximumParticipants(selectedEvent.maxPlayers.toString())
+      setMinimumParticipants(selectedEvent.minPlayers.toString())
     }
   }, [isUpdate])
 

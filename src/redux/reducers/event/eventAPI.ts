@@ -22,4 +22,10 @@ const update = async (event: IEvent) => {
   return response
 }
 
-export default { fetchById, update, create }
+const getArenaEvents = async () => {
+  const url = `/${eventEndpoint}/getArenaEvents`
+  const response = await axios.get(url)
+  return response
+}
+
+export default { fetchById, update, create, getArenaEvents }

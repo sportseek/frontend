@@ -9,7 +9,11 @@ import {
 import { makeStyles, Theme } from "@material-ui/core/styles"
 import ArenaEventCard from "components/ArenaEventCard"
 import CreateEventDialog from "components/CreateEventDialog"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
+import { getArenaEvents, selectArenaEvents } from "redux/reducers/event/eventSlice"
+import { selectUser } from "redux/reducers/user/userSlice"
+import { IArenaOwner } from "types"
 
 import { eventsData } from "./arenaEventsData"
 
@@ -40,7 +44,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ArenaEvents = () => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
-
+  const user = useAppSelector(selectUser) as IArenaOwner
+  const arenaEvents = useAppSelector(selectArenaEvents)
+  const dispatch = useAppDispatch()
+  
+  useEffect(() => {
+    dispatch(getArenaEvents())
+  }, [])
   const handleClickOpen = () => {
     setOpen(true)
   }
@@ -59,7 +69,7 @@ const ArenaEvents = () => {
           <CreateEventDialog open={open} onClose={handleClose} isUpdate={false} />
         </CardActions>
         <CardContent className={classes.cardContent}>
-          {eventsData.map((item, idx) => (
+          {arenaEvents.map((item, idx) => (
             <ArenaEventCard key={idx} event={item}/>
           ))}
         </CardContent>

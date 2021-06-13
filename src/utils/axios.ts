@@ -6,7 +6,7 @@ const token = window.localStorage.jwtToken
 const axiosAPI = axios.create({
   baseURL: host,
   headers: {
-    Authorization: `jwt ${token}`,
+    Authorization: `Bearer ${token}`,
   },
 })
 
