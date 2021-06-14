@@ -1,11 +1,4 @@
-import React from "react"
-import { Event as BigCalendarEvent } from "react-big-calendar"
-import { IAddress, ILocation } from "types"
-
-export interface ICalendarEvent extends BigCalendarEvent {
-  _id: string
-  color?: React.CSSProperties["color"]
-}
+import { IAddress, ICalendarEvent, ILocation } from "types"
 
 export interface IEvent extends ICalendarEvent {
   creator: string
@@ -20,6 +13,7 @@ export interface IEvent extends ICalendarEvent {
   revenue: number
   address: IAddress
   status: string
+  eventImageUrl: string
 }
 
 export interface CreateEventPayload {

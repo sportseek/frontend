@@ -6,12 +6,12 @@ const instance = axios.create({
   baseURL: host,
 })
 
-function addAuthHeader (config: AxiosRequestConfig) {
+function addAuthHeader(config: AxiosRequestConfig) {
   const token = window.localStorage.authToken
-  config.headers.Authorization =  `Bearer ${token}`;
-  return config;
+  config.headers.Authorization = `Bearer ${token}`
+  return config
 }
 
-instance.interceptors.request.use(addAuthHeader);
+instance.interceptors.request.use(addAuthHeader)
 
 export default instance

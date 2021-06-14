@@ -47,7 +47,7 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
   const classes = useStyles()
   const user = useAppSelector(selectLoggedInUser)
   const userPosition = useAppSelector(selectUserLocation) as ILocation
- const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch()
 
   const [open, setOpen] = useState(false)
 
