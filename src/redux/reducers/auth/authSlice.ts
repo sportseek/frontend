@@ -4,7 +4,6 @@ import { RootState } from "redux/store"
 import { ArenaSignupPayload } from "components/ArenaSignup/ArenaSignup"
 import { UserSigninPayload } from "components/SigninForm/SigninForm"
 import { UserType } from "types"
-import { setToken, deleteToken } from "utils/axios"
 import authAPI from "./authAPI"
 
 enum AuthStatus {
@@ -34,7 +33,6 @@ export const userSignIn = createAsyncThunk(
       return response.data
     } catch (error) {
       if (!error.response) throw error
-
       return rejectWithValue(error.response.data)
     }
   }
@@ -71,7 +69,7 @@ export const authSlice = createSlice({
       state.isAuthenticated = false
       state.errors = []
       state.status = AuthStatus.IDLE
-      deleteToken()
+      window.localStorage.removeItem("authToken")
     },
   },
   extraReducers: (builder) => {
@@ -88,7 +86,7 @@ export const authSlice = createSlice({
           state.isAuthenticated = true
           state.status = AuthStatus.DONE
           state.userType = userType
-          setToken(token)
+          window.localStorage.setItem("authToken", token)
         }
       )
       .addMatcher(
