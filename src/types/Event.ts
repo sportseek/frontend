@@ -20,6 +20,7 @@ export interface IEvent extends ICalendarEvent {
   revenue: number
   address: IAddress
   status: string
+  eventImageUrl: string
 }
 
 export interface CreateEventPayload {
@@ -33,4 +34,9 @@ export interface CreateEventPayload {
   title: string
   start: string
   end: string
+}
+
+
+export interface SearchEventPayload {
+  sportType?: string
 }

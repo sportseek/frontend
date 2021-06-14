@@ -7,6 +7,7 @@ const createTheme = (variant: ThemeOptions) =>
     palette: variant.palette,
     typography: variant.typography,
     sidebar: variant.sidebar,
+    filterbar: variant.filterbar,
     body: variant.body,
     calendar: variant.calendar,
     header: variant.header,
