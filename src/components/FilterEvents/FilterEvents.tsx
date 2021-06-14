@@ -13,8 +13,11 @@ import {
   SportsBasketball,
   Euro,
   People,
-  Search
+  Search,
 } from "@material-ui/icons"
+import { Button } from "@material-ui/core"
+import { useAppDispatch } from "redux/hooks"
+import { getAllEvents } from "redux/reducers/event/eventSlice"
 
 const drawerWidth = 240
 
@@ -56,25 +59,25 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const sportsTypes = [
+const sportTypes = [
   {
-    value: "Basketball",
+    id: "all",
+    name: "All",
   },
   {
-    value: "Football",
+    id: "football",
+    name: "Football",
   },
   {
-    value: "Tennis",
-  },
-  {
-    value: "Golf",
+    id: "cricket",
+    name: "Cricket",
   },
 ]
 
 const FilterEvents = () => {
   const classes = useStyles()
-
-  const [sportsType, setSportsType] = React.useState("Basketball")
+  const dispatch = useAppDispatch()
+  const [sportsType, setSportsType] = React.useState("all")
 
   const handleChangeType = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSportsType(event.target.value)
@@ -88,6 +91,15 @@ const FilterEvents = () => {
 
   function valuetext(value: number) {
     return `${value} €`
+  }
+
+  const handleSearch = () => {
+    console.log(sportsType)
+    dispatch(
+      getAllEvents({
+        sportType: sportsType === "all" ? "" : sportsType,
+      })
+    )
   }
 
   return (
@@ -133,9 +145,9 @@ const FilterEvents = () => {
                   onChange={handleChangeType}
                   className={classes.textField}
                 >
-                  {sportsTypes.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.value}
+                  {sportTypes.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.name}
                     </MenuItem>
                   ))}
                 </TextField>
@@ -180,6 +192,8 @@ const FilterEvents = () => {
                 />
               </Grid>
             </Grid>
+
+            <Button onClick={handleSearch}>search</Button>
           </div>
         </div>
       </Drawer>

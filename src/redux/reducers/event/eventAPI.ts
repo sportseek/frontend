@@ -1,4 +1,4 @@
-import { CreateEventPayload } from "types/Event"
+import { CreateEventPayload, SearchEventPayload } from "types/Event"
 import axios from "utils/axios"
 
 const eventEndpoint = "event"
@@ -33,4 +33,10 @@ const fetchEventList = async () => {
   return response
 }
 
-export default { fetchById, update, create, cancel, fetchEventList }
+const fetchAllEventList = async (searchPayload: SearchEventPayload) => {
+  const url = `/${eventEndpoint}/fetchAllEvents`
+  const response = await axios.post(url, searchPayload)
+  return response
+}
+
+export default { fetchById, update, create, cancel, fetchEventList, fetchAllEventList }

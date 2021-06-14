@@ -1,17 +1,20 @@
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IEvent, CreateEventPayload } from "types"
+import { SearchEventPayload } from "types/Event"
 import eventAPI from "./eventAPI"
 
 interface EventState {
   currentEvent: IEvent
   events: IEvent[]
+  allEvents: IEvent[]
   reloadEvents: boolean
 }
 
 const initialState: EventState = {
   currentEvent: {} as IEvent,
   events: [],
+  allEvents: [],
   reloadEvents: false,
 }
 
@@ -52,6 +55,11 @@ export const getEvents = createAsyncThunk("events/fetchEvents", async () => {
   return response.data
 })
 
+export const getAllEvents = createAsyncThunk("events/fetchAllEvents", async (searchPayload: SearchEventPayload) => {
+  const response = await eventAPI.fetchAllEventList(searchPayload)
+  return response.data
+})
+
 export const eventSlice = createSlice({
   name: "event",
   initialState,
@@ -69,6 +77,10 @@ export const eventSlice = createSlice({
         state.events = action.payload.eventList
         state.reloadEvents = false
       })
+      .addCase(getAllEvents.fulfilled, (state, action) => {
+        state.allEvents = action.payload.eventList
+        state.reloadEvents = false
+      })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
         (state) => {
@@ -81,5 +93,6 @@ export const eventSlice = createSlice({
 export const selectCurrentEvent = (state: RootState) => state.event.currentEvent
 export const selectEvents = (state: RootState) => state.event.events
 export const selectReloadEvents = (state: RootState) => state.event.reloadEvents
+export const selectAllEvents = (state: RootState) => state.event.allEvents
 
 export default eventSlice.reducer

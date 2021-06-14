@@ -9,6 +9,8 @@ import CardActionArea from "@material-ui/core/CardActionArea"
 import CardActions from "@material-ui/core/CardActions"
 import CardMedia from "@material-ui/core/CardMedia"
 import Button from "@material-ui/core/Button"
+import { IEvent } from "types"
+import { Link } from "react-router-dom"
 // import sampleImage from "utils/stockarenaimage.jpg"
 
 const useStyles = makeStyles({
@@ -20,19 +22,22 @@ const useStyles = makeStyles({
   },
 })
 
-const EventCard = () => {
+type Props = {
+  event: IEvent
+}
+const EventCard: React.FC<Props> = ({event}) => {
   const classes = useStyles()
   return (
     <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
-          image="https://img.bundesliga.com/tachyon/sites/2/2019/02/775011925SH026.jpg?crop=670px,980px,2322px,1305px&fit=1140"
+          image={event.eventImageUrl}
           className={classes.media}
           title="Event 1"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Event Title
+            {event.title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             Location
@@ -40,7 +45,7 @@ const EventCard = () => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" component={Link} to={`/eventDetails/${event._id}`} >
           Show Details
         </Button>
       </CardActions>

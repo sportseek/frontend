@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {
   makeStyles,
   createStyles,
@@ -10,6 +10,8 @@ import Helmet from "react-helmet"
 
 import EventCard from "components/EventCard"
 import FilterEvents from "components/FilterEvents"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
+import { getAllEvents, selectAllEvents } from "redux/reducers/event/eventSlice"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,13 +28,20 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     toolbar: theme.mixins.toolbar,
     root: {
-      display: 'flex',
+      display: "flex",
     },
   })
 )
 
 const EventSearch = () => {
   const classes = useStyles()
+
+  const dispatch = useAppDispatch()
+  const allEvents = useAppSelector(selectAllEvents)
+
+  useEffect(() => {
+    dispatch(getAllEvents({}))
+  }, [])
 
   return (
     <div className={classes.root}>
@@ -46,27 +55,11 @@ const EventSearch = () => {
         >
           <Grid item xs={12}>
             <Grid container spacing={2} justify="center">
-              <Grid item xs={4}>
-                <EventCard />
-              </Grid>
-              <Grid item xs={4}>
-                <EventCard />
-              </Grid>
-              <Grid item xs={4}>
-                <EventCard />
-              </Grid>
-              <Grid item xs={4}>
-                <EventCard />
-              </Grid>
-              <Grid item xs={4}>
-                <EventCard />
-              </Grid>
-              <Grid item xs={4}>
-                <EventCard />
-              </Grid>
-              <Grid item xs={4}>
-                <EventCard />
-              </Grid>
+              {allEvents.map((item) => (
+                <Grid item xs={4} key={item._id}>
+                  <EventCard event={item} />
+                </Grid>
+              ))}
             </Grid>
           </Grid>
         </Grid>
