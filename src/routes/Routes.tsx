@@ -53,7 +53,7 @@ const Routes = () => {
       )}
       <Route path="/signin" render={() => <SignIn />} />
       <Route path="/signup" render={() => <SignUp />} />
-      <Route path="eventdetails/:id" render={() => <EventInfo />} />
+      {/* <Route path="/eventdetails/:id" render={() => <EventInfo />} /> */}
     </Switch>
   )
 }

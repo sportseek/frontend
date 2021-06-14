@@ -20,6 +20,7 @@ import PlayerBoard from "./Dashboard/Player/Dashboard"
 import ArenaBoard from "./Dashboard/Arena/ArenaPage"
 
 import DummyPage from "./Dummy/DummyPage"
+import EventInfo from "./EventInfo/EventInfo"
 //import EventList from "./EventInfo/EventList"
 
 type Page = {
@@ -27,7 +28,7 @@ type Page = {
   path: string
   header: string
   icon: typeof SvgIcon
-  containsHome: true
+  containsHome: boolean
   Component: FunctionComponent<RouteComponentProps>
   children?: ReactNode
 }
@@ -68,6 +69,15 @@ const ArenaDashBoard: Page = {
   Component: ArenaBoard,
 }
 
+const EventInfoPage: Page = {
+  id: "EventInfo",
+  path: "/eventdetails/:id",
+  header: "EventInfo",
+  icon: DashboardIcon,
+  containsHome: false,
+  Component: EventInfo,
+}
+
 const FaqRoutes: Page = {
   id: "F.A.Q",
   path: "/faq",
@@ -102,6 +112,7 @@ const PlayerPages = [
   SettingsRoutes,
   FaqRoutes,
   SupportRoutes,
+  EventInfoPage,
 ]
 const ArenaPages = [ArenaDashBoard, SettingsRoutes, FaqRoutes, SupportRoutes]
 

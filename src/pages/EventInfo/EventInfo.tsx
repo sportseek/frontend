@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react"
 import { data } from "./dummydata"
 import { Link, useParams } from "react-router-dom"
 import MainFeaturedPost from "../../components/MainFeaturedPost/MainFeaturedPost"
-import { Button } from "@material-ui/core"
+import { Button, makeStyles } from "@material-ui/core"
 import PaymentIcon from "@material-ui/icons/Payment"
 import ThumbUpIcon from "@material-ui/icons/ThumbUp"
 import ThumbDownIcon from "@material-ui/icons/ThumbDown"
 
-import { EventFullDetails } from "types/Event"
 type Params = {
   id: string
 }
@@ -18,6 +17,18 @@ function EventInfo() {
   const [registered, setRegistered] = useState(false)
   const [interested, setInterested] = useState(true)
   const { id } = useParams<Params>()
+
+  const useStyles = makeStyles({
+    root: {
+      background: "linear-gradient(45deg, #52bfff, #6242ff)",
+      border: 0,
+      borderRadius: 15,
+      color: "white",
+      padding: "15px 50px",
+    },
+  })
+
+  const classes = useStyles()
 
   useEffect(() => {
     const newEvent = data.find((indEvent) => indEvent.id === parseInt(id))
@@ -43,9 +54,7 @@ function EventInfo() {
       <h2>{sportType}</h2>
       <Button
         startIcon={<PaymentIcon />}
-        size="large"
-        variant="contained"
-        color="primary"
+        className={classes.root}
         component={Link}
         to="/payment"
       >
