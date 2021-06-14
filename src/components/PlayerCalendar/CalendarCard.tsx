@@ -7,7 +7,8 @@ import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import {
   createEvent,
   getEvents,
-  selectEvents
+  selectEvents,
+  selectReloadEvents
 } from "redux/reducers/event/eventSlice"
 import moment from "moment"
 import { ICalendarEvent, CreateEventPayload, IPlayer } from "types"
@@ -35,12 +36,13 @@ const PlayerCalendar = (props: CalendarProps) => {
   const { goto: gotoEventDetails } = props
 
   const playerEvents = useAppSelector(selectEvents)
+  const reload = useAppSelector(selectReloadEvents)
 
   const [open, setOpen] = useState(false)
   const [selectable, setSelectable] = useState(false)
   const [view, setView] = useState<View>()
   const [views, setViews] = useState<ViewsProps>()
-  const [events, setEvents] = useState<ICalendarEvent[]>(playerEvents)
+  const [events, setEvents] = useState<ICalendarEvent[]>([])
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
 
@@ -68,14 +70,14 @@ const PlayerCalendar = (props: CalendarProps) => {
 
   useEffect(() => {
     dispatch(getEvents())
-  }, [dispatch])
+  }, [dispatch, reload])
 
   useEffect(() => {
     const tmpList = playerEvents.map((ev) => ({
       ...convertToCalenderEvent(ev),
       color: theme.calendar.busyEventColor,
     }))
-    setEvents((prev) => [...tmpList, ...prev])
+    setEvents((prev) => [...prev, ...tmpList])
   }, [playerEvents, theme.calendar.busyEventColor])
 
   useEffect(() => {
@@ -85,7 +87,7 @@ const PlayerCalendar = (props: CalendarProps) => {
       const promises = details.map(({ _id }) => findEventById(_id))
       const result = await Promise.all(promises)
       const res = getCalendarEvents(details, result)
-      if (running) setEvents((state) => [...res, ...state])
+      if (running) setEvents(prev => [...res, ...prev])
     }
 
     fetchEvents(eventDetails)

@@ -37,7 +37,7 @@ const lightVariant: ThemeOptions = {
   calendar: {
     interestedEventColor: "#ffc93c",
     registeredEventColor: "#4aa96c",
-    busyEventColor: "##a7bbc7",
+    busyEventColor: "#a7bbc7",
   },
   footer: {
     background: "#4b636e",

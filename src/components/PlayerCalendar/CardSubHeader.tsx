@@ -8,6 +8,12 @@ const InterestedChip = styled(Chip)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }))
 
+const PersonalChip = styled(Chip)(({ theme }) => ({
+  background: theme.calendar.busyEventColor,
+  marginRight: theme.spacing(2),
+  marginBottom: theme.spacing(2),
+}))
+
 const RegisteredChip = styled(Chip)(({ theme }) => ({
   background: theme.calendar.registeredEventColor,
   marginLeft: theme.spacing(1),
@@ -24,6 +30,7 @@ const Root = styled("div")({
 
 const SubHeader = () => (
   <Root>
+    <PersonalChip variant="outlined" size="small" label="Personal"/>
     <InterestedChip variant="outlined" size="small" label="Interested" />
     <RegisteredChip variant="outlined" size="small" label="Registered" />
   </Root>
