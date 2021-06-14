@@ -3,8 +3,8 @@ import { IUser } from "types"
 
 const userEndpoint = "user"
 
-const fetchById = (id: string, type: string) => {
-  const url = `/${userEndpoint}/fetchById/${type}/${id}`
+const fetchById = () => {
+  const url = `/${userEndpoint}/`
   return axios.get(url).then((response) => response)
 }
 

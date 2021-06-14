@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
-import { IUser, IPlayer } from "types"
+import { IUser } from "types"
 import userAPI from "./userAPI"
 
 interface UserState {
@@ -8,20 +8,13 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  loggedInUser: {
-    _id: "",
-    location: { lat: 48.137154, lng: 11.576124 },
-    profileImageUrl: "",
-  },
+  loggedInUser: { location: { lat: 0, lng: 0 } } as IUser,
 }
 
-type FetchPayload = { id: string; type: string }
-
-export const fetchUserById = createAsyncThunk(
+export const fetchLoggedInUser = createAsyncThunk(
   "users/fetchById",
-  async (payload: FetchPayload) => {
-    const { id, type } = payload
-    const response = await userAPI.fetchById(id, type)
+  async () => {
+    const response = await userAPI.fetchById()
     return response.data
   }
 )
@@ -48,7 +41,7 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserById.fulfilled, (state, action) => {
+      .addCase(fetchLoggedInUser.fulfilled, (state, action) => {
         state.loggedInUser = action.payload.user
       })
       .addCase(updateUser.fulfilled, (state, action) => {
@@ -60,12 +53,8 @@ export const userSlice = createSlice({
   },
 })
 
-export const selectUser = (state: RootState) => state.user.loggedInUser
+export const selectLoggedInUser = (state: RootState) => state.user.loggedInUser
 export const selectUserLocation = (state: RootState) =>
   state.user.loggedInUser.location
-export const selectRegtedEventIds = (state: RootState) =>
-  (state.user.loggedInUser as IPlayer).registeredEvents
-export const selectInstedEventIds = (state: RootState) =>
-  (state.user.loggedInUser as IPlayer).interestedEvents
 
 export default userSlice.reducer

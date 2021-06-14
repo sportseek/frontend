@@ -1,25 +1,28 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { Calendar, View, ViewsProps, SlotInfo } from "react-big-calendar"
-import { useAppSelector } from "redux/hooks"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { useTheme } from "@material-ui/core/styles"
 import { Card, CardContent, useMediaQuery } from "@material-ui/core"
+import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import {
-  selectUser,
-  selectRegtedEventIds,
-  selectInstedEventIds,
-} from "redux/reducers/user/userSlice"
+  createEvent,
+  getEvents,
+  selectEvents
+} from "redux/reducers/event/eventSlice"
 import moment from "moment"
-import { ICalendarEvent } from "types"
+import { ICalendarEvent, CreateEventPayload, IPlayer } from "types"
 import { findEventById } from "services/eventService"
 import CardHeader from "./CardHeader"
 import SubHeader from "./CardSubHeader"
 import AddEventPopUp from "./AddEvent"
 import {
+  convertToCalenderEvent,
   getCalendarEvents,
   getViews,
   getView,
   localizer,
   getEventDetails,
+  extraPayload,
 } from "./CalendarUtils"
 
 type CalendarProps = {
@@ -28,32 +31,52 @@ type CalendarProps = {
 
 const PlayerCalendar = (props: CalendarProps) => {
   const theme = useTheme()
+  const dispatch = useAppDispatch()
   const { goto: gotoEventDetails } = props
+
+  const playerEvents = useAppSelector(selectEvents)
 
   const [open, setOpen] = useState(false)
   const [selectable, setSelectable] = useState(false)
   const [view, setView] = useState<View>()
   const [views, setViews] = useState<ViewsProps>()
-  const [events, setEvents] = useState<ICalendarEvent[]>([])
+  const [events, setEvents] = useState<ICalendarEvent[]>(playerEvents)
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
 
   const handlePopup = () => setOpen(!open)
 
-  const user = useAppSelector(selectUser)
-  const interestedEventIds = useAppSelector(selectInstedEventIds)
-  const registeredEventIds = useAppSelector(selectRegtedEventIds)
+  const player = useAppSelector(selectLoggedInUser) as IPlayer
+
+  const { interestedEvents = [], registeredEvents = [] } = player
 
   const eventDetails: ICalendarEvent[] = useMemo(
     () =>
       getEventDetails(
-        interestedEventIds,
-        registeredEventIds,
+        interestedEvents,
+        registeredEvents,
         theme.calendar.interestedEventColor,
         theme.calendar.registeredEventColor
       ),
-    [interestedEventIds, registeredEventIds, theme.calendar]
+    [
+      interestedEvents,
+      registeredEvents,
+      theme.calendar.interestedEventColor,
+      theme.calendar.registeredEventColor,
+    ]
   )
+
+  useEffect(() => {
+    dispatch(getEvents())
+  }, [dispatch])
+
+  useEffect(() => {
+    const tmpList = playerEvents.map((ev) => ({
+      ...convertToCalenderEvent(ev),
+      color: theme.calendar.busyEventColor,
+    }))
+    setEvents((prev) => [...tmpList, ...prev])
+  }, [playerEvents, theme.calendar.busyEventColor])
 
   useEffect(() => {
     let running = true
@@ -62,7 +85,7 @@ const PlayerCalendar = (props: CalendarProps) => {
       const promises = details.map(({ _id }) => findEventById(_id))
       const result = await Promise.all(promises)
       const res = getCalendarEvents(details, result)
-      if (running) setEvents(res)
+      if (running) setEvents((state) => [...res, ...state])
     }
 
     fetchEvents(eventDetails)
@@ -81,15 +104,14 @@ const PlayerCalendar = (props: CalendarProps) => {
   const handleSelect = ({ start, end }: SlotInfo) => {
     const title = window.prompt("New Event name")
     if (title) {
-      console.log(start)
-      console.log(end)
-      const event = {
-        creator: user._id,
-        location: user.location,
-        start: moment(start).toDate(),
-        end: moment(end).toDate(),
+      const event: CreateEventPayload = {
+        ...extraPayload,
+        creator: player._id,
+        start: moment(start).toISOString(),
+        end: moment(end).toISOString(),
         title,
       }
+      dispatch(createEvent(event))
     }
   }
 

@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core"
 
 import { useAppSelector } from "redux/hooks"
-import { selectUser } from "redux/reducers/user/userSlice"
+import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import { IPlayer } from "types"
 
 import EditCustomerForm from "./EditDetails"
@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 
 export default function PersonalInfoCard() {
   const classes = useStyles()
-  const player = useAppSelector(selectUser) as IPlayer
+  const player = useAppSelector(selectLoggedInUser) as IPlayer
 
   const { firstName, lastName, mobilePhone, email } = player
 

@@ -1,4 +1,4 @@
-import { CreateEventPayload } from "types/ArenaOwner"
+import { CreateEventPayload } from "types/Event"
 import axios from "utils/axios"
 
 const eventEndpoint = "event"
@@ -27,10 +27,10 @@ const cancel = async (eventId: string) => {
   return response
 }
 
-const getArenaEvents = async () => {
-  const url = `/${eventEndpoint}/getArenaEvents`
+const fetchEventList = async () => {
+  const url = `/${eventEndpoint}/fetchEventList`
   const response = await axios.get(url)
   return response
 }
 
-export default { fetchById, update, create, cancel, getArenaEvents }
+export default { fetchById, update, create, cancel, fetchEventList }
