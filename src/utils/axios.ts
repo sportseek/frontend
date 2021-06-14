@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { AxiosRequestConfig } from "axios"
 
 const host = process.env.BACKEND_URL
 
@@ -6,12 +6,12 @@ const instance = axios.create({
   baseURL: host,
 })
 
-export const setToken = (token: string) => {
-  instance.defaults.headers.common.Authorization = `Bearer ${token}`
+function addAuthHeader (config: AxiosRequestConfig) {
+  const token = window.localStorage.authToken
+  config.headers.Authorization =  `Bearer ${token}`;
+  return config;
 }
 
-export const deleteToken = () => {
-  delete axios.defaults.headers.common.Authorization
-}
+instance.interceptors.request.use(addAuthHeader);
 
 export default instance

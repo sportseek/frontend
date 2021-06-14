@@ -90,28 +90,24 @@ const CustomizedDialogs = (props: Props) => {
         open={open}
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
+          Add Event
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
+            You can add your schedule when you are not available for any sport,
+            so if your friends wants to invite you they will know that you are unavilable
           </Typography>
           <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
-            auctor.
+            Click Ok to make the time slots editable, you can drag to select multiple time slots,
+            after selecting slots you can create event
           </Typography>
           <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
-            cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
-            dui. Donec ullamcorper nulla non metus auctor fringilla.
+            You can go to month view, if you are unavilable for days and set the schedule there
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleSave} color="primary">
-            Save changes
+            OK
           </Button>
         </DialogActions>
       </Dialog>
