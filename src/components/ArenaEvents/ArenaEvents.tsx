@@ -12,11 +12,11 @@ import CreateEventDialog from "components/CreateEventDialog"
 import React, { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
-  getArenaEvents,
-  selectArenaEvents,
+  getEvents,
+  selectEvents,
   selectReloadEvents,
 } from "redux/reducers/event/eventSlice"
-import { selectUser } from "redux/reducers/user/userSlice"
+import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import { IArenaOwner } from "types"
 
 import { eventsData } from "./arenaEventsData"
@@ -48,13 +48,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ArenaEvents = () => {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
-  const user = useAppSelector(selectUser) as IArenaOwner
-  const arenaEvents = useAppSelector(selectArenaEvents)
+  const user = useAppSelector(selectLoggedInUser) as IArenaOwner
+  const arenaEvents = useAppSelector(selectEvents)
   const reloadEvents = useAppSelector(selectReloadEvents)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getArenaEvents())
+    dispatch(getEvents())
   }, [dispatch, reloadEvents])
 
   const handleClickOpen = () => {
@@ -90,7 +90,7 @@ const ArenaEvents = () => {
           />
         </CardActions>
         <CardContent className={classes.cardContent}>
-          {arenaEvents.map.length > 0 &&
+          {arenaEvents.length > 0 &&
             arenaEvents.map((item, idx) => (
               <ArenaEventCard key={idx} event={item} />
             ))}

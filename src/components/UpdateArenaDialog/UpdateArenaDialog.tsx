@@ -5,10 +5,11 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Dialog from "@material-ui/core/Dialog"
 import TextField from "@material-ui/core/TextField"
 import { InputLabel, Select, MenuItem } from "@material-ui/core"
-import IArenaOwner, { ArenaEvent, CreateEventPayload } from "types/ArenaOwner"
+import IArenaOwner, { ArenaEvent } from "types/ArenaOwner"
 import moment from "moment"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { selectUser, updateUser } from "redux/reducers/user/userSlice"
+import { selectLoggedInUser, updateUser } from "redux/reducers/user/userSlice"
+import { CreateEventPayload } from "types"
 
 const useStyles = makeStyles({
   UpdateArenaDialog: {
@@ -68,7 +69,7 @@ const sportTypes = [
 const UpdateArenaDialog = (props: UpdateArenaDialogProps) => {
   const classes = useStyles()
   const { onClose, open, isUpdate, arenaDetails } = props
-  const user = useAppSelector(selectUser) as IArenaOwner
+  const user = useAppSelector(selectLoggedInUser) as IArenaOwner
   const dispatch = useAppDispatch()
 
   const [arenaName, setArenaName] = useState("")

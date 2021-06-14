@@ -1,5 +1,4 @@
 import eventAPI from "redux/reducers/event/eventAPI"
-import { IEvent } from "types"
 
 export const findEventById = async (id: string) => {
   const response = await eventAPI

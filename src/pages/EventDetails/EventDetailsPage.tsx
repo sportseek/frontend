@@ -30,6 +30,8 @@ const EventDetailsPage = (props: EventDetailsProps) => {
   const dispatch = useAppDispatch()
   const event = useAppSelector(selectCurrentEvent)
 
+  const { title = "" } = event
+
   useEffect(() => {
     dispatch(fetchEventById(id))
   }, [dispatch, id])
@@ -42,7 +44,7 @@ const EventDetailsPage = (props: EventDetailsProps) => {
           <Typography variant="subtitle2">{parentPage}</Typography>
           <Typography variant="subtitle2"> {EVENT_DETAILS_HEADER} </Typography>
           <Typography variant="subtitle2" color="secondary">
-            {event.title}
+            {title}
           </Typography>
         </Breadcrumbs>
 

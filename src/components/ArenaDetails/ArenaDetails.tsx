@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core"
 
 import { useAppSelector } from "redux/hooks"
-import { selectUser } from "redux/reducers/user/userSlice"
+import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import { IArenaOwner, IPlayer } from "types"
 import UpdateArenaDialog from "components/UpdateArenaDialog"
 
@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 
 export default function ArenaDetails() {
   const classes = useStyles()
-  const arena = useAppSelector(selectUser) as IArenaOwner
+  const arena = useAppSelector(selectLoggedInUser) as IArenaOwner
 
   const { arenaName, email, phone } = arena
 

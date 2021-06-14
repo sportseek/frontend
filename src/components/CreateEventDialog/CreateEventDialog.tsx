@@ -5,16 +5,11 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Dialog from "@material-ui/core/Dialog"
 import TextField from "@material-ui/core/TextField"
 import { InputLabel, Select, MenuItem } from "@material-ui/core"
-import IArenaOwner, { ArenaEvent, CreateEventPayload } from "types/ArenaOwner"
 import moment from "moment"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { selectUser } from "redux/reducers/user/userSlice"
-import {
-  createEvent,
-  getArenaEvents,
-  updateEvent,
-} from "redux/reducers/event/eventSlice"
-import { EventFullDetails } from "types/Event"
+import { selectLoggedInUser } from "redux/reducers/user/userSlice"
+import { createEvent, updateEvent } from "redux/reducers/event/eventSlice"
+import { IArenaOwner, IEvent, CreateEventPayload } from "types"
 
 const useStyles = makeStyles({
   createEventDialog: {
@@ -57,7 +52,7 @@ export interface CreateEventDialogProps {
   open: boolean
   onClose: () => void
   isUpdate: boolean
-  selectedEvent?: EventFullDetails
+  selectedEvent?: IEvent
 }
 
 const sportTypes = [
@@ -74,7 +69,7 @@ const sportTypes = [
 const CreateEventDialog = (props: CreateEventDialogProps) => {
   const classes = useStyles()
   const { onClose, open, isUpdate, selectedEvent } = props
-  const user = useAppSelector(selectUser) as IArenaOwner
+  const user = useAppSelector(selectLoggedInUser) as IArenaOwner
   const dispatch = useAppDispatch()
 
   const [eventTitle, setEventTitle] = useState("")
@@ -92,7 +87,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
 
   useEffect(() => {
     if (isUpdate && selectedEvent) {
-      setEventTitle(selectedEvent.title)
+      setEventTitle(selectedEvent.title as string)
       setSportType(selectedEvent.sportType)
       setEventDescription(selectedEvent.description)
       setEventStartTime(moment(selectedEvent.start).format("YYYY-MM-DDTHH:MM"))
@@ -101,7 +96,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
       setMaximumParticipants(selectedEvent.maxPlayers.toString())
       setMinimumParticipants(selectedEvent.minPlayers.toString())
     }
-  }, [isUpdate])
+  }, [isUpdate, selectedEvent])
 
   const handleClose = () => {
     onClose()
@@ -132,7 +127,6 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
       entryFee: +entryFee,
       maxPlayers: +maximumParticipants,
       minPlayers: +minimumParticipants,
-      allDay: false,
     }
 
     if (isUpdate && selectedEvent) {

@@ -1,19 +1,17 @@
-import { CreateEventPayload } from "types/ArenaOwner"
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
-import { IEvent } from "types"
-import { EventFullDetails } from "types/Event"
+import { IEvent, CreateEventPayload } from "types"
 import eventAPI from "./eventAPI"
 
 interface EventState {
   currentEvent: IEvent
-  arenaEvents: EventFullDetails[]
+  events: IEvent[]
   reloadEvents: boolean
 }
 
 const initialState: EventState = {
-  currentEvent: { _id: "" },
-  arenaEvents: [],
+  currentEvent: {} as IEvent,
+  events: [],
   reloadEvents: false,
 }
 
@@ -49,13 +47,10 @@ export const cancelEvent = createAsyncThunk(
   }
 )
 
-export const getArenaEvents = createAsyncThunk(
-  "events/getArenaEvents",
-  async () => {
-    const response = await eventAPI.getArenaEvents()
-    return response.data
-  }
-)
+export const getEvents = createAsyncThunk("events/fetchEvents", async () => {
+  const response = await eventAPI.fetchEventList()
+  return response.data
+})
 
 export const eventSlice = createSlice({
   name: "event",
@@ -70,16 +65,12 @@ export const eventSlice = createSlice({
         state.currentEvent = action.payload.event
         state.reloadEvents = true
       })
-      .addCase(getArenaEvents.fulfilled, (state, action) => {
-        state.arenaEvents = action.payload.arenaEvents
+      .addCase(getEvents.fulfilled, (state, action) => {
+        state.events = action.payload.eventList
         state.reloadEvents = false
       })
       .addMatcher(
-        isAnyOf(
-          createEvent.fulfilled,
-          updateEvent.fulfilled,
-          cancelEvent.fulfilled
-        ),
+        isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
         (state) => {
           state.reloadEvents = true
         }
@@ -88,7 +79,7 @@ export const eventSlice = createSlice({
 })
 
 export const selectCurrentEvent = (state: RootState) => state.event.currentEvent
-export const selectArenaEvents = (state: RootState) => state.event.arenaEvents
+export const selectEvents = (state: RootState) => state.event.events
 export const selectReloadEvents = (state: RootState) => state.event.reloadEvents
 
 export default eventSlice.reducer
