@@ -4,6 +4,7 @@ import axios from "utils/axios"
 const eventEndpoint = "event"
 
 const fetchById = async (id: string) => {
+  console.log(id, "trigger hoise")
   const url = `/${eventEndpoint}/findById/${id}`
   const response = await axios.get(url)
   return response
