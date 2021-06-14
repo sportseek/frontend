@@ -1,6 +1,18 @@
 import { momentLocalizer } from "react-big-calendar"
 import moment from "moment"
-import { ICalendarEvent } from "types"
+import { ICalendarEvent, CreateEventPayload, IEvent } from "types"
+
+export const extraPayload: CreateEventPayload = {
+  creator: "",
+  description: " ",
+  sportType: " ",
+  entryFee: 0,
+  minPlayers: 0,
+  maxPlayers: 0,
+  title: "",
+  start: "",
+  end: "",
+}
 
 export const placeholderEvents: ICalendarEvent[] = [
   {
@@ -37,6 +49,20 @@ const getEventDetailsWithColor = (
 
   return idList.map((id) => ({ _id: id, color }))
 }
+
+export const convertToCalenderEvent = ({
+  _id,
+  allDay,
+  title,
+  start,
+  end,
+}: IEvent) => ({
+  _id,
+  allDay,
+  start: moment(start).toDate(),
+  end: moment(end).toDate(),
+  title,
+})
 
 export const getEventDetails = (
   list1: string[] | undefined,

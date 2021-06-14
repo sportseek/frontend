@@ -12,20 +12,6 @@ export default interface IArenaOwner {
   profileImageUrl?: string
 }
 
-export interface CreateEventPayload {
-  _id?: string
-  creator: string
-  description: string
-  sportType: string
-  entryFee: number
-  minPlayers: number
-  maxPlayers: number
-  allDay: Boolean
-  title: string
-  start: string
-  end: string
-}
-
 export interface ArenaEvent {
   eventTitle: string
   sportType: string

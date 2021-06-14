@@ -13,12 +13,11 @@ import {
 import { ExitToApp, Menu, Notifications } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { openSideBarMobile } from "redux/reducers/ui/uiSlice"
+import { logout, selectUserType } from "redux/reducers/auth/authSlice"
 import {
-  logout,
-  selectUserId,
-  selectUserType,
-} from "redux/reducers/auth/authSlice"
-import { fetchUserById, selectUser } from "redux/reducers/user/userSlice"
+  fetchLoggedInUser,
+  selectLoggedInUser,
+} from "redux/reducers/user/userSlice"
 import { getUserName } from "utils/stringUtils"
 import Tooltip from "components/Common/Tooltip"
 import { deepOrange } from "@material-ui/core/colors"
@@ -63,15 +62,14 @@ const HeaderFC = () => {
     dispatch(logout())
   }
 
-  const id = useAppSelector(selectUserId)
   const type = useAppSelector(selectUserType)
-  const user = useAppSelector(selectUser)
+  const user = useAppSelector(selectLoggedInUser)
   const { profileImageUrl } = user
   const name = getUserName(user)
 
   React.useEffect(() => {
-    dispatch(fetchUserById({ id, type }))
-  }, [dispatch, id, type])
+    dispatch(fetchLoggedInUser())
+  }, [dispatch, type])
 
   return (
     <Header position="fixed">

@@ -10,7 +10,7 @@ import { ILocation } from "types"
 import Tooltip from "components/Common/Tooltip"
 
 import {
-  selectUser,
+  selectLoggedInUser,
   selectUserLocation,
   updateUser,
 } from "redux/reducers/user/userSlice"
@@ -45,9 +45,9 @@ type LocationCardProps = {
 const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
   const { editable } = props
   const classes = useStyles()
-  const user = useAppSelector(selectUser)
+  const user = useAppSelector(selectLoggedInUser)
   const userPosition = useAppSelector(selectUserLocation) as ILocation
-  const dispatch = useAppDispatch()
+ const dispatch = useAppDispatch()
 
   const [open, setOpen] = useState(false)
 

@@ -2,7 +2,10 @@ import { Card, IconButton, makeStyles, Theme } from "@material-ui/core"
 import React, { useEffect, useState } from "react"
 import Edit from "@material-ui/icons/Edit"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { selectUser, updateArenaImage } from "redux/reducers/user/userSlice"
+import {
+  selectLoggedInUser,
+  updateArenaImage,
+} from "redux/reducers/user/userSlice"
 import { IArenaOwner } from "types"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -48,7 +51,7 @@ const ArenaImage = () => {
   const defaultImage =
     "https://res.cloudinary.com/fshahriar008/image/upload/v1609701702/user_bccush.png"
   const dispatch = useAppDispatch()
-  const user = useAppSelector(selectUser) as IArenaOwner
+  const user = useAppSelector(selectLoggedInUser) as IArenaOwner
   const [imageUrl, setImageUrl] = useState(defaultImage)
   const hidden = true
 
