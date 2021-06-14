@@ -15,11 +15,12 @@ import SignIn from "./Sign/SignIn"
 import SignUp from "./Sign/SignUp"
 import MainLayout, { MainLayoutType } from "./MainLayout/Main"
 import ReduxExample from "./ReduxExample/ReduxExample"
-import Search from "./EventSearch/Search"
+import Search from "./EventInfo/EventList"
 import PlayerBoard from "./Dashboard/Player/Dashboard"
 import ArenaBoard from "./Dashboard/Arena/ArenaPage"
 
 import DummyPage from "./Dummy/DummyPage"
+//import EventList from "./EventInfo/EventList"
 
 type Page = {
   id: string
