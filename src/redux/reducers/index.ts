@@ -12,7 +12,7 @@ const reducers = {
   user: userReducer,
   auth: authReducer,
   event: eventReducer,
-  pevent: peventReduer
+  pevent: peventReduer,
 }
 
 export default combineReducers(reducers)

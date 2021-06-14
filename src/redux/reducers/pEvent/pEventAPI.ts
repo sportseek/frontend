@@ -1,4 +1,4 @@
-import { PEventPayload } from "types/pEvent"
+import { PEventPayload } from "types"
 import axios from "utils/axios"
 
 const eventEndpoint = "personalevent"

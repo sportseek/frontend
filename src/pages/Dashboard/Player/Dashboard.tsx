@@ -68,7 +68,7 @@ const Dashboard = () => {
                 <Location />
               </Grid>
               <Grid item>
-                <Wallet value="100" />
+                <Wallet />
               </Grid>
             </ColContainer>
           </Column1>
@@ -82,7 +82,6 @@ const Dashboard = () => {
               <Grid item>
                 <Calendar goto={goEventDetails} />
               </Grid>
-
               <Grid item>
                 <Grid container spacing={3}>
                   <Grid item lg={6}>

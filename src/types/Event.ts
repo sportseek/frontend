@@ -13,6 +13,7 @@ export interface IEvent extends ICalendarEvent {
   revenue: number
   address: IAddress
   status: string
+  eventImageUrl: string
 }
 
 export interface CreateEventPayload {

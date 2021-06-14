@@ -95,14 +95,16 @@ const CustomizedDialogs = (props: Props) => {
         <DialogContent dividers>
           <Typography gutterBottom>
             You can add your schedule when you are not available for any sport,
-            so if your friends wants to invite you they will know that you are unavilable
+            so if your friends wants to invite you they will know that you are
+            unavilable
           </Typography>
           <Typography gutterBottom>
-            Click Ok to make the time slots editable, you can drag to select multiple time slots,
-            after selecting slots you can create event
+            Click Ok to make the time slots editable, you can drag to select
+            multiple time slots, after selecting slots you can create event
           </Typography>
           <Typography gutterBottom>
-            You can go to month view, if you are unavilable for days and set the schedule there
+            You can go to month view, if you are unavilable for days and set the
+            schedule there
           </Typography>
         </DialogContent>
         <DialogActions>

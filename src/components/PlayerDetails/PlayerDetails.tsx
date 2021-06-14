@@ -44,7 +44,7 @@ export default function PersonalInfoCard() {
   const classes = useStyles()
   const player = useAppSelector(selectLoggedInUser) as IPlayer
 
-  const { firstName, lastName, mobilePhone, email } = player
+  const { firstName, lastName, phone, email } = player
 
   const popUpEditCustomerForm = () => console.log()
 
@@ -82,7 +82,7 @@ export default function PersonalInfoCard() {
               Phone
             </Typography>
             <Typography variant="body2" gutterBottom>
-              {mobilePhone}
+              {phone}
             </Typography>
           </Grid>
         </Grid>

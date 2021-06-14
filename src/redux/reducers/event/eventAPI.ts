@@ -33,4 +33,19 @@ const fetchEventList = async () => {
   return response
 }
 
-export default { fetchById, update, create, cancel, fetchEventList }
+export const findSportEventById = async (id: string) => {
+  const response = await fetchById(id)
+    .then((res) => res)
+    .catch((err) => ({ data: { success: false, error: err } }))
+
+  return response.data
+}
+
+export default {
+  fetchById,
+  update,
+  create,
+  cancel,
+  fetchEventList,
+  findSportEventById,
+}

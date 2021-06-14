@@ -1,15 +1,18 @@
-import Location from "./location"
+import { IAddress, ILocation } from "types"
 
 export default interface IArenaOwner {
-  arenaName: string
-  email: string
-  phone: string
-  firstName?: string
-  lastName?: string
-  type: string
   _id: string
-  location?: Location
-  profileImageUrl?: string
+  arenaName: string
+  type: string
+  email: string
+  password: string
+  address: IAddress
+  phone: string
+  location: ILocation
+  monthlyFee: number
+  profileImageUrl: string
+  profileImageId: string
+  bankAccount: string
 }
 
 export interface ArenaEvent {
