@@ -1,13 +1,17 @@
-import axios from "axios"
+import axios, { AxiosRequestConfig } from "axios"
 
 const host = process.env.BACKEND_URL
-const token = window.localStorage.jwtToken
 
-const axiosAPI = axios.create({
+const instance = axios.create({
   baseURL: host,
-  headers: {
-    Authorization: `jwt ${token}`,
-  },
 })
 
-export default axiosAPI
+function addAuthHeader (config: AxiosRequestConfig) {
+  const token = window.localStorage.authToken
+  config.headers.Authorization =  `Bearer ${token}`;
+  return config;
+}
+
+instance.interceptors.request.use(addAuthHeader);
+
+export default instance

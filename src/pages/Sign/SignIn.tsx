@@ -8,6 +8,7 @@ import SigninForm from "components/SigninForm"
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
+    height: "100vh",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

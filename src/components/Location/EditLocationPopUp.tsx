@@ -13,7 +13,7 @@ import { Marker as LeafletMarker } from "leaflet"
 import { TransitionProps } from "@material-ui/core/transitions"
 
 import { EDIT_LOCATION_HEADER } from "utils/constants"
-import { Location } from "types"
+import { ILocation } from "types"
 
 import DraggableMarker from "./DraggableMarker"
 
@@ -31,8 +31,8 @@ const Transition = React.forwardRef(
 
 type Props = {
   open: boolean
-  position: Location
-  updatePos: (pos: Location) => void
+  position: ILocation
+  updatePos: (pos: ILocation) => void
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -41,7 +41,7 @@ const EditLocation: FC<Props> = (props: Props) => {
 
   const { updatePos, open, setOpen, position } = props
 
-  const [pinPos, setPinPos] = useState<Location>(position)
+  const [pinPos, setPinPos] = useState<ILocation>(position)
 
   const markerRef = useRef<LeafletMarker>(null)
 
@@ -50,7 +50,7 @@ const EditLocation: FC<Props> = (props: Props) => {
   }
 
   const handleSave = () => {
-    updatePos(pinPos as Location)
+    updatePos(pinPos as ILocation)
     handleClose()
   }
 

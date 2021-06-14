@@ -6,10 +6,12 @@ const lightVariant: ThemeOptions = {
     type: "light",
     primary: {
       main: "#3A4458",
+      light: "#9fb0d1",
       contrastText: "#FFF",
     },
     secondary: {
       main: "#5B9DD2",
+      light: "#abe4eb",
       contrastText: "#FFF",
     },
   },
@@ -23,7 +25,7 @@ const lightVariant: ThemeOptions = {
     background: "#4b636e",
   },
   sidebar: {
-    width: 230,
+    width: 210,
     footer: {
       color: grey[200],
       background: "#62757f",
@@ -38,6 +40,11 @@ const lightVariant: ThemeOptions = {
   },
   body: {
     background: "#efeadd ",
+  },
+  calendar: {
+    interestedEventColor: "#ffc93c",
+    registeredEventColor: "#4aa96c",
+    busyEventColor: "##a7bbc7",
   },
   footer: {
     background: "#4b636e",

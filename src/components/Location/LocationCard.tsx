@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { FC, useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import { Card, CardHeader, CardContent, IconButton } from "@material-ui/core"
 import { EditLocationRounded as Edit } from "@material-ui/icons"
@@ -6,10 +6,11 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet"
 
 import { isEmpty } from "utils/stringUtils"
-import { Location } from "types"
+import { ILocation } from "types"
+import Tooltip from "components/Common/Tooltip"
 
 import {
-  selectUser,
+  selectLoggedInUser,
   selectUserLocation,
   updateUser,
 } from "redux/reducers/user/userSlice"
@@ -26,28 +27,31 @@ const useStyles = makeStyles({
 })
 
 type MarkerProps = {
-  position: Location
+  position: ILocation
 }
 
 function LocationMarker(props: MarkerProps) {
   const { position } = props
-
   const map = useMap()
-
   map.flyTo(position, map.getZoom())
 
   return isEmpty(position) ? null : <Marker position={position} />
 }
 
-const LocationCard = () => {
+type LocationCardProps = {
+  editable?: boolean
+}
+
+const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
+  const { editable } = props
   const classes = useStyles()
-  const user = useAppSelector(selectUser)
-  const userPosition = useAppSelector(selectUserLocation) as Location
-  const dispatch = useAppDispatch()
+  const user = useAppSelector(selectLoggedInUser)
+  const userPosition = useAppSelector(selectUserLocation) as ILocation
+ const dispatch = useAppDispatch()
 
   const [open, setOpen] = useState(false)
 
-  const updatePos = (pinPosition: Location) => {
+  const updatePos = (pinPosition: ILocation) => {
     const modUser = { ...user }
     modUser.location = pinPosition
     dispatch(updateUser(modUser))
@@ -59,13 +63,17 @@ const LocationCard = () => {
         className={classes.cardHeader}
         title="Location"
         action={
-          <IconButton
-            color="secondary"
-            aria-label="edit location"
-            onClick={() => setOpen(true)}
-          >
-            <Edit />
-          </IconButton>
+          editable && (
+            <Tooltip title="Edit location" placement="left">
+              <IconButton
+                color="secondary"
+                aria-label="edit location"
+                onClick={() => setOpen(true)}
+              >
+                <Edit />
+              </IconButton>
+            </Tooltip>
+          )
         }
       />
       <CardContent>
@@ -92,6 +100,10 @@ const LocationCard = () => {
       </CardContent>
     </Card>
   )
+}
+
+LocationCard.defaultProps = {
+  editable: true,
 }
 
 export default LocationCard

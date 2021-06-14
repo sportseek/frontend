@@ -1,13 +1,13 @@
 import React from "react"
 import { Marker, useMap } from "react-leaflet"
 import L, { Marker as LeafletMarker } from "leaflet"
-import { Location } from "types"
+import { ILocation } from "types"
 
 type DraggableMarkerProps = {
   eventHandlers: {
     dragend(): void
   }
-  position: Location
+  position: ILocation
   markerRef: React.RefObject<LeafletMarker<any>>
 }
 

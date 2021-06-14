@@ -1,6 +1,6 @@
 import Location from "./location"
 
-export default interface Player {
+export default interface IPlayer {
   firstName?: string
   lastName?: string
   email?: string
@@ -8,4 +8,7 @@ export default interface Player {
   type: string
   _id: string
   location?: Location
+  profileImageUrl?: string
+  registeredEvents?: string[]
+  interestedEvents?: string[]
 }

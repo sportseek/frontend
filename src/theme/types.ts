@@ -40,6 +40,15 @@ export interface Body {
 }
 
 export type BodyOptions = Partial<Body>
+
+export interface Calendar {
+  interestedEventColor: React.CSSProperties["color"]
+  registeredEventColor: React.CSSProperties["color"]
+  busyEventColor: React.CSSProperties["color"]
+}
+
+export type CalendarOptions = Partial<Calendar>
+
 export interface Footer {
   background: React.CSSProperties["background"]
   height: React.CSSProperties["height"]

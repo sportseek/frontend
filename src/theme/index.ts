@@ -9,6 +9,7 @@ const createTheme = (variant: ThemeOptions) =>
     sidebar: variant.sidebar,
     filterbar: variant.filterbar,
     body: variant.body,
+    calendar: variant.calendar,
     header: variant.header,
     footer: variant.footer,
   })

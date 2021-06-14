@@ -1,13 +1,23 @@
-import Player from "./Player"
-import ArenaOwner from "./ArenaOwner"
-import Event from "./Event"
-import Location from "./location"
+import IPlayer from "./Player"
+import IArenaOwner from "./ArenaOwner"
+import { IEvent, ICalendarEvent, CreateEventPayload } from "./Event"
+import ILocation from "./location"
+import IAddress from "./Address"
 
 export enum UserType {
   PLAYER = "player",
   ARENA = "arena",
 }
 
-type User = ArenaOwner | Player | { _id: string; location: Location }
+type IUser = IArenaOwner | IPlayer
 
-export type { ArenaOwner, Event, Player, User, Location }
+export type {
+  CreateEventPayload,
+  IAddress,
+  IArenaOwner,
+  IEvent,
+  ICalendarEvent,
+  IPlayer,
+  IUser,
+  ILocation,
+}

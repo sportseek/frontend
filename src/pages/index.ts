@@ -19,6 +19,8 @@ import Search from "./EventSearch/EventSearch"
 import PlayerBoard from "./Dashboard/Player/Dashboard"
 import ArenaBoard from "./Dashboard/Arena/ArenaPage"
 
+import DummyPage from "./Dummy/DummyPage"
+
 type Page = {
   id: string
   path: string
@@ -71,7 +73,7 @@ const FaqRoutes: Page = {
   header: "F.A.Q",
   icon: HelpIcon,
   containsHome: true,
-  Component: ReduxExample,
+  Component: DummyPage,
 }
 
 const SupportRoutes: Page = {
@@ -80,7 +82,7 @@ const SupportRoutes: Page = {
   header: "Support",
   icon: MessageIcon,
   containsHome: true,
-  Component: ReduxExample,
+  Component: DummyPage,
 }
 
 const SettingsRoutes: Page = {
@@ -89,18 +91,18 @@ const SettingsRoutes: Page = {
   header: "Settings",
   icon: SettingsIcon,
   containsHome: true,
-  Component: ReduxExample,
+  Component: DummyPage,
 }
 
 const PlayerPages = [
-  PlayerDashBoard,
   EventSearch,
+  PlayerDashBoard,
   Redux,
   SettingsRoutes,
   FaqRoutes,
   SupportRoutes,
 ]
-const ArenaPages = [ArenaDashBoard, SupportRoutes]
+const ArenaPages = [ArenaDashBoard, SettingsRoutes, FaqRoutes, SupportRoutes]
 
 export const getPages = (type: string) => {
   switch (type) {

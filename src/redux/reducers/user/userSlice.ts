@@ -1,31 +1,36 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
-import { User } from "types"
+import { IUser } from "types"
 import userAPI from "./userAPI"
 
 interface UserState {
-  loggedInUser: User
+  loggedInUser: IUser
 }
 
 const initialState: UserState = {
-  loggedInUser: { _id: "", location: { lat: 48.137154, lng: 11.576124 } },
+  loggedInUser: { location: { lat: 0, lng: 0 } } as IUser,
 }
 
-type FetchPayload = { id: string; type: string }
-
-export const fetchUserById = createAsyncThunk(
+export const fetchLoggedInUser = createAsyncThunk(
   "users/fetchById",
-  async (payload: FetchPayload) => {
-    const { id, type } = payload
-    const response = await userAPI.fetchById(id, type)
+  async () => {
+    const response = await userAPI.fetchById()
     return response.data
   }
 )
 
 export const updateUser = createAsyncThunk(
-  "user/setLocation",
-  async (user: User) => {
+  "user/update",
+  async (user: IUser) => {
     const response = await userAPI.update(user)
+    return response.data
+  }
+)
+
+export const updateArenaImage = createAsyncThunk(
+  "user/updateArena",
+  async (imagePayload: any) => {
+    const response = await userAPI.updateArenaImage(imagePayload)
     return response.data
   }
 )
@@ -36,16 +41,19 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserById.fulfilled, (state, action) => {
+      .addCase(fetchLoggedInUser.fulfilled, (state, action) => {
         state.loggedInUser = action.payload.user
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.loggedInUser = action.payload.user
       })
+      .addCase(updateArenaImage.fulfilled, (state, action) => {
+        state.loggedInUser = action.payload.user
+      })
   },
 })
 
-export const selectUser = (state: RootState) => state.user.loggedInUser
+export const selectLoggedInUser = (state: RootState) => state.user.loggedInUser
 export const selectUserLocation = (state: RootState) =>
   state.user.loggedInUser.location
 

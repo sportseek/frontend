@@ -16,7 +16,6 @@ enum AuthStatus {
 interface AuthState {
   isAuthenticated: boolean
   userType: UserType
-  userId: string
   status: AuthStatus
   errors: string[]
 }
@@ -34,7 +33,6 @@ export const userSignIn = createAsyncThunk(
       return response.data
     } catch (error) {
       if (!error.response) throw error
-
       return rejectWithValue(error.response.data)
     }
   }
@@ -59,7 +57,6 @@ export const arenaSignup = createAsyncThunk(
 const initialState: AuthState = {
   isAuthenticated: false,
   userType: UserType.PLAYER,
-  userId: "",
   status: AuthStatus.IDLE,
   errors: [],
 }
@@ -72,9 +69,7 @@ export const authSlice = createSlice({
       state.isAuthenticated = false
       state.errors = []
       state.status = AuthStatus.IDLE
-      state.userId = ""
-
-      window.localStorage.removeItem("jwtToken")
+      window.localStorage.removeItem("authToken")
     },
   },
   extraReducers: (builder) => {
@@ -86,14 +81,12 @@ export const authSlice = createSlice({
           arenaSignup.fulfilled
         ),
         (state, action) => {
-          const { userId, token, type } = action.payload.result
+          const { token, userType } = action.payload.result
 
           state.isAuthenticated = true
           state.status = AuthStatus.DONE
-          state.userId = userId
-          state.userType = type
-
-          window.localStorage.setItem("jwtToken", token)
+          state.userType = userType
+          window.localStorage.setItem("authToken", token)
         }
       )
       .addMatcher(
@@ -121,7 +114,6 @@ export const authSlice = createSlice({
 export const isIfAuthenticated = (state: RootState) =>
   state.auth.isAuthenticated
 export const selectUserType = (state: RootState) => state.auth.userType
-export const selectUserId = (state: RootState) => state.auth.userId
 export const selectAuthStatus = (state: RootState) => state.auth.status
 export const selectAuthErrors = (state: RootState) => state.auth.errors
 
