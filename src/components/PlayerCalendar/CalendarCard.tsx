@@ -45,8 +45,8 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   const [views, setViews] = useState<ViewsProps>()
   const [sportEvents, setSEvents] = useState<ICalendarEvent[]>([])
   const [personalEvents, setPEvents] = useState<ICalendarEvent[]>([])
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [pEvent, setPEvent] = useState<IPersonalEvent>({} as IPersonalEvent);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const [pEvent, setPEvent] = useState<IPersonalEvent>({} as IPersonalEvent)
 
   const events = sportEvents.concat(personalEvents)
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
@@ -54,9 +54,15 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   const { interestedEventColor, registeredEventColor, personalEventColor } =
     theme.calendar
 
-  const pEColor = selectable ? personalEventColor.disabled : personalEventColor.main
-  const iEColor = selectable ? interestedEventColor.disabled : interestedEventColor.main
-  const rEColor = selectable ? registeredEventColor.disabled : registeredEventColor.main
+  const pEColor = selectable
+    ? personalEventColor.disabled
+    : personalEventColor.main
+  const iEColor = selectable
+    ? interestedEventColor.disabled
+    : interestedEventColor.main
+  const rEColor = selectable
+    ? registeredEventColor.disabled
+    : registeredEventColor.main
 
   useEffect(() => {
     dispatch(getEvents())
@@ -71,12 +77,7 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
       ...setEventColor(interestedEvents, iEColor),
       ...setEventColor(registeredEvents, rEColor),
     ],
-    [
-      interestedEvents,
-      registeredEvents,
-      iEColor,
-      rEColor,
-    ]
+    [interestedEvents, registeredEvents, iEColor, rEColor]
   )
 
   useEffect(() => {
@@ -109,17 +110,23 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
     setOpen(false)
   }
 
-  const onSelectPEvent = (event: ICalendarEvent, e: React.SyntheticEvent<HTMLElement, Event>) => {
+  const onSelectPEvent = (
+    event: ICalendarEvent,
+    e: React.SyntheticEvent<HTMLElement, Event>
+  ) => {
     setPEvent(event as IPersonalEvent)
     setAnchorEl(e.currentTarget)
   }
 
   const goBackToNormalMode = () => setSelectable(false)
 
-  const onSelectEvent = (event: ICalendarEvent, e: React.SyntheticEvent<HTMLElement, Event>) =>
-    (event.color && !selectable &&
-    event.color !== personalEventColor.main) ?
-    gotoEventDetails(event._id) : onSelectPEvent(event, e);
+  const onSelectEvent = (
+    event: ICalendarEvent,
+    e: React.SyntheticEvent<HTMLElement, Event>
+  ) =>
+    event.color && !selectable && event.color !== personalEventColor.main
+      ? gotoEventDetails(event._id)
+      : onSelectPEvent(event, e)
 
   const onSelectSlot = ({ start, end }: SlotInfo) => {
     const title = window.prompt("New Event name")
@@ -135,12 +142,17 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   }
 
   const closePersonalEventPopover = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   return (
     <Card>
-      <CardHeader showActions={!isSmallScreen} openSchedule={openPopup} selectable={selectable} closeSchedule={goBackToNormalMode}/>
+      <CardHeader
+        showActions={!isSmallScreen}
+        openSchedule={openPopup}
+        selectable={selectable}
+        closeSchedule={goBackToNormalMode}
+      />
       <CardContent>
         <SubHeader />
         <Calendar
@@ -166,7 +178,11 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
           handleClose={closePopUp}
           handleOKClick={makeEditable}
         />
-        <AddPersonalEventPopover anchorEl={anchorEl} handleClose={closePersonalEventPopover} event={pEvent}/>
+        <AddPersonalEventPopover
+          anchorEl={anchorEl}
+          handleClose={closePersonalEventPopover}
+          event={pEvent}
+        />
       </CardContent>
     </Card>
   )

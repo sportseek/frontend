@@ -4,9 +4,10 @@ import Card from "@material-ui/core/Card"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
-import { useAppSelector } from "redux/hooks"
-import { selectLoggedInUser } from "redux/reducers/user/userSlice"
-import { IPersonalEvent, IPlayer } from "types"
+import { IconButton } from "@material-ui/core"
+import { CloseRounded } from "@material-ui/icons"
+import Tooltip from "components/Common/Tooltip"
+import { IPersonalEvent } from "types"
 
 const useStyles = makeStyles({
   cardValue: {
@@ -17,15 +18,24 @@ const useStyles = makeStyles({
 
 const PersonalEventCard = (props: PEventProps) => {
   const classes = useStyles()
-  const { event } = props
-  const player = useAppSelector(selectLoggedInUser) as IPlayer
+  const { event, handleClose } = props
 
-  const { wallet } = player
-
-  const euro = "\u20AC"
   return (
     <Card>
-      <CardHeader title={event.title} />
+      <CardHeader
+        title="Details"
+        action={
+          <Tooltip title="Edit location" placement="left">
+            <IconButton
+              color="secondary"
+              aria-label="edit location"
+              onClick={handleClose}
+            >
+              <CloseRounded />
+            </IconButton>
+          </Tooltip>
+        }
+      />
       <CardContent>
         <Typography
           align="center"
@@ -42,6 +52,7 @@ const PersonalEventCard = (props: PEventProps) => {
 
 type PEventProps = {
   event: IPersonalEvent
+  handleClose: () => void
 }
 
 export default PersonalEventCard

@@ -1,16 +1,15 @@
-import React from 'react';
-import Popover from '@material-ui/core/Popover';
-import { IPersonalEvent } from 'types';
-import PEventCard from "./PEventCard";
+import React from "react"
+import Popover from "@material-ui/core/Popover"
+import { IPersonalEvent } from "types"
+import PEventCard from "./PEventCard"
 
 export default function AddPersonalEventPopOver(props: PopOverProps) {
-  
   const { anchorEl, event, handleClose } = props
 
   console.log(JSON.stringify(event, null, 2))
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const open = Boolean(anchorEl)
+  const id = open ? "simple-popover" : undefined
 
   return (
     <div>
@@ -20,18 +19,18 @@ export default function AddPersonalEventPopOver(props: PopOverProps) {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
+          vertical: "bottom",
+          horizontal: "center",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
+          vertical: "top",
+          horizontal: "center",
         }}
       >
-        <PEventCard event={event}/>
+        <PEventCard event={event} handleClose={handleClose} />
       </Popover>
     </div>
-  );
+  )
 }
 
 type PopOverProps = {

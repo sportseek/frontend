@@ -68,7 +68,7 @@ const DialogActions = withStyles((theme: Theme) => ({
 type Props = {
   open: boolean
   handleClose: () => void
-  handleOKClick: () => void 
+  handleOKClick: () => void
 }
 
 const AddPersonalEventDialog = (props: Props) => {
