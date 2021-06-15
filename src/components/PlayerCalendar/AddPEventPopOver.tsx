@@ -6,8 +6,6 @@ import PEventCard from "./PEventCard"
 export default function AddPersonalEventPopOver(props: PopOverProps) {
   const { anchorEl, event, handleClose } = props
 
-  console.log(JSON.stringify(event, null, 2))
-
   const open = Boolean(anchorEl)
   const id = open ? "simple-popover" : undefined
 
@@ -20,11 +18,11 @@ export default function AddPersonalEventPopOver(props: PopOverProps) {
         onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "center",
+          horizontal: "left",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "center",
+          horizontal: "left",
         }}
       >
         <PEventCard event={event} handleClose={handleClose} />
