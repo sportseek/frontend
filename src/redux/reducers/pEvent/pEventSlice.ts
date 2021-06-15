@@ -29,6 +29,14 @@ export const getEvents = createAsyncThunk(
   }
 )
 
+export const deleteEvent = createAsyncThunk(
+  "personalevent/delete",
+  async (id: string) => {
+    const response = await pEventAPI.deleteEvent(id)
+    return response.data
+  }
+)
+
 export const pEventSlice = createSlice({
   name: "personalevent",
   initialState,
@@ -40,6 +48,9 @@ export const pEventSlice = createSlice({
         state.needToUpdate = false
       })
       .addCase(createEvent.fulfilled, (state) => {
+        state.needToUpdate = true
+      })
+      .addCase(deleteEvent.fulfilled, (state) => {
         state.needToUpdate = true
       })
   },

@@ -1,5 +1,6 @@
 import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
+import { useAppDispatch } from "redux/hooks"
 import {
   Card,
   CardHeader,
@@ -14,6 +15,7 @@ import { CloseRounded, Delete } from "@material-ui/icons"
 import Tooltip from "components/Common/Tooltip"
 import { IPersonalEvent } from "types"
 import { getReadableDate } from "utils/stringUtils"
+import { deleteEvent } from "redux/reducers/pEvent/pEventSlice"
 
 const useStyles = makeStyles({
   card: {
@@ -34,6 +36,14 @@ const useStyles = makeStyles({
 const PersonalEventCard = (props: PEventProps) => {
   const classes = useStyles()
   const { event, handleClose } = props
+  const dispatch = useAppDispatch()
+
+  const {_id : id, title, description, start, end} = event
+
+  const handleDelete = () => {
+    dispatch(deleteEvent(id))
+    handleClose()
+  }
 
   return (
     <Card className={classes.card}>
@@ -60,7 +70,7 @@ const PersonalEventCard = (props: PEventProps) => {
               Title
             </Typography>
             <Typography variant="body2" component="p">
-              {event.title}
+              {title}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -68,7 +78,7 @@ const PersonalEventCard = (props: PEventProps) => {
               Description
             </Typography>
             <Typography variant="body2" component="p">
-              {event.description}
+              {description}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -76,7 +86,7 @@ const PersonalEventCard = (props: PEventProps) => {
               Start
             </Typography>
             <Typography variant="body2" component="p">
-              {getReadableDate(event.start)}
+              {getReadableDate(start)}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -84,13 +94,13 @@ const PersonalEventCard = (props: PEventProps) => {
               End
             </Typography>
             <Typography variant="body2" component="p">
-              {getReadableDate(event.end)}
+              {getReadableDate(end)}
             </Typography>
           </Grid>
         </Grid>
       </CardContent>
       <CardActions disableSpacing className={classes.cardActions}>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="delete event" onClick={handleDelete}>
           <Delete color="secondary" />
         </IconButton>
       </CardActions>
