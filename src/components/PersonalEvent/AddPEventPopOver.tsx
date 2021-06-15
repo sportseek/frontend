@@ -1,7 +1,7 @@
 import React from "react"
 import Popover from "@material-ui/core/Popover"
 import { IPersonalEvent } from "types"
-import PEventCard from "./PEventCard"
+import PEventCard from "./PersonalEventCard"
 
 export default function AddPersonalEventPopOver(props: PopOverProps) {
   const { anchorEl, event, handleClose } = props

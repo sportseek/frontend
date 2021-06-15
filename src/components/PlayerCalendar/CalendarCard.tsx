@@ -21,10 +21,9 @@ import {
   getCalendarInfo,
   convertToCalenderEvent,
 } from "utils/calendarUtils"
-import CardHeader from "./CardHeader"
-import SubHeader from "./CardSubHeader"
-import AddPersonalEventDialog from "./AddPEventDialog"
-import AddPersonalEventPopover from "./AddPEventPopOver"
+import { AddPersonalEventDialog, AddPersonalEventPopOver } from "components/PersonalEvent"
+import CardHeader from "./CalendarCardHeader"
+import SubHeader from "./CalendarCardSubHeader"
 
 type PlayerCalendarProps = {
   goto: (id: string) => void
@@ -178,7 +177,7 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
           handleClose={closePopUp}
           handleOKClick={makeEditable}
         />
-        <AddPersonalEventPopover
+        <AddPersonalEventPopOver
           anchorEl={anchorEl}
           handleClose={closePersonalEventPopover}
           event={pEvent}
