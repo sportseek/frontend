@@ -10,5 +10,5 @@ export type PEventPayload = {
   description: string
   start: string
   end: string
-  [title: string]: string
+  title: string
 }

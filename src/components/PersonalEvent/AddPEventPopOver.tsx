@@ -3,11 +3,11 @@ import Popover from "@material-ui/core/Popover"
 import { IPersonalEvent } from "types"
 import PEventCard from "./PersonalEventCard"
 
-export default function AddPersonalEventPopOver(props: PopOverProps) {
+const AddPersonalEventPopOver = (props: PopOverProps) => {
   const { anchorEl, event, handleClose } = props
 
   const open = Boolean(anchorEl)
-  const id = open ? "simple-popover" : undefined
+  const id = open ? "add-personal-event-popover" : undefined
 
   return (
     <div>
@@ -36,3 +36,5 @@ type PopOverProps = {
   event: IPersonalEvent
   handleClose: () => void
 }
+
+export default AddPersonalEventPopOver

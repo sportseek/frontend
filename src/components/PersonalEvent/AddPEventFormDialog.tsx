@@ -1,11 +1,13 @@
-import React, { ChangeEvent, useState } from "react"
-import Button from "@material-ui/core/Button"
-import TextField from "@material-ui/core/TextField"
-import Dialog from "@material-ui/core/Dialog"
-import DialogActions from "@material-ui/core/DialogActions"
-import DialogContent from "@material-ui/core/DialogContent"
-import DialogContentText from "@material-ui/core/DialogContentText"
-import DialogTitle from "@material-ui/core/DialogTitle"
+import React, { ChangeEvent, useCallback, useEffect, useState } from "react"
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+} from "@material-ui/core"
 import moment from "moment"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { SlotInfo } from "react-big-calendar"
@@ -14,6 +16,7 @@ import {
   createPEvent,
   selectErrors,
   selectHasErrors,
+  prepareForValidation,
 } from "redux/reducers/pEvent/pEventSlice"
 
 type FormProps = {
@@ -35,47 +38,45 @@ const AddPersonalEventFormDialog = (props: FormProps) => {
 
   const dispatch = useAppDispatch()
 
-  const [payload, setPayload] = useState<PEventPayload>({
+  const [pEvent, setPEvent] = useState<PEventPayload>({
     title: "",
     creator: userId,
-  } as unknown as PEventPayload)
+    description: "",
+    start: "",
+    end: "",
+  })
 
-  const hasErrors = useAppSelector(selectHasErrors)
   const validationErrors = useAppSelector(selectErrors)
-
-  const error = {} as PEventPayload
-
-  if (hasErrors)
-    Object.entries(validationErrors).forEach((entry) => {
-      const [key, { message }] = entry
-      error[key] = message
-    })
-
-  console.log(error)
+  const hasErrors = useAppSelector(selectHasErrors)
 
   React.useEffect(() => {
-    setPayload((p) => ({
+    setPEvent((p) => ({
       ...p,
       start: moment(start).toISOString(),
       end: moment(end).toISOString(),
     }))
   }, [start, end])
 
+  const handleFormClose = useCallback(() => {
+    dispatch(prepareForValidation())
+    handleClose()
+  }, [dispatch, handleClose])
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPayload({
-      ...payload,
+    setPEvent({
+      ...pEvent,
       [e.target.name]: e.target.value,
     })
   }
 
-  const handleCreate = () => {
-    dispatch(createPEvent(payload))
-
+  useEffect(() => {
     if (!hasErrors) {
       goBack()
-      handleClose()
+      handleFormClose()
     }
-  }
+  }, [dispatch, goBack, handleFormClose, hasErrors])
+
+  const handleCreate = () => dispatch(createPEvent(pEvent))
 
   return (
     <div>
@@ -92,15 +93,15 @@ const AddPersonalEventFormDialog = (props: FormProps) => {
           <TextField
             required
             autoFocus
-            error={!!error.title}
+            error={!!validationErrors.title}
             margin="normal"
             id="personal event title"
             label="Title"
             name="title"
             fullWidth
-            value={payload.title}
+            value={pEvent.title}
             onChange={handleChange}
-            helperText={error.title}
+            helperText={validationErrors.title}
           />
           <TextField
             margin="normal"
@@ -108,12 +109,12 @@ const AddPersonalEventFormDialog = (props: FormProps) => {
             label="Description"
             name="description"
             fullWidth
-            value={payload.description}
+            value={pEvent.description}
             onChange={handleChange}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleFormClose} color="primary">
             Cancel
           </Button>
           <Button onClick={handleCreate} color="primary">

@@ -3,19 +3,19 @@ import { RootState } from "redux/store"
 import { IPersonalEvent, PEventPayload } from "types"
 import pEventAPI from "./pEventAPI"
 
-type ValidationErrors = { title: { message: string } }
+type FormValidationErrors = PEventPayload
 
 interface PersonalEventState {
   events: IPersonalEvent[]
   needToUpdate: boolean
-  errors: ValidationErrors
+  errors: FormValidationErrors
   hasErrors: boolean
 }
 
 const initialState: PersonalEventState = {
   events: [],
   needToUpdate: false,
-  errors: {} as ValidationErrors,
+  errors: {} as FormValidationErrors,
   hasErrors: true,
 }
 
@@ -26,6 +26,8 @@ export const createPEvent = createAsyncThunk(
       const response = await pEventAPI.create(payload)
       return response.data
     } catch (err) {
+      if (!err.response) throw err
+
       return rejectWithValue(err.response.data)
     }
   }
@@ -50,7 +52,12 @@ export const deletePEvent = createAsyncThunk(
 export const pEventSlice = createSlice({
   name: "personalevent",
   initialState,
-  reducers: {},
+  reducers: {
+    prepareForValidation: (state) => {
+      state.hasErrors = true
+      state.errors = {} as FormValidationErrors
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPEvents.fulfilled, (state, action) => {
@@ -60,10 +67,10 @@ export const pEventSlice = createSlice({
       .addCase(createPEvent.fulfilled, (state) => {
         state.needToUpdate = true
         state.hasErrors = false
-        state.errors = {} as ValidationErrors
+        state.errors = {} as FormValidationErrors
       })
       .addCase(createPEvent.rejected, (state, action) => {
-        state.errors = action.payload as ValidationErrors
+        state.errors = action.payload as FormValidationErrors
         state.hasErrors = true
       })
       .addCase(deletePEvent.fulfilled, (state) => {
@@ -71,6 +78,8 @@ export const pEventSlice = createSlice({
       })
   },
 })
+
+export const { prepareForValidation } = pEventSlice.actions
 
 export const selectEvents = (state: RootState) => state.pevent.events
 export const selectErrors = (state: RootState) => state.pevent.errors
