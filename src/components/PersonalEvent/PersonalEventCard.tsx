@@ -15,7 +15,7 @@ import { CloseRounded, Delete } from "@material-ui/icons"
 import Tooltip from "components/Common/Tooltip"
 import { IPersonalEvent } from "types"
 import { getReadableDate } from "utils/stringUtils"
-import { deleteEvent } from "redux/reducers/pEvent/pEventSlice"
+import { deletePEvent } from "redux/reducers/pEvent/pEventSlice"
 
 const useStyles = makeStyles({
   card: {
@@ -38,10 +38,10 @@ const PersonalEventCard = (props: PEventProps) => {
   const { event, handleClose } = props
   const dispatch = useAppDispatch()
 
-  const {_id : id, title, description, start, end} = event
+  const { _id: id, title, description, start, end } = event
 
   const handleDelete = () => {
-    dispatch(deleteEvent(id))
+    dispatch(deletePEvent(id))
     handleClose()
   }
 
@@ -100,9 +100,11 @@ const PersonalEventCard = (props: PEventProps) => {
         </Grid>
       </CardContent>
       <CardActions disableSpacing className={classes.cardActions}>
-        <IconButton aria-label="delete event" onClick={handleDelete}>
-          <Delete color="secondary" />
-        </IconButton>
+        <Tooltip title="Delete event" placement="left">
+          <IconButton aria-label="delete event" onClick={handleDelete}>
+            <Delete color="secondary" />
+          </IconButton>
+        </Tooltip>
       </CardActions>
     </Card>
   )
