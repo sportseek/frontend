@@ -47,17 +47,16 @@ export default function PersonalInfoCard() {
 
   const { address = {} as IAddress, firstName, lastName, phone, email } = player
 
-  console.log(address)
-
   const popUpEditCustomerForm = () => setOpenEditForm(true)
 
   const closeFormPopUp = () => setOpenEditForm(false)
 
   return (
     <Card className={classes.card}>
-      <CardHeader className={classes.cardHeader} title="Personal info" 
-      action={
-        
+      <CardHeader
+        className={classes.cardHeader}
+        title="Personal info"
+        action={
           <Tooltip title="Edit Details" placement="left">
             <IconButton
               color="secondary"
@@ -67,8 +66,7 @@ export default function PersonalInfoCard() {
               <EditRounded />
             </IconButton>
           </Tooltip>
-        
-      }
+        }
       />
       <CardContent className={classes.cardContent}>
         <Grid container spacing={1}>

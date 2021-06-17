@@ -70,12 +70,8 @@ const ArenaImage = () => {
 
     // api call
     const formData = new FormData()
-    formData.append("userId", user._id)
     formData.append("image", image)
-    const payload: any = {
-      formData: formData,
-    }
-    dispatch(updateProfilePic(payload))
+    dispatch(updateProfilePic(formData))
   }
   const handleEditPicture = () => {
     const fileInput = document.getElementById("imageInput")

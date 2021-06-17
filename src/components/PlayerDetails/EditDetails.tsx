@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { ChangeEvent, useState } from "react"
+import React, { ChangeEvent, useCallback, useRef, useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import {
   Avatar,
@@ -11,11 +11,17 @@ import {
   IconButton,
   Grid,
   DialogTitle,
+  CircularProgress,
   TextField,
 } from "@material-ui/core"
 import { EditRounded } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { selectLoggedInUser, updateUser } from "redux/reducers/user/userSlice"
+import {
+  selectLoggedInUser,
+  selectLoadingUserData,
+  updateUser,
+  updateProfilePic,
+} from "redux/reducers/user/userSlice"
 import { IAddress, IPlayer, PlayerPayload } from "types"
 
 type DetailsFormProps = {
@@ -41,11 +47,24 @@ const useStyles = makeStyles((theme) => ({
 const UserDetailsForm = (props: DetailsFormProps) => {
   const classes = useStyles()
   const oldPlayer = useAppSelector(selectLoggedInUser) as IPlayer
+  const loading = useAppSelector(selectLoadingUserData)
   const dispatch = useAppDispatch()
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const { open, handleClose } = props
+  const { open, handleClose: close } = props
 
-  const { firstName, lastName, phone, email, address: oldAddress } = oldPlayer
+  const {
+    firstName,
+    lastName,
+    phone,
+    email,
+    address: oldAddress,
+    profileImageUrl = "",
+  } = oldPlayer
+
+  const { current } = inputRef
+
+  const [disabled, setDisabled] = useState(true)
 
   const [player, setPlayer] = useState<PlayerPayload>({
     firstName,
@@ -54,6 +73,11 @@ const UserDetailsForm = (props: DetailsFormProps) => {
     phone,
   })
   const [address, setAddress] = useState<IAddress>(oldAddress)
+
+  const handleClose = () => {
+    setDisabled(true)
+    close()
+  }
 
   const handleSave = () => {
     const tempuser = { ...oldPlayer, ...player }
@@ -67,6 +91,7 @@ const UserDetailsForm = (props: DetailsFormProps) => {
       ...player,
       [e.target.name]: e.target.value,
     })
+    setDisabled(false)
   }
 
   const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +99,24 @@ const UserDetailsForm = (props: DetailsFormProps) => {
       ...address,
       [e.target.name]: e.target.value,
     })
+    setDisabled(false)
   }
+
+  const handleImageChange = useCallback(
+    ({ target: { files } }) => {
+      const image = files[0]
+      const formData = new FormData()
+      formData.append("image", image)
+      dispatch(updateProfilePic(formData))
+      if (current) current.value = ""
+      setDisabled(false)
+    },
+    [current, dispatch]
+  )
+
+  const handleClick = useCallback(() => {
+    if (current) current.click()
+  }, [current])
 
   return (
     <Dialog
@@ -90,12 +132,18 @@ const UserDetailsForm = (props: DetailsFormProps) => {
           <Grid item lg={3}>
             <input
               accept="image/*"
+              ref={inputRef}
               className={classes.input}
               id="icon-button-file"
               type="file"
+              onChange={handleImageChange}
             />
             <label htmlFor="icon-button-file">
-              <IconButton aria-label="upload picture"component="span">
+              <IconButton
+                onClick={handleClick}
+                aria-label="upload picture"
+                component="span"
+              >
                 <Badge
                   overlap="circle"
                   anchorOrigin={{
@@ -104,14 +152,27 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   }}
                   badgeContent={<EditRounded color="secondary" />}
                 >
-                  <Avatar
-                    src=""
-                    style={{
-                      margin: "10px",
-                      width: "150px",
-                      height: "150px",
-                    }}
-                  />
+                  {loading ? (
+                    <Avatar
+                      src=""
+                      style={{
+                        margin: "10px",
+                        width: "150px",
+                        height: "150px",
+                      }}
+                    >
+                      <CircularProgress color="secondary" />
+                    </Avatar>
+                  ) : (
+                    <Avatar
+                      src={profileImageUrl}
+                      style={{
+                        margin: "10px",
+                        width: "150px",
+                        height: "150px",
+                      }}
+                    />
+                  )}
                 </Badge>
               </IconButton>
             </label>
@@ -240,7 +301,12 @@ const UserDetailsForm = (props: DetailsFormProps) => {
         </Grid>
       </DialogContent>
       <DialogActions className={classes.actions}>
-        <Button color="secondary" variant="contained" onClick={handleSave}>
+        <Button
+          color="secondary"
+          variant="contained"
+          disabled={disabled}
+          onClick={handleSave}
+        >
           Update Profile
         </Button>
         <Button color="primary" variant="contained" onClick={handleClose}>

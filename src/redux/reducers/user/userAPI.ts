@@ -13,9 +13,9 @@ const update = (user: IUser) => {
   return axios.put(url, user).then((response) => response)
 }
 
-const updateProfilePic = (imagePayload: any) => {
+const updateProfilePic = (formData: any) => {
   const url = `/${userEndpoint}/updateProfilePic/`
-  return axios.put(url, imagePayload.formData).then((response) => response)
+  return axios.put(url, formData).then((response) => response)
 }
 
 export default { fetchById, update, updateProfilePic }

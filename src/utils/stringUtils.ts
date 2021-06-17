@@ -16,8 +16,10 @@ export const getUserName = (user: IUser) => {
     : `${(user as IPlayer).firstName} ${(user as IPlayer).lastName}`
 }
 
-export const getUserAddress = (address: IAddress) => isEmpty(address) ? "" : 
-  `${address.street}, ${address.city}, ${address.postcode}, ${address.country}`
+export const getUserAddress = (address: IAddress) =>
+  isEmpty(address)
+    ? ""
+    : `${address.street}, ${address.city}, ${address.postcode}, ${address.country}`
 
 export const getReadableDate = (date: Date | undefined) =>
   date === undefined ? "" : moment(date).format("dddd, MMMM Do YYYY, h:mm:ss a")
