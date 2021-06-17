@@ -36,7 +36,11 @@ export interface CreateEventPayload {
   end: string
 }
 
-
 export interface SearchEventPayload {
   sportType?: string
+}
+
+export interface UpdateInterestedPayload {
+  eventId: string
+  interested: boolean
 }

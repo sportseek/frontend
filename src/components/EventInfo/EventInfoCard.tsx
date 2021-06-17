@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   fetchEventById,
   selectCurrentEvent,
+  updateInterested,
 } from "redux/reducers/event/eventSlice"
 import Grid from "@material-ui/core/Grid"
 import Accordion from "@material-ui/core/Accordion"
@@ -18,6 +19,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import moment from "moment"
 import PeopleIcon from "@material-ui/icons/People"
 import { IEvent } from "types"
+import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 
 type Props = {
   currentEvent: IEvent
@@ -43,6 +45,8 @@ const useStyles = makeStyles({
 const EventInfoCard: React.FC<Props> = ({ currentEvent }) => {
   const classes = useStyles()
   const newEntryFee = currentEvent.entryFee / currentEvent.minPlayers
+  const dispatch = useAppDispatch()
+  const currentUser = useAppSelector(selectLoggedInUser)
 
   const mainFeaturedPost = {
     title: currentEvent.title,
@@ -53,15 +57,34 @@ const EventInfoCard: React.FC<Props> = ({ currentEvent }) => {
   }
 
   const [registered, setRegistered] = useState(false)
-  const [interested, setInterested] = useState(true)
+  const [interested, setInterested] = useState(false)
 
+  useEffect(() => {
+    if (currentEvent.interestedPlayers) {
+      const isAlreadyInterested = currentEvent.interestedPlayers.find(
+        (item) => item === currentUser._id
+      )
+
+      if (isAlreadyInterested) setInterested(true)
+      else setInterested(false)
+    } else setInterested(false)
+  }, [currentEvent])
+  const handleUpdateInterested = () => {
+    setInterested(!interested)
+    dispatch(
+      updateInterested({
+        eventId: currentEvent._id,
+        interested: !interested,
+      })
+    )
+  }
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <MainFeaturedPost post={mainFeaturedPost} />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={6}>
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -80,7 +103,7 @@ const EventInfoCard: React.FC<Props> = ({ currentEvent }) => {
         </Accordion>
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <Typography variant="h6" gutterBottom>
           <b>Sport Type:</b> {currentEvent.sportType}
         </Typography>
@@ -139,7 +162,7 @@ const EventInfoCard: React.FC<Props> = ({ currentEvent }) => {
             <Button
               startIcon={<ThumbDownIcon />}
               className={classes.interested}
-              onClick={() => setInterested(!interested)}
+              onClick={handleUpdateInterested}
             >
               Not Interested
             </Button>
@@ -147,7 +170,7 @@ const EventInfoCard: React.FC<Props> = ({ currentEvent }) => {
             <Button
               startIcon={<ThumbUpIcon />}
               className={classes.interested}
-              onClick={() => setInterested(!interested)}
+              onClick={handleUpdateInterested}
             >
               Interested
             </Button>

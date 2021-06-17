@@ -42,10 +42,7 @@ function EventInfo() {
   }, [])
 
   return (
-    <div>
-      {currentEvent && <EventInfoCard currentEvent={currentEvent} />}
-      <h1>{currentUser.firstName}</h1>
-    </div>
+    <div>{currentEvent && <EventInfoCard currentEvent={currentEvent} />}</div>
   )
 }
 

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IEvent, CreateEventPayload } from "types"
-import { SearchEventPayload } from "types/Event"
+import { SearchEventPayload, UpdateInterestedPayload } from "types/Event"
 import eventAPI from "./eventAPI"
 
 interface EventState {
@@ -55,10 +55,21 @@ export const getEvents = createAsyncThunk("events/fetchEvents", async () => {
   return response.data
 })
 
-export const getAllEvents = createAsyncThunk("events/fetchAllEvents", async (searchPayload: SearchEventPayload) => {
-  const response = await eventAPI.fetchAllEventList(searchPayload)
-  return response.data
-})
+export const getAllEvents = createAsyncThunk(
+  "events/fetchAllEvents",
+  async (searchPayload: SearchEventPayload) => {
+    const response = await eventAPI.fetchAllEventList(searchPayload)
+    return response.data
+  }
+)
+
+export const updateInterested = createAsyncThunk(
+  "event/updateInterested",
+  async (interestedPayload: UpdateInterestedPayload) => {
+    const response = await eventAPI.updateInterested(interestedPayload)
+    return response.data
+  }
+)
 
 export const eventSlice = createSlice({
   name: "event",
@@ -80,6 +91,9 @@ export const eventSlice = createSlice({
       .addCase(getAllEvents.fulfilled, (state, action) => {
         state.allEvents = action.payload.eventList
         state.reloadEvents = false
+      })
+      .addCase(updateInterested.fulfilled, (state, action) => {
+        state.currentEvent = action.payload.event
       })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),

@@ -1,4 +1,8 @@
-import { CreateEventPayload, SearchEventPayload } from "types/Event"
+import {
+  CreateEventPayload,
+  SearchEventPayload,
+  UpdateInterestedPayload,
+} from "types/Event"
 import axios from "utils/axios"
 
 const eventEndpoint = "event"
@@ -39,6 +43,14 @@ const fetchAllEventList = async (searchPayload: SearchEventPayload) => {
   return response
 }
 
+const updateInterested = async (interestedPayload: UpdateInterestedPayload) => {
+  const url = `/${eventEndpoint}/updateInterested/${interestedPayload.eventId}`
+  const response = await axios.put(url, {
+    interested: interestedPayload.interested,
+  })
+  return response
+}
+
 export default {
   fetchById,
   update,
@@ -46,4 +58,5 @@ export default {
   cancel,
   fetchEventList,
   fetchAllEventList,
+  updateInterested,
 }
