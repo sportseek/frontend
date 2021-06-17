@@ -44,3 +44,8 @@ export interface UpdateInterestedPayload {
   eventId: string
   interested: boolean
 }
+
+export interface UpdateRegisteredPayload {
+  eventId: string
+  registered: boolean
+}

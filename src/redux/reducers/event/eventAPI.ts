@@ -2,6 +2,7 @@ import {
   CreateEventPayload,
   SearchEventPayload,
   UpdateInterestedPayload,
+  UpdateRegisteredPayload,
 } from "types/Event"
 import axios from "utils/axios"
 
@@ -51,6 +52,14 @@ const updateInterested = async (interestedPayload: UpdateInterestedPayload) => {
   return response
 }
 
+const updateRegistered = async (registeredPayload: UpdateRegisteredPayload) => {
+  const url = `/${eventEndpoint}/updateRegistered/${registeredPayload.eventId}`
+  const response = await axios.put(url, {
+    registered: registeredPayload.registered,
+  })
+  return response
+}
+
 export default {
   fetchById,
   update,
@@ -59,4 +68,5 @@ export default {
   fetchEventList,
   fetchAllEventList,
   updateInterested,
+  updateRegistered,
 }

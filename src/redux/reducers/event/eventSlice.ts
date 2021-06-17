@@ -1,7 +1,11 @@
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IEvent, CreateEventPayload } from "types"
-import { SearchEventPayload, UpdateInterestedPayload } from "types/Event"
+import {
+  SearchEventPayload,
+  UpdateInterestedPayload,
+  UpdateRegisteredPayload,
+} from "types/Event"
 import eventAPI from "./eventAPI"
 
 interface EventState {
@@ -71,6 +75,14 @@ export const updateInterested = createAsyncThunk(
   }
 )
 
+export const updateRegistered = createAsyncThunk(
+  "event/updateRegistered",
+  async (registeredPayload: UpdateRegisteredPayload) => {
+    const response = await eventAPI.updateRegistered(registeredPayload)
+    return response.data
+  }
+)
+
 export const eventSlice = createSlice({
   name: "event",
   initialState,
@@ -93,6 +105,9 @@ export const eventSlice = createSlice({
         state.reloadEvents = false
       })
       .addCase(updateInterested.fulfilled, (state, action) => {
+        state.currentEvent = action.payload.event
+      })
+      .addCase(updateRegistered.fulfilled, (state, action) => {
         state.currentEvent = action.payload.event
       })
       .addMatcher(

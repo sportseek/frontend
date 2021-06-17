@@ -10,6 +10,7 @@ import {
   fetchEventById,
   selectCurrentEvent,
   updateInterested,
+  updateRegistered,
 } from "redux/reducers/event/eventSlice"
 import Grid from "@material-ui/core/Grid"
 import Accordion from "@material-ui/core/Accordion"
@@ -78,6 +79,27 @@ const EventInfoCard: React.FC<Props> = ({ currentEvent }) => {
       })
     )
   }
+  ///////////////////
+  useEffect(() => {
+    if (currentEvent.registeredPlayers) {
+      const isAlreadyRegistered = currentEvent.registeredPlayers.find(
+        (item) => item === currentUser._id
+      )
+
+      if (isAlreadyRegistered) setRegistered(true)
+      else setRegistered(false)
+    } else setRegistered(false)
+  }, [currentEvent])
+  const handleUpdateRegistered = () => {
+    setRegistered(!registered)
+    dispatch(
+      updateRegistered({
+        eventId: currentEvent._id,
+        registered: !registered,
+      })
+    )
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -147,14 +169,23 @@ const EventInfoCard: React.FC<Props> = ({ currentEvent }) => {
 
       <Grid container direction="row" spacing={3}>
         <Grid item>
-          <Button
-            startIcon={<PaymentIcon />}
-            className={classes.participate}
-            component={Link}
-            to="/payment"
-          >
-            Participate
-          </Button>
+          {registered ? (
+            <Button
+              startIcon={<ThumbDownIcon />}
+              className={classes.participate}
+              onClick={handleUpdateRegistered}
+            >
+              Deregister
+            </Button>
+          ) : (
+            <Button
+              startIcon={<PaymentIcon />}
+              className={classes.participate}
+              onClick={handleUpdateRegistered}
+            >
+              Participate
+            </Button>
+          )}
         </Grid>
 
         <Grid item>
