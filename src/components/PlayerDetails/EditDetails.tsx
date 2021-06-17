@@ -1,14 +1,19 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { ChangeEvent, useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import {
+  Avatar,
+  Badge,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
+  IconButton,
   Grid,
   DialogTitle,
   TextField,
 } from "@material-ui/core"
+import { EditRounded } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { selectLoggedInUser, updateUser } from "redux/reducers/user/userSlice"
 import { IAddress, IPlayer, PlayerPayload } from "types"
@@ -27,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     padding: theme.spacing(2),
+  },
+  input: {
+    display: "none",
   },
 }))
 
@@ -72,127 +80,162 @@ const UserDetailsForm = (props: DetailsFormProps) => {
     <Dialog
       open={open}
       onClose={handleClose}
+      fullWidth
+      maxWidth="md"
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Edit customer</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Profile</DialogTitle>
       <DialogContent className={classes.main}>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="firstName"
-              name="firstName"
-              label="First name"
-              fullWidth
-              autoComplete="given-name"
-              value={player.firstName}
-              onChange={handleChange}
+          <Grid item lg={3}>
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="icon-button-file"
+              type="file"
             />
+            <label htmlFor="icon-button-file">
+              <IconButton aria-label="upload picture"component="span">
+                <Badge
+                  overlap="circle"
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  badgeContent={<EditRounded color="secondary" />}
+                >
+                  <Avatar
+                    src=""
+                    style={{
+                      margin: "10px",
+                      width: "150px",
+                      height: "150px",
+                    }}
+                  />
+                </Badge>
+              </IconButton>
+            </label>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="lastName"
-              name="lastName"
-              label="Last name"
-              fullWidth
-              autoComplete="family-name"
-              value={player.lastName}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="phone"
-              name="phone"
-              label="Phone"
-              fullWidth
-              autoComplete="phone"
-              value={player.phone}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="email"
-              name="email"
-              label="email"
-              fullWidth
-              autoComplete="email"
-              value={player.email}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              id="street"
-              name="street"
-              label="Address line 1"
-              fullWidth
-              autoComplete="shipping address-line1"
-              value={address.street}
-              onChange={handleAddressChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              id="streetAddtional"
-              name="streetAddtional"
-              label="Address line 2"
-              fullWidth
-              autoComplete="shipping address-line2"
-              value={address.streetAddtional}
-              onChange={handleAddressChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="city"
-              name="city"
-              label="City"
-              fullWidth
-              autoComplete="shipping address-level2"
-              value={address.city}
-              onChange={handleAddressChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="state"
-              name="state"
-              label="State/Province/Region"
-              fullWidth
-              value={address.state}
-              onChange={handleAddressChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="postcode"
-              name="postcode"
-              label="Zip / Postal code"
-              fullWidth
-              autoComplete="shipping postal-code"
-              value={address.postcode}
-              onChange={handleAddressChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="country"
-              name="country"
-              label="Country"
-              fullWidth
-              autoComplete="shipping country"
-              value={address.country}
-              onChange={handleAddressChange}
-            />
+          <Grid item lg>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  id="firstName"
+                  name="firstName"
+                  label="First name"
+                  fullWidth
+                  autoComplete="given-name"
+                  value={player.firstName}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  id="lastName"
+                  name="lastName"
+                  label="Last name"
+                  fullWidth
+                  autoComplete="family-name"
+                  value={player.lastName}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  id="phone"
+                  name="phone"
+                  label="Phone"
+                  fullWidth
+                  autoComplete="phone"
+                  value={player.phone}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  disabled
+                  id="email"
+                  name="email"
+                  label="email"
+                  fullWidth
+                  autoComplete="email"
+                  value={player.email}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  id="street"
+                  name="street"
+                  label="Address line 1"
+                  fullWidth
+                  autoComplete="shipping address-line1"
+                  value={address.street}
+                  onChange={handleAddressChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="streetAddtional"
+                  name="streetAddtional"
+                  label="Address line 2"
+                  fullWidth
+                  autoComplete="shipping address-line2"
+                  value={address.streetAddtional}
+                  onChange={handleAddressChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  id="city"
+                  name="city"
+                  label="City"
+                  fullWidth
+                  autoComplete="shipping address-level2"
+                  value={address.city}
+                  onChange={handleAddressChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="state"
+                  name="state"
+                  label="State/Province/Region"
+                  fullWidth
+                  value={address.state}
+                  onChange={handleAddressChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  id="postcode"
+                  name="postcode"
+                  label="Zip / Postal code"
+                  fullWidth
+                  autoComplete="shipping postal-code"
+                  value={address.postcode}
+                  onChange={handleAddressChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  id="country"
+                  name="country"
+                  label="Country"
+                  fullWidth
+                  autoComplete="shipping country"
+                  value={address.country}
+                  onChange={handleAddressChange}
+                />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </DialogContent>

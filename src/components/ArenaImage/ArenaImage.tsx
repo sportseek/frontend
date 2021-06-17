@@ -4,7 +4,7 @@ import Edit from "@material-ui/icons/Edit"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   selectLoggedInUser,
-  updateArenaImage,
+  updateProfilePic,
 } from "redux/reducers/user/userSlice"
 import { IArenaOwner } from "types"
 
@@ -73,10 +73,9 @@ const ArenaImage = () => {
     formData.append("userId", user._id)
     formData.append("image", image)
     const payload: any = {
-      userId: user._id,
       formData: formData,
     }
-    dispatch(updateArenaImage(payload))
+    dispatch(updateProfilePic(payload))
   }
   const handleEditPicture = () => {
     const fileInput = document.getElementById("imageInput")
