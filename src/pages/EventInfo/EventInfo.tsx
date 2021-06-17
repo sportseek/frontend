@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 
 import { Link, useParams } from "react-router-dom"
 import MainFeaturedPost from "../../components/MainFeaturedPost/MainFeaturedPost"
-import { Button, makeStyles, Typography } from "@material-ui/core"
+import { Button, makeStyles, styled, Typography } from "@material-ui/core"
 
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
@@ -16,14 +16,9 @@ import {
 } from "redux/reducers/user/userSlice"
 
 import Grid from "@material-ui/core/Grid"
-import Accordion from "@material-ui/core/Accordion"
-import AccordionSummary from "@material-ui/core/AccordionSummary"
-import AccordionDetails from "@material-ui/core/AccordionDetails"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import moment from "moment"
-import PeopleIcon from "@material-ui/icons/People"
 
 import EventInfoCard from "components/EventInfo"
+import Location from "components/Location"
 
 type Params = {
   id: string
@@ -41,8 +36,30 @@ function EventInfo() {
     dispatch(fetchLoggedInUser())
   }, [])
 
+  const Root = styled("div")({
+    flex: 1,
+  })
+
+  const Column1 = styled(Grid)({})
+
+  const Column2 = styled(Grid)({})
+
+  const ColContainer = styled(Grid)({})
+
   return (
-    <div>{currentEvent && <EventInfoCard currentEvent={currentEvent} />}</div>
+    <div>
+      {currentEvent && (
+        <Grid container spacing={2}>
+          <Grid item>
+            <EventInfoCard currentEvent={currentEvent} />
+          </Grid>
+
+          {/* <Grid item>
+            <Location editable={false} />
+          </Grid> */}
+        </Grid>
+      )}
+    </div>
   )
 }
 
