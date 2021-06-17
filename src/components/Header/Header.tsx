@@ -98,7 +98,7 @@ const HeaderFC = () => {
           </Badge>
         </IconButton>
         <IconButton disabled>
-          <Avatar alt={name} src={profileImageUrl} className={classes.orange} >
+          <Avatar alt={name} src={profileImageUrl} className={classes.orange}>
             {firstLetterOfName}
           </Avatar>
         </IconButton>

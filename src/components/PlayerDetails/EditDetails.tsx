@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react"
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles"
 import {
   Button,
   Dialog,
@@ -14,24 +14,24 @@ import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import { IPlayer, PlayerPayload } from "types"
 
 type DetailsFormProps = {
-  open: boolean,
+  open: boolean
   handleClose: () => void
 }
 
 const useStyles = makeStyles(() => ({
   form: {
-      display: "flex",
-      flexDirection: "column",
-      margin: "auto",
+    display: "flex",
+    flexDirection: "column",
+    margin: "auto",
   },
   input: {
-      fontFamily: "Nunito",
-      fontStyle: "normal",
-      fontWeight: "normal",
-      fontSize: "14px",
-      lineHeight: "16px",
+    fontFamily: "Nunito",
+    fontStyle: "normal",
+    fontWeight: "normal",
+    fontSize: "14px",
+    lineHeight: "16px",
   },
-}));
+}))
 
 const UserDetailsForm = (props: DetailsFormProps) => {
   const classes = useStyles()
@@ -48,11 +48,11 @@ const UserDetailsForm = (props: DetailsFormProps) => {
     lastName,
     email,
     phone,
-    address
+    address,
   })
 
   const handleSave = () => {
-    handleClose();
+    handleClose()
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
