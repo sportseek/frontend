@@ -3,19 +3,19 @@ import { styled } from "@material-ui/core/styles"
 import { Chip } from "@material-ui/core"
 
 const InterestedChip = styled(Chip)(({ theme }) => ({
-  background: theme.calendar.interestedEventColor,
+  background: theme.calendar.interestedEventColor.main,
   marginRight: theme.spacing(1),
   marginBottom: theme.spacing(2),
 }))
 
 const PersonalChip = styled(Chip)(({ theme }) => ({
-  background: theme.calendar.personalEventColor,
+  background: theme.calendar.personalEventColor.main,
   marginRight: theme.spacing(2),
   marginBottom: theme.spacing(2),
 }))
 
 const RegisteredChip = styled(Chip)(({ theme }) => ({
-  background: theme.calendar.registeredEventColor,
+  background: theme.calendar.registeredEventColor.main,
   marginLeft: theme.spacing(1),
   marginBottom: theme.spacing(2),
 }))

@@ -3,16 +3,14 @@ import { Calendar, View, ViewsProps, SlotInfo } from "react-big-calendar"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { useTheme } from "@material-ui/core/styles"
 import { Card, CardContent, useMediaQuery } from "@material-ui/core"
-import moment from "moment"
 import {
-  createEvent,
-  getEvents,
+  fetchPEvents,
   selectEvents,
   selectNeedToUpdate,
 } from "redux/reducers/pEvent/pEventSlice"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import { findSportEventById } from "redux/reducers/event/eventAPI"
-import { ICalendarEvent, PEventPayload, IPlayer } from "types"
+import { ICalendarEvent, IPlayer, IPersonalEvent } from "types"
 import {
   getViews,
   getView,
@@ -21,9 +19,13 @@ import {
   getCalendarInfo,
   convertToCalenderEvent,
 } from "utils/calendarUtils"
-import CardHeader from "./CardHeader"
-import SubHeader from "./CardSubHeader"
-import AddEventPopUp from "./AddEvent"
+import {
+  PersonalEventInfoDialog,
+  AddPersonalEventFormDialog,
+  AddPersonalEventPopOver,
+} from "components/PersonalEvent"
+import CardHeader from "./CalendarCardHeader"
+import SubHeader from "./CalendarCardSubHeader"
 
 type PlayerCalendarProps = {
   goto: (id: string) => void
@@ -35,15 +37,19 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   const { goto: gotoEventDetails } = props
 
   const playerEvents = useAppSelector(selectEvents)
-  const reload = useAppSelector(selectNeedToUpdate)
+  const isUpdateNeeded = useAppSelector(selectNeedToUpdate)
   const player = useAppSelector(selectLoggedInUser) as IPlayer
 
-  const [open, setOpen] = useState(false)
+  const [openInfoDialog, setOpenInfoDialog] = useState(false)
+  const [openFormDialog, setOpenFormDialog] = useState(false)
   const [selectable, setSelectable] = useState(false)
+  const [slotInfo, setSlotInfo] = useState<SlotInfo>({} as SlotInfo)
   const [view, setView] = useState<View>()
   const [views, setViews] = useState<ViewsProps>()
   const [sportEvents, setSEvents] = useState<ICalendarEvent[]>([])
   const [personalEvents, setPEvents] = useState<ICalendarEvent[]>([])
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const [pEvent, setPEvent] = useState<IPersonalEvent>({} as IPersonalEvent)
 
   const events = sportEvents.concat(personalEvents)
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
@@ -51,38 +57,43 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   const { interestedEventColor, registeredEventColor, personalEventColor } =
     theme.calendar
 
-  useEffect(() => {
-    dispatch(getEvents())
-  }, [dispatch, reload])
+  const pEColor = selectable
+    ? personalEventColor.disabled
+    : personalEventColor.main
+  const iEColor = selectable
+    ? interestedEventColor.disabled
+    : interestedEventColor.main
+  const rEColor = selectable
+    ? registeredEventColor.disabled
+    : registeredEventColor.main
 
   useEffect(() => {
-    setPEvents(convertToCalenderEvent(playerEvents, personalEventColor))
-  }, [personalEventColor, playerEvents])
+    dispatch(fetchPEvents())
+  }, [dispatch, isUpdateNeeded])
+
+  useEffect(() => {
+    setPEvents(convertToCalenderEvent(playerEvents, pEColor))
+  }, [pEColor, playerEvents])
 
   const sportEventIds: ICalendarEvent[] = useMemo(
     () => [
-      ...setEventColor(interestedEvents, interestedEventColor),
-      ...setEventColor(registeredEvents, registeredEventColor),
+      ...setEventColor(interestedEvents, iEColor),
+      ...setEventColor(registeredEvents, rEColor),
     ],
-    [
-      interestedEvents,
-      registeredEvents,
-      interestedEventColor,
-      registeredEventColor,
-    ]
+    [interestedEvents, registeredEvents, iEColor, rEColor]
   )
 
   useEffect(() => {
     let running = true
 
-    const fetchEvents = async (ids: ICalendarEvent[]) => {
+    const fetchEventList = async (ids: ICalendarEvent[]) => {
       const promises = ids.map(({ _id }) => findSportEventById(_id))
       const result = await Promise.all(promises)
       const res = getCalendarInfo(ids, result)
       if (running) setSEvents(res)
     }
 
-    fetchEvents(sportEventIds)
+    fetchEventList(sportEventIds)
 
     return () => {
       running = false
@@ -95,29 +106,50 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   }, [isSmallScreen])
 
   const handleViewChange = (v: View) => setView(v)
-  const handlePopup = () => setOpen(!open)
+  const openInfoPopUp = () => setOpenInfoDialog(true)
+  const closeInfoPopUp = () => setOpenInfoDialog(false)
+  const openFormPopUp = () => setOpenFormDialog(true)
+  const closeFormPopUp = () => setOpenFormDialog(false)
+  const makeEditable = () => {
+    setSelectable(true)
+    closeInfoPopUp()
+  }
 
-  const onSelectEvent = (event: ICalendarEvent) =>
-    event.color &&
-    event.color !== personalEventColor &&
-    gotoEventDetails(event._id)
+  const onSelectPEvent = (
+    event: ICalendarEvent,
+    e: React.SyntheticEvent<HTMLElement, Event>
+  ) => {
+    setPEvent(event as IPersonalEvent)
+    setAnchorEl(e.currentTarget)
+  }
 
-  const onSelectSlot = ({ start, end }: SlotInfo) => {
-    const title = window.prompt("New Event name")
-    if (title) {
-      const event: PEventPayload = {
-        creator: player._id,
-        start: moment(start).toISOString(),
-        end: moment(end).toISOString(),
-        title,
-      }
-      dispatch(createEvent(event))
-    }
+  const goBackToNormalMode = () => setSelectable(false)
+
+  const onSelectEvent = (
+    event: ICalendarEvent,
+    e: React.SyntheticEvent<HTMLElement, Event>
+  ) =>
+    event.color && !selectable && event.color !== personalEventColor.main
+      ? gotoEventDetails(event._id)
+      : onSelectPEvent(event, e)
+
+  const onSelectSlot = (si: SlotInfo) => {
+    setSlotInfo(si)
+    openFormPopUp()
+  }
+
+  const closePersonalEventPopover = () => {
+    setAnchorEl(null)
   }
 
   return (
     <Card>
-      <CardHeader show={!isSmallScreen} openSchedule={handlePopup} />
+      <CardHeader
+        showActions={!isSmallScreen}
+        openSchedule={openInfoPopUp}
+        selectable={selectable}
+        closeSchedule={goBackToNormalMode}
+      />
       <CardContent>
         <SubHeader />
         <Calendar
@@ -138,10 +170,22 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
             },
           })}
         />
-        <AddEventPopUp
-          open={open}
-          setOpen={setOpen}
-          setSelectable={setSelectable}
+        <PersonalEventInfoDialog
+          open={openInfoDialog}
+          handleClose={closeInfoPopUp}
+          handleOKClick={makeEditable}
+        />
+        <AddPersonalEventFormDialog
+          open={openFormDialog}
+          userId={player._id}
+          slotInfo={slotInfo}
+          handleClose={closeFormPopUp}
+          goBack={goBackToNormalMode}
+        />
+        <AddPersonalEventPopOver
+          anchorEl={anchorEl}
+          handleClose={closePersonalEventPopover}
+          event={pEvent}
         />
       </CardContent>
     </Card>

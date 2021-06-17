@@ -1,20 +1,20 @@
-import React from "react"
+import React, { useState } from "react"
 import { spacing } from "@material-ui/system"
 import { makeStyles, styled } from "@material-ui/core/styles"
 import {
   Grid,
-  Button,
+  IconButton,
   Typography,
   CardHeader,
   CardContent,
-  CardActions,
   Card as MuiCard,
 } from "@material-ui/core"
-
+import { EditRounded } from "@material-ui/icons"
 import { useAppSelector } from "redux/hooks"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
-import { IPlayer } from "types"
-
+import { IAddress, IPlayer } from "types"
+import { getUserAddress } from "utils/stringUtils"
+import Tooltip from "components/Common/Tooltip"
 import EditCustomerForm from "./EditDetails"
 
 const Card = styled(MuiCard)(spacing)
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   cardContent: {
     paddingTop: 4,
     paddingLeft: 24,
-    paddingBottom: 0,
+    paddingBottom: 8,
   },
   cardActions: {
     paddingTop: 0,
@@ -42,18 +42,35 @@ const useStyles = makeStyles({
 
 export default function PersonalInfoCard() {
   const classes = useStyles()
+  const [openEditForm, setOpenEditForm] = useState(false)
   const player = useAppSelector(selectLoggedInUser) as IPlayer
 
-  const { firstName, lastName, phone, email } = player
+  const { address = {} as IAddress, firstName, lastName, phone, email } = player
 
-  const popUpEditCustomerForm = () => console.log()
+  const popUpEditCustomerForm = () => setOpenEditForm(true)
+
+  const closeFormPopUp = () => setOpenEditForm(false)
 
   return (
     <Card className={classes.card}>
-      <CardHeader className={classes.cardHeader} title="Personal info" />
+      <CardHeader
+        className={classes.cardHeader}
+        title="Personal info"
+        action={
+          <Tooltip title="Edit Details" placement="left">
+            <IconButton
+              color="secondary"
+              aria-label="edit user details"
+              onClick={popUpEditCustomerForm}
+            >
+              <EditRounded />
+            </IconButton>
+          </Tooltip>
+        }
+      />
       <CardContent className={classes.cardContent}>
-        <Grid container spacing={0}>
-          <Grid item xs={6}>
+        <Grid container spacing={1}>
+          <Grid item xs={7} lg={6}>
             <Typography variant="caption" gutterBottom>
               First name
             </Typography>
@@ -61,7 +78,7 @@ export default function PersonalInfoCard() {
               {firstName}
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs lg>
             <Typography variant="caption" gutterBottom>
               Last name
             </Typography>
@@ -69,7 +86,7 @@ export default function PersonalInfoCard() {
               {lastName}
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={7} lg={6}>
             <Typography variant="caption" gutterBottom>
               Email
             </Typography>
@@ -77,7 +94,7 @@ export default function PersonalInfoCard() {
               {email}
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs lg>
             <Typography variant="caption" gutterBottom>
               Phone
             </Typography>
@@ -85,14 +102,24 @@ export default function PersonalInfoCard() {
               {phone}
             </Typography>
           </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              Address
+            </Typography>
+            <Typography variant="body2" gutterBottom>
+              {getUserAddress(address)}
+            </Typography>
+          </Grid>
         </Grid>
+        <EditCustomerForm open={openEditForm} handleClose={closeFormPopUp} />
       </CardContent>
+      {/**
       <CardActions className={classes.cardActions}>
         <Button onClick={popUpEditCustomerForm} size="small">
           <Typography>Edit details</Typography>
         </Button>
-        <EditCustomerForm />
       </CardActions>
+      */}
     </Card>
   )
 }

@@ -1,4 +1,5 @@
-import { IArenaOwner, IPlayer, IUser } from "types"
+import moment from "moment"
+import { IAddress, IArenaOwner, IPlayer, IUser } from "types"
 
 export const isEmpty = (obj: Object) => JSON.stringify(obj) === "{}"
 
@@ -14,3 +15,11 @@ export const getUserName = (user: IUser) => {
     ? (user as IArenaOwner).arenaName
     : `${(user as IPlayer).firstName} ${(user as IPlayer).lastName}`
 }
+
+export const getUserAddress = (address: IAddress) =>
+  isEmpty(address)
+    ? ""
+    : `${address.street}, ${address.city}, ${address.postcode}, ${address.country}`
+
+export const getReadableDate = (date: Date | undefined) =>
+  date === undefined ? "" : moment(date).format("dddd, MMMM Do YYYY, h:mm:ss a")

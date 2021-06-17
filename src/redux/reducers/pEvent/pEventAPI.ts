@@ -15,4 +15,10 @@ const fetchEventList = async () => {
   return response
 }
 
-export default { create, fetchEventList }
+const deleteEvent = async (id: string) => {
+  const url = `/${eventEndpoint}/${id}`
+  const response = await axios.delete(url)
+  return response
+}
+
+export default { create, deleteEvent, fetchEventList }

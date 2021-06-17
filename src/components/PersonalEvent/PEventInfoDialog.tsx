@@ -67,20 +67,12 @@ const DialogActions = withStyles((theme: Theme) => ({
 
 type Props = {
   open: boolean
-  setSelectable: React.Dispatch<React.SetStateAction<boolean>>
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  handleClose: () => void
+  handleOKClick: () => void
 }
 
-const CustomizedDialogs = (props: Props) => {
-  const { open, setOpen, setSelectable } = props
-
-  const handleSave = () => {
-    setSelectable(true)
-    setOpen(false)
-  }
-  const handleClose = () => {
-    setOpen(false)
-  }
+const AddPersonalEventDialog = (props: Props) => {
+  const { open, handleClose, handleOKClick } = props
 
   return (
     <div>
@@ -108,7 +100,7 @@ const CustomizedDialogs = (props: Props) => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleSave} color="primary">
+          <Button autoFocus onClick={handleOKClick} color="primary">
             OK
           </Button>
         </DialogActions>
@@ -117,4 +109,4 @@ const CustomizedDialogs = (props: Props) => {
   )
 }
 
-export default CustomizedDialogs
+export default AddPersonalEventDialog
