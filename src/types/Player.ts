@@ -20,6 +20,5 @@ export type PlayerPayload = {
   firstName: string
   lastName: string
   email: string
-  address: IAddress
   phone: string
 }

@@ -54,7 +54,5 @@ export const userSlice = createSlice({
 })
 
 export const selectLoggedInUser = (state: RootState) => state.user.loggedInUser
-export const selectUserLocation = (state: RootState) =>
-  state.user.loggedInUser.location
 
 export default userSlice.reducer

@@ -14,6 +14,7 @@ import {
 import { useAppSelector } from "redux/hooks"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import { IPlayer } from "types"
+import { getUserAddress } from "utils/stringUtils"
 
 import EditCustomerForm from "./EditDetails"
 
@@ -45,7 +46,7 @@ export default function PersonalInfoCard() {
   const [openEditForm, setOpenEditForm] = useState(false)
   const player = useAppSelector(selectLoggedInUser) as IPlayer
 
-  const { firstName, lastName, phone, email } = player
+  const { address, firstName, lastName, phone, email } = player
 
   const popUpEditCustomerForm = () => setOpenEditForm(true)
 
@@ -72,7 +73,7 @@ export default function PersonalInfoCard() {
               {lastName}
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <Typography variant="caption" gutterBottom>
               Email
             </Typography>
@@ -80,12 +81,20 @@ export default function PersonalInfoCard() {
               {email}
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <Typography variant="caption" gutterBottom>
               Phone
             </Typography>
             <Typography variant="body2" gutterBottom>
               {phone}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" gutterBottom>
+              Address
+            </Typography>
+            <Typography variant="body2" gutterBottom>
+              {getUserAddress(address)}
             </Typography>
           </Grid>
         </Grid>
