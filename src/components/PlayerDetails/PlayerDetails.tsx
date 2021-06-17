@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { spacing } from "@material-ui/system"
 import { makeStyles, styled } from "@material-ui/core/styles"
 import {
@@ -42,11 +42,14 @@ const useStyles = makeStyles({
 
 export default function PersonalInfoCard() {
   const classes = useStyles()
+  const [openEditForm, setOpenEditForm] = useState(false)
   const player = useAppSelector(selectLoggedInUser) as IPlayer
 
   const { firstName, lastName, phone, email } = player
 
-  const popUpEditCustomerForm = () => console.log()
+  const popUpEditCustomerForm = () => setOpenEditForm(true)
+
+  const closeFormPopUp = () => setOpenEditForm(false)
 
   return (
     <Card className={classes.card}>
@@ -91,7 +94,7 @@ export default function PersonalInfoCard() {
         <Button onClick={popUpEditCustomerForm} size="small">
           <Typography>Edit details</Typography>
         </Button>
-        <EditCustomerForm />
+        <EditCustomerForm open={openEditForm} handleClose={closeFormPopUp} />
       </CardActions>
     </Card>
   )

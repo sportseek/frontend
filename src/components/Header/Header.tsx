@@ -65,7 +65,10 @@ const HeaderFC = () => {
   const type = useAppSelector(selectUserType)
   const user = useAppSelector(selectLoggedInUser)
   const { profileImageUrl } = user
+
   const name = getUserName(user)
+
+  const firstLetterOfName = name ? name[0] : ""
 
   React.useEffect(() => {
     dispatch(fetchLoggedInUser())
@@ -95,7 +98,9 @@ const HeaderFC = () => {
           </Badge>
         </IconButton>
         <IconButton disabled>
-          <Avatar alt={name} src={profileImageUrl} className={classes.orange} />
+          <Avatar alt={name} src={profileImageUrl} className={classes.orange} >
+            {firstLetterOfName}
+          </Avatar>
         </IconButton>
         <IconButton
           className={classes.title}
