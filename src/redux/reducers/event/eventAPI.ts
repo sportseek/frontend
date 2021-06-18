@@ -60,6 +60,14 @@ const updateRegistered = async (registeredPayload: UpdateRegisteredPayload) => {
   return response
 }
 
+export const findSportEventById = async (id: string) => {
+  const response = await fetchById(id)
+    .then((res) => res)
+    .catch((err) => ({ data: { success: false, error: err } }))
+
+  return response.data
+}
+
 export default {
   fetchById,
   update,
@@ -69,4 +77,5 @@ export default {
   fetchAllEventList,
   updateInterested,
   updateRegistered,
+  findSportEventById,
 }

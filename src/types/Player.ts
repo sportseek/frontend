@@ -1,14 +1,24 @@
-import Location from "./location"
+import { IAddress, ILocation } from "types"
 
 export default interface IPlayer {
-  firstName?: string
-  lastName?: string
-  email?: string
-  mobilePhone?: string
-  type: string
   _id: string
-  location?: Location
-  profileImageUrl?: string
-  registeredEvents?: string[]
-  interestedEvents?: string[]
+  firstName: string
+  lastName: string
+  email: string
+  type: string
+  location: ILocation
+  password: string
+  address: IAddress
+  phone: string
+  wallet: number
+  profileImageUrl: string
+  registeredEvents: string[]
+  interestedEvents: string[]
+}
+
+export type PlayerPayload = {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
 }

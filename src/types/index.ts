@@ -1,8 +1,10 @@
-import IPlayer from "./Player"
+import IPlayer, { PlayerPayload } from "./Player"
 import IArenaOwner from "./ArenaOwner"
-import { IEvent, ICalendarEvent, CreateEventPayload } from "./Event"
-import ILocation from "./location"
+import { IEvent, CreateEventPayload } from "./Event"
+import ILocation from "./Location"
 import IAddress from "./Address"
+import ICalendarEvent from "./CalendarEvent"
+import { IPersonalEvent, PEventPayload } from "./PersonalEvent"
 
 export enum UserType {
   PLAYER = "player",
@@ -18,6 +20,9 @@ export type {
   IEvent,
   ICalendarEvent,
   IPlayer,
+  PlayerPayload,
+  IPersonalEvent,
   IUser,
   ILocation,
+  PEventPayload,
 }

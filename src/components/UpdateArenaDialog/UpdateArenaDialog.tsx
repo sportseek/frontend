@@ -104,7 +104,6 @@ const UpdateArenaDialog = (props: UpdateArenaDialogProps) => {
     updatedUser.arenaName = arenaName
     updatedUser.email = email
     updatedUser.phone = phone
-    console.log(updatedUser)
     dispatch(updateUser(updatedUser))
     handleClose()
   }
