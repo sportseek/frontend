@@ -117,9 +117,11 @@ export const eventSlice = createSlice({
       })
       .addCase(updateInterested.fulfilled, (state, action) => {
         state.currentEvent = action.payload.event
+        state.reloadEvents = true
       })
       .addCase(updateRegistered.fulfilled, (state, action) => {
         state.currentEvent = action.payload.event
+        state.reloadEvents = true
       })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),

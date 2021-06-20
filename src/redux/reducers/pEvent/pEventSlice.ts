@@ -84,7 +84,7 @@ export const { prepareForValidation } = pEventSlice.actions
 export const selectEvents = (state: RootState) => state.pevent.events
 export const selectErrors = (state: RootState) => state.pevent.errors
 export const selectHasErrors = (state: RootState) => state.pevent.hasErrors
-export const selectNeedToUpdate = (state: RootState) =>
+export const selectNeedToUpdatePersonalEventList = (state: RootState) =>
   state.pevent.needToUpdate
 
 export default pEventSlice.reducer
