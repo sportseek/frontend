@@ -13,7 +13,7 @@ import Wallet from "components/Wallet"
 import Location from "components/Location"
 import Calendar from "components/PlayerCalendar"
 import TabPanel from "components/Common/TabPanel"
-import EventDetailsView from "../../EventDetails"
+import EventDetailsView from "pages/EventDetails"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

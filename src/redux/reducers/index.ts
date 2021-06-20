@@ -14,12 +14,18 @@ const userPersistConfig = {
   whitelist: ["loggedInUser"],
 }
 
+const eventPersistConfig = {
+  key: "event",
+  storage,
+  whitelist: ["curEventId"],
+}
+
 const reducers = {
   counter: counterReducer,
   ui: uiReducer,
   user: persistReducer(userPersistConfig, userReducer),
   auth: authReducer,
-  event: eventReducer,
+  event: persistReducer(eventPersistConfig, eventReducer),
   pevent: peventReduer,
 }
 
