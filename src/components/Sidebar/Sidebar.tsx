@@ -23,6 +23,7 @@ import {
   closeSideBarMobile,
   selectOpenSideBar,
   selectOpenSideBarMobile,
+  setSearchPageTabIndex,
 } from "redux/reducers/ui/uiSlice"
 import { selectUserType } from "redux/reducers/auth/authSlice"
 import { PageDataType, getPages } from "pages"
@@ -108,6 +109,8 @@ const SideBar = (props: WithWidthProps) => {
 
   const container =
     window !== undefined ? () => window.document.body : undefined
+
+  dispatch(setSearchPageTabIndex(0))
 
   useEffect(() => {
     dispatch(closeSideBarMobile())
