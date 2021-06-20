@@ -6,10 +6,14 @@ import { Card, CardContent, useMediaQuery } from "@material-ui/core"
 import {
   fetchPEvents,
   selectEvents,
-  selectNeedToUpdate,
+  selectNeedToUpdatePersonalEventList,
 } from "redux/reducers/pEvent/pEventSlice"
-import { selectLoggedInUser } from "redux/reducers/user/userSlice"
+import {
+  fetchLoggedInUser,
+  selectLoggedInUser,
+} from "redux/reducers/user/userSlice"
 import { findSportEventById } from "redux/reducers/event/eventAPI"
+import { selectReloadEvents } from "redux/reducers/event/eventSlice"
 import { ICalendarEvent, IPlayer, IPersonalEvent } from "types"
 import {
   getViews,
@@ -37,7 +41,8 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   const { goto: gotoEventDetails } = props
 
   const playerEvents = useAppSelector(selectEvents)
-  const isUpdateNeeded = useAppSelector(selectNeedToUpdate)
+  const isPEventsUpdated = useAppSelector(selectNeedToUpdatePersonalEventList)
+  const isSEventsUpdated = useAppSelector(selectReloadEvents)
   const player = useAppSelector(selectLoggedInUser) as IPlayer
 
   const [openInfoDialog, setOpenInfoDialog] = useState(false)
@@ -68,8 +73,12 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
     : registeredEventColor.main
 
   useEffect(() => {
+    dispatch(fetchLoggedInUser())
+  }, [dispatch, isSEventsUpdated])
+
+  useEffect(() => {
     dispatch(fetchPEvents())
-  }, [dispatch, isUpdateNeeded])
+  }, [dispatch, isPEventsUpdated])
 
   useEffect(() => {
     setPEvents(convertToCalenderEvent(playerEvents, pEColor))
@@ -77,7 +86,10 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
 
   const sportEventIds: ICalendarEvent[] = useMemo(
     () => [
-      ...setEventColor(interestedEvents, iEColor),
+      ...setEventColor(
+        interestedEvents.filter((item) => registeredEvents.indexOf(item) < 0),
+        iEColor
+      ),
       ...setEventColor(registeredEvents, rEColor),
     ],
     [interestedEvents, registeredEvents, iEColor, rEColor]
