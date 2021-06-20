@@ -12,7 +12,10 @@ import {
 } from "@material-ui/core"
 import { ExitToApp, Menu, Notifications } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { openSideBarMobile } from "redux/reducers/ui/uiSlice"
+import {
+  openSideBarMobile,
+  setSearchPageTabIndex,
+} from "redux/reducers/ui/uiSlice"
 import { logout, selectUserType } from "redux/reducers/auth/authSlice"
 import {
   fetchLoggedInUser,
@@ -59,6 +62,7 @@ const HeaderFC = () => {
   const dispatch = useAppDispatch()
 
   const signout = () => {
+    dispatch(setSearchPageTabIndex(0))
     dispatch(logout())
   }
 

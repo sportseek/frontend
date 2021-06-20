@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
+import {
+  createSlice,
+  createAsyncThunk,
+  isAnyOf,
+  PayloadAction,
+} from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IEvent, CreateEventPayload } from "types"
 import {
@@ -9,6 +14,7 @@ import {
 import eventAPI from "./eventAPI"
 
 interface EventState {
+  curEventId: string
   currentEvent: IEvent
   events: IEvent[]
   allEvents: IEvent[]
@@ -16,6 +22,7 @@ interface EventState {
 }
 
 const initialState: EventState = {
+  curEventId: "",
   currentEvent: {} as IEvent,
   events: [],
   allEvents: [],
@@ -86,7 +93,11 @@ export const updateRegistered = createAsyncThunk(
 export const eventSlice = createSlice({
   name: "event",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurEventId: (state, action: PayloadAction<string>) => {
+      state.curEventId = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchEventById.fulfilled, (state, action) => {
@@ -123,5 +134,8 @@ export const selectCurrentEvent = (state: RootState) => state.event.currentEvent
 export const selectEvents = (state: RootState) => state.event.events
 export const selectReloadEvents = (state: RootState) => state.event.reloadEvents
 export const selectAllEvents = (state: RootState) => state.event.allEvents
+export const selectCurrentEventId = (state: RootState) => state.event.curEventId
+
+export const { setCurEventId } = eventSlice.actions
 
 export default eventSlice.reducer

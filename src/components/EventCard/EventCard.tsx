@@ -3,15 +3,11 @@ import { makeStyles } from "@material-ui/core/styles"
 import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
-import Grid from "@material-ui/core/Grid"
-import { connect } from "react-redux"
 import CardActionArea from "@material-ui/core/CardActionArea"
 import CardActions from "@material-ui/core/CardActions"
 import CardMedia from "@material-ui/core/CardMedia"
 import Button from "@material-ui/core/Button"
 import { IEvent } from "types"
-import { Link } from "react-router-dom"
-// import sampleImage from "utils/stockarenaimage.jpg"
 
 const useStyles = makeStyles({
   root: {
@@ -24,9 +20,12 @@ const useStyles = makeStyles({
 
 type Props = {
   event: IEvent
+  openDetails: (id: string) => void
 }
-const EventCard: React.FC<Props> = ({event}) => {
+const EventCard: React.FC<Props> = (props: Props) => {
   const classes = useStyles()
+  const { event, openDetails } = props
+  const handleClick = () => openDetails(event._id)
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -45,7 +44,7 @@ const EventCard: React.FC<Props> = ({event}) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary" component={Link} to={`/eventDetails/${event._id}`} >
+        <Button size="small" color="primary" onClick={handleClick}>
           Show Details
         </Button>
       </CardActions>

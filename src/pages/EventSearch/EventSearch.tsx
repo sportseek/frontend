@@ -7,11 +7,21 @@ import {
 } from "@material-ui/core/styles"
 import { Grid, Paper } from "@material-ui/core"
 import Helmet from "react-helmet"
-
+import TabPanel from "components/Common/TabPanel"
+import EventDetailsView from "pages/EventDetails"
 import EventCard from "components/EventCard"
 import FilterEvents from "components/FilterEvents"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { getAllEvents, selectAllEvents } from "redux/reducers/event/eventSlice"
+import {
+  getAllEvents,
+  selectAllEvents,
+  selectCurrentEventId,
+  setCurEventId,
+} from "redux/reducers/event/eventSlice"
+import {
+  setSearchPageTabIndex,
+  selectSearchPageTabIndex,
+} from "redux/reducers/ui/uiSlice"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,32 +49,54 @@ const EventSearch = () => {
   const dispatch = useAppDispatch()
   const allEvents = useAppSelector(selectAllEvents)
 
+  const eventId = useAppSelector(selectCurrentEventId)
+  const tabIndex = useAppSelector(selectSearchPageTabIndex)
+
+  const gotoEventDetails = (id: string) => {
+    dispatch(setSearchPageTabIndex(1))
+    dispatch(setCurEventId(id))
+  }
+  const goBack = () => {
+    dispatch(setSearchPageTabIndex(0))
+    dispatch(setCurEventId(""))
+  }
+
   useEffect(() => {
     dispatch(getAllEvents({}))
-  }, [])
+  }, [dispatch])
 
   return (
     <div className={classes.root}>
-      <main className={classes.content}>
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-          spacing={2}
-        >
-          <Grid item xs={12}>
-            <Grid container spacing={2} justify="center">
-              {allEvents.map((item) => (
-                <Grid item xs={4} key={item._id}>
-                  <EventCard event={item} />
-                </Grid>
-              ))}
+      <TabPanel value={tabIndex} index={0}>
+        <Helmet title="Search events" />
+        <main className={classes.content}>
+          <Grid
+            container
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            <Grid item xs={12}>
+              <Grid container spacing={2} justify="center">
+                {allEvents.map((item) => (
+                  <Grid item xs={4} key={item._id}>
+                    <EventCard event={item} openDetails={gotoEventDetails} />
+                  </Grid>
+                ))}
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </main>
-      <FilterEvents />
+        </main>
+        <FilterEvents />
+      </TabPanel>
+      <TabPanel value={tabIndex} index={1}>
+        <EventDetailsView
+          goBack={goBack}
+          parentPage="Search events"
+          id={eventId}
+        />
+      </TabPanel>
     </div>
   )
 }
