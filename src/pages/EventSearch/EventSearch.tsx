@@ -14,6 +14,7 @@ import FilterEvents from "components/FilterEvents"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   getAllEvents,
+  getMinMaxPrice,
   selectAllEvents,
   selectCurrentEventId,
   setCurEventId,
@@ -63,6 +64,7 @@ const EventSearch = () => {
 
   useEffect(() => {
     dispatch(getAllEvents({}))
+    dispatch(getMinMaxPrice())
   }, [dispatch])
 
   return (
@@ -77,10 +79,10 @@ const EventSearch = () => {
             alignItems="flex-start"
             spacing={2}
           >
-            <Grid item xs={12}>
-              <Grid container spacing={2} justify="center">
+            <Grid item xs={11}>
+              <Grid container spacing={2} justify="space-evenly">
                 {allEvents.map((item) => (
-                  <Grid item xs={4} key={item._id}>
+                  <Grid item xl={3} xs={4} key={item._id}>
                     <EventCard event={item} openDetails={gotoEventDetails} />
                   </Grid>
                 ))}
