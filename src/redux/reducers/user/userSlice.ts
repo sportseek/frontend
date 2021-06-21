@@ -1,16 +1,22 @@
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
-import { IUser } from "types"
+import { ILocation, IUser } from "types"
 import userAPI from "./userAPI"
 
 interface UserState {
   loggedInUser: IUser
+  location: ILocation
   loading: boolean
+  validationErrors: IUser
+  hasErrors: boolean
 }
 
 const initialState: UserState = {
-  loggedInUser: { location: { lat: 0, lng: 0 } } as IUser,
+  loggedInUser: {} as IUser,
+  location: {} as ILocation,
   loading: false,
+  hasErrors: true,
+  validationErrors: {} as IUser,
 }
 
 export const fetchLoggedInUser = createAsyncThunk(
@@ -23,9 +29,14 @@ export const fetchLoggedInUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
   "user/update",
-  async (user: IUser) => {
-    const response = await userAPI.update(user)
-    return response.data
+  async (user: IUser, { rejectWithValue }) => {
+    try {
+      const response = await userAPI.update(user)
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return rejectWithValue(err.response.data)
+    }
   }
 )
 
@@ -40,7 +51,12 @@ export const updateProfilePic = createAsyncThunk(
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    prepareForValidation: (state) => {
+      state.hasErrors = true
+      state.validationErrors = {} as IUser
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addMatcher(
@@ -51,7 +67,10 @@ export const userSlice = createSlice({
         ),
         (state, action) => {
           state.loggedInUser = action.payload.user
+          state.location = action.payload.user.location
           state.loading = false
+          state.hasErrors = false
+          state.validationErrors = {} as IUser
         }
       )
       .addMatcher(
@@ -70,14 +89,23 @@ export const userSlice = createSlice({
           updateUser.rejected,
           updateProfilePic.rejected
         ),
-        (state) => {
+        (state, action) => {
           state.loading = false
+          state.validationErrors = action.payload as IUser
+          state.hasErrors = true
         }
       )
   },
 })
 
+export const { prepareForValidation } = userSlice.actions
+
 export const selectLoggedInUser = (state: RootState) => state.user.loggedInUser
 export const selectLoadingUserData = (state: RootState) => state.user.loading
+export const selectValidationErrors = (state: RootState) =>
+  state.user.validationErrors
+export const selectHasValidationErrors = (state: RootState) =>
+  state.user.hasErrors
+export const selectUserLocation = (state: RootState) => state.user.location
 
 export default userSlice.reducer

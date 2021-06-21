@@ -15,10 +15,3 @@ export default interface IPlayer {
   registeredEvents: string[]
   interestedEvents: string[]
 }
-
-export type PlayerPayload = {
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-}

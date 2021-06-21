@@ -11,7 +11,7 @@ import peventReduer from "./pEvent/pEventSlice"
 const userPersistConfig = {
   key: "user",
   storage,
-  whitelist: ["loggedInUser"],
+  whitelist: ["location"],
 }
 
 const eventPersistConfig = {
