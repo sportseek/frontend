@@ -11,7 +11,27 @@ import CardMedia from "@material-ui/core/CardMedia"
 import Button from "@material-ui/core/Button"
 import { IEvent } from "types"
 import { Link } from "react-router-dom"
-// import sampleImage from "utils/stockarenaimage.jpg"
+import moment from "moment"
+import { People, Star, Euro } from "@material-ui/icons"
+import { Tooltip } from "@material-ui/core"
+import Geocode from "react-geocode"
+
+Geocode.setApiKey("AIzaSyC3piWVpJ50bb8sVq-vGZnf6nbJMgyNtSE")
+Geocode.setLanguage("en")
+
+function AddressGen(lat: string, lng: string) {
+  var address 
+  Geocode.fromLatLng(lat, lng).then(
+    (response) => {
+      address = response.results[0].formatted_address
+      return address
+      // console.log(address)
+    },
+    (error) => {
+      console.error(error)
+    }
+  )
+}
 
 const useStyles = makeStyles({
   root: {
@@ -20,35 +40,107 @@ const useStyles = makeStyles({
   media: {
     height: 140,
   },
+  customLink: {
+    textDecoration: "none",
+    color: "black",
+  },
+  iconStyle: {
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
 })
 
 type Props = {
   event: IEvent
 }
-const EventCard: React.FC<Props> = ({event}) => {
+const EventCard: React.FC<Props> = ({ event }) => {
   const classes = useStyles()
+  var eventAddress = AddressGen(String(event.location.lat), String(event.location.lng))
+
   return (
     <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          image={event.eventImageUrl}
-          className={classes.media}
-          title="Event 1"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {event.title}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Location
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary" component={Link} to={`/eventDetails/${event._id}`} >
-          Show Details
-        </Button>
-      </CardActions>
+      <Link to={`/eventDetails/${event._id}`} className={classes.customLink}>
+        <CardActionArea>
+          <CardMedia
+            image={event.eventImageUrl}
+            className={classes.media}
+            title="Event 1"
+          />
+          <CardContent>
+            <Grid
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="flex-start"
+              spacing={0}
+            >
+              <Grid item xs={12}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {event.title}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  Location
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  Date: <b>{moment(event.start).format("MMMM Do, YYYY")}</b>
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  Time: <b>{moment(event.start).format("LT")}</b>
+                </Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <div className={classes.iconStyle}>
+                  <Tooltip title="Entry Fee">
+                    <Euro style={{ marginRight: "4px" }} />
+                  </Tooltip>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    <b>{event.entryFee}</b>
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={3}>
+                <div className={classes.iconStyle}>
+                  <Tooltip title="Participating">
+                    <People style={{ marginRight: "4px" }} />
+                  </Tooltip>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    <b>{event.registeredPlayers.length}</b>
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={3}>
+                <div className={classes.iconStyle}>
+                  <Tooltip title="Interested">
+                    <Star style={{ marginRight: "4px" }} />
+                  </Tooltip>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    <b>{event.interestedPlayers.length}</b>
+                  </Typography>
+                </div>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </CardActionArea>
+      </Link>
     </Card>
   )
 }
