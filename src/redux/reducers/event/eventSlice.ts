@@ -1,10 +1,20 @@
-import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
+import {
+  createSlice,
+  createAsyncThunk,
+  isAnyOf,
+  PayloadAction,
+} from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IEvent, CreateEventPayload } from "types"
-import { SearchEventPayload } from "types/Event"
+import {
+  SearchEventPayload,
+  UpdateInterestedPayload,
+  UpdateRegisteredPayload,
+} from "types/Event"
 import eventAPI from "./eventAPI"
 
 interface EventState {
+  curEventId: string
   currentEvent: IEvent
   events: IEvent[]
   allEvents: IEvent[]
@@ -12,6 +22,7 @@ interface EventState {
 }
 
 const initialState: EventState = {
+  curEventId: "",
   currentEvent: {} as IEvent,
   events: [],
   allEvents: [],
@@ -55,15 +66,38 @@ export const getEvents = createAsyncThunk("events/fetchEvents", async () => {
   return response.data
 })
 
-export const getAllEvents = createAsyncThunk("events/fetchAllEvents", async (searchPayload: SearchEventPayload) => {
-  const response = await eventAPI.fetchAllEventList(searchPayload)
-  return response.data
-})
+export const getAllEvents = createAsyncThunk(
+  "events/fetchAllEvents",
+  async (searchPayload: SearchEventPayload) => {
+    const response = await eventAPI.fetchAllEventList(searchPayload)
+    return response.data
+  }
+)
+
+export const updateInterested = createAsyncThunk(
+  "event/updateInterested",
+  async (interestedPayload: UpdateInterestedPayload) => {
+    const response = await eventAPI.updateInterested(interestedPayload)
+    return response.data
+  }
+)
+
+export const updateRegistered = createAsyncThunk(
+  "event/updateRegistered",
+  async (registeredPayload: UpdateRegisteredPayload) => {
+    const response = await eventAPI.updateRegistered(registeredPayload)
+    return response.data
+  }
+)
 
 export const eventSlice = createSlice({
   name: "event",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurEventId: (state, action: PayloadAction<string>) => {
+      state.curEventId = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchEventById.fulfilled, (state, action) => {
@@ -81,6 +115,14 @@ export const eventSlice = createSlice({
         state.allEvents = action.payload.eventList
         state.reloadEvents = false
       })
+      .addCase(updateInterested.fulfilled, (state, action) => {
+        state.currentEvent = action.payload.event
+        state.reloadEvents = true
+      })
+      .addCase(updateRegistered.fulfilled, (state, action) => {
+        state.currentEvent = action.payload.event
+        state.reloadEvents = true
+      })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
         (state) => {
@@ -94,5 +136,8 @@ export const selectCurrentEvent = (state: RootState) => state.event.currentEvent
 export const selectEvents = (state: RootState) => state.event.events
 export const selectReloadEvents = (state: RootState) => state.event.reloadEvents
 export const selectAllEvents = (state: RootState) => state.event.allEvents
+export const selectCurrentEventId = (state: RootState) => state.event.curEventId
+
+export const { setCurEventId } = eventSlice.actions
 
 export default eventSlice.reducer

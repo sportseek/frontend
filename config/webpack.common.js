@@ -65,7 +65,7 @@ const config = {
       path: "config/.env",
     }),
     new FaviconsWebpackPlugin({
-      logo: "./public/logo512.png",
+      logo: "./public/logo.png",
       mode: "webapp",
       manifest: "./public/manifest.json",
     }),

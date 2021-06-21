@@ -1,9 +1,12 @@
-import React, { FC } from "react"
+import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Card from "@material-ui/core/Card"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
+import { useAppSelector } from "redux/hooks"
+import { selectLoggedInUser } from "redux/reducers/user/userSlice"
+import { IPlayer } from "types"
 
 const useStyles = makeStyles({
   simpleCard: {
@@ -16,13 +19,13 @@ const useStyles = makeStyles({
   },
 })
 
-type WalletProps = {
-  value: string
-}
-
-const Wallet: FC<WalletProps> = (props: WalletProps) => {
+const Wallet = () => {
   const classes = useStyles()
-  const { value } = props
+
+  const player = useAppSelector(selectLoggedInUser) as IPlayer
+
+  const { wallet } = player
+
   const euro = "\u20AC"
   return (
     <Card>
@@ -34,7 +37,7 @@ const Wallet: FC<WalletProps> = (props: WalletProps) => {
           color="secondary"
           className={classes.cardValue}
         >
-          {`${value} ${euro}`}
+          {`${wallet} ${euro}`}
         </Typography>
       </CardContent>
     </Card>

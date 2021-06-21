@@ -3,8 +3,6 @@ import { makeStyles } from "@material-ui/core/styles"
 import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
-import Grid from "@material-ui/core/Grid"
-import { connect } from "react-redux"
 import CardActionArea from "@material-ui/core/CardActionArea"
 import CardActions from "@material-ui/core/CardActions"
 import CardMedia from "@material-ui/core/CardMedia"
@@ -53,14 +51,16 @@ const useStyles = makeStyles({
 
 type Props = {
   event: IEvent
+  openDetails: (id: string) => void
 }
-const EventCard: React.FC<Props> = ({ event }) => {
+const EventCard: React.FC<Props> = ( props: Props ) => {
   const classes = useStyles()
+  const { event, openDetails } = props
+  const handleClick = () => openDetails(event._id)
   var eventAddress = AddressGen(String(event.location.lat), String(event.location.lng))
 
   return (
-    <Card className={classes.root}>
-      <Link to={`/eventDetails/${event._id}`} className={classes.customLink}>
+    <Card className={classes.root} onClick={handleClick}>
         <CardActionArea>
           <CardMedia
             image={event.eventImageUrl}
@@ -140,7 +140,6 @@ const EventCard: React.FC<Props> = ({ event }) => {
             </Grid>
           </CardContent>
         </CardActionArea>
-      </Link>
     </Card>
   )
 }

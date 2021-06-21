@@ -67,20 +67,12 @@ const DialogActions = withStyles((theme: Theme) => ({
 
 type Props = {
   open: boolean
-  setSelectable: React.Dispatch<React.SetStateAction<boolean>>
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  handleClose: () => void
+  handleOKClick: () => void
 }
 
-const CustomizedDialogs = (props: Props) => {
-  const { open, setOpen, setSelectable } = props
-
-  const handleSave = () => {
-    setSelectable(true)
-    setOpen(false)
-  }
-  const handleClose = () => {
-    setOpen(false)
-  }
+const AddPersonalEventDialog = (props: Props) => {
+  const { open, handleClose, handleOKClick } = props
 
   return (
     <div>
@@ -95,18 +87,20 @@ const CustomizedDialogs = (props: Props) => {
         <DialogContent dividers>
           <Typography gutterBottom>
             You can add your schedule when you are not available for any sport,
-            so if your friends wants to invite you they will know that you are unavilable
+            so if your friends wants to invite you they will know that you are
+            unavilable
           </Typography>
           <Typography gutterBottom>
-            Click Ok to make the time slots editable, you can drag to select multiple time slots,
-            after selecting slots you can create event
+            Click Ok to make the time slots editable, you can drag to select
+            multiple time slots, after selecting slots you can create event
           </Typography>
           <Typography gutterBottom>
-            You can go to month view, if you are unavilable for days and set the schedule there
+            You can go to month view, if you are unavilable for days and set the
+            schedule there
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleSave} color="primary">
+          <Button autoFocus onClick={handleOKClick} color="primary">
             OK
           </Button>
         </DialogActions>
@@ -115,4 +109,4 @@ const CustomizedDialogs = (props: Props) => {
   )
 }
 
-export default CustomizedDialogs
+export default AddPersonalEventDialog

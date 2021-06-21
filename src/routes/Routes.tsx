@@ -14,6 +14,9 @@ import {
   selectUserType,
 } from "redux/reducers/auth/authSlice"
 
+import EventList from "pages/EventInfo/EventList"
+import EventInfo from "pages/EventInfo/EventInfo"
+
 const childRoutes = (
   valid: boolean,
   Layout: MainLayoutType,
@@ -50,6 +53,7 @@ const Routes = () => {
       )}
       <Route path="/signin" render={() => <SignIn />} />
       <Route path="/signup" render={() => <SignUp />} />
+      {/* <Route path="/eventdetails/:id" render={() => <EventInfo />} /> */}
     </Switch>
   )
 }

@@ -9,13 +9,13 @@ const fetchById = () => {
 }
 
 const update = (user: IUser) => {
-  const url = `/${userEndpoint}/update/${user._id}`
+  const url = `/${userEndpoint}/update/`
   return axios.put(url, user).then((response) => response)
 }
 
-const updateArenaImage = (imagePayload: any) => {
-  const url = `/${userEndpoint}/updateArenaImage/${imagePayload.userId}`
-  return axios.put(url, imagePayload.formData).then((response) => response)
+const updateProfilePic = (formData: any) => {
+  const url = `/${userEndpoint}/updateProfilePic/`
+  return axios.put(url, formData).then((response) => response)
 }
 
-export default { fetchById, update, updateArenaImage }
+export default { fetchById, update, updateProfilePic }

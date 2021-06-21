@@ -26,7 +26,7 @@ type Page = {
   path: string
   header: string
   icon: typeof SvgIcon
-  containsHome: true
+  containsHome: boolean
   Component: FunctionComponent<RouteComponentProps>
   children?: ReactNode
 }

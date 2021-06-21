@@ -1,4 +1,9 @@
-import { CreateEventPayload, SearchEventPayload } from "types/Event"
+import {
+  CreateEventPayload,
+  SearchEventPayload,
+  UpdateInterestedPayload,
+  UpdateRegisteredPayload,
+} from "types/Event"
 import axios from "utils/axios"
 
 const eventEndpoint = "event"
@@ -39,4 +44,38 @@ const fetchAllEventList = async (searchPayload: SearchEventPayload) => {
   return response
 }
 
-export default { fetchById, update, create, cancel, fetchEventList, fetchAllEventList }
+const updateInterested = async (interestedPayload: UpdateInterestedPayload) => {
+  const url = `/${eventEndpoint}/updateInterested/${interestedPayload.eventId}`
+  const response = await axios.put(url, {
+    interested: interestedPayload.interested,
+  })
+  return response
+}
+
+const updateRegistered = async (registeredPayload: UpdateRegisteredPayload) => {
+  const url = `/${eventEndpoint}/updateRegistered/${registeredPayload.eventId}`
+  const response = await axios.put(url, {
+    registered: registeredPayload.registered,
+  })
+  return response
+}
+
+export const findSportEventById = async (id: string) => {
+  const response = await fetchById(id)
+    .then((res) => res)
+    .catch((err) => ({ data: { success: false, error: err } }))
+
+  return response.data
+}
+
+export default {
+  fetchById,
+  update,
+  create,
+  cancel,
+  fetchEventList,
+  fetchAllEventList,
+  updateInterested,
+  updateRegistered,
+  findSportEventById,
+}

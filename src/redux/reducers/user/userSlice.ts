@@ -1,14 +1,16 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IUser } from "types"
 import userAPI from "./userAPI"
 
 interface UserState {
   loggedInUser: IUser
+  loading: boolean
 }
 
 const initialState: UserState = {
   loggedInUser: { location: { lat: 0, lng: 0 } } as IUser,
+  loading: false,
 }
 
 export const fetchLoggedInUser = createAsyncThunk(
@@ -27,10 +29,10 @@ export const updateUser = createAsyncThunk(
   }
 )
 
-export const updateArenaImage = createAsyncThunk(
+export const updateProfilePic = createAsyncThunk(
   "user/updateArena",
   async (imagePayload: any) => {
-    const response = await userAPI.updateArenaImage(imagePayload)
+    const response = await userAPI.updateProfilePic(imagePayload)
     return response.data
   }
 )
@@ -41,20 +43,41 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchLoggedInUser.fulfilled, (state, action) => {
-        state.loggedInUser = action.payload.user
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.loggedInUser = action.payload.user
-      })
-      .addCase(updateArenaImage.fulfilled, (state, action) => {
-        state.loggedInUser = action.payload.user
-      })
+      .addMatcher(
+        isAnyOf(
+          fetchLoggedInUser.fulfilled,
+          updateUser.fulfilled,
+          updateProfilePic.fulfilled
+        ),
+        (state, action) => {
+          state.loggedInUser = action.payload.user
+          state.loading = false
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          fetchLoggedInUser.pending,
+          updateUser.pending,
+          updateProfilePic.pending
+        ),
+        (state) => {
+          state.loading = true
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          fetchLoggedInUser.rejected,
+          updateUser.rejected,
+          updateProfilePic.rejected
+        ),
+        (state) => {
+          state.loading = false
+        }
+      )
   },
 })
 
 export const selectLoggedInUser = (state: RootState) => state.user.loggedInUser
-export const selectUserLocation = (state: RootState) =>
-  state.user.loggedInUser.location
+export const selectLoadingUserData = (state: RootState) => state.user.loading
 
 export default userSlice.reducer

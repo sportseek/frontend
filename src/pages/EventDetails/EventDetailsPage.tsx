@@ -1,7 +1,13 @@
 import React, { useEffect } from "react"
 import Helmet from "react-helmet"
 import { styled } from "@material-ui/core/styles"
-import { Breadcrumbs, Button, Grid, Typography } from "@material-ui/core"
+import {
+  Breadcrumbs,
+  Link,
+  Fab as MuiFab,
+  Grid,
+  Typography,
+} from "@material-ui/core"
 import { ChevronLeft } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
@@ -12,12 +18,24 @@ import {
 import EventDetails from "components/EventDetails"
 import { EVENT_DETAILS_HEADER } from "utils/constants"
 
+const Root = styled("div")({
+  display: "flex",
+  flex: 1,
+})
+
 const Header = styled(Grid)({
   display: "flex",
   alignContent: "center",
   alignItems: "center",
   justifyContent: "space-between",
 })
+
+const Fab = styled(MuiFab)(({ theme }) => ({
+  position: "fixed",
+  top: theme.spacing(9),
+  right: theme.spacing(4),
+  zIndex: 100,
+}))
 
 type EventDetailsProps = {
   id: string
@@ -32,35 +50,47 @@ const EventDetailsPage = (props: EventDetailsProps) => {
 
   const { title = "" } = event
 
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault()
+    goBack()
+  }
+
   useEffect(() => {
     dispatch(fetchEventById(id))
   }, [dispatch, id])
 
   return (
-    <Grid container spacing={1}>
-      <Helmet title={EVENT_DETAILS_HEADER} />
-      <Header item xs={12} lg={4}>
-        <Breadcrumbs aria-label="Breadcrumb">
-          <Typography variant="subtitle2">{parentPage}</Typography>
-          <Typography variant="subtitle2"> {EVENT_DETAILS_HEADER} </Typography>
-          <Typography variant="subtitle2" color="secondary">
-            {title}
-          </Typography>
-        </Breadcrumbs>
-
-        <Button
-          size="small"
-          color="primary"
-          startIcon={<ChevronLeft />}
-          onClick={goBack}
-        >
-          <Typography variant="subtitle2">Back</Typography>
-        </Button>
-      </Header>
-      <Grid item xs lg={12}>
-        <EventDetails event={event} />
+    <Root>
+      <Grid container spacing={1}>
+        <Helmet title={EVENT_DETAILS_HEADER} />
+        <Header item xs={12} lg={4}>
+          <Breadcrumbs aria-label="Breadcrumb">
+            <Link color="inherit" href="/" onClick={handleClick}>
+              <Typography variant="subtitle2">{parentPage}</Typography>
+            </Link>
+            <Typography variant="subtitle2">
+              {" "}
+              {EVENT_DETAILS_HEADER}{" "}
+            </Typography>
+            <Typography variant="subtitle2" color="secondary">
+              {title}
+            </Typography>
+          </Breadcrumbs>
+          <Fab
+            variant="extended"
+            size="small"
+            color="secondary"
+            onClick={goBack}
+          >
+            <ChevronLeft />
+            Back
+          </Fab>
+        </Header>
+        <Grid item xs lg={12}>
+          <EventDetails event={event} />
+        </Grid>
       </Grid>
-    </Grid>
+    </Root>
   )
 }
 

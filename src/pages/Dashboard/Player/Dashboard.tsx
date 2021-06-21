@@ -13,7 +13,7 @@ import Wallet from "components/Wallet"
 import Location from "components/Location"
 import Calendar from "components/PlayerCalendar"
 import TabPanel from "components/Common/TabPanel"
-import EventDetailsView from "../../EventDetails"
+import EventDetailsView from "pages/EventDetails"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,7 +68,7 @@ const Dashboard = () => {
                 <Location />
               </Grid>
               <Grid item>
-                <Wallet value="100" />
+                <Wallet />
               </Grid>
             </ColContainer>
           </Column1>
@@ -82,7 +82,6 @@ const Dashboard = () => {
               <Grid item>
                 <Calendar goto={goEventDetails} />
               </Grid>
-
               <Grid item>
                 <Grid container spacing={3}>
                   <Grid item lg={6}>
