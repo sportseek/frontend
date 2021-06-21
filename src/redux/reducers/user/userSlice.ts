@@ -41,7 +41,7 @@ export const updateUser = createAsyncThunk(
 )
 
 export const updateProfilePic = createAsyncThunk(
-  "user/updateArena",
+  "user/updateProfilePic",
   async (imagePayload: any) => {
     const response = await userAPI.updateProfilePic(imagePayload)
     return response.data

@@ -268,6 +268,7 @@ const UserDetailsForm = (props: DetailsFormProps) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={!!errors.address?.street}
                   required
                   id="street"
                   name="street"
@@ -276,10 +277,12 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="shipping address-line1"
                   value={address.street}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.street}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={!!errors.address?.streetAddtional}
                   id="streetAddtional"
                   name="streetAddtional"
                   label="Address line 2"
@@ -287,10 +290,12 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="shipping address-line2"
                   value={address.streetAddtional}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.streetAddtional}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors.address?.city}
                   required
                   id="city"
                   name="city"
@@ -299,20 +304,24 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="shipping address-level2"
                   value={address.city}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.city}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors.address?.state}
                   id="state"
                   name="state"
                   label="State/Province/Region"
                   fullWidth
                   value={address.state}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.state}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors.address?.postcode}
                   required
                   id="postcode"
                   name="postcode"
@@ -321,10 +330,12 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="shipping postal-code"
                   value={address.postcode}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.postcode}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors.address?.country}
                   required
                   id="country"
                   name="country"
@@ -333,6 +344,7 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="shipping country"
                   value={address.country}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.country}
                 />
               </Grid>
             </Grid>
