@@ -30,7 +30,11 @@ export interface CreateEventPayload {
 }
 
 export interface SearchEventPayload {
+  eventTitle?: string
   sportType?: string
+  eventStartTime?: string
+  eventEndTime?: string
+  eventFee?: number[]
 }
 
 export interface UpdateInterestedPayload {
