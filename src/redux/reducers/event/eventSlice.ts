@@ -30,7 +30,7 @@ const initialState: EventState = {
   allEvents: [],
   reloadEvents: false,
   maxPrice: 0,
-  minPrice: 0
+  minPrice: 0,
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -109,6 +109,9 @@ export const eventSlice = createSlice({
     setCurEventId: (state, action: PayloadAction<string>) => {
       state.curEventId = action.payload
     },
+    clearEventDetails: (state) => {
+      state.curEventId = ""
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -136,8 +139,8 @@ export const eventSlice = createSlice({
         state.reloadEvents = true
       })
       .addCase(getMinMaxPrice.fulfilled, (state, action) => {
-        state.minPrice=action.payload.minEvent.entryFee
-        state.maxPrice=action.payload.maxEvent.entryFee
+        state.minPrice = action.payload.minEvent.entryFee
+        state.maxPrice = action.payload.maxEvent.entryFee
       })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
@@ -156,6 +159,6 @@ export const selectCurrentEventId = (state: RootState) => state.event.curEventId
 export const selectEventMaxPrice = (state: RootState) => state.event.maxPrice
 export const selectEventMinPrice = (state: RootState) => state.event.minPrice
 
-export const { setCurEventId } = eventSlice.actions
+export const { clearEventDetails, setCurEventId } = eventSlice.actions
 
 export default eventSlice.reducer

@@ -1,11 +1,6 @@
-import React, { useEffect } from "react"
-import {
-  makeStyles,
-  createStyles,
-  Theme,
-  styled,
-} from "@material-ui/core/styles"
-import { Grid, Paper } from "@material-ui/core"
+import React, { useCallback, useEffect, useState } from "react"
+import { makeStyles, createStyles } from "@material-ui/core/styles"
+import { Grid } from "@material-ui/core"
 import Helmet from "react-helmet"
 import TabPanel from "components/Common/TabPanel"
 import EventDetailsView from "pages/EventDetails"
@@ -19,12 +14,8 @@ import {
   selectCurrentEventId,
   setCurEventId,
 } from "redux/reducers/event/eventSlice"
-import {
-  setSearchPageTabIndex,
-  selectSearchPageTabIndex,
-} from "redux/reducers/ui/uiSlice"
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     paper: {
       padding: theme.spacing(2),
@@ -51,21 +42,30 @@ const EventSearch = () => {
   const allEvents = useAppSelector(selectAllEvents)
 
   const eventId = useAppSelector(selectCurrentEventId)
-  const tabIndex = useAppSelector(selectSearchPageTabIndex)
+  const [tabIndex, setTabIndex] = useState(0)
 
-  const gotoEventDetails = (id: string) => {
-    dispatch(setSearchPageTabIndex(1))
-    dispatch(setCurEventId(id))
-  }
-  const goBack = () => {
-    dispatch(setSearchPageTabIndex(0))
+  const gotoEventDetails = useCallback(
+    (id: string) => {
+      setTabIndex(1)
+      dispatch(setCurEventId(id))
+    },
+    [dispatch]
+  )
+
+  const goBack = useCallback(() => {
+    setTabIndex(0)
     dispatch(setCurEventId(""))
-  }
+  }, [dispatch])
 
   useEffect(() => {
     dispatch(getAllEvents({}))
     dispatch(getMinMaxPrice())
-  }, [dispatch])
+  }, [dispatch, tabIndex])
+
+  useEffect(() => {
+    if (eventId) gotoEventDetails(eventId)
+    else goBack()
+  }, [eventId, goBack, gotoEventDetails])
 
   return (
     <div className={classes.root}>

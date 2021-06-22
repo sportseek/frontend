@@ -2,7 +2,6 @@ import React, { FC, PropsWithChildren } from "react"
 import { styled } from "@material-ui/core/styles"
 import { Toolbar as MuiToolbar } from "@material-ui/core"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import PerfectScrollbar from "react-perfect-scrollbar"
 import Header from "components/Header"
 import Sidebar from "components/Sidebar"
 import Footer from "components/Footer"
@@ -17,7 +16,6 @@ const MainContent = styled("main")({
   display: "flex",
   flexDirection: "column",
   overflow: "hidden",
-  background: "red",
 })
 
 const Page = styled("div")(({ theme }) => ({
@@ -45,9 +43,7 @@ export default function MainLayoutView(props: MainLayoutProps) {
       <Sidebar />
       <MainContent>
         <Toolbar />
-        <PerfectScrollbar>
-          <Page>{children}</Page>
-        </PerfectScrollbar>
+        <Page>{children}</Page>
         <Footer />
       </MainContent>
     </Root>

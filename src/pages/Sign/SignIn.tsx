@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import React, { FC, useEffect } from "react"
 import { Redirect } from "react-router-dom"
 import LinearProgress from "@material-ui/core/LinearProgress"
+import Helmet from "react-helmet"
 import { useAppSelector } from "redux/hooks"
 import {
   AuthStatus,
@@ -54,6 +55,7 @@ const SignInPage: FC = () => {
     <Redirect to={{ pathname: "/home" }} />
   ) : (
     <div className={classes.root}>
+      <Helmet title="SportSeek - Sign in" />
       <div className={classes.signinWrapper}>
         {authStatus === AuthStatus.PROCESSING ? <LinearProgress /> : null}
         <SigninForm />
