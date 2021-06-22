@@ -11,7 +11,7 @@ import peventReduer from "./pEvent/pEventSlice"
 const userPersistConfig = {
   key: "user",
   storage,
-  whitelist: ["loggedInUser"],
+  whitelist: ["location"],
 }
 
 const eventPersistConfig = {
@@ -20,11 +20,17 @@ const eventPersistConfig = {
   whitelist: ["curEventId"],
 }
 
+const authPersistConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["isAuthenticated", "userType"],
+}
+
 const reducers = {
   counter: counterReducer,
   ui: uiReducer,
   user: persistReducer(userPersistConfig, userReducer),
-  auth: authReducer,
+  auth: persistReducer(authPersistConfig, authReducer),
   event: persistReducer(eventPersistConfig, eventReducer),
   pevent: peventReduer,
 }

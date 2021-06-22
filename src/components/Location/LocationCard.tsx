@@ -6,10 +6,10 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet"
 
 import { isEmpty } from "utils/stringUtils"
-import { ILocation } from "types"
+import { ILocation, IUser } from "types"
 import Tooltip from "components/Common/Tooltip"
 
-import { selectLoggedInUser, updateUser } from "redux/reducers/user/userSlice"
+import { selectUserLocation, updateUser } from "redux/reducers/user/userSlice"
 
 import EditLocationDialog from "./EditLocationPopUp"
 
@@ -41,16 +41,14 @@ type LocationCardProps = {
 const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
   const { editable } = props
   const classes = useStyles()
-  const user = useAppSelector(selectLoggedInUser)
-  const { location: userPosition } = user
+  const userPosition = useAppSelector(selectUserLocation)
   const dispatch = useAppDispatch()
 
   const [open, setOpen] = useState(false)
 
   const updatePos = (pinPosition: ILocation) => {
-    const modUser = { ...user }
-    modUser.location = pinPosition
-    dispatch(updateUser(modUser))
+    const modUser = { location: pinPosition }
+    dispatch(updateUser(modUser as IUser))
   }
 
   return (

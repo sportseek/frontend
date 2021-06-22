@@ -1,5 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { ChangeEvent, useCallback, useRef, useState } from "react"
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import {
   Avatar,
@@ -13,16 +19,20 @@ import {
   DialogTitle,
   CircularProgress,
   TextField,
+  Typography,
 } from "@material-ui/core"
 import { EditRounded } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   selectLoggedInUser,
+  prepareForValidation,
   selectLoadingUserData,
   updateUser,
   updateProfilePic,
+  selectHasValidationErrors,
+  selectValidationErrors,
 } from "redux/reducers/user/userSlice"
-import { IAddress, IPlayer, PlayerPayload } from "types"
+import { IAddress, IPlayer } from "types"
 
 type DetailsFormProps = {
   open: boolean
@@ -48,8 +58,12 @@ const UserDetailsForm = (props: DetailsFormProps) => {
   const classes = useStyles()
   const oldPlayer = useAppSelector(selectLoggedInUser) as IPlayer
   const loading = useAppSelector(selectLoadingUserData)
+  const hasErrors = useAppSelector(selectHasValidationErrors)
+  const errors = useAppSelector(selectValidationErrors) as IPlayer
   const dispatch = useAppDispatch()
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const [imageClicked, setImageClicked] = useState(false)
 
   const { open, handleClose: close } = props
 
@@ -58,7 +72,7 @@ const UserDetailsForm = (props: DetailsFormProps) => {
     lastName,
     phone,
     email,
-    address: oldAddress,
+    address: oldAddress = {} as IAddress,
     profileImageUrl = "",
   } = oldPlayer
 
@@ -66,24 +80,32 @@ const UserDetailsForm = (props: DetailsFormProps) => {
 
   const [disabled, setDisabled] = useState(true)
 
-  const [player, setPlayer] = useState<PlayerPayload>({
+  const password = ""
+  const oldpassword = ""
+
+  const [player, setPlayer] = useState({
     firstName,
     lastName,
+    password,
+    oldpassword,
     email,
     phone,
+    address: oldAddress,
   })
   const [address, setAddress] = useState<IAddress>(oldAddress)
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setDisabled(true)
+    setImageClicked(false)
+    dispatch(prepareForValidation())
     close()
-  }
+  }, [dispatch, close])
 
   const handleSave = () => {
-    const tempuser = { ...oldPlayer, ...player }
+    const tempuser = { ...player }
     tempuser.address = { ...tempuser.address, ...address }
-    dispatch(updateUser(tempuser))
-    handleClose()
+    dispatch(updateUser(tempuser as IPlayer))
+    setImageClicked(false)
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -109,7 +131,7 @@ const UserDetailsForm = (props: DetailsFormProps) => {
       formData.append("image", image)
       dispatch(updateProfilePic(formData))
       if (current) current.value = ""
-      setDisabled(false)
+      setImageClicked(true)
     },
     [current, dispatch]
   )
@@ -117,6 +139,25 @@ const UserDetailsForm = (props: DetailsFormProps) => {
   const handleClick = useCallback(() => {
     if (current) current.click()
   }, [current])
+
+  useEffect(() => {
+    setPlayer({
+      firstName,
+      lastName,
+      password,
+      oldpassword,
+      email,
+      phone,
+      address: oldAddress,
+    })
+    setAddress(oldAddress)
+  }, [email, firstName, lastName, oldAddress, phone])
+
+  useEffect(() => {
+    if (!hasErrors && !imageClicked && !loading) {
+      handleClose()
+    }
+  }, [handleClose, hasErrors, imageClicked, loading])
 
   return (
     <Dialog
@@ -176,11 +217,13 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                 </Badge>
               </IconButton>
             </label>
+            <Typography>{email}</Typography>
           </Grid>
           <Grid item lg>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors.firstName}
                   required
                   id="firstName"
                   name="firstName"
@@ -189,11 +232,13 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="given-name"
                   value={player.firstName}
                   onChange={handleChange}
+                  helperText={errors.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
+                  error={!!errors.lastName}
                   id="lastName"
                   name="lastName"
                   label="Last name"
@@ -201,11 +246,13 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="family-name"
                   value={player.lastName}
                   onChange={handleChange}
+                  helperText={errors.lastName}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   required
+                  error={!!errors.phone}
                   id="phone"
                   name="phone"
                   label="Phone"
@@ -213,22 +260,40 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="phone"
                   value={player.phone}
                   onChange={handleChange}
+                  helperText={errors.phone}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <TextField
-                  disabled
-                  id="email"
-                  name="email"
-                  label="email"
+                  error={!!errors.oldpassword}
+                  id="oldpassword"
+                  name="oldpassword"
+                  type="password"
+                  label="Old password"
                   fullWidth
-                  autoComplete="email"
-                  value={player.email}
+                  autoComplete="password"
+                  value={player.oldpassword}
                   onChange={handleChange}
+                  helperText={errors.oldpassword}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  error={!!errors.password}
+                  id="password"
+                  name="password"
+                  label="New password"
+                  type="password"
+                  fullWidth
+                  autoComplete="current-password"
+                  value={player.password}
+                  onChange={handleChange}
+                  helperText={errors.password}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={!!errors.address?.street}
                   required
                   id="street"
                   name="street"
@@ -237,10 +302,12 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="shipping address-line1"
                   value={address.street}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.street}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={!!errors.address?.streetAddtional}
                   id="streetAddtional"
                   name="streetAddtional"
                   label="Address line 2"
@@ -248,10 +315,12 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="shipping address-line2"
                   value={address.streetAddtional}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.streetAddtional}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors.address?.city}
                   required
                   id="city"
                   name="city"
@@ -260,20 +329,24 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="shipping address-level2"
                   value={address.city}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.city}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors.address?.state}
                   id="state"
                   name="state"
                   label="State/Province/Region"
                   fullWidth
                   value={address.state}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.state}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors.address?.postcode}
                   required
                   id="postcode"
                   name="postcode"
@@ -282,10 +355,12 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="shipping postal-code"
                   value={address.postcode}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.postcode}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors.address?.country}
                   required
                   id="country"
                   name="country"
@@ -294,6 +369,7 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   autoComplete="shipping country"
                   value={address.country}
                   onChange={handleAddressChange}
+                  helperText={errors.address?.country}
                 />
               </Grid>
             </Grid>

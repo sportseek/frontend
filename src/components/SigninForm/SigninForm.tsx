@@ -10,11 +10,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
-import {
-  userSignIn,
-  selectAuthStatus,
-  selectAuthErrors,
-} from "redux/reducers/auth/authSlice"
+import { userSignIn, selectAuthErrors } from "redux/reducers/auth/authSlice"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 
 export interface UserSigninPayload {
@@ -47,7 +43,6 @@ const Signin = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const authStatus = useAppSelector(selectAuthStatus)
   const authErrors = useAppSelector(selectAuthErrors)
 
   const dispatch = useAppDispatch()
@@ -61,8 +56,8 @@ const Signin = () => {
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const payload: UserSigninPayload = {
-      email: email,
-      password: password,
+      email,
+      password,
     }
 
     dispatch(userSignIn(payload))
@@ -83,6 +78,7 @@ const Signin = () => {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
+                error={!!authErrors?.email}
                 required
                 fullWidth
                 id="email"
@@ -90,11 +86,13 @@ const Signin = () => {
                 name="email"
                 autoComplete="email"
                 onChange={handleInputChange}
+                helperText={authErrors?.email}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
+                error={!!authErrors?.password}
                 required
                 fullWidth
                 name="password"
@@ -103,6 +101,7 @@ const Signin = () => {
                 id="password"
                 autoComplete="current-password"
                 onChange={handleInputChange}
+                helperText={authErrors?.password}
               />
             </Grid>
           </Grid>

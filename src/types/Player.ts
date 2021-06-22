@@ -8,17 +8,11 @@ export default interface IPlayer {
   type: string
   location: ILocation
   password: string
+  oldpassword?: string
   address: IAddress
   phone: string
   wallet: number
   profileImageUrl: string
   registeredEvents: string[]
   interestedEvents: string[]
-}
-
-export type PlayerPayload = {
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
 }
