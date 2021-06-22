@@ -19,6 +19,7 @@ import {
 import { logout, selectUserType } from "redux/reducers/auth/authSlice"
 import {
   fetchLoggedInUser,
+  getNotifications,
   selectLoggedInUser,
 } from "redux/reducers/user/userSlice"
 import { getUserName } from "utils/stringUtils"
@@ -76,6 +77,7 @@ const HeaderFC = () => {
 
   React.useEffect(() => {
     dispatch(fetchLoggedInUser())
+    dispatch(getNotifications(1))
   }, [dispatch, type])
 
   return (
