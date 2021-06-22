@@ -119,9 +119,9 @@ const FilterEvents = () => {
       getAllEvents({
         eventTitle: eventTitle,
         sportType: sportsType === "all" ? "" : sportsType,
-        eventStartTime: new Date(eventStartTime).toISOString() ,
+        eventStartTime: new Date(eventStartTime).toISOString(),
         eventEndTime: new Date(eventEndTime).toISOString(),
-        eventFee: eventFee
+        eventFee: eventFee,
       })
     )
   }
