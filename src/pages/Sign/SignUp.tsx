@@ -4,7 +4,7 @@ import { useAppSelector } from "redux/hooks"
 import PlayerSignup from "components/PlayerSignup"
 import { isIfAuthenticated } from "redux/reducers/auth/authSlice"
 import ArenaSignup from "components/ArenaSignup"
-
+import Helmet from "react-helmet"
 import { makeStyles, Theme, useTheme } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Tabs from "@material-ui/core/Tabs"
@@ -79,6 +79,7 @@ const SignUpPage: FC = () => {
     <Redirect to={{ pathname: "/home" }} />
   ) : (
     <div className={classes.root}>
+      <Helmet title="SportSeek - Sign up" />
       <div className={classes.tabWrapper}>
         <AppBar position="static" color="default">
           <Tabs

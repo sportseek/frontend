@@ -109,6 +109,9 @@ export const eventSlice = createSlice({
     setCurEventId: (state, action: PayloadAction<string>) => {
       state.curEventId = action.payload
     },
+    clearEventDetails: (state) => {
+      state.curEventId = ""
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -156,6 +159,6 @@ export const selectCurrentEventId = (state: RootState) => state.event.curEventId
 export const selectEventMaxPrice = (state: RootState) => state.event.maxPrice
 export const selectEventMinPrice = (state: RootState) => state.event.minPrice
 
-export const { setCurEventId } = eventSlice.actions
+export const { clearEventDetails, setCurEventId } = eventSlice.actions
 
 export default eventSlice.reducer
