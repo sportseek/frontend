@@ -4,7 +4,6 @@ import { SvgIcon } from "@material-ui/core"
 import {
   PageviewRounded as SearchIcon,
   DashboardRounded as DashboardIcon,
-  AdjustTwoTone as ReduxIcon,
   HelpRounded as HelpIcon,
   MessageRounded as MessageIcon,
   SettingsRounded as SettingsIcon,
@@ -14,7 +13,6 @@ import { UserType } from "types"
 import SignIn from "./Sign/SignIn"
 import SignUp from "./Sign/SignUp"
 import MainLayout, { MainLayoutType } from "./MainLayout/Main"
-import ReduxExample from "./ReduxExample/ReduxExample"
 import Search from "./EventSearch/EventSearch"
 import PlayerBoard from "./Dashboard/Player/Dashboard"
 import ArenaBoard from "./Dashboard/Arena/ArenaPage"
@@ -31,6 +29,7 @@ type Page = {
   children?: ReactNode
 }
 
+/**
 const Redux: Page = {
   id: "Redux",
   path: "/redux",
@@ -38,7 +37,7 @@ const Redux: Page = {
   icon: ReduxIcon,
   containsHome: true,
   Component: ReduxExample,
-}
+} */
 
 const EventSearch: Page = {
   id: "Search",
@@ -97,7 +96,6 @@ const SettingsRoutes: Page = {
 const PlayerPages = [
   EventSearch,
   PlayerDashBoard,
-  Redux,
   SettingsRoutes,
   FaqRoutes,
   SupportRoutes,

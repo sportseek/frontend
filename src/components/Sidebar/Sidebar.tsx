@@ -110,8 +110,6 @@ const SideBar = (props: WithWidthProps) => {
   const container =
     window !== undefined ? () => window.document.body : undefined
 
-  dispatch(setSearchPageTabIndex(0))
-
   useEffect(() => {
     dispatch(closeSideBarMobile())
   }, [dispatch, width])

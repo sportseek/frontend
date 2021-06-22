@@ -8,6 +8,7 @@ export default interface IPlayer {
   type: string
   location: ILocation
   password: string
+  oldpassword?: string
   address: IAddress
   phone: string
   wallet: number

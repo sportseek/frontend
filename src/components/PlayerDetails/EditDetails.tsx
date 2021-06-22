@@ -19,6 +19,7 @@ import {
   DialogTitle,
   CircularProgress,
   TextField,
+  Typography,
 } from "@material-ui/core"
 import { EditRounded } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
@@ -79,9 +80,14 @@ const UserDetailsForm = (props: DetailsFormProps) => {
 
   const [disabled, setDisabled] = useState(true)
 
+  const password = ""
+  const oldpassword = ""
+
   const [player, setPlayer] = useState({
     firstName,
     lastName,
+    password,
+    oldpassword,
     email,
     phone,
     address: oldAddress,
@@ -138,6 +144,8 @@ const UserDetailsForm = (props: DetailsFormProps) => {
     setPlayer({
       firstName,
       lastName,
+      password,
+      oldpassword,
       email,
       phone,
       address: oldAddress,
@@ -209,6 +217,7 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                 </Badge>
               </IconButton>
             </label>
+            <Typography>{email}</Typography>
           </Grid>
           <Grid item lg>
             <Grid container spacing={3}>
@@ -240,7 +249,7 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   helperText={errors.lastName}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   required
                   error={!!errors.phone}
@@ -254,16 +263,32 @@ const UserDetailsForm = (props: DetailsFormProps) => {
                   helperText={errors.phone}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <TextField
-                  disabled
-                  id="email"
-                  name="email"
-                  label="email"
+                  error={!!errors.oldpassword}
+                  id="oldpassword"
+                  name="oldpassword"
+                  type="password"
+                  label="Old password"
                   fullWidth
-                  autoComplete="email"
-                  value={player.email}
+                  autoComplete="password"
+                  value={player.oldpassword}
                   onChange={handleChange}
+                  helperText={errors.oldpassword}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  error={!!errors.password}
+                  id="password"
+                  name="password"
+                  label="New password"
+                  type="password"
+                  fullWidth
+                  autoComplete="current-password"
+                  value={player.password}
+                  onChange={handleChange}
+                  helperText={errors.password}
                 />
               </Grid>
               <Grid item xs={12}>
