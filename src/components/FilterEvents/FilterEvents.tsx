@@ -114,7 +114,6 @@ const FilterEvents = () => {
   }
 
   const handleSearch = () => {
-    console.log(sportsType)
     dispatch(
       getAllEvents({
         eventTitle: eventTitle,

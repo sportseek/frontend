@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { ILocation, IUser } from "types"
+import { INotification, ReadNotificationPayload } from "types/Notification"
 import userAPI from "./userAPI"
 
 interface UserState {
@@ -9,6 +10,7 @@ interface UserState {
   loading: boolean
   validationErrors: IUser
   hasErrors: boolean
+  notifications:INotification[]
 }
 
 const initialState: UserState = {
@@ -17,6 +19,7 @@ const initialState: UserState = {
   loading: false,
   hasErrors: true,
   validationErrors: {} as IUser,
+  notifications: [],
 }
 
 export const fetchLoggedInUser = createAsyncThunk(
@@ -44,6 +47,23 @@ export const updateProfilePic = createAsyncThunk(
   "user/updateProfilePic",
   async (imagePayload: any) => {
     const response = await userAPI.updateProfilePic(imagePayload)
+    return response.data
+  }
+)
+
+export const getNotifications = createAsyncThunk(
+  "notification/getNotifications",
+  async (pageNumber: number) => {
+    const response = await userAPI.getNotifications(pageNumber)
+    return response.data
+  }
+)
+
+export const readNotification = createAsyncThunk(
+  "notification/readNotification",
+  async (payload: ReadNotificationPayload) => {
+    const response1 = await userAPI.readNotification(payload.notificationId)
+    const response = await userAPI.getNotifications(payload.pageNumber)
     return response.data
   }
 )
@@ -95,6 +115,15 @@ export const userSlice = createSlice({
           state.hasErrors = true
         }
       )
+      .addMatcher(
+        isAnyOf(
+          getNotifications.fulfilled,
+          readNotification.fulfilled,
+        ),
+        (state, action) => {
+          state.notifications = action.payload.notifications
+        }
+      )
   },
 })
 
@@ -107,5 +136,6 @@ export const selectValidationErrors = (state: RootState) =>
 export const selectHasValidationErrors = (state: RootState) =>
   state.user.hasErrors
 export const selectUserLocation = (state: RootState) => state.user.location
+export const selectUserNotification = (state: RootState) => state.user.notifications
 
 export default userSlice.reducer

@@ -18,4 +18,14 @@ const updateProfilePic = (formData: any) => {
   return axios.put(url, formData).then((response) => response)
 }
 
-export default { fetchById, update, updateProfilePic }
+const getNotifications = (pageNumber: number) => {
+  const url = `/notification/getNotifications/${pageNumber}`
+  return axios.get(url).then((response) => response)
+}
+
+const readNotification = (notificationId: string) => {
+  const url = `/notification/readNotification`
+  return axios.post(url, {notificationId}).then((response) => response)
+}
+
+export default { fetchById, update, updateProfilePic, getNotifications, readNotification }

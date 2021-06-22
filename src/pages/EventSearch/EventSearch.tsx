@@ -44,8 +44,6 @@ const EventSearch = () => {
   const eventId = useAppSelector(selectCurrentEventId)
   const [tabIndex, setTabIndex] = useState(0)
 
-  console.log(`event id : ${eventId}`)
-
   const gotoEventDetails = useCallback(
     (id: string) => {
       setTabIndex(1)
