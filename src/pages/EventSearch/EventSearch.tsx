@@ -79,14 +79,12 @@ const EventSearch = () => {
             alignItems="flex-start"
             spacing={2}
           >
-            <Grid item xs={11}>
-              <Grid container spacing={2} justify="space-evenly">
-                {allEvents.map((item) => (
-                  <Grid item xl={3} xs={4} key={item._id}>
-                    <EventCard event={item} openDetails={gotoEventDetails} />
-                  </Grid>
-                ))}
-              </Grid>
+            <Grid container spacing={2} justify="space-evenly">
+              {allEvents.map((item) => (
+                <Grid item xs={4} key={item._id}>
+                  <EventCard event={item} openDetails={gotoEventDetails} />
+                </Grid>
+              ))}
             </Grid>
           </Grid>
         </main>

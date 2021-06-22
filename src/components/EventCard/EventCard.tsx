@@ -18,20 +18,6 @@ import Grid from "@material-ui/core/Grid"
 Geocode.setApiKey("AIzaSyC3piWVpJ50bb8sVq-vGZnf6nbJMgyNtSE")
 Geocode.setLanguage("en")
 
-function AddressGen(lat: string, lng: string) {
-  var address
-  Geocode.fromLatLng(lat, lng).then(
-    (response) => {
-      address = response.results[0].formatted_address
-      console.log(address)
-      return address
-    },
-    (error) => {
-      console.error(error)
-    }
-  )
-}
-
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
@@ -112,6 +98,11 @@ const EventCard: React.FC<Props> = (props: Props) => {
             <Grid item xs={12}>
               <Typography variant="body2" color="textSecondary" component="p">
                 Time: <b>{moment(event.start).format("LT")}</b>
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" color="textSecondary" component="p">
+                Type: <b>{event.sportType.charAt(0).toUpperCase() + event.sportType.slice(1)}</b>
               </Typography>
             </Grid>
             <Grid item xs={3}>
