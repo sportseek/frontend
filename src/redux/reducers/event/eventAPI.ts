@@ -68,6 +68,12 @@ export const findSportEventById = async (id: string) => {
   return response.data
 }
 
+const getMinMaxPrice = async () => {
+  const url = `/${eventEndpoint}/getMinMaxPrice`
+  const response = await axios.get(url)
+  return response
+}
+
 export default {
   fetchById,
   update,
@@ -78,4 +84,5 @@ export default {
   updateInterested,
   updateRegistered,
   findSportEventById,
+  getMinMaxPrice
 }

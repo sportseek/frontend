@@ -19,6 +19,8 @@ interface EventState {
   events: IEvent[]
   allEvents: IEvent[]
   reloadEvents: boolean
+  maxPrice: number
+  minPrice: number
 }
 
 const initialState: EventState = {
@@ -27,6 +29,8 @@ const initialState: EventState = {
   events: [],
   allEvents: [],
   reloadEvents: false,
+  maxPrice: 0,
+  minPrice: 0
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -90,6 +94,14 @@ export const updateRegistered = createAsyncThunk(
   }
 )
 
+export const getMinMaxPrice = createAsyncThunk(
+  "event/getMinMaxPrice",
+  async () => {
+    const response = await eventAPI.getMinMaxPrice()
+    return response.data
+  }
+)
+
 export const eventSlice = createSlice({
   name: "event",
   initialState,
@@ -123,6 +135,10 @@ export const eventSlice = createSlice({
         state.currentEvent = action.payload.event
         state.reloadEvents = true
       })
+      .addCase(getMinMaxPrice.fulfilled, (state, action) => {
+        state.minPrice=action.payload.minEvent.entryFee
+        state.maxPrice=action.payload.maxEvent.entryFee
+      })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
         (state) => {
@@ -137,6 +153,8 @@ export const selectEvents = (state: RootState) => state.event.events
 export const selectReloadEvents = (state: RootState) => state.event.reloadEvents
 export const selectAllEvents = (state: RootState) => state.event.allEvents
 export const selectCurrentEventId = (state: RootState) => state.event.curEventId
+export const selectEventMaxPrice = (state: RootState) => state.event.maxPrice
+export const selectEventMinPrice = (state: RootState) => state.event.minPrice
 
 export const { setCurEventId } = eventSlice.actions
 
