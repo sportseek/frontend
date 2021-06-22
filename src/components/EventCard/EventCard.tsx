@@ -102,7 +102,11 @@ const EventCard: React.FC<Props> = (props: Props) => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body2" color="textSecondary" component="p">
-                Type: <b>{event.sportType.charAt(0).toUpperCase() + event.sportType.slice(1)}</b>
+                Type:{" "}
+                <b>
+                  {event.sportType.charAt(0).toUpperCase() +
+                    event.sportType.slice(1)}
+                </b>
               </Typography>
             </Grid>
             <Grid item xs={3}>

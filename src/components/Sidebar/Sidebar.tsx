@@ -23,7 +23,6 @@ import {
   closeSideBarMobile,
   selectOpenSideBar,
   selectOpenSideBarMobile,
-  setSearchPageTabIndex,
 } from "redux/reducers/ui/uiSlice"
 import { selectUserType } from "redux/reducers/auth/authSlice"
 import { PageDataType, getPages } from "pages"

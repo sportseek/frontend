@@ -1,6 +1,5 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import {
-  persistReducer,
   persistStore,
   FLUSH,
   REHYDRATE,
@@ -9,19 +8,10 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist"
-import storage from "redux-persist/lib/storage"
 import rootReducer from "./reducers"
 
-const persistConfig = {
-  key: "root",
-  storage,
-  whitelist: ["ui"],
-}
-
-const persistedReducer = persistReducer(persistConfig, rootReducer)
-
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
