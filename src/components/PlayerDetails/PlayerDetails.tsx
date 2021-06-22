@@ -113,13 +113,6 @@ export default function PersonalInfoCard() {
         </Grid>
         <EditCustomerForm open={openEditForm} handleClose={closeFormPopUp} />
       </CardContent>
-      {/**
-      <CardActions className={classes.cardActions}>
-        <Button onClick={popUpEditCustomerForm} size="small">
-          <Typography>Edit details</Typography>
-        </Button>
-      </CardActions>
-      */}
     </Card>
   )
 }

@@ -6,7 +6,7 @@ import { UserSigninPayload } from "components/SigninForm/SigninForm"
 import { UserType } from "types"
 import authAPI from "./authAPI"
 
-enum AuthStatus {
+export enum AuthStatus {
   IDLE = "idle",
   DONE = "loggedIn",
   PROCESSING = "requesting",
@@ -17,13 +17,13 @@ interface AuthState {
   isAuthenticated: boolean
   userType: UserType
   status: AuthStatus
-  errors: string[]
+  errors: ValidationErrors
 }
 
-type ValidationErrors = {
-  success?: boolean
-  errors: string[]
-}
+type ValidationErrors =
+  | UserSigninPayload
+  | PlayerSignupPayload
+  | ArenaSignupPayload
 
 export const userSignIn = createAsyncThunk(
   "auth/signin",
@@ -58,7 +58,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   userType: UserType.PLAYER,
   status: AuthStatus.IDLE,
-  errors: [],
+  errors: {} as ValidationErrors,
 }
 
 export const authSlice = createSlice({
@@ -67,7 +67,7 @@ export const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.isAuthenticated = false
-      state.errors = []
+      state.errors = {} as ValidationErrors
       state.status = AuthStatus.IDLE
       window.localStorage.removeItem("authToken")
     },
@@ -96,15 +96,15 @@ export const authSlice = createSlice({
           playerSignup.rejected
         ),
         (state, action) => {
-          const { errors } = action.payload as ValidationErrors
+          state.errors = action.payload as ValidationErrors
           state.isAuthenticated = false
           state.status = AuthStatus.FAILED
-          state.errors = errors
         }
       )
       .addMatcher(
         isAnyOf(arenaSignup.pending, playerSignup.pending, userSignIn.pending),
         (state) => {
+          state.isAuthenticated = false
           state.status = AuthStatus.PROCESSING
         }
       )

@@ -1,4 +1,4 @@
-import IPlayer, { PlayerPayload } from "./Player"
+import IPlayer from "./Player"
 import IArenaOwner from "./ArenaOwner"
 import { IEvent, CreateEventPayload } from "./Event"
 import ILocation from "./Location"
@@ -20,7 +20,6 @@ export type {
   IEvent,
   ICalendarEvent,
   IPlayer,
-  PlayerPayload,
   IPersonalEvent,
   IUser,
   ILocation,
