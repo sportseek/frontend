@@ -23,4 +23,9 @@ const getNotifications = (pageNumber: number) => {
   return axios.get(url).then((response) => response)
 }
 
-export default { fetchById, update, updateProfilePic, getNotifications }
+const readNotification = (notificationId: string) => {
+  const url = `/notification/readNotification`
+  return axios.post(url, {notificationId}).then((response) => response)
+}
+
+export default { fetchById, update, updateProfilePic, getNotifications, readNotification }

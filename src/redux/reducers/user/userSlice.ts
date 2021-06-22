@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { ILocation, IUser } from "types"
-import INotification from "types/Notification"
+import { INotification, ReadNotificationPayload } from "types/Notification"
 import userAPI from "./userAPI"
 
 interface UserState {
@@ -59,6 +59,15 @@ export const getNotifications = createAsyncThunk(
   }
 )
 
+export const readNotification = createAsyncThunk(
+  "notification/readNotification",
+  async (payload: ReadNotificationPayload) => {
+    const response1 = await userAPI.readNotification(payload.notificationId)
+    const response = await userAPI.getNotifications(payload.pageNumber)
+    return response.data
+  }
+)
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -108,7 +117,8 @@ export const userSlice = createSlice({
       )
       .addMatcher(
         isAnyOf(
-          getNotifications.fulfilled
+          getNotifications.fulfilled,
+          readNotification.fulfilled,
         ),
         (state, action) => {
           state.notifications = action.payload.notifications

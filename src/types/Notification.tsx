@@ -1,4 +1,4 @@
-export default interface INotification {
+export interface INotification {
   _id: string
   creatorId: string
   creatorName: string
@@ -6,6 +6,11 @@ export default interface INotification {
   receiverName: string
   type: string
   description: string
-  CreatedAt: string
-  UnreadStatus: boolean
+  createdAt: string
+  unreadStatus: boolean
+}
+
+export interface ReadNotificationPayload {
+  notificationId: string
+  pageNumber: number
 }
