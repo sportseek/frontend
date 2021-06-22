@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles"
 import Drawer from "@material-ui/core/Drawer"
 import Typography from "@material-ui/core/Typography"
@@ -16,8 +16,13 @@ import {
   Search,
 } from "@material-ui/icons"
 import { Button } from "@material-ui/core"
-import { useAppDispatch } from "redux/hooks"
-import { getAllEvents } from "redux/reducers/event/eventSlice"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
+import {
+  getAllEvents,
+  selectEventMaxPrice,
+  selectEventMinPrice,
+} from "redux/reducers/event/eventSlice"
+import moment from "moment"
 
 const drawerWidth = 240
 
@@ -77,16 +82,31 @@ const sportTypes = [
 const FilterEvents = () => {
   const classes = useStyles()
   const dispatch = useAppDispatch()
-  const [sportsType, setSportsType] = React.useState("all")
+
+  const minPrice = useAppSelector(selectEventMinPrice)
+  const maxPrice = useAppSelector(selectEventMaxPrice)
+
+  const [eventTitle, setEventTitle] = useState("")
+  const [sportsType, setSportsType] = useState("all")
+  const [eventStartTime, setEventStartTime] = useState(
+    moment().format("YYYY-MM-DDTHH:MM")
+  )
+  const [eventEndTime, setEventEndTime] = useState(
+    moment().format("YYYY-MM-DDTHH:MM")
+  )
 
   const handleChangeType = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSportsType(event.target.value)
   }
 
-  const [value, setValue] = React.useState<number[]>([20, 37])
+  const [eventFee, setEventFee] = React.useState<number[]>([minPrice, maxPrice])
+
+  useEffect(() => {
+    setEventFee([minPrice, maxPrice])
+  }, [minPrice, maxPrice])
 
   const handleChangePrice = (event: any, newValue: number | number[]) => {
-    setValue(newValue as number[])
+    setEventFee(newValue as number[])
   }
 
   function valuetext(value: number) {
@@ -97,9 +117,21 @@ const FilterEvents = () => {
     console.log(sportsType)
     dispatch(
       getAllEvents({
+        eventTitle: eventTitle,
         sportType: sportsType === "all" ? "" : sportsType,
+        eventStartTime: new Date(eventStartTime).toISOString() ,
+        eventEndTime: new Date(eventEndTime).toISOString(),
+        eventFee: eventFee
       })
     )
+  }
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target
+    if (name === "eventTitle") setEventTitle(value)
+    if (name === "sportsType") setSportsType(value)
+    if (name === "eventStartTime") setEventStartTime(value)
+    if (name === "eventEndTime") setEventEndTime(value)
   }
 
   return (
@@ -124,7 +156,14 @@ const FilterEvents = () => {
                 </Typography>
               </Grid>
               <Grid item xs={10}>
-                <TextField label="Search" className={classes.textField} />
+                <TextField
+                  label="Search"
+                  className={classes.textField}
+                  id="eventTitle"
+                  name="eventTitle"
+                  value={eventTitle}
+                  onChange={handleInputChange}
+                />
               </Grid>
               <Grid item xs={2}>
                 <Search />
@@ -142,8 +181,10 @@ const FilterEvents = () => {
                   select
                   label="Sports Type"
                   value={sportsType}
-                  onChange={handleChangeType}
+                  onChange={handleInputChange}
                   className={classes.textField}
+                  id="sportsType"
+                  name="sportsType"
                 >
                   {sportTypes.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
@@ -164,16 +205,22 @@ const FilterEvents = () => {
                 <TextField
                   label="From Date/Time"
                   type="datetime-local"
-                  defaultValue="2017-05-24T10:30"
                   className={classes.textField}
+                  id="eventStartTime"
+                  name="eventStartTime"
+                  defaultValue={eventStartTime}
+                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   label="To Date/Time"
                   type="datetime-local"
-                  defaultValue="2017-05-24T10:30"
                   className={classes.textField}
+                  id="eventEndTime"
+                  name="eventEndTime"
+                  defaultValue={eventEndTime}
+                  onChange={handleInputChange}
                 />
               </Grid>
             </Grid>
@@ -184,11 +231,15 @@ const FilterEvents = () => {
               <Grid item xs={12}>
                 <Typography gutterBottom>Price Range (€)</Typography>
                 <Slider
-                  value={value}
+                  value={eventFee}
+                  max={maxPrice}
+                  min={minPrice}
                   onChange={handleChangePrice}
                   valueLabelDisplay="auto"
                   aria-labelledby="range-slider"
                   getAriaValueText={valuetext}
+                  id="eventFee"
+                  name="eventFee"
                 />
               </Grid>
             </Grid>
