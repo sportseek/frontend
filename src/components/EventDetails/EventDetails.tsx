@@ -43,9 +43,6 @@ const useStyles = makeStyles({
     color: "white",
     padding: "15px 50px",
   },
-  flexroot: {
-    flexGrow: 1,
-  },
 })
 
 const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
@@ -56,10 +53,7 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
 
   const mainFeaturedPost = {
     title: currentEvent.title,
-    //description:  "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
     image: currentEvent.eventImageUrl,
-    //imgText: "main image description",
-    //linkText: "Continue reading…",
   }
 
   const [registered, setRegistered] = useState(false)
@@ -106,132 +100,119 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
   }
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={3}>
       <Grid item xs={12}>
         <MainFeaturedPost post={mainFeaturedPost} />
       </Grid>
-
-      <Grid container xs={6} spacing={3}>
-        <Grid item xs={12}>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography variant="h5">
-                Event Description and Arena Details
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="subtitle1">
-                {currentEvent.description}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography variant="h6" gutterBottom>
-            <b>Sport Type:</b> {currentEvent.sportType}
-          </Typography>
-        </Grid>
-
-        <div style={{ height: "5px" }} />
-
-        <Grid item xs={12}>
-          <Typography variant="h6">
-            <b>Starts: </b>
-            {moment(currentEvent.start).format("LLLL")}
-          </Typography>
-
-          <Typography variant="h6">
-            <b>Ends: </b>
-            {moment(currentEvent.end).format("LLLL")}
-          </Typography>
-          <div style={{ height: "5px" }} />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography variant="h6">
-            Players <b>Registered</b>:{" "}
-            {currentEvent.registeredPlayers &&
-              currentEvent.registeredPlayers.length}
-          </Typography>
-          <Typography variant="h6">
-            Players <b>Interested</b>:{" "}
-            {currentEvent.interestedPlayers &&
-              currentEvent.interestedPlayers.length}
-          </Typography>
-          <div style={{ height: "5px" }} />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography variant="h5">
-            <b>Entry Fee</b>: {newEntryFee}
-            <div style={{ height: "5px" }} />
-          </Typography>
-        </Grid>
-
-        <Grid container direction="row" spacing={3}>
-          <Grid item>
-            {registered ? (
-              <Tooltip title="You will receive equivalent Credits.">
-                <Button
-                  startIcon={<ThumbDownIcon />}
-                  className={classes.participate}
-                  onClick={handleUpdateRegistered}
-                >
-                  Deregister
-                </Button>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Pay and confirm participation.">
-                <Button
-                  startIcon={<PaymentIcon />}
-                  className={classes.participate}
-                  onClick={handleUpdateRegistered}
-                >
-                  Participate
-                </Button>
-              </Tooltip>
-            )}
-          </Grid>
-
-          <Grid item>
-            {interested ? (
-              <Button
-                startIcon={<ThumbDownIcon />}
-                className={classes.interested}
-                onClick={handleUpdateInterested}
+      <Grid item xs={12} lg={6}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
               >
-                Not Interested
-              </Button>
-            ) : (
-              <Tooltip title="No payment required. Access interested events from your dashboard.">
-                <Button
-                  startIcon={<ThumbUpIcon />}
-                  className={classes.interested}
-                  onClick={handleUpdateInterested}
-                >
-                  Interested
-                </Button>
-              </Tooltip>
-            )}
-            <div style={{ height: "5px" }} />
+                <Typography variant="h5">
+                  Event Description and Arena Details
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography variant="subtitle1">
+                  {currentEvent.description}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
           </Grid>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography variant="subtitle1">
-            Credits earned if event is cancelled: {newEntryFee * 0.99}
-          </Typography>
+          <Grid item xs={12}>
+            <Typography variant="h6" gutterBottom>
+              <b>Sport Type:</b> {currentEvent.sportType}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              <b>Starts: </b>
+              {moment(currentEvent.start).format("LLLL")}
+            </Typography>
+            <Typography variant="h6">
+              <b>Ends: </b>
+              {moment(currentEvent.end).format("LLLL")}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              Players <b>Registered</b>:{" "}
+              {currentEvent.registeredPlayers &&
+                currentEvent.registeredPlayers.length}
+            </Typography>
+            <Typography variant="h6">
+              Players <b>Interested</b>:{" "}
+              {currentEvent.interestedPlayers &&
+                currentEvent.interestedPlayers.length}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h5">
+              <b>Entry Fee</b>: {newEntryFee}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container spacing={3}>
+              <Grid item>
+                {registered ? (
+                  <Tooltip title="You will receive equivalent Credits.">
+                    <Button
+                      startIcon={<ThumbDownIcon />}
+                      className={classes.participate}
+                      onClick={handleUpdateRegistered}
+                    >
+                      Deregister
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Pay and confirm participation.">
+                    <Button
+                      startIcon={<PaymentIcon />}
+                      className={classes.participate}
+                      onClick={handleUpdateRegistered}
+                    >
+                      Participate
+                    </Button>
+                  </Tooltip>
+                )}
+              </Grid>
+              <Grid item>
+                {interested ? (
+                  <Button
+                    startIcon={<ThumbDownIcon />}
+                    className={classes.interested}
+                    onClick={handleUpdateInterested}
+                  >
+                    Not Interested
+                  </Button>
+                ) : (
+                  <Tooltip title="No payment required. Access interested events from your dashboard.">
+                    <Button
+                      startIcon={<ThumbUpIcon />}
+                      className={classes.interested}
+                      onClick={handleUpdateInterested}
+                    >
+                      Interested
+                    </Button>
+                  </Tooltip>
+                )}
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">
+              Credits earned if event is cancelled: {newEntryFee * 0.99}
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={6} spacing={2}>
-        <Grid item xs={12}>
-          <Location editable={false} position={currentEvent.location} />
-        </Grid>
+      <Grid item xs={12} lg={6}>
+        <Location editable={false} position={currentEvent.location} />
       </Grid>
     </Grid>
   )

@@ -32,9 +32,9 @@ const Header = styled(Grid)({
 
 const Fab = styled(MuiFab)(({ theme }) => ({
   position: "fixed",
-  top: theme.spacing(9),
-  right: theme.spacing(4),
-  zIndex: 100,
+  top: theme.spacing(10),
+  right: theme.spacing(5),
+  zIndex: 500,
 }))
 
 type EventDetailsProps = {
@@ -61,7 +61,7 @@ const EventDetailsPage = (props: EventDetailsProps) => {
 
   return (
     <Root>
-      <Grid container spacing={1}>
+      <Grid container spacing={2}>
         <Helmet title={EVENT_DETAILS_HEADER} />
         <Header item xs={12} lg={4}>
           <Breadcrumbs aria-label="Breadcrumb">

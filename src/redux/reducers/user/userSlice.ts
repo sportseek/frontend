@@ -10,7 +10,7 @@ interface UserState {
   loading: boolean
   validationErrors: IUser
   hasErrors: boolean
-  notifications:INotification[]
+  notifications: INotification[]
 }
 
 const initialState: UserState = {
@@ -116,10 +116,7 @@ export const userSlice = createSlice({
         }
       )
       .addMatcher(
-        isAnyOf(
-          getNotifications.fulfilled,
-          readNotification.fulfilled,
-        ),
+        isAnyOf(getNotifications.fulfilled, readNotification.fulfilled),
         (state, action) => {
           state.notifications = action.payload.notifications
         }
@@ -136,6 +133,7 @@ export const selectValidationErrors = (state: RootState) =>
 export const selectHasValidationErrors = (state: RootState) =>
   state.user.hasErrors
 export const selectUserLocation = (state: RootState) => state.user.location
-export const selectUserNotification = (state: RootState) => state.user.notifications
+export const selectUserNotification = (state: RootState) =>
+  state.user.notifications
 
 export default userSlice.reducer
