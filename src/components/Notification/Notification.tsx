@@ -3,7 +3,11 @@ import Badge from "@material-ui/core/Badge"
 import IconButton from "@material-ui/core/IconButton"
 import React, { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { getNotifications, readNotification, selectUserNotification } from "redux/reducers/user/userSlice"
+import {
+  getNotifications,
+  readNotification,
+  selectUserNotification,
+} from "redux/reducers/user/userSlice"
 import { Notifications } from "@material-ui/icons"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
@@ -50,7 +54,9 @@ const Notification = () => {
   }, [])
 
   useEffect(() => {
-    const unreadCount = userNotifications.filter(item => item.unreadStatus === true).length
+    const unreadCount = userNotifications.filter(
+      (item) => item.unreadStatus === true
+    ).length
     setUnreadNotification(unreadCount)
   }, [userNotifications])
   const openNotificationMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -63,7 +69,7 @@ const Notification = () => {
 
   const handleReadNotification = (notificationId: string) => {
     // readNotification(notificationId, pageNumber);
-    dispatch(readNotification({notificationId, pageNumber}))
+    dispatch(readNotification({ notificationId, pageNumber }))
     closeNotificationMenu()
   }
 

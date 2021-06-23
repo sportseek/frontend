@@ -32,7 +32,7 @@ const lightVariant: ThemeOptions = {
     },
   },
   filterbar: {
-    width: 250,
+    width: 260,
     footer: {
       color: grey[200],
       background: "#62757f",
