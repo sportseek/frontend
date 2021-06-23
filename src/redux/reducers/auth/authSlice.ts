@@ -40,9 +40,14 @@ export const userSignIn = createAsyncThunk(
 
 export const playerSignup = createAsyncThunk(
   "auth/playerSignup",
-  async (payload: PlayerSignupPayload) => {
-    const response = await authAPI.playerSignup(payload)
-    return response.data
+  async (payload: PlayerSignupPayload, { rejectWithValue }) => {
+    try {
+      const response = await authAPI.playerSignup(payload)
+      return response.data
+    } catch (error) {
+      if (!error.response) throw error
+      return rejectWithValue(error.response.data)
+    }
   }
 )
 

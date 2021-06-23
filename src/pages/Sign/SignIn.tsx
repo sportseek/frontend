@@ -7,6 +7,7 @@ import { useAppSelector } from "redux/hooks"
 import {
   AuthStatus,
   isIfAuthenticated,
+  selectAuthErrors,
   selectAuthStatus,
 } from "redux/reducers/auth/authSlice"
 import SigninForm from "components/SigninForm"
@@ -36,6 +37,7 @@ const SignInPage: FC = () => {
   const classes = useStyles()
   const isAuthenticated = useAppSelector(isIfAuthenticated)
   const authStatus = useAppSelector(selectAuthStatus)
+  const authErrors = useAppSelector(selectAuthErrors)
 
   const [open, setOpen] = React.useState(false)
 
@@ -47,9 +49,10 @@ const SignInPage: FC = () => {
   }
 
   useEffect(() => {
-    if (authStatus === AuthStatus.FAILED) setOpen(true)
+    if (authStatus === AuthStatus.FAILED && authErrors === undefined)
+      setOpen(true)
     else setOpen(false)
-  }, [authStatus])
+  }, [authErrors, authStatus])
 
   return isAuthenticated ? (
     <Redirect to={{ pathname: "/home" }} />
