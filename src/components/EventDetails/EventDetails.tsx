@@ -230,7 +230,7 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
       </Grid>
       <Grid item xs={6} spacing={2}>
         <Grid item xs={12}>
-          <Location editable={false} />
+          <Location editable={false} position={currentEvent.location} />
         </Grid>
       </Grid>
     </Grid>

@@ -1,7 +1,7 @@
 import moment from "moment"
 import { IAddress, IArenaOwner, IPlayer, IUser } from "types"
 
-export const isEmpty = (obj: Object) => JSON.stringify(obj) === "{}"
+export const isEmpty = (obj: Object) => obj === null || obj === undefined || JSON.stringify(obj) === "{}"
 
 export const isEmptyUser = (user: IUser) =>
   JSON.stringify(user) === "{}" || user._id === ""
