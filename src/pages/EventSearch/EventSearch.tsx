@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { makeStyles, createStyles } from "@material-ui/core/styles"
-import { Grid } from "@material-ui/core"
+import { Grid, Theme } from "@material-ui/core"
 import Helmet from "react-helmet"
 import TabPanel from "components/Common/TabPanel"
 import EventDetailsView from "pages/EventDetails"
@@ -15,21 +15,16 @@ import {
   setCurEventId,
 } from "redux/reducers/event/eventSlice"
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: "center",
-      flex: 1,
-      height: "30%",
-      color: theme.palette.text.secondary,
-    },
     content: {
       flexGrow: 1,
-      padding: theme.spacing(3),
+      display: "flex",
+      padding: theme.spacing(1),
+      marginRight: theme.filterbar.width,
     },
-    toolbar: theme.mixins.toolbar,
     root: {
+      flex: 1,
       display: "flex",
     },
   })
@@ -74,18 +69,15 @@ const EventSearch = () => {
         <main className={classes.content}>
           <Grid
             container
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-            spacing={2}
+            spacing={4}
+            justify="space-around"
+            alignItems="center"
           >
-            <Grid container spacing={2} justify="space-evenly">
-              {allEvents.map((item) => (
-                <Grid item xs={4} key={item._id}>
-                  <EventCard event={item} openDetails={gotoEventDetails} />
-                </Grid>
-              ))}
-            </Grid>
+            {allEvents.map((item) => (
+              <Grid item xs={12} md={6} lg={3} key={item._id}>
+                <EventCard event={item} openDetails={gotoEventDetails} />
+              </Grid>
+            ))}
           </Grid>
         </main>
         <FilterEvents />

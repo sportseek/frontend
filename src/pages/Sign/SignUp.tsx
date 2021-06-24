@@ -1,17 +1,29 @@
-import React, { FC } from "react"
+import React, { FC, useEffect, useMemo } from "react"
 import { Redirect } from "react-router-dom"
+import Snackbar from "@material-ui/core/Snackbar"
+import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"
 import { useAppSelector } from "redux/hooks"
 import PlayerSignup from "components/PlayerSignup"
-import { isIfAuthenticated } from "redux/reducers/auth/authSlice"
 import ArenaSignup from "components/ArenaSignup"
 import Helmet from "react-helmet"
-import { makeStyles, Theme, useTheme } from "@material-ui/core/styles"
+import { makeStyles, useTheme } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
+import LinearProgress from "@material-ui/core/LinearProgress"
+import {
+  AuthStatus,
+  isIfAuthenticated,
+  selectAuthErrors,
+  selectAuthStatus,
+} from "redux/reducers/auth/authSlice"
+import { isEmpty } from "utils/stringUtils"
 
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />
+}
 interface TabPanelProps {
   children?: React.ReactNode
   dir?: string
@@ -46,7 +58,7 @@ function a11yProps(index: any) {
   }
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
     height: "100vh",
@@ -61,26 +73,51 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
+const ServerError: string[] = ["Please try again later!"]
+
 const SignUpPage: FC = () => {
   const classes = useStyles()
   const theme = useTheme()
   const [value, setValue] = React.useState(0)
+  const authStatus = useAppSelector(selectAuthStatus)
+  const authErrors = useAppSelector(selectAuthErrors) as { errors: string[] }
+
+  console.log(authErrors)
+
+  let globalErrors: string[] = useMemo(() => [], [])
+
+  if (authErrors === undefined) globalErrors = ServerError
+  else if (isEmpty(authErrors)) globalErrors = []
+  else if (authErrors.errors) globalErrors = authErrors.errors
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
   }
 
-  const handleChangeIndex = (index: number) => {
-    setValue(index)
+  const isAuthenticated = useAppSelector(isIfAuthenticated)
+
+  const [open, setOpen] = React.useState(false)
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return
+    }
+    setOpen(false)
   }
 
-  const isAuthenticated = useAppSelector(isIfAuthenticated)
+  useEffect(() => {
+    if (authStatus === AuthStatus.FAILED && globalErrors instanceof Array)
+      setOpen(true)
+    else setOpen(false)
+  }, [authErrors, authStatus, globalErrors])
+
   return isAuthenticated ? (
     <Redirect to={{ pathname: "/home" }} />
   ) : (
     <div className={classes.root}>
       <Helmet title="SportSeek - Sign up" />
       <div className={classes.tabWrapper}>
+        {authStatus === AuthStatus.PROCESSING ? <LinearProgress /> : null}
         <AppBar position="static" color="default">
           <Tabs
             value={value}
@@ -100,6 +137,13 @@ const SignUpPage: FC = () => {
         <TabPanel value={value} index={1} dir={theme.direction}>
           <ArenaSignup />
         </TabPanel>
+        {globalErrors.map((error) => (
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error">
+              {error}
+            </Alert>
+          </Snackbar>
+        ))}
       </div>
     </div>
   )

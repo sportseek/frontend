@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
     drawerPaper: {
       width: theme.filterbar.width,
       overflow: "hidden",
+      zIndex: 600,
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,

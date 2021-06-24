@@ -9,7 +9,7 @@ import {
   Hidden,
   Typography,
 } from "@material-ui/core"
-import { ExitToApp, Menu, } from "@material-ui/icons"
+import { ExitToApp, Menu } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { openSideBarMobile } from "redux/reducers/ui/uiSlice"
 import { logout, selectUserType } from "redux/reducers/auth/authSlice"
