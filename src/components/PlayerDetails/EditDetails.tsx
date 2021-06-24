@@ -24,7 +24,6 @@ import {
 import { EditRounded } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
-  selectLoggedInUser,
   prepareForValidation,
   selectLoadingUserData,
   updateUser,
@@ -32,11 +31,17 @@ import {
   selectHasValidationErrors,
   selectValidationErrors,
 } from "redux/reducers/user/userSlice"
-import { IAddress, IPlayer } from "types"
+import { IAddress, InitialAddress, IPlayer } from "types"
 
 type DetailsFormProps = {
   open: boolean
   handleClose: () => void
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  oldAddress: IAddress
+  profileImageUrl: string
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -54,9 +59,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserDetailsForm = (props: DetailsFormProps) => {
+const PlayerDetailsForm = (props: DetailsFormProps) => {
   const classes = useStyles()
-  const oldPlayer = useAppSelector(selectLoggedInUser) as IPlayer
   const loading = useAppSelector(selectLoadingUserData)
   const hasErrors = useAppSelector(selectHasValidationErrors)
   const errors = useAppSelector(selectValidationErrors) as IPlayer
@@ -65,16 +69,16 @@ const UserDetailsForm = (props: DetailsFormProps) => {
 
   const [imageClicked, setImageClicked] = useState(false)
 
-  const { open, handleClose: close } = props
-
   const {
+    open,
+    handleClose: close,
     firstName,
     lastName,
     phone,
     email,
-    address: oldAddress = {} as IAddress,
+    oldAddress,
     profileImageUrl = "",
-  } = oldPlayer
+  } = props
 
   const { current } = inputRef
 
@@ -141,17 +145,30 @@ const UserDetailsForm = (props: DetailsFormProps) => {
   }, [current])
 
   useEffect(() => {
-    setPlayer({
-      firstName,
-      lastName,
-      password,
-      oldpassword,
-      email,
-      phone,
-      address: oldAddress,
-    })
-    setAddress(oldAddress)
-  }, [email, firstName, lastName, oldAddress, phone])
+    if (open) {
+      setPlayer({
+        firstName,
+        lastName,
+        password,
+        oldpassword,
+        email,
+        phone,
+        address: oldAddress,
+      })
+      setAddress(oldAddress)
+    } else {
+      setPlayer({
+        firstName: "",
+        lastName: "",
+        password: "",
+        oldpassword: "",
+        email: "",
+        phone: "",
+        address: InitialAddress,
+      })
+      setAddress(InitialAddress)
+    }
+  }, [email, firstName, lastName, oldAddress, phone, open])
 
   useEffect(() => {
     if (!hasErrors && !imageClicked && !loading) {
@@ -393,4 +410,4 @@ const UserDetailsForm = (props: DetailsFormProps) => {
   )
 }
 
-export default UserDetailsForm
+export default PlayerDetailsForm

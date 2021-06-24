@@ -59,7 +59,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
         setAddress(address)
       },
       (error) => {
-        console.error(error)
+        console.error("There was error trying to connect to GeoCode")
       }
     )
   }
