@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles"
-import React, { FC, useEffect } from "react"
+import React, { FC } from "react"
 import { Redirect } from "react-router-dom"
 import LinearProgress from "@material-ui/core/LinearProgress"
 import Helmet from "react-helmet"
@@ -11,12 +11,7 @@ import {
   selectAuthStatus,
 } from "redux/reducers/auth/authSlice"
 import SigninForm from "components/SigninForm"
-import Snackbar from "@material-ui/core/Snackbar"
-import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"
-
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />
-}
+import ErrorBar from "components/Common/Errorbar"
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -39,20 +34,8 @@ const SignInPage: FC = () => {
   const authStatus = useAppSelector(selectAuthStatus)
   const authErrors = useAppSelector(selectAuthErrors)
 
-  const [open, setOpen] = React.useState(false)
-
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === "clickaway") {
-      return
-    }
-    setOpen(false)
-  }
-
-  useEffect(() => {
-    if (authStatus === AuthStatus.FAILED && authErrors === undefined)
-      setOpen(true)
-    else setOpen(false)
-  }, [authErrors, authStatus])
+  const showErrorBar =
+    authStatus === AuthStatus.FAILED && authErrors instanceof Array
 
   return isAuthenticated ? (
     <Redirect to={{ pathname: "/home" }} />
@@ -62,12 +45,8 @@ const SignInPage: FC = () => {
       <div className={classes.signinWrapper}>
         {authStatus === AuthStatus.PROCESSING ? <LinearProgress /> : null}
         <SigninForm />
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error">
-            Please try again later!
-          </Alert>
-        </Snackbar>
       </div>
+      {showErrorBar && <ErrorBar errors={authErrors as []} />}
     </div>
   )
 }

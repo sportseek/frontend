@@ -24,7 +24,7 @@ const Wallet = () => {
 
   const player = useAppSelector(selectLoggedInUser) as IPlayer
 
-  const { wallet } = player
+  const { wallet = 0 } = player
 
   const euro = "\u20AC"
   return (

@@ -27,7 +27,6 @@ export const createPEvent = createAsyncThunk(
       return response.data
     } catch (err) {
       if (!err.response) throw err
-
       return rejectWithValue(err.response.data)
     }
   }
@@ -36,8 +35,13 @@ export const createPEvent = createAsyncThunk(
 export const fetchPEvents = createAsyncThunk(
   "personalevent/fetchEventList",
   async () => {
-    const response = await pEventAPI.fetchEventList()
-    return response.data
+    try {
+      const response = await pEventAPI.fetchEventList()
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return err.response.data
+    }
   }
 )
 
@@ -61,8 +65,13 @@ export const pEventSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchPEvents.fulfilled, (state, action) => {
-        state.events = action.payload.events
+        state.events = action.payload === undefined ? [] : action.payload.events
         state.needToUpdate = false
+      })
+      .addCase(fetchPEvents.rejected, (state, action) => {
+        const errs = action.payload === undefined ? {} : action.payload
+        state.errors = errs as FormValidationErrors
+        state.hasErrors = true
       })
       .addCase(createPEvent.fulfilled, (state) => {
         state.needToUpdate = true
@@ -75,6 +84,12 @@ export const pEventSlice = createSlice({
       })
       .addCase(deletePEvent.fulfilled, (state) => {
         state.needToUpdate = true
+      })
+      .addCase(deletePEvent.rejected, (state, action) => {
+        state.needToUpdate = true
+        const errs = action.payload === undefined ? {} : action.payload
+        state.errors = errs as FormValidationErrors
+        state.hasErrors = true
       })
   },
 })

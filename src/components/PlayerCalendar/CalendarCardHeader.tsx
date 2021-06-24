@@ -1,9 +1,6 @@
 import React from "react"
 import { styled } from "@material-ui/core/styles"
-import {
-  CardHeader as MuiCardHeader,
-  Button,
-} from "@material-ui/core"
+import { CardHeader as MuiCardHeader, Button } from "@material-ui/core"
 import { ArrowForwardIos, ScheduleOutlined } from "@material-ui/icons"
 
 const Root = styled(MuiCardHeader)({
@@ -19,22 +16,22 @@ const CardHeader = (props: HeaderProps) => {
         showActions &&
         (selectable ? (
           <Button
-              variant="outlined"
-              color="secondary"
-              startIcon={<ArrowForwardIos />}
-              onClick={closeSchedule}
-            >
-              Back to Normal View
-            </Button>
+            variant="outlined"
+            color="secondary"
+            startIcon={<ArrowForwardIos />}
+            onClick={closeSchedule}
+          >
+            Back to Normal View
+          </Button>
         ) : (
-            <Button
-              variant="outlined"
-              color="secondary"
-              startIcon={<ScheduleOutlined />}
-              onClick={openSchedule}
-            >
-              Manage Schedule
-            </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            startIcon={<ScheduleOutlined />}
+            onClick={openSchedule}
+          >
+            Manage Schedule
+          </Button>
         ))
       }
     />

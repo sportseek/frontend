@@ -8,7 +8,7 @@ interface UserState {
   loggedInUser: IUser
   location: ILocation
   loading: boolean
-  validationErrors: IUser
+  errors: IUser
   hasErrors: boolean
   notifications: INotification[]
 }
@@ -18,15 +18,20 @@ const initialState: UserState = {
   location: {} as ILocation,
   loading: false,
   hasErrors: true,
-  validationErrors: {} as IUser,
+  errors: {} as IUser,
   notifications: [],
 }
 
 export const fetchLoggedInUser = createAsyncThunk(
   "users/fetchById",
   async () => {
-    const response = await userAPI.fetchById()
-    return response.data
+    try {
+      const response = await userAPI.fetchById()
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return err.response.data
+    }
   }
 )
 
@@ -45,9 +50,14 @@ export const updateUser = createAsyncThunk(
 
 export const updateProfilePic = createAsyncThunk(
   "user/updateProfilePic",
-  async (imagePayload: any) => {
-    const response = await userAPI.updateProfilePic(imagePayload)
-    return response.data
+  async (imagePayload: any, { rejectWithValue }) => {
+    try {
+      const response = await userAPI.updateProfilePic(imagePayload)
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return rejectWithValue(err.response.data)
+    }
   }
 )
 
@@ -74,7 +84,7 @@ export const userSlice = createSlice({
   reducers: {
     prepareForValidation: (state) => {
       state.hasErrors = true
-      state.validationErrors = {} as IUser
+      state.errors = {} as IUser
     },
   },
   extraReducers: (builder) => {
@@ -90,7 +100,7 @@ export const userSlice = createSlice({
           state.location = action.payload.user.location
           state.loading = false
           state.hasErrors = false
-          state.validationErrors = {} as IUser
+          state.errors = {} as IUser
         }
       )
       .addMatcher(
@@ -111,7 +121,10 @@ export const userSlice = createSlice({
         ),
         (state, action) => {
           state.loading = false
-          state.validationErrors = action.payload as IUser
+          state.errors =
+            action.payload === undefined
+              ? ({} as IUser)
+              : (action.payload as IUser)
           state.hasErrors = true
         }
       )
@@ -128,8 +141,7 @@ export const { prepareForValidation } = userSlice.actions
 
 export const selectLoggedInUser = (state: RootState) => state.user.loggedInUser
 export const selectLoadingUserData = (state: RootState) => state.user.loading
-export const selectValidationErrors = (state: RootState) =>
-  state.user.validationErrors
+export const selectValidationErrors = (state: RootState) => state.user.errors
 export const selectHasValidationErrors = (state: RootState) =>
   state.user.hasErrors
 export const selectUserLocation = (state: RootState) => state.user.location
