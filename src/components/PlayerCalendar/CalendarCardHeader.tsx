@@ -1,8 +1,10 @@
 import React from "react"
 import { styled } from "@material-ui/core/styles"
-import { CardHeader as MuiCardHeader, IconButton } from "@material-ui/core"
-import Tooltip from "components/Common/Tooltip"
-import { CancelOutlined, ScheduleOutlined } from "@material-ui/icons"
+import {
+  CardHeader as MuiCardHeader,
+  Button,
+} from "@material-ui/core"
+import { ArrowForwardIos, ScheduleOutlined } from "@material-ui/icons"
 
 const Root = styled(MuiCardHeader)({
   paddingBottom: 0,
@@ -16,29 +18,23 @@ const CardHeader = (props: HeaderProps) => {
       action={
         showActions &&
         (selectable ? (
-          <Tooltip
-            open={selectable}
-            title="Go back to Normal mode"
-            placement="left"
-          >
-            <IconButton
+          <Button
+              variant="outlined"
               color="secondary"
-              aria-label="close editing"
+              startIcon={<ArrowForwardIos />}
               onClick={closeSchedule}
             >
-              <CancelOutlined />
-            </IconButton>
-          </Tooltip>
+              Back to Normal View
+            </Button>
         ) : (
-          <Tooltip open={selectable} title="Manage Schedule" placement="left">
-            <IconButton
+            <Button
+              variant="outlined"
               color="secondary"
-              aria-label="manage Schedule"
+              startIcon={<ScheduleOutlined />}
               onClick={openSchedule}
             >
-              <ScheduleOutlined />
-            </IconButton>
-          </Tooltip>
+              Manage Schedule
+            </Button>
         ))
       }
     />
