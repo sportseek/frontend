@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react"
+import React, { FC, useEffect, useMemo } from "react"
 import { Redirect } from "react-router-dom"
 import Snackbar from "@material-ui/core/Snackbar"
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"
@@ -6,7 +6,7 @@ import { useAppSelector } from "redux/hooks"
 import PlayerSignup from "components/PlayerSignup"
 import ArenaSignup from "components/ArenaSignup"
 import Helmet from "react-helmet"
-import { makeStyles, Theme, useTheme } from "@material-ui/core/styles"
+import { makeStyles, useTheme } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
@@ -19,6 +19,7 @@ import {
   selectAuthErrors,
   selectAuthStatus,
 } from "redux/reducers/auth/authSlice"
+import { isEmpty } from "utils/stringUtils"
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />
@@ -72,12 +73,22 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
+const ServerError: string[] = ["Please try again later!"]
+
 const SignUpPage: FC = () => {
   const classes = useStyles()
   const theme = useTheme()
   const [value, setValue] = React.useState(0)
   const authStatus = useAppSelector(selectAuthStatus)
-  const authErrors = useAppSelector(selectAuthErrors)
+  const authErrors = useAppSelector(selectAuthErrors) as { errors: string[] }
+
+  console.log(authErrors)
+
+  let globalErrors: string[] = useMemo(() => [], [])
+
+  if (authErrors === undefined) globalErrors = ServerError
+  else if (isEmpty(authErrors)) globalErrors = []
+  else if (authErrors.errors) globalErrors = authErrors.errors
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
@@ -95,10 +106,10 @@ const SignUpPage: FC = () => {
   }
 
   useEffect(() => {
-    if (authStatus === AuthStatus.FAILED && authErrors === undefined)
+    if (authStatus === AuthStatus.FAILED && globalErrors instanceof Array)
       setOpen(true)
     else setOpen(false)
-  }, [authErrors, authStatus])
+  }, [authErrors, authStatus, globalErrors])
 
   return isAuthenticated ? (
     <Redirect to={{ pathname: "/home" }} />
@@ -126,11 +137,13 @@ const SignUpPage: FC = () => {
         <TabPanel value={value} index={1} dir={theme.direction}>
           <ArenaSignup />
         </TabPanel>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error">
-            Please try again later!
-          </Alert>
-        </Snackbar>
+        {globalErrors.map((error) => (
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error">
+              {error}
+            </Alert>
+          </Snackbar>
+        ))}
       </div>
     </div>
   )

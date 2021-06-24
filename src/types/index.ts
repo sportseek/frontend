@@ -2,7 +2,7 @@ import IPlayer from "./Player"
 import IArenaOwner from "./ArenaOwner"
 import { IEvent, CreateEventPayload } from "./Event"
 import ILocation from "./Location"
-import IAddress from "./Address"
+import { IAddress, InitialAddress } from "./Address"
 import ICalendarEvent from "./CalendarEvent"
 import { IPersonalEvent, PEventPayload } from "./PersonalEvent"
 
@@ -25,3 +25,5 @@ export type {
   ILocation,
   PEventPayload,
 }
+
+export { InitialAddress }

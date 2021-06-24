@@ -18,7 +18,7 @@ export const getUserName = (user: IUser) => {
 }
 
 export const getUserAddress = (address: IAddress) =>
-  isEmpty(address)
+  isEmpty(address) || address.street === ""
     ? ""
     : `${address.street}, ${address.city}, ${address.postcode}, ${address.country}`
 

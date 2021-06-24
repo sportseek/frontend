@@ -24,6 +24,7 @@ type ValidationErrors =
   | UserSigninPayload
   | PlayerSignupPayload
   | ArenaSignupPayload
+  | { errors: [] }
 
 export const userSignIn = createAsyncThunk(
   "auth/signin",
