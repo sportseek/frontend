@@ -2,13 +2,15 @@ import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { ILocation, IUser } from "types"
 import { INotification, ReadNotificationPayload } from "types/Notification"
+import { ServerErrors } from "utils/constants"
 import userAPI from "./userAPI"
 
+type UserErrors = IUser | []
 interface UserState {
   loggedInUser: IUser
   location: ILocation
   loading: boolean
-  errors: IUser
+  errors: UserErrors
   hasErrors: boolean
   notifications: INotification[]
 }
@@ -18,7 +20,7 @@ const initialState: UserState = {
   location: {} as ILocation,
   loading: false,
   hasErrors: true,
-  errors: {} as IUser,
+  errors: {} as UserErrors,
   notifications: [],
 }
 
@@ -84,7 +86,7 @@ export const userSlice = createSlice({
   reducers: {
     prepareForValidation: (state) => {
       state.hasErrors = true
-      state.errors = {} as IUser
+      state.errors = {} as UserErrors
     },
   },
   extraReducers: (builder) => {
@@ -100,7 +102,7 @@ export const userSlice = createSlice({
           state.location = action.payload.user.location
           state.loading = false
           state.hasErrors = false
-          state.errors = {} as IUser
+          state.errors = {} as UserErrors
         }
       )
       .addMatcher(
@@ -121,10 +123,9 @@ export const userSlice = createSlice({
         ),
         (state, action) => {
           state.loading = false
-          state.errors =
-            action.payload === undefined
-              ? ({} as IUser)
-              : (action.payload as IUser)
+          const errs =
+            action.payload === undefined ? ServerErrors : action.payload
+          state.errors = errs as UserErrors
           state.hasErrors = true
         }
       )
@@ -141,9 +142,8 @@ export const { prepareForValidation } = userSlice.actions
 
 export const selectLoggedInUser = (state: RootState) => state.user.loggedInUser
 export const selectLoadingUserData = (state: RootState) => state.user.loading
-export const selectValidationErrors = (state: RootState) => state.user.errors
-export const selectHasValidationErrors = (state: RootState) =>
-  state.user.hasErrors
+export const selectUserErrors = (state: RootState) => state.user.errors
+export const selectHasUserErrors = (state: RootState) => state.user.hasErrors
 export const selectUserLocation = (state: RootState) => state.user.location
 export const selectUserNotification = (state: RootState) =>
   state.user.notifications

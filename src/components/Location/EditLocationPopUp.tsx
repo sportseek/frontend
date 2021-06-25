@@ -7,21 +7,36 @@ import {
   DialogContent,
   DialogTitle,
   Slide,
+  LinearProgress,
 } from "@material-ui/core"
 import { MapContainer, TileLayer } from "react-leaflet"
 import { Marker as LeafletMarker } from "leaflet"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { TransitionProps } from "@material-ui/core/transitions"
-
+import {
+  prepareForValidation,
+  selectLoadingUserData,
+  selectHasUserErrors,
+  selectUserErrors,
+} from "redux/reducers/user/userSlice"
 import { EDIT_LOCATION_HEADER } from "utils/constants"
 import { ILocation } from "types"
+import Errorbar from "components/Common/Errorbar"
 
 import DraggableMarker from "./DraggableMarker"
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   map: {
     height: 500,
   },
-})
+  actions: {
+    display: "flex",
+    justifyContent: "space-between",
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingBottom: 16,
+  },
+}))
 
 const Transition = React.forwardRef(
   (props: TransitionProps, ref: React.Ref<unknown>) => (
@@ -38,20 +53,29 @@ type Props = {
 
 const EditLocation: FC<Props> = (props: Props) => {
   const classes = useStyles()
+  const dispatch = useAppDispatch()
+  const hasErrors = useAppSelector(selectHasUserErrors)
+  const loading = useAppSelector(selectLoadingUserData)
 
   const { updatePos, open, setOpen, position } = props
 
   const [pinPos, setPinPos] = useState<ILocation>(position)
 
+  const globalErrors = useAppSelector(selectUserErrors)
+
+  const showErrorBar = globalErrors instanceof Array && globalErrors.length > 0
+
   const markerRef = useRef<LeafletMarker>(null)
 
   const handleClose = () => {
+    dispatch(prepareForValidation())
     setOpen(false)
   }
 
   const handleSave = () => {
+    dispatch(prepareForValidation())
     updatePos(pinPos as ILocation)
-    handleClose()
+    if (!hasErrors) handleClose()
   }
 
   const eventHandlers = useMemo(
@@ -82,6 +106,7 @@ const EditLocation: FC<Props> = (props: Props) => {
         {EDIT_LOCATION_HEADER}
       </DialogTitle>
       <DialogContent>
+        {loading && <LinearProgress color="secondary" />}
         <MapContainer
           className={classes.map}
           center={position}
@@ -100,14 +125,15 @@ const EditLocation: FC<Props> = (props: Props) => {
           />
         </MapContainer>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleSave} color="primary">
+      <DialogActions className={classes.actions}>
+        <Button onClick={handleSave} color="secondary" variant="contained">
           Save
         </Button>
+        <Button onClick={handleClose} variant="contained" color="secondary">
+          Cancel
+        </Button>
       </DialogActions>
+      {showErrorBar && <Errorbar errors={globalErrors as []} />}
     </Dialog>
   )
 }

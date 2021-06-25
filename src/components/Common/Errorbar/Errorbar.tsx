@@ -10,24 +10,30 @@ const Errorbar = (props: Props) => {
   const { errors = [] } = props
 
   const [open, setOpen] = React.useState(false)
+  const [errs, setErrors] = React.useState(errors)
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
       return
     }
+    setErrors([])
     setOpen(false)
   }
 
-  console.log(errors)
-
   React.useEffect(() => {
     setOpen(errors.length > 0)
+    setErrors(errors)
   }, [errors])
 
   return (
     <>
-      {errors.map((error) => (
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      {errs.map((error) => (
+        <Snackbar
+          key={error}
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
           <Alert onClose={handleClose} severity="error">
             {error}
           </Alert>

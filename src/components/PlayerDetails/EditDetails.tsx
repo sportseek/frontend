@@ -28,9 +28,10 @@ import {
   selectLoadingUserData,
   updateUser,
   updateProfilePic,
-  selectHasValidationErrors,
-  selectValidationErrors,
+  selectHasUserErrors,
+  selectUserErrors,
 } from "redux/reducers/user/userSlice"
+import Errorbar from "components/Common/Errorbar"
 import { IAddress, InitialAddress, IPlayer } from "types"
 
 type DetailsFormProps = {
@@ -62,12 +63,17 @@ const useStyles = makeStyles((theme) => ({
 const PlayerDetailsForm = (props: DetailsFormProps) => {
   const classes = useStyles()
   const loading = useAppSelector(selectLoadingUserData)
-  const hasErrors = useAppSelector(selectHasValidationErrors)
-  const errors = useAppSelector(selectValidationErrors) as IPlayer
+  const hasErrors = useAppSelector(selectHasUserErrors)
+  const userErrors = useAppSelector(selectUserErrors)
   const dispatch = useAppDispatch()
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [imageClicked, setImageClicked] = useState(false)
+
+  const errors = userErrors as IPlayer
+  const globalErrors = userErrors as []
+
+  const showErrorBar = globalErrors instanceof Array && globalErrors.length > 0
 
   const {
     open,
@@ -108,6 +114,7 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
   const handleSave = () => {
     const tempuser = { ...player }
     tempuser.address = { ...tempuser.address, ...address }
+    dispatch(prepareForValidation())
     dispatch(updateUser(tempuser as IPlayer))
     setImageClicked(false)
   }
@@ -133,6 +140,7 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
       const image = files[0]
       const formData = new FormData()
       formData.append("image", image)
+      dispatch(prepareForValidation())
       dispatch(updateProfilePic(formData))
       if (current) current.value = ""
       setImageClicked(true)
@@ -406,6 +414,7 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
           Cancel
         </Button>
       </DialogActions>
+      {showErrorBar && <Errorbar errors={globalErrors} />}
     </Dialog>
   )
 }
