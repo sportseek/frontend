@@ -1,4 +1,11 @@
-import React, { FC, useMemo, useRef, useState } from "react"
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import {
   Button,
@@ -67,16 +74,22 @@ const EditLocation: FC<Props> = (props: Props) => {
 
   const markerRef = useRef<LeafletMarker>(null)
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     dispatch(prepareForValidation())
     setOpen(false)
-  }
+  }, [dispatch, setOpen])
 
   const handleSave = () => {
     dispatch(prepareForValidation())
     updatePos(pinPos as ILocation)
     if (!hasErrors) handleClose()
   }
+
+  useEffect(() => {
+    if (!hasErrors && !loading) {
+      handleClose()
+    }
+  }, [handleClose, hasErrors, loading])
 
   const eventHandlers = useMemo(
     () => ({

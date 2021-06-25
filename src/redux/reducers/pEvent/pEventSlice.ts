@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IPersonalEvent, PEventPayload } from "types"
+import { ServerErrors } from "utils/constants"
 import pEventAPI from "./pEventAPI"
 
-type FormValidationErrors = PEventPayload
+type FormValidationErrors = PEventPayload | []
 
 interface PersonalEventState {
   events: IPersonalEvent[]
@@ -65,12 +66,14 @@ export const pEventSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchPEvents.fulfilled, (state, action) => {
-        state.events = action.payload === undefined ? [] : action.payload.events
+        state.events = action.payload.events
         state.needToUpdate = false
       })
       .addCase(fetchPEvents.rejected, (state, action) => {
-        const errs = action.payload === undefined ? {} : action.payload
+        const errs =
+          action.payload === undefined ? [ServerErrors] : action.payload
         state.errors = errs as FormValidationErrors
+        state.events = []
         state.hasErrors = true
       })
       .addCase(createPEvent.fulfilled, (state) => {
@@ -79,7 +82,9 @@ export const pEventSlice = createSlice({
         state.errors = {} as FormValidationErrors
       })
       .addCase(createPEvent.rejected, (state, action) => {
-        state.errors = action.payload as FormValidationErrors
+        const errs =
+          action.payload === undefined ? [ServerErrors] : action.payload
+        state.errors = errs as FormValidationErrors
         state.hasErrors = true
       })
       .addCase(deletePEvent.fulfilled, (state) => {
@@ -87,7 +92,8 @@ export const pEventSlice = createSlice({
       })
       .addCase(deletePEvent.rejected, (state, action) => {
         state.needToUpdate = true
-        const errs = action.payload === undefined ? {} : action.payload
+        const errs =
+          action.payload === undefined ? [ServerErrors] : action.payload
         state.errors = errs as FormValidationErrors
         state.hasErrors = true
       })
