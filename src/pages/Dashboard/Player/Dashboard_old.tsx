@@ -1,11 +1,12 @@
 import React from "react"
-import { styled } from "@material-ui/core/styles"
+import {
+  styled,
+} from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
 import Helmet from "react-helmet"
 
 import Playerdetails from "components/PlayerDetails"
 import Wallet from "components/Wallet"
-import Friends from "components/PlayerFriends"
 import Location from "components/Location"
 import Calendar from "components/PlayerCalendar"
 import TabPanel from "components/Common/TabPanel"
@@ -15,7 +16,14 @@ const Root = styled("div")({
   flex: 1,
 })
 
+const Column1 = styled(Grid)({})
+
+const Column2 = styled(Grid)({})
+
+const ColContainer = styled(Grid)({})
+
 const Dashboard = () => {
+
   const [tabIndex, setTabIndex] = React.useState(0)
   const [eventId, setEventId] = React.useState("")
 
@@ -30,33 +38,36 @@ const Dashboard = () => {
       <TabPanel value={tabIndex} index={0}>
         <Helmet title="Dashboard" />
         <Grid container spacing={3}>
-          <Grid item lg={12}>
-            <Grid container spacing={3}>
-              <Grid item lg={4}>
-                <Grid container justify="space-between" spacing={3}>
-                  <Grid item xs={12} lg={12}>
-                    <Playerdetails />
-                  </Grid>
-                  <Grid item xs={12} lg={12}>
-                    <Location />
-                  </Grid>
-                </Grid>
+          <Column1 item xs={12} lg={4}>
+            <ColContainer
+              container
+              spacing={3}
+              direction="column"
+              justify="space-around"
+            >
+              <Grid item>
+                <Playerdetails />
               </Grid>
-              <Grid item xs={12} lg>
-                <Calendar goto={goEventDetails} />
+              <Grid item>
+                <Location />
               </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} lg={12}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} lg={4}>
+              <Grid item>
                 <Wallet />
               </Grid>
-              <Grid item xs={12} lg>
-                <Friends />
+            </ColContainer>
+          </Column1>
+          <Column2 item xs={12} lg>
+            <ColContainer
+              container
+              spacing={3}
+              direction="column"
+              justify="space-between"
+            >
+              <Grid item>
+                <Calendar goto={goEventDetails} />
               </Grid>
-            </Grid>
-          </Grid>
+            </ColContainer>
+          </Column2>
         </Grid>
       </TabPanel>
       <TabPanel value={tabIndex} index={1}>
