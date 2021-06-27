@@ -18,6 +18,7 @@ import {
   selectHasErrors,
   prepareForValidation,
 } from "redux/reducers/pEvent/pEventSlice"
+import Errorbar from "components/Common/Errorbar"
 
 type FormProps = {
   open: boolean
@@ -46,8 +47,12 @@ const AddPersonalEventFormDialog = (props: FormProps) => {
     end: "",
   })
 
-  const validationErrors = useAppSelector(selectErrors)
+  const errors = useAppSelector(selectErrors)
   const hasErrors = useAppSelector(selectHasErrors)
+
+  const showErrorBar = errors instanceof Array && errors.length > 0
+
+  const validationErrors = errors as PEventPayload
 
   React.useEffect(() => {
     setPEvent((p) => ({
@@ -79,50 +84,49 @@ const AddPersonalEventFormDialog = (props: FormProps) => {
   const handleCreate = () => dispatch(createPEvent(pEvent))
 
   return (
-    <div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="add-personal-event-form-dialog"
-      >
-        <DialogTitle id="form-dialog-title">Create Event</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To Create a event, please enter the following data.
-          </DialogContentText>
-          <TextField
-            required
-            autoFocus
-            error={!!validationErrors.title}
-            margin="normal"
-            id="personal event title"
-            label="Title"
-            name="title"
-            fullWidth
-            value={pEvent.title}
-            onChange={handleChange}
-            helperText={validationErrors.title}
-          />
-          <TextField
-            margin="normal"
-            id="personal event description"
-            label="Description"
-            name="description"
-            fullWidth
-            value={pEvent.description}
-            onChange={handleChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleFormClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleCreate} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="add-personal-event-form-dialog"
+    >
+      <DialogTitle id="form-dialog-title">Create Event</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          To Create a event, please enter the following data.
+        </DialogContentText>
+        <TextField
+          required
+          autoFocus
+          error={!!validationErrors.title}
+          margin="normal"
+          id="personal event title"
+          label="Title"
+          name="title"
+          fullWidth
+          value={pEvent.title}
+          onChange={handleChange}
+          helperText={validationErrors.title}
+        />
+        <TextField
+          margin="normal"
+          id="personal event description"
+          label="Description"
+          name="description"
+          fullWidth
+          value={pEvent.description}
+          onChange={handleChange}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleFormClose} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={handleCreate} color="primary">
+          Save
+        </Button>
+      </DialogActions>
+      {showErrorBar && <Errorbar errors={errors as []} />}
+    </Dialog>
   )
 }
 

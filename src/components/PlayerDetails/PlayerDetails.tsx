@@ -46,10 +46,10 @@ export default function PersonalInfoCard() {
   const player = useAppSelector(selectLoggedInUser) as IPlayer
 
   const {
-    firstName,
-    lastName,
-    phone,
-    email,
+    firstName = "",
+    lastName = "",
+    phone = "",
+    email = "",
     profileImageUrl = "",
     address = InitialAddress,
   } = player

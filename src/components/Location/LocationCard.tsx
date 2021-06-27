@@ -15,7 +15,7 @@ import EditLocationDialog from "./EditLocationPopUp"
 
 const useStyles = makeStyles({
   map: {
-    height: 350,
+    height: 360,
   },
   cardHeader: {
     paddingBottom: 0,

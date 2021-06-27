@@ -104,8 +104,7 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
       const res = getCalendarInfo(ids, result)
       if (running) setSEvents(res)
     }
-
-    fetchEventList(sportEventIds)
+    if (sportEventIds.length > 0) fetchEventList(sportEventIds)
 
     return () => {
       running = false
