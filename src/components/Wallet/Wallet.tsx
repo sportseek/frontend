@@ -28,7 +28,7 @@ const Wallet = () => {
 
   const euro = "\u20AC"
   return (
-    <Card>
+    <Card className={classes.simpleCard}>
       <CardHeader title="Wallet" />
       <CardContent>
         <Typography

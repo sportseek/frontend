@@ -8,6 +8,22 @@ const fetchById = () => {
   return axios.get(url).then((response) => response)
 }
 
+const findAll = () => {
+  const url = `/${userEndpoint}/findAll`
+  return axios
+    .get(url)
+    .then((response) => response.data)
+    .catch(() => [])
+}
+
+const findFriend = (friendId: string) => {
+  const url = `/${userEndpoint}/findFriendById/${friendId}`
+  return axios
+    .get(url)
+    .then((response) => response.data.friend)
+    .catch(() => [])
+}
+
 const update = (user: IUser) => {
   const url = `/${userEndpoint}/update/`
   return axios.put(url, user).then((response) => response)
@@ -16,6 +32,16 @@ const update = (user: IUser) => {
 const updateProfilePic = (formData: any) => {
   const url = `/${userEndpoint}/updateProfilePic/`
   return axios.put(url, formData).then((response) => response)
+}
+
+const addFriend = (email: string) => {
+  const url = `/${userEndpoint}/addFriend/`
+  return axios.put(url, { email }).then((response) => response)
+}
+
+const removeFriend = (ids: string[]) => {
+  const url = `/${userEndpoint}/removeFriends/`
+  return axios.put(url, { ids }).then((response) => response)
 }
 
 const getNotifications = (pageNumber: number) => {
@@ -29,7 +55,11 @@ const readNotification = (notificationId: string) => {
 }
 
 export default {
+  addFriend,
   fetchById,
+  findAll,
+  findFriend,
+  removeFriend,
   update,
   updateProfilePic,
   getNotifications,

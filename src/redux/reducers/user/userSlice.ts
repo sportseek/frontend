@@ -63,6 +63,32 @@ export const updateProfilePic = createAsyncThunk(
   }
 )
 
+export const addFriend = createAsyncThunk(
+  "user/addFriend",
+  async (email: string, { rejectWithValue }) => {
+    try {
+      const response = await userAPI.addFriend(email)
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
+export const removeFriend = createAsyncThunk(
+  "user/removeFriend",
+  async (ids: string[], { rejectWithValue }) => {
+    try {
+      const response = await userAPI.removeFriend(ids)
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
 export const getNotifications = createAsyncThunk(
   "notification/getNotifications",
   async (pageNumber: number) => {
@@ -93,6 +119,8 @@ export const userSlice = createSlice({
     builder
       .addMatcher(
         isAnyOf(
+          addFriend.fulfilled,
+          removeFriend.fulfilled,
           fetchLoggedInUser.fulfilled,
           updateUser.fulfilled,
           updateProfilePic.fulfilled
@@ -107,6 +135,8 @@ export const userSlice = createSlice({
       )
       .addMatcher(
         isAnyOf(
+          addFriend.pending,
+          removeFriend.pending,
           fetchLoggedInUser.pending,
           updateUser.pending,
           updateProfilePic.pending
@@ -117,6 +147,8 @@ export const userSlice = createSlice({
       )
       .addMatcher(
         isAnyOf(
+          addFriend.rejected,
+          removeFriend.rejected,
           fetchLoggedInUser.rejected,
           updateUser.rejected,
           updateProfilePic.rejected

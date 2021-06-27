@@ -1,7 +1,5 @@
 import React from "react"
-import {
-  styled,
-} from "@material-ui/core/styles"
+import { styled } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
 import Helmet from "react-helmet"
 
@@ -23,7 +21,6 @@ const Column2 = styled(Grid)({})
 const ColContainer = styled(Grid)({})
 
 const Dashboard = () => {
-
   const [tabIndex, setTabIndex] = React.useState(0)
   const [eventId, setEventId] = React.useState("")
 

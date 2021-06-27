@@ -31,7 +31,7 @@ const Dashboard = () => {
         <Helmet title="Dashboard" />
         <Grid container spacing={3}>
           <Grid item lg={12}>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} alignItems="stretch">
               <Grid item lg={4}>
                 <Grid container justify="space-between" spacing={3}>
                   <Grid item xs={12} lg={12}>
@@ -48,7 +48,7 @@ const Dashboard = () => {
             </Grid>
           </Grid>
           <Grid item xs={12} lg={12}>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} alignItems="stretch">
               <Grid item xs={12} lg={4}>
                 <Wallet />
               </Grid>

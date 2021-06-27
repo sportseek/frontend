@@ -55,7 +55,6 @@ const EventCard: React.FC<Props> = (props: Props) => {
     Geocode.fromLatLng(lat, lng).then(
       (response) => {
         address = response.results[0].formatted_address
-        console.log(address)
         setAddress(address)
       },
       (error) => {
