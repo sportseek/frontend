@@ -31,7 +31,6 @@ function EventInfo() {
   const currentUser = useAppSelector(selectLoggedInUser)
 
   useEffect(() => {
-    console.log(id)
     dispatch(fetchEventById(id))
     dispatch(fetchLoggedInUser())
   }, [])

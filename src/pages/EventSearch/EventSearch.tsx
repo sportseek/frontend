@@ -1,11 +1,6 @@
-import React, { useEffect } from "react"
-import {
-  makeStyles,
-  createStyles,
-  Theme,
-  styled,
-} from "@material-ui/core/styles"
-import { Grid, Paper } from "@material-ui/core"
+import React, { useCallback, useEffect, useState } from "react"
+import { makeStyles, createStyles } from "@material-ui/core/styles"
+import { Grid, Theme } from "@material-ui/core"
 import Helmet from "react-helmet"
 import TabPanel from "components/Common/TabPanel"
 import EventDetailsView from "pages/EventDetails"
@@ -19,26 +14,17 @@ import {
   selectCurrentEventId,
   setCurEventId,
 } from "redux/reducers/event/eventSlice"
-import {
-  setSearchPageTabIndex,
-  selectSearchPageTabIndex,
-} from "redux/reducers/ui/uiSlice"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: "center",
-      flex: 1,
-      height: "30%",
-      color: theme.palette.text.secondary,
-    },
     content: {
       flexGrow: 1,
-      padding: theme.spacing(3),
+      display: "flex",
+      padding: theme.spacing(1),
+      marginRight: theme.filterbar.width,
     },
-    toolbar: theme.mixins.toolbar,
     root: {
+      flex: 1,
       display: "flex",
     },
   })
@@ -51,21 +37,30 @@ const EventSearch = () => {
   const allEvents = useAppSelector(selectAllEvents)
 
   const eventId = useAppSelector(selectCurrentEventId)
-  const tabIndex = useAppSelector(selectSearchPageTabIndex)
+  const [tabIndex, setTabIndex] = useState(0)
 
-  const gotoEventDetails = (id: string) => {
-    dispatch(setSearchPageTabIndex(1))
-    dispatch(setCurEventId(id))
-  }
-  const goBack = () => {
-    dispatch(setSearchPageTabIndex(0))
+  const gotoEventDetails = useCallback(
+    (id: string) => {
+      setTabIndex(1)
+      dispatch(setCurEventId(id))
+    },
+    [dispatch]
+  )
+
+  const goBack = useCallback(() => {
+    setTabIndex(0)
     dispatch(setCurEventId(""))
-  }
+  }, [dispatch])
 
   useEffect(() => {
     dispatch(getAllEvents({}))
     dispatch(getMinMaxPrice())
-  }, [dispatch])
+  }, [dispatch, tabIndex])
+
+  useEffect(() => {
+    if (eventId) gotoEventDetails(eventId)
+    else goBack()
+  }, [eventId, goBack, gotoEventDetails])
 
   return (
     <div className={classes.root}>
@@ -74,18 +69,15 @@ const EventSearch = () => {
         <main className={classes.content}>
           <Grid
             container
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-            spacing={2}
+            spacing={4}
+            justify="space-around"
+            alignItems="center"
           >
-            <Grid container spacing={2} justify="space-evenly">
-              {allEvents.map((item) => (
-                <Grid item xs={4} key={item._id}>
-                  <EventCard event={item} openDetails={gotoEventDetails} />
-                </Grid>
-              ))}
-            </Grid>
+            {allEvents.map((item) => (
+              <Grid item xs={12} md={6} lg={3} key={item._id}>
+                <EventCard event={item} openDetails={gotoEventDetails} />
+              </Grid>
+            ))}
           </Grid>
         </main>
         <FilterEvents />

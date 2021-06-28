@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     backgroundColor: theme.palette.grey[800],
     color: theme.palette.primary.contrastText,
-    marginBottom: theme.spacing(4),
+    marginBottom: theme.spacing(1),
     backgroundImage: "url(https://source.unsplash.com/random)",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
@@ -67,9 +67,11 @@ export default function MainFeaturedPost(props: { post: any }) {
             <Typography variant="h5" color="inherit" paragraph>
               {post.description}
             </Typography>
-            <Link variant="subtitle1" href="#">
-              {post.linkText}
-            </Link>
+            {/**
+              <Link variant="subtitle1" href="#">
+                {post.linkText}
+              </Link> 
+            */}
           </div>
         </Grid>
       </Grid>

@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { ArenaSignupPayload } from "components/ArenaSignup/ArenaSignup"
 import { UserSigninPayload } from "components/SigninForm/SigninForm"
+import { ServerErrors } from "utils/constants"
 import { UserType } from "types"
 import authAPI from "./authAPI"
 
@@ -11,19 +12,21 @@ export enum AuthStatus {
   DONE = "loggedIn",
   PROCESSING = "requesting",
   FAILED = "failed",
+  REJECTED = "rejected",
 }
 
 interface AuthState {
   isAuthenticated: boolean
   userType: UserType
   status: AuthStatus
-  errors: ValidationErrors
+  errors: AuthErrors
 }
 
-type ValidationErrors =
+type AuthErrors =
   | UserSigninPayload
   | PlayerSignupPayload
   | ArenaSignupPayload
+  | []
 
 export const userSignIn = createAsyncThunk(
   "auth/signin",
@@ -40,9 +43,14 @@ export const userSignIn = createAsyncThunk(
 
 export const playerSignup = createAsyncThunk(
   "auth/playerSignup",
-  async (payload: PlayerSignupPayload) => {
-    const response = await authAPI.playerSignup(payload)
-    return response.data
+  async (payload: PlayerSignupPayload, { rejectWithValue }) => {
+    try {
+      const response = await authAPI.playerSignup(payload)
+      return response.data
+    } catch (error) {
+      if (!error.response) throw error
+      return rejectWithValue(error.response.data)
+    }
   }
 )
 
@@ -58,7 +66,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   userType: UserType.PLAYER,
   status: AuthStatus.IDLE,
-  errors: {} as ValidationErrors,
+  errors: {} as AuthErrors,
 }
 
 export const authSlice = createSlice({
@@ -67,7 +75,7 @@ export const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.isAuthenticated = false
-      state.errors = {} as ValidationErrors
+      state.errors = {} as AuthErrors
       state.status = AuthStatus.IDLE
       window.localStorage.removeItem("authToken")
     },
@@ -96,7 +104,9 @@ export const authSlice = createSlice({
           playerSignup.rejected
         ),
         (state, action) => {
-          state.errors = action.payload as ValidationErrors
+          const errs =
+            action.payload === undefined ? ServerErrors : action.payload
+          state.errors = errs as AuthErrors
           state.isAuthenticated = false
           state.status = AuthStatus.FAILED
         }

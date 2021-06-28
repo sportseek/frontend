@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IPersonalEvent, PEventPayload } from "types"
+import { ServerErrors } from "utils/constants"
 import pEventAPI from "./pEventAPI"
 
-type FormValidationErrors = PEventPayload
+type FormValidationErrors = PEventPayload | []
 
 interface PersonalEventState {
   events: IPersonalEvent[]
@@ -27,7 +28,6 @@ export const createPEvent = createAsyncThunk(
       return response.data
     } catch (err) {
       if (!err.response) throw err
-
       return rejectWithValue(err.response.data)
     }
   }
@@ -36,8 +36,13 @@ export const createPEvent = createAsyncThunk(
 export const fetchPEvents = createAsyncThunk(
   "personalevent/fetchEventList",
   async () => {
-    const response = await pEventAPI.fetchEventList()
-    return response.data
+    try {
+      const response = await pEventAPI.fetchEventList()
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return err.response.data
+    }
   }
 )
 
@@ -64,17 +69,33 @@ export const pEventSlice = createSlice({
         state.events = action.payload.events
         state.needToUpdate = false
       })
+      .addCase(fetchPEvents.rejected, (state, action) => {
+        const errs =
+          action.payload === undefined ? [ServerErrors] : action.payload
+        state.errors = errs as FormValidationErrors
+        state.events = []
+        state.hasErrors = true
+      })
       .addCase(createPEvent.fulfilled, (state) => {
         state.needToUpdate = true
         state.hasErrors = false
         state.errors = {} as FormValidationErrors
       })
       .addCase(createPEvent.rejected, (state, action) => {
-        state.errors = action.payload as FormValidationErrors
+        const errs =
+          action.payload === undefined ? [ServerErrors] : action.payload
+        state.errors = errs as FormValidationErrors
         state.hasErrors = true
       })
       .addCase(deletePEvent.fulfilled, (state) => {
         state.needToUpdate = true
+      })
+      .addCase(deletePEvent.rejected, (state, action) => {
+        state.needToUpdate = true
+        const errs =
+          action.payload === undefined ? [ServerErrors] : action.payload
+        state.errors = errs as FormValidationErrors
+        state.hasErrors = true
       })
   },
 })

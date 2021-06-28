@@ -43,7 +43,7 @@ const Signin = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const authErrors = useAppSelector(selectAuthErrors)
+  const authErrors = useAppSelector(selectAuthErrors) as UserSigninPayload
 
   const dispatch = useAppDispatch()
 

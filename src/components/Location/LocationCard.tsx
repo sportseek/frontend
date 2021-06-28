@@ -15,7 +15,7 @@ import EditLocationDialog from "./EditLocationPopUp"
 
 const useStyles = makeStyles({
   map: {
-    height: 350,
+    height: 360,
   },
   cardHeader: {
     paddingBottom: 0,
@@ -36,19 +36,19 @@ function LocationMarker(props: MarkerProps) {
 
 type LocationCardProps = {
   editable?: boolean
+  position?: ILocation
 }
 
 const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
-  const { editable } = props
+  const { editable, position = {} as ILocation } = props
   const classes = useStyles()
   const userPosition = useAppSelector(selectUserLocation)
   const dispatch = useAppDispatch()
-
+  const pinPosition = isEmpty(position) ? userPosition : position
   const [open, setOpen] = useState(false)
 
-  const updatePos = (pinPosition: ILocation) => {
-    const modUser = { location: pinPosition }
-    dispatch(updateUser(modUser as IUser))
+  const updatePos = (location: ILocation) => {
+    dispatch(updateUser({ location } as IUser))
   }
 
   return (
@@ -73,7 +73,7 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
       <CardContent>
         <MapContainer
           className={classes.map}
-          center={userPosition}
+          center={pinPosition}
           zoom={13}
           scrollWheelZoom={false}
         >
@@ -81,14 +81,14 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <LocationMarker position={userPosition} />
+          <LocationMarker position={pinPosition} />
         </MapContainer>
         {open && (
           <EditLocationDialog
             open={open}
             setOpen={setOpen}
             updatePos={updatePos}
-            position={userPosition}
+            position={pinPosition}
           />
         )}
       </CardContent>
@@ -98,6 +98,7 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
 
 LocationCard.defaultProps = {
   editable: true,
+  position: {} as ILocation,
 }
 
 export default LocationCard

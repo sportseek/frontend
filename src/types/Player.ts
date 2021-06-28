@@ -15,4 +15,5 @@ export default interface IPlayer {
   profileImageUrl: string
   registeredEvents: string[]
   interestedEvents: string[]
+  friends: string[]
 }

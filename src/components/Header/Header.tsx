@@ -8,15 +8,12 @@ import {
   IconButton,
   Hidden,
   Typography,
-  Badge,
 } from "@material-ui/core"
-import { ExitToApp, Menu, Notifications } from "@material-ui/icons"
+import { ExitToApp, Menu } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import {
-  openSideBarMobile,
-  setSearchPageTabIndex,
-} from "redux/reducers/ui/uiSlice"
+import { openSideBarMobile } from "redux/reducers/ui/uiSlice"
 import { logout, selectUserType } from "redux/reducers/auth/authSlice"
+import { clearEventDetails } from "redux/reducers/event/eventSlice"
 import {
   fetchLoggedInUser,
   selectLoggedInUser,
@@ -24,6 +21,7 @@ import {
 import { getUserName } from "utils/stringUtils"
 import Tooltip from "components/Common/Tooltip"
 import { deepOrange } from "@material-ui/core/colors"
+import NotificationComponent from "components/Notification"
 
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
@@ -62,7 +60,7 @@ const HeaderFC = () => {
   const dispatch = useAppDispatch()
 
   const signout = () => {
-    dispatch(setSearchPageTabIndex(0))
+    dispatch(clearEventDetails())
     dispatch(logout())
   }
 
@@ -96,11 +94,12 @@ const HeaderFC = () => {
           SportSeek
         </Typography>
         <Filler />
-        <IconButton aria-label="show 17 new notifications" color="inherit">
+        {/* <IconButton aria-label="show 17 new notifications" color="inherit">
           <Badge badgeContent={17} color="secondary">
             <Notifications />
           </Badge>
-        </IconButton>
+        </IconButton> */}
+        <NotificationComponent />
         <IconButton disabled>
           <Avatar alt={name} src={profileImageUrl} className={classes.orange}>
             {firstLetterOfName}

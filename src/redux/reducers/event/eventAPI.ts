@@ -84,5 +84,5 @@ export default {
   updateInterested,
   updateRegistered,
   findSportEventById,
-  getMinMaxPrice
+  getMinMaxPrice,
 }

@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
     drawerPaper: {
       width: theme.filterbar.width,
       overflow: "hidden",
+      zIndex: 600,
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
@@ -114,14 +115,13 @@ const FilterEvents = () => {
   }
 
   const handleSearch = () => {
-    console.log(sportsType)
     dispatch(
       getAllEvents({
         eventTitle: eventTitle,
         sportType: sportsType === "all" ? "" : sportsType,
-        eventStartTime: new Date(eventStartTime).toISOString() ,
+        eventStartTime: new Date(eventStartTime).toISOString(),
         eventEndTime: new Date(eventEndTime).toISOString(),
-        eventFee: eventFee
+        eventFee: eventFee,
       })
     )
   }

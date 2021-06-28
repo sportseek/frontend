@@ -26,9 +26,15 @@ const authPersistConfig = {
   whitelist: ["isAuthenticated", "userType"],
 }
 
+const uiPersistConfig = {
+  key: "ui",
+  storage,
+  whitelist: ["openSidebar", "openSidebarMobile"],
+}
+
 const reducers = {
   counter: counterReducer,
-  ui: uiReducer,
+  ui: persistReducer(uiPersistConfig, uiReducer),
   user: persistReducer(userPersistConfig, userReducer),
   auth: persistReducer(authPersistConfig, authReducer),
   event: persistReducer(eventPersistConfig, eventReducer),

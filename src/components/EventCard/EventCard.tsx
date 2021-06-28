@@ -55,11 +55,10 @@ const EventCard: React.FC<Props> = (props: Props) => {
     Geocode.fromLatLng(lat, lng).then(
       (response) => {
         address = response.results[0].formatted_address
-        console.log(address)
         setAddress(address)
       },
       (error) => {
-        console.error(error)
+        console.error("There was error trying to connect to GeoCode")
       }
     )
   }
@@ -102,7 +101,11 @@ const EventCard: React.FC<Props> = (props: Props) => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body2" color="textSecondary" component="p">
-                Type: <b>{event.sportType.charAt(0).toUpperCase() + event.sportType.slice(1)}</b>
+                Type:{" "}
+                <b>
+                  {event.sportType.charAt(0).toUpperCase() +
+                    event.sportType.slice(1)}
+                </b>
               </Typography>
             </Grid>
             <Grid item xs={3}>

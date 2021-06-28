@@ -1,4 +1,4 @@
-export default interface AddressType {
+export interface IAddress {
   careof?: string
   street: string
   streetAddtional: string
@@ -7,4 +7,14 @@ export default interface AddressType {
   city: string
   state?: string
   country: string
+}
+
+export const InitialAddress = {
+  street: "",
+  streetAddtional: "",
+  postcode: "",
+  district: "",
+  city: "",
+  state: "",
+  country: "",
 }

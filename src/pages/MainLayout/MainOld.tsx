@@ -9,7 +9,6 @@ import Helmet from "react-helmet"
 import Sidebar from "components/Sidebar"
 import Header from "components/Header"
 import Footer from "components/Footer"
-import PerfectScrollbar from "react-perfect-scrollbar"
 
 const Root = styled("div")({
   display: "flex",
@@ -55,9 +54,7 @@ const MainLayout: FC<MainLayoutProps> = (props: MainLayoutProps) => {
       </Drawer>
       <AppContent>
         <Header />
-        <PerfectScrollbar>
-          <MainContent p={pad}>{children}</MainContent>
-        </PerfectScrollbar>
+        <MainContent p={pad}>{children}</MainContent>
         <Footer />
       </AppContent>
     </Root>

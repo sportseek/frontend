@@ -1,14 +1,18 @@
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { ILocation, IUser } from "types"
+import { INotification, ReadNotificationPayload } from "types/Notification"
+import { ServerErrors } from "utils/constants"
 import userAPI from "./userAPI"
 
+type UserErrors = IUser | []
 interface UserState {
   loggedInUser: IUser
   location: ILocation
   loading: boolean
-  validationErrors: IUser
+  errors: UserErrors
   hasErrors: boolean
+  notifications: INotification[]
 }
 
 const initialState: UserState = {
@@ -16,14 +20,20 @@ const initialState: UserState = {
   location: {} as ILocation,
   loading: false,
   hasErrors: true,
-  validationErrors: {} as IUser,
+  errors: {} as UserErrors,
+  notifications: [],
 }
 
 export const fetchLoggedInUser = createAsyncThunk(
   "users/fetchById",
   async () => {
-    const response = await userAPI.fetchById()
-    return response.data
+    try {
+      const response = await userAPI.fetchById()
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return err.response.data
+    }
   }
 )
 
@@ -42,8 +52,56 @@ export const updateUser = createAsyncThunk(
 
 export const updateProfilePic = createAsyncThunk(
   "user/updateProfilePic",
-  async (imagePayload: any) => {
-    const response = await userAPI.updateProfilePic(imagePayload)
+  async (imagePayload: any, { rejectWithValue }) => {
+    try {
+      const response = await userAPI.updateProfilePic(imagePayload)
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
+export const addFriend = createAsyncThunk(
+  "user/addFriend",
+  async (email: string, { rejectWithValue }) => {
+    try {
+      const response = await userAPI.addFriend(email)
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
+export const removeFriend = createAsyncThunk(
+  "user/removeFriend",
+  async (ids: string[], { rejectWithValue }) => {
+    try {
+      const response = await userAPI.removeFriend(ids)
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
+export const getNotifications = createAsyncThunk(
+  "notification/getNotifications",
+  async (pageNumber: number) => {
+    const response = await userAPI.getNotifications(pageNumber)
+    return response.data
+  }
+)
+
+export const readNotification = createAsyncThunk(
+  "notification/readNotification",
+  async (payload: ReadNotificationPayload) => {
+    const response1 = await userAPI.readNotification(payload.notificationId)
+    const response = await userAPI.getNotifications(payload.pageNumber)
     return response.data
   }
 )
@@ -54,13 +112,15 @@ export const userSlice = createSlice({
   reducers: {
     prepareForValidation: (state) => {
       state.hasErrors = true
-      state.validationErrors = {} as IUser
+      state.errors = {} as UserErrors
     },
   },
   extraReducers: (builder) => {
     builder
       .addMatcher(
         isAnyOf(
+          addFriend.fulfilled,
+          removeFriend.fulfilled,
           fetchLoggedInUser.fulfilled,
           updateUser.fulfilled,
           updateProfilePic.fulfilled
@@ -70,11 +130,13 @@ export const userSlice = createSlice({
           state.location = action.payload.user.location
           state.loading = false
           state.hasErrors = false
-          state.validationErrors = {} as IUser
+          state.errors = {} as UserErrors
         }
       )
       .addMatcher(
         isAnyOf(
+          addFriend.pending,
+          removeFriend.pending,
           fetchLoggedInUser.pending,
           updateUser.pending,
           updateProfilePic.pending
@@ -85,14 +147,24 @@ export const userSlice = createSlice({
       )
       .addMatcher(
         isAnyOf(
+          addFriend.rejected,
+          removeFriend.rejected,
           fetchLoggedInUser.rejected,
           updateUser.rejected,
           updateProfilePic.rejected
         ),
         (state, action) => {
           state.loading = false
-          state.validationErrors = action.payload as IUser
+          const errs =
+            action.payload === undefined ? ServerErrors : action.payload
+          state.errors = errs as UserErrors
           state.hasErrors = true
+        }
+      )
+      .addMatcher(
+        isAnyOf(getNotifications.fulfilled, readNotification.fulfilled),
+        (state, action) => {
+          state.notifications = action.payload.notifications
         }
       )
   },
@@ -102,10 +174,10 @@ export const { prepareForValidation } = userSlice.actions
 
 export const selectLoggedInUser = (state: RootState) => state.user.loggedInUser
 export const selectLoadingUserData = (state: RootState) => state.user.loading
-export const selectValidationErrors = (state: RootState) =>
-  state.user.validationErrors
-export const selectHasValidationErrors = (state: RootState) =>
-  state.user.hasErrors
+export const selectUserErrors = (state: RootState) => state.user.errors
+export const selectHasUserErrors = (state: RootState) => state.user.hasErrors
 export const selectUserLocation = (state: RootState) => state.user.location
+export const selectUserNotification = (state: RootState) =>
+  state.user.notifications
 
 export default userSlice.reducer

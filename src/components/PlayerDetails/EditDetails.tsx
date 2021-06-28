@@ -24,19 +24,25 @@ import {
 import { EditRounded } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
-  selectLoggedInUser,
   prepareForValidation,
   selectLoadingUserData,
   updateUser,
   updateProfilePic,
-  selectHasValidationErrors,
-  selectValidationErrors,
+  selectHasUserErrors,
+  selectUserErrors,
 } from "redux/reducers/user/userSlice"
-import { IAddress, IPlayer } from "types"
+import Errorbar from "components/Common/Errorbar"
+import { IAddress, InitialAddress, IPlayer } from "types"
 
 type DetailsFormProps = {
   open: boolean
   handleClose: () => void
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  oldAddress: IAddress
+  profileImageUrl: string
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -54,27 +60,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserDetailsForm = (props: DetailsFormProps) => {
+const PlayerDetailsForm = (props: DetailsFormProps) => {
   const classes = useStyles()
-  const oldPlayer = useAppSelector(selectLoggedInUser) as IPlayer
   const loading = useAppSelector(selectLoadingUserData)
-  const hasErrors = useAppSelector(selectHasValidationErrors)
-  const errors = useAppSelector(selectValidationErrors) as IPlayer
+  const hasErrors = useAppSelector(selectHasUserErrors)
+  const userErrors = useAppSelector(selectUserErrors)
   const dispatch = useAppDispatch()
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [imageClicked, setImageClicked] = useState(false)
 
-  const { open, handleClose: close } = props
+  const errors = userErrors as IPlayer
+  const globalErrors = userErrors as []
+
+  const showErrorBar = globalErrors instanceof Array && globalErrors.length > 0
 
   const {
+    open,
+    handleClose: close,
     firstName,
     lastName,
     phone,
     email,
-    address: oldAddress = {} as IAddress,
+    oldAddress,
     profileImageUrl = "",
-  } = oldPlayer
+  } = props
 
   const { current } = inputRef
 
@@ -104,6 +114,7 @@ const UserDetailsForm = (props: DetailsFormProps) => {
   const handleSave = () => {
     const tempuser = { ...player }
     tempuser.address = { ...tempuser.address, ...address }
+    dispatch(prepareForValidation())
     dispatch(updateUser(tempuser as IPlayer))
     setImageClicked(false)
   }
@@ -129,6 +140,7 @@ const UserDetailsForm = (props: DetailsFormProps) => {
       const image = files[0]
       const formData = new FormData()
       formData.append("image", image)
+      dispatch(prepareForValidation())
       dispatch(updateProfilePic(formData))
       if (current) current.value = ""
       setImageClicked(true)
@@ -141,17 +153,30 @@ const UserDetailsForm = (props: DetailsFormProps) => {
   }, [current])
 
   useEffect(() => {
-    setPlayer({
-      firstName,
-      lastName,
-      password,
-      oldpassword,
-      email,
-      phone,
-      address: oldAddress,
-    })
-    setAddress(oldAddress)
-  }, [email, firstName, lastName, oldAddress, phone])
+    if (open) {
+      setPlayer({
+        firstName,
+        lastName,
+        password,
+        oldpassword,
+        email,
+        phone,
+        address: oldAddress,
+      })
+      setAddress(oldAddress)
+    } else {
+      setPlayer({
+        firstName: "",
+        lastName: "",
+        password: "",
+        oldpassword: "",
+        email: "",
+        phone: "",
+        address: InitialAddress,
+      })
+      setAddress(InitialAddress)
+    }
+  }, [email, firstName, lastName, oldAddress, phone, open])
 
   useEffect(() => {
     if (!hasErrors && !imageClicked && !loading) {
@@ -389,8 +414,9 @@ const UserDetailsForm = (props: DetailsFormProps) => {
           Cancel
         </Button>
       </DialogActions>
+      {showErrorBar && <Errorbar errors={globalErrors} />}
     </Dialog>
   )
 }
 
-export default UserDetailsForm
+export default PlayerDetailsForm

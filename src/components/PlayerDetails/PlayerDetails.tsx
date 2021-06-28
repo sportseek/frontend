@@ -12,7 +12,7 @@ import {
 import { EditRounded } from "@material-ui/icons"
 import { useAppSelector } from "redux/hooks"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
-import { IAddress, IPlayer } from "types"
+import { InitialAddress, IPlayer } from "types"
 import { getUserAddress } from "utils/stringUtils"
 import Tooltip from "components/Common/Tooltip"
 import EditCustomerForm from "./EditDetails"
@@ -45,7 +45,14 @@ export default function PersonalInfoCard() {
   const [openEditForm, setOpenEditForm] = useState(false)
   const player = useAppSelector(selectLoggedInUser) as IPlayer
 
-  const { address = {} as IAddress, firstName, lastName, phone, email } = player
+  const {
+    firstName = "",
+    lastName = "",
+    phone = "",
+    email = "",
+    profileImageUrl = "",
+    address = InitialAddress,
+  } = player
 
   const popUpEditCustomerForm = () => setOpenEditForm(true)
 
@@ -111,7 +118,16 @@ export default function PersonalInfoCard() {
             </Typography>
           </Grid>
         </Grid>
-        <EditCustomerForm open={openEditForm} handleClose={closeFormPopUp} />
+        <EditCustomerForm
+          open={openEditForm}
+          handleClose={closeFormPopUp}
+          firstName={firstName}
+          lastName={lastName}
+          email={email}
+          phone={phone}
+          oldAddress={address}
+          profileImageUrl={profileImageUrl}
+        />
       </CardContent>
     </Card>
   )
