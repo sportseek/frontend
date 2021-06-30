@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useCallback, useEffect } from "react"
 import { styled } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
 import Helmet from "react-helmet"
 
+import { useAppDispatch, useAppSelector } from "redux/hooks"
 import Playerdetails from "components/PlayerDetails"
 import Wallet from "components/Wallet"
 import Friends from "components/PlayerFriends"
@@ -10,6 +11,10 @@ import Location from "components/Location"
 import Calendar from "components/PlayerCalendar"
 import TabPanel from "components/Common/TabPanel"
 import EventDetailsView from "pages/EventDetails"
+import {
+  selectCurrentEventId,
+  setCurEventId,
+} from "redux/reducers/event/eventSlice"
 
 const Root = styled("div")({
   flex: 1,
@@ -17,13 +22,27 @@ const Root = styled("div")({
 
 const Dashboard = () => {
   const [tabIndex, setTabIndex] = React.useState(0)
-  const [eventId, setEventId] = React.useState("")
+  const eventId = useAppSelector(selectCurrentEventId)
 
-  const goEventDetails = (id: string) => {
-    setEventId(id)
-    setTabIndex(1)
-  }
-  const goBack = () => setTabIndex(0)
+  const dispatch = useAppDispatch()
+
+  const goEventDetails = useCallback(
+    (id: string) => {
+      dispatch(setCurEventId(id))
+      setTabIndex(1)
+    },
+    [dispatch]
+  )
+
+  const goBack = useCallback(() => {
+    setTabIndex(0)
+    dispatch(setCurEventId(""))
+  }, [dispatch])
+
+  useEffect(() => {
+    if (eventId) goEventDetails(eventId)
+    else goBack()
+  }, [eventId, goBack, goEventDetails])
 
   return (
     <Root>

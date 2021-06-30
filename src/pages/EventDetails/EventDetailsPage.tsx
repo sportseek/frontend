@@ -56,7 +56,7 @@ const EventDetailsPage = (props: EventDetailsProps) => {
   }
 
   useEffect(() => {
-    dispatch(fetchEventById(id))
+    if (id) dispatch(fetchEventById(id))
   }, [dispatch, id])
 
   return (
