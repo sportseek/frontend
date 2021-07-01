@@ -172,7 +172,7 @@ const FilterEvents = () => {
                 <TextField label="Location" className={classes.textField} />
               </Grid>
               <Grid item xs={2}>
-                <LocationOn />
+                <LocationOn color="secondary" />
               </Grid>
             </Grid>
             <Grid container spacing={2} alignItems="flex-end">
