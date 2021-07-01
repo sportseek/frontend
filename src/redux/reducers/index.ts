@@ -7,12 +7,19 @@ import userReducer from "./user/userSlice"
 import authReducer from "./auth/authSlice"
 import eventReducer from "./event/eventSlice"
 import peventReduer from "./pEvent/pEventSlice"
+import arenaReducer from "./arena/arenaSlice"
 
 const userPersistConfig = {
   key: "user",
   storage,
   whitelist: ["location"],
 }
+
+// const arenaPersistConfig = {
+//   key: "arena",
+//   storage,
+//   whitelist: ["curArenaId"],
+// }
 
 const eventPersistConfig = {
   key: "event",
@@ -38,6 +45,7 @@ const reducers = {
   user: persistReducer(userPersistConfig, userReducer),
   auth: persistReducer(authPersistConfig, authReducer),
   event: persistReducer(eventPersistConfig, eventReducer),
+  arena: arenaReducer,
   pevent: peventReduer,
 }
 

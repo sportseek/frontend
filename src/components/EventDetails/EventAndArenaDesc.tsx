@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Typography } from "@material-ui/core"
+import { Typography, makeStyles } from "@material-ui/core"
 
 import Accordion from "@material-ui/core/Accordion"
 import AccordionSummary from "@material-ui/core/AccordionSummary"
@@ -8,12 +8,27 @@ import AccordionDetails from "@material-ui/core/AccordionDetails"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 
 import { IEvent } from "types"
+import { IArenaOwner } from "types"
 
 type Props = {
   event: IEvent
+  arena: IArenaOwner
 }
 
-const EventAndArenaDesc: React.FC<Props> = ({ event: currentEvent }) => {
+const useStyles = makeStyles({
+  root: {
+    width: "100%",
+  },
+  details: {
+    flexDirection: "column",
+  },
+})
+
+const EventAndArenaDesc: React.FC<Props> = ({
+  event: currentEvent,
+  arena: currentArena,
+}) => {
+  const classes = useStyles()
   return (
     <Accordion>
       <AccordionSummary
@@ -25,6 +40,14 @@ const EventAndArenaDesc: React.FC<Props> = ({ event: currentEvent }) => {
           Event Description and Arena Details
         </Typography>
       </AccordionSummary>
+      <AccordionDetails className={classes.details}>
+        <Typography variant="subtitle1" display="block" align="left">
+          <b>Hosted By:</b> {currentArena.arenaName}
+        </Typography>
+        <Typography variant="subtitle1" display="block" align="left">
+          <b>Address:</b> {currentArena.address}
+        </Typography>
+      </AccordionDetails>
       <AccordionDetails>
         <Typography variant="subtitle1">{currentEvent.description}</Typography>
       </AccordionDetails>

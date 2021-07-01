@@ -14,9 +14,6 @@ import {
   selectUserType,
 } from "redux/reducers/auth/authSlice"
 
-import EventList from "pages/EventInfo/EventList"
-import EventInfo from "pages/EventInfo/EventInfo"
-
 const childRoutes = (
   valid: boolean,
   Layout: MainLayoutType,

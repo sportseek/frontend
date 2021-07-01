@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useEffect } from "react"
 import MainFeaturedPost from "components/MainFeaturedPost/MainFeaturedPost"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
 
 import { Typography } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
@@ -12,6 +13,12 @@ import EventDates from "./EventDates"
 import PlayerNumbers from "./EventPlayerNumbers"
 import EventParticipate from "./EventParticipate"
 import EventInterested from "./EventInterested"
+import ArenaContact from "./ArenaContact"
+
+import {
+  fetchArenaById,
+  selectCurrentArena,
+} from "redux/reducers/arena/arenaSlice"
 
 type Props = {
   event: IEvent
@@ -25,6 +32,13 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
     image: currentEvent.eventImageUrl,
   }
 
+  const dispatch = useAppDispatch()
+  const currentArena = useAppSelector(selectCurrentArena)
+
+  useEffect(() => {
+    if (currentEvent.creator) dispatch(fetchArenaById(currentEvent.creator))
+  }, [dispatch, currentEvent.creator])
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -33,7 +47,7 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
       <Grid item xs={12} lg={6}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <EventAndArenaDesc event={currentEvent} />
+            <EventAndArenaDesc event={currentEvent} arena={currentArena} />
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
@@ -69,7 +83,14 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
         </Grid>
       </Grid>
       <Grid item xs={12} lg={6}>
-        <Location editable={false} position={currentEvent.location} />
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Location editable={false} position={currentEvent.location} />
+          </Grid>
+          <Grid item xs={12}>
+            <ArenaContact arena={currentArena} />
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   )
