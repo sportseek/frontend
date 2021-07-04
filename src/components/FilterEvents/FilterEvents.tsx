@@ -21,6 +21,8 @@ import {
   getAllEvents,
   selectEventMaxPrice,
   selectEventMinPrice,
+  selectEventMaxDate,
+  selectEventMinDate,
 } from "redux/reducers/event/eventSlice"
 import moment from "moment"
 
@@ -87,8 +89,16 @@ const FilterEvents = () => {
   const minPrice = useAppSelector(selectEventMinPrice)
   const maxPrice = useAppSelector(selectEventMaxPrice)
 
+
+  let minDate = useAppSelector(selectEventMinDate)
+  let maxDate = useAppSelector(selectEventMaxDate)
+
+  // minDate = moment(minDate).format("YYYY-MM-DDTHH:MM")
+  // maxDate = moment(maxDate).format("YYYY-MM-DDTHH:MM")
+
   const [eventTitle, setEventTitle] = useState("")
   const [sportsType, setSportsType] = useState("all")
+  
   const [eventStartTime, setEventStartTime] = useState(
     moment().format("YYYY-MM-DDTHH:MM")
   )
@@ -105,6 +115,14 @@ const FilterEvents = () => {
   useEffect(() => {
     setEventFee([minPrice, maxPrice])
   }, [minPrice, maxPrice])
+
+  useEffect(() => {
+    setEventStartTime(moment(minDate).format("YYYY-MM-DDTHH:MM"))
+  }, [minDate])
+
+  useEffect(() => {
+    setEventEndTime(moment(maxDate).format("YYYY-MM-DDTHH:MM"))
+  }, [maxDate])
 
   const handleChangePrice = (event: any, newValue: number | number[]) => {
     setEventFee(newValue as number[])
@@ -208,7 +226,7 @@ const FilterEvents = () => {
                   className={classes.textField}
                   id="eventStartTime"
                   name="eventStartTime"
-                  defaultValue={eventStartTime}
+                  value={eventStartTime}
                   onChange={handleInputChange}
                 />
               </Grid>
@@ -219,7 +237,7 @@ const FilterEvents = () => {
                   className={classes.textField}
                   id="eventEndTime"
                   name="eventEndTime"
-                  defaultValue={eventEndTime}
+                  value={eventEndTime}
                   onChange={handleInputChange}
                 />
               </Grid>

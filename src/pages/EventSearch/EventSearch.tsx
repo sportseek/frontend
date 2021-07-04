@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   getAllEvents,
   getMinMaxPrice,
+  getMinMaxDate,
   selectAllEvents,
   selectCurrentEventId,
   setCurEventId,
@@ -55,6 +56,7 @@ const EventSearch = () => {
   useEffect(() => {
     dispatch(getAllEvents({}))
     dispatch(getMinMaxPrice())
+    dispatch(getMinMaxDate())
   }, [dispatch, tabIndex])
 
   useEffect(() => {
