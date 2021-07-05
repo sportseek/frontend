@@ -14,6 +14,7 @@ import PlayerNumbers from "./EventPlayerNumbers"
 import EventParticipate from "./EventParticipate"
 import EventInterested from "./EventInterested"
 import ArenaContact from "./ArenaContact"
+import EventInvite from "./EventInvite"
 
 import {
   fetchArenaById,
@@ -79,9 +80,6 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
             <Typography variant="subtitle1">
               Credits earned if event is cancelled: {newEntryFee * 0.99}
             </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Button disabled>Test</Button>
           </Grid>
         </Grid>
       </Grid>

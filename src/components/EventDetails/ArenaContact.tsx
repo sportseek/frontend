@@ -8,6 +8,8 @@ import {
 } from "@material-ui/core"
 import { makeStyles, styled } from "@material-ui/core/styles"
 import { spacing } from "@material-ui/system"
+import PhoneIcon from "@material-ui/icons/Phone"
+import EmailIcon from "@material-ui/icons/Email"
 import { IArenaOwner } from "types"
 
 type Props = {
@@ -46,12 +48,26 @@ const ArenaContact: React.FC<Props> = ({ arena: currentArena }) => {
         title="Contact Information"
       ></CardHeader>
       <CardContent className={classes.cardContent}>
-        <Typography variant="h6" gutterBottom>
-          <b>Phone:</b> {currentArena.phone}
-        </Typography>
-        <Typography variant="h6" gutterBottom>
-          <b>E-Mail:</b> {currentArena.email}
-        </Typography>
+        <Grid container direction="row" alignItems="center">
+          <Grid item>
+            <PhoneIcon style={{ marginRight: "10px" }} />
+          </Grid>
+          <Grid item>
+            <Typography variant="h6" gutterBottom>
+              {currentArena.phone}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container direction="row" alignItems="center">
+          <Grid item>
+            <EmailIcon style={{ marginRight: "10px" }} />
+          </Grid>
+          <Grid item>
+            <Typography variant="h6" gutterBottom>
+              {currentArena.email}
+            </Typography>
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   )

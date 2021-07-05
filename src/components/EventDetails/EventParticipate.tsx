@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { updateRegistered } from "redux/reducers/event/eventSlice"
 
 import { Button, makeStyles, Typography } from "@material-ui/core"
+import Grid from "@material-ui/core/Grid"
 import PaymentIcon from "@material-ui/icons/Payment"
 import ThumbUpIcon from "@material-ui/icons/ThumbUp"
 import ThumbDownIcon from "@material-ui/icons/ThumbDown"
@@ -12,6 +13,8 @@ import Tooltip from "components/Common/Tooltip"
 
 import { IEvent } from "types"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
+
+import EventInvite from "./EventInvite"
 
 type Props = {
   event: IEvent
@@ -23,7 +26,7 @@ const useStyles = makeStyles({
     border: 0,
     borderRadius: 15,
     color: "white",
-    padding: "15px 50px",
+    padding: "15px 40px",
   },
 })
 
@@ -57,25 +60,39 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
   return (
     <div>
       {registered ? (
-        <Tooltip title="You will receive equivalent Credits.">
-          <Button
-            startIcon={<ThumbDownIcon />}
-            className={classes.participate}
-            onClick={handleUpdateRegistered}
-          >
-            Deregister
-          </Button>
-        </Tooltip>
+        <Grid container spacing={3}>
+          <Grid item>
+            <Tooltip title="You will receive equivalent Credits.">
+              <Button
+                startIcon={<ThumbDownIcon />}
+                className={classes.participate}
+                onClick={handleUpdateRegistered}
+              >
+                Deregister
+              </Button>
+            </Tooltip>
+          </Grid>
+          <Grid item>
+            <EventInvite registered={registered} />
+          </Grid>
+        </Grid>
       ) : (
-        <Tooltip title="Pay and confirm participation.">
-          <Button
-            startIcon={<PaymentIcon />}
-            className={classes.participate}
-            onClick={handleUpdateRegistered}
-          >
-            Participate
-          </Button>
-        </Tooltip>
+        <Grid container spacing={3}>
+          <Grid item>
+            <Tooltip title="Pay and confirm participation.">
+              <Button
+                startIcon={<PaymentIcon />}
+                className={classes.participate}
+                onClick={handleUpdateRegistered}
+              >
+                Participate
+              </Button>
+            </Tooltip>
+          </Grid>
+          <Grid item>
+            <EventInvite registered={registered} />
+          </Grid>
+        </Grid>
       )}
     </div>
   )
