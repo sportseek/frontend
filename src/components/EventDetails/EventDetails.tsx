@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import MainFeaturedPost from "components/MainFeaturedPost/MainFeaturedPost"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 
-import { Typography } from "@material-ui/core"
+import { Button, Typography } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
 
 import { IEvent } from "types"
@@ -79,6 +79,9 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
             <Typography variant="subtitle1">
               Credits earned if event is cancelled: {newEntryFee * 0.99}
             </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Button disabled>Test</Button>
           </Grid>
         </Grid>
       </Grid>

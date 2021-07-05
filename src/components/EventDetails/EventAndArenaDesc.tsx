@@ -37,19 +37,19 @@ const EventAndArenaDesc: React.FC<Props> = ({
         id="panel1a-header"
       >
         <Typography variant="h5">
-          Event Description and Arena Details
+          <b>Event Description and Arena Details</b>
         </Typography>
       </AccordionSummary>
       <AccordionDetails className={classes.details}>
-        <Typography variant="subtitle1" display="block" align="left">
+        <Typography variant="h6" display="block" align="left">
           <b>Hosted By:</b> {currentArena.arenaName}
         </Typography>
-        <Typography variant="subtitle1" display="block" align="left">
+        <Typography variant="h6" display="block" align="left">
           <b>Address:</b> {currentArena.address}
         </Typography>
       </AccordionDetails>
       <AccordionDetails>
-        <Typography variant="subtitle1">{currentEvent.description}</Typography>
+        <Typography variant="h6">{currentEvent.description}</Typography>
       </AccordionDetails>
     </Accordion>
   )
