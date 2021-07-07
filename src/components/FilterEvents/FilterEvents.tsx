@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
 import MenuItem from "@material-ui/core/MenuItem"
 import Slider from "@material-ui/core/Slider"
-import { LocationOn, SportsBasketball, Search } from "@material-ui/icons"
+import { LocationOn, SportsBasketball, Search, Sort } from "@material-ui/icons"
 import { Button } from "@material-ui/core"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
@@ -27,7 +27,6 @@ import Geocode from "react-geocode"
 
 Geocode.setApiKey("AIzaSyC3piWVpJ50bb8sVq-vGZnf6nbJMgyNtSE")
 Geocode.setLanguage("en")
-
 
 function loadScript(src: string, position: HTMLElement | null, id: string) {
   if (!position) {
@@ -79,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(3),
     },
     drawerContainer: {
-      overflow: "auto",
+      // overflow: "auto",
     },
     margin: {
       margin: theme.spacing(1),
@@ -110,26 +109,53 @@ const sportTypes = [
   },
 ]
 
-
+const sortByOptions = [
+  {
+    id: "date",
+    name: "Date",
+  },
+  {
+    id: "title",
+    name: "Title",
+  },
+  {
+    id: "sportType",
+    name: "Sport Type",
+  },
+  {
+    id: "priceDescending",
+    name: "Price: Descending",
+  },
+  {
+    id: "priceAscending",
+    name: "Price: Ascending",
+  },
+  {
+    id: "registeredPlayersDescending",
+    name: "Registered Players: Descending",
+  },
+  {
+    id: "registeredPlayersAscending",
+    name: "Registered Players: Ascending",
+  },
+]
 
 const FilterEvents = () => {
-
   const [lat, setLat] = useState("")
   const [lng, setLng] = useState("")
 
   function latlngGen(place: string) {
-    var loc: number[]
     Geocode.fromAddress(place).then(
       (response) => {
-        const { lat, lng } = response.results[0].geometry.location;
+        const { lat, lng } = response.results[0].geometry.location
         setLat(lat)
         setLng(lng)
-        console.log(lat,lng)
+        console.log(lat, lng)
       },
       (error) => {
-        console.error(error);
+        console.error(error)
       }
-    );
+    )
   }
 
   const classes = useStyles()
@@ -178,6 +204,7 @@ const FilterEvents = () => {
   const [eventTitle, setEventTitle] = useState("")
   const [sportsType, setSportsType] = useState("all")
 
+
   const [eventStartTime, setEventStartTime] = useState(
     moment().format("YYYY-MM-DDTHH:MM")
   )
@@ -186,6 +213,8 @@ const FilterEvents = () => {
   )
 
   const [eventFee, setEventFee] = React.useState<number[]>([minPrice, maxPrice])
+
+  const [sortBy, setSortBy] = useState("date")
 
   useEffect(() => {
     setEventFee([minPrice, maxPrice])
@@ -263,6 +292,7 @@ const FilterEvents = () => {
     if (name === "sportsType") setSportsType(value)
     if (name === "eventStartTime") setEventStartTime(value)
     if (name === "eventEndTime") setEventEndTime(value)
+    if (name === "sortBy") setSortBy(value)
   }
 
   return (
@@ -314,7 +344,9 @@ const FilterEvents = () => {
                   onChange={(event: any, newValue: PlaceType | null) => {
                     setOptions(newValue ? [newValue, ...options] : options)
                     setLocation(newValue)
-                    newValue? latlngGen(newValue.description) : console.log("NULL")
+                    newValue
+                      ? latlngGen(newValue.description)
+                      : console.log("NULL")
                   }}
                   onInputChange={(event, newInputValue) => {
                     setInputLoc(newInputValue)
@@ -432,8 +464,35 @@ const FilterEvents = () => {
                 />
               </Grid>
             </Grid>
-
-            <Button onClick={handleSearch}>search</Button>
+            <div className={classes.emptyDiv} />
+            <Divider />
+            <div className={classes.emptyDiv} />
+            <Grid container spacing={2} alignItems="flex-end">
+              <Grid item xs={10}>
+                <TextField
+                  select
+                  label="Sort By:"
+                  value={sortBy}
+                  onChange={handleInputChange}
+                  className={classes.textField}
+                  id="sortBy"
+                  name="sortBy"
+                >
+                  {sortByOptions.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={2}>
+                <Sort />
+              </Grid>
+            </Grid>
+            <div className={classes.emptyDiv} />
+            <Divider />
+            <div className={classes.emptyDiv} />
+            <Button onClick={handleSearch}>Search</Button>
           </div>
         </div>
       </Drawer>
