@@ -54,7 +54,10 @@ const EventSearch = () => {
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(getAllEvents({}))
+    dispatch(getAllEvents({
+      sortBy:"start",
+      sortValue:-1
+    }))
     dispatch(getMinMaxPrice())
     dispatch(getMinMaxDate())
   }, [dispatch, tabIndex])

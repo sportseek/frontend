@@ -111,7 +111,7 @@ const sportTypes = [
 
 const sortByOptions = [
   {
-    id: "date",
+    id: "start",
     name: "Date",
   },
   {
@@ -141,8 +141,8 @@ const sortByOptions = [
 ]
 
 const FilterEvents = () => {
-  const [lat, setLat] = useState("")
-  const [lng, setLng] = useState("")
+  const [lat, setLat] = React.useState<number>(0)
+  const [lng, setLng] = React.useState<number>(0)
 
   function latlngGen(place: string) {
     Geocode.fromAddress(place).then(
@@ -214,8 +214,9 @@ const FilterEvents = () => {
 
   const [eventFee, setEventFee] = React.useState<number[]>([minPrice, maxPrice])
 
-  const [sortBy, setSortBy] = useState("date")
-
+  const [sortBy, setSortBy] = useState("start")
+  const [sortValue, setSortValue] = useState(-1)
+  const [sortShow, setSortShow] = useState("start") 
   useEffect(() => {
     setEventFee([minPrice, maxPrice])
   }, [minPrice, maxPrice])
@@ -282,6 +283,10 @@ const FilterEvents = () => {
         eventStartTime: new Date(eventStartTime).toISOString(),
         eventEndTime: new Date(eventEndTime).toISOString(),
         eventFee: eventFee,
+        location: lat===0? "":{lat, lng},
+        sortBy: sortBy,
+        sortValue: sortValue
+
       })
     )
   }
@@ -292,7 +297,23 @@ const FilterEvents = () => {
     if (name === "sportsType") setSportsType(value)
     if (name === "eventStartTime") setEventStartTime(value)
     if (name === "eventEndTime") setEventEndTime(value)
-    if (name === "sortBy") setSortBy(value)
+
+    if (name === "sortBy") {
+      setSortShow(value)
+      if(value==="priceDescending")
+      {
+        setSortBy("entryFee")
+        setSortValue(-1)
+      }
+      else if(value==="priceAscending")
+      {
+        setSortBy("entryFee")
+        setSortValue(1)
+      }
+      else{
+        setSortBy(value)
+      }
+    }
   }
 
   return (
@@ -472,7 +493,7 @@ const FilterEvents = () => {
                 <TextField
                   select
                   label="Sort By:"
-                  value={sortBy}
+                  value={sortShow}
                   onChange={handleInputChange}
                   className={classes.textField}
                   id="sortBy"
