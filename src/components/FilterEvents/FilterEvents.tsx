@@ -28,19 +28,6 @@ import Geocode from "react-geocode"
 Geocode.setApiKey("AIzaSyC3piWVpJ50bb8sVq-vGZnf6nbJMgyNtSE")
 Geocode.setLanguage("en")
 
-function latlngGen(place: PlaceType) {
-  var loc: any[]
-  Geocode.fromAddress(place.description).then(
-    (response) => {
-      loc[0] = response.results[0].geometry.location[0]
-      loc[1] = response.results[0].geometry.location[1]
-      console.log(loc);
-    },
-    (error) => {
-      console.error(error);
-    }
-  );
-}
 
 function loadScript(src: string, position: HTMLElement | null, id: string) {
   if (!position) {
@@ -123,7 +110,28 @@ const sportTypes = [
   },
 ]
 
+
+
 const FilterEvents = () => {
+
+  const [lat, setLat] = useState("")
+  const [lng, setLng] = useState("")
+
+  function latlngGen(place: string) {
+    var loc: number[]
+    Geocode.fromAddress(place).then(
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        setLat(lat)
+        setLng(lng)
+        console.log(lat,lng)
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
   const classes = useStyles()
   const dispatch = useAppDispatch()
 
@@ -184,7 +192,7 @@ const FilterEvents = () => {
   }, [minPrice, maxPrice])
 
   useEffect(() => {
-    setEventStartTime(moment(minDate).format("YYYY-MM-DDTHH:MM"))
+    setEventStartTime(moment().format("YYYY-MM-DDTHH:MM"))
   }, [minDate])
 
   useEffect(() => {
@@ -306,7 +314,7 @@ const FilterEvents = () => {
                   onChange={(event: any, newValue: PlaceType | null) => {
                     setOptions(newValue ? [newValue, ...options] : options)
                     setLocation(newValue)
-                    newValue? console.log(latlngGen(newValue)) : console.log("NULL")
+                    newValue? latlngGen(newValue.description) : console.log("NULL")
                   }}
                   onInputChange={(event, newInputValue) => {
                     setInputLoc(newInputValue)
