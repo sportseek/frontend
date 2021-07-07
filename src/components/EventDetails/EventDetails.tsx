@@ -78,7 +78,8 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1">
-              Credits earned if event is cancelled: {newEntryFee * 0.99}
+              Credits earned if event is cancelled: {newEntryFee * 0.99}, Rev:{" "}
+              {currentEvent.revenue}
             </Typography>
           </Grid>
         </Grid>

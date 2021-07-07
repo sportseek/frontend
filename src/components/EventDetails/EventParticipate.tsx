@@ -36,6 +36,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
   const currentUser = useAppSelector(selectLoggedInUser)
 
   const [registered, setRegistered] = useState(false)
+  const newEntryFee = currentEvent.entryFee / currentEvent.minPlayers
 
   useEffect(() => {
     if (currentEvent.registeredPlayers) {
@@ -53,6 +54,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
       updateRegistered({
         eventId: currentEvent._id,
         registered: !registered,
+        fee: newEntryFee,
       })
     )
   }
