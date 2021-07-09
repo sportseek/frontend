@@ -15,6 +15,11 @@ const PlayerNumbers: React.FC<Props> = ({ event: currentEvent }) => {
           currentEvent.registeredPlayers.length}
       </Typography>
       <Typography variant="h6">
+        Available slots:{" "}
+        {currentEvent.registeredPlayers &&
+          currentEvent.maxPlayers - currentEvent.registeredPlayers.length}
+      </Typography>
+      <Typography variant="h6">
         Players <b>Interested</b>:{" "}
         {currentEvent.interestedPlayers &&
           currentEvent.interestedPlayers.length}

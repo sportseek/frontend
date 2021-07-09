@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
 import { IPersonalEvent, PEventPayload } from "types"
+import { SearchPEventPayload } from "types/PersonalEvent"
 import { ServerErrors } from "utils/constants"
 import pEventAPI from "./pEventAPI"
 
@@ -11,6 +12,7 @@ interface PersonalEventState {
   needToUpdate: boolean
   errors: FormValidationErrors
   hasErrors: boolean
+  eventsForInvite: IPersonalEvent[]
 }
 
 const initialState: PersonalEventState = {
@@ -18,6 +20,7 @@ const initialState: PersonalEventState = {
   needToUpdate: false,
   errors: {} as FormValidationErrors,
   hasErrors: true,
+  eventsForInvite: [],
 }
 
 export const createPEvent = createAsyncThunk(
@@ -50,6 +53,14 @@ export const deletePEvent = createAsyncThunk(
   "personalevent/delete",
   async (id: string) => {
     const response = await pEventAPI.deleteEvent(id)
+    return response.data
+  }
+)
+
+export const getAllPEvents = createAsyncThunk(
+  "events/fetchAllPEvents",
+  async (searchPayload: SearchPEventPayload) => {
+    const response = await pEventAPI.fetchAllPEvents(searchPayload)
     return response.data
   }
 )
@@ -97,6 +108,9 @@ export const pEventSlice = createSlice({
         state.errors = errs as FormValidationErrors
         state.hasErrors = true
       })
+      .addCase(getAllPEvents.fulfilled, (state, action) => {
+        state.eventsForInvite = action.payload.eventList
+      })
   },
 })
 
@@ -107,5 +121,7 @@ export const selectErrors = (state: RootState) => state.pevent.errors
 export const selectHasErrors = (state: RootState) => state.pevent.hasErrors
 export const selectNeedToUpdatePersonalEventList = (state: RootState) =>
   state.pevent.needToUpdate
+export const selectInviteEvents = (state: RootState) =>
+  state.pevent.eventsForInvite
 
 export default pEventSlice.reducer

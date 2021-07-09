@@ -33,6 +33,7 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
     image: currentEvent.eventImageUrl,
   }
 
+  const euro = "\u20AC"
   const dispatch = useAppDispatch()
   const currentArena = useAppSelector(selectCurrentArena)
 
@@ -63,7 +64,7 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h5">
-              <b>Entry Fee</b>: {newEntryFee}
+              <b>Entry Fee</b>: {newEntryFee} {euro}
             </Typography>
           </Grid>
           <Grid item xs={12}>
