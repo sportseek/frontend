@@ -310,6 +310,16 @@ const FilterEvents = () => {
         setSortBy("entryFee")
         setSortValue(1)
       }
+      else if(value==="registeredPlayersDescending")
+      {
+        setSortBy("registeredPlayers")
+        setSortValue(-1)
+      }
+      else if(value==="registeredPlayersAscending")
+      {
+        setSortBy("registeredPlayers")
+        setSortValue(1)
+      }
       else{
         setSortBy(value)
       }
