@@ -10,6 +10,7 @@ import {
   SearchEventPayload,
   UpdateInterestedPayload,
   UpdateRegisteredPayload,
+  SearchEventsByCreatorPayload,
 } from "types/Event"
 import eventAPI from "./eventAPI"
 
@@ -102,6 +103,14 @@ export const getMinMaxPrice = createAsyncThunk(
   }
 )
 
+export const fetchAllEventsByCreator = createAsyncThunk(
+  "events/fetchAllEventsByCreator",
+  async (searchPayload: SearchEventsByCreatorPayload) => {
+    const response = await eventAPI.fetchAllEventsByCreator(searchPayload)
+    return response.data
+  }
+)
+
 export const eventSlice = createSlice({
   name: "event",
   initialState,
@@ -142,6 +151,10 @@ export const eventSlice = createSlice({
         state.minPrice = action.payload.minEvent.entryFee
         state.maxPrice = action.payload.maxEvent.entryFee
       })
+      .addCase(fetchAllEventsByCreator.fulfilled, (state, action) => {
+        state.events = action.payload.eventList
+        //state.reloadEvents = false
+      })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
         (state) => {
@@ -158,6 +171,7 @@ export const selectAllEvents = (state: RootState) => state.event.allEvents
 export const selectCurrentEventId = (state: RootState) => state.event.curEventId
 export const selectEventMaxPrice = (state: RootState) => state.event.maxPrice
 export const selectEventMinPrice = (state: RootState) => state.event.minPrice
+export const selectAllEventsByCreator = (state: RootState) => state.event.events
 
 export const { clearEventDetails, setCurEventId } = eventSlice.actions
 

@@ -15,11 +15,17 @@ import EventParticipate from "./EventParticipate"
 import EventInterested from "./EventInterested"
 import ArenaContact from "./ArenaContact"
 import EventInvite from "./EventInvite"
+import EventsByCreator from "./EventsByCreator"
 
 import {
   fetchArenaById,
   selectCurrentArena,
 } from "redux/reducers/arena/arenaSlice"
+
+import {
+  fetchAllEventsByCreator,
+  selectAllEventsByCreator,
+} from "redux/reducers/event/eventSlice"
 
 type Props = {
   event: IEvent
@@ -36,10 +42,18 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
   const euro = "\u20AC"
   const dispatch = useAppDispatch()
   const currentArena = useAppSelector(selectCurrentArena)
+  const eventsByCreator = useAppSelector(selectAllEventsByCreator)
+
+  useEffect(() => {
+    if (currentEvent.creator)
+      dispatch(fetchAllEventsByCreator({ creator: currentEvent.creator }))
+  }, [dispatch, currentEvent.creator])
 
   useEffect(() => {
     if (currentEvent.creator) dispatch(fetchArenaById(currentEvent.creator))
   }, [dispatch, currentEvent.creator])
+
+  console.log(eventsByCreator)
 
   return (
     <Grid container spacing={3}>
@@ -94,6 +108,14 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
             <ArenaContact arena={currentArena} />
           </Grid>
         </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h5" gutterBottom>
+          Other events hosted by {currentArena.arenaName}
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <EventsByCreator event={currentEvent} />
       </Grid>
     </Grid>
   )

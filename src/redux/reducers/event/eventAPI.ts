@@ -3,6 +3,7 @@ import {
   SearchEventPayload,
   UpdateInterestedPayload,
   UpdateRegisteredPayload,
+  SearchEventsByCreatorPayload,
 } from "types/Event"
 import axios from "utils/axios"
 
@@ -75,6 +76,14 @@ const getMinMaxPrice = async () => {
   return response
 }
 
+const fetchAllEventsByCreator = async (
+  searchPayload: SearchEventsByCreatorPayload
+) => {
+  const url = `/${eventEndpoint}/fetchAllEventsByCreator`
+  const response = await axios.post(url, searchPayload)
+  return response
+}
+
 export default {
   fetchById,
   update,
@@ -86,4 +95,5 @@ export default {
   updateRegistered,
   findSportEventById,
   getMinMaxPrice,
+  fetchAllEventsByCreator,
 }
