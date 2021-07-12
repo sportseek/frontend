@@ -1,4 +1,5 @@
 import { PEventPayload } from "types"
+import { SearchPEventPayload } from "types/PersonalEvent"
 import axios from "utils/axios"
 
 const eventEndpoint = "personalevent"
@@ -21,4 +22,10 @@ const deleteEvent = async (id: string) => {
   return response
 }
 
-export default { create, deleteEvent, fetchEventList }
+const fetchAllPEvents = async (searchPayload: SearchPEventPayload) => {
+  const url = `/${eventEndpoint}/fetchAllPEvents`
+  const response = await axios.post(url, searchPayload)
+  return response
+}
+
+export default { create, deleteEvent, fetchEventList, fetchAllPEvents }

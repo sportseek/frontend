@@ -11,6 +11,7 @@ import {
   selectAuthStatus,
 } from "redux/reducers/auth/authSlice"
 import SigninForm from "components/SigninForm"
+import SignInSide from "components/SigninForm/SigninFormSide"
 import ErrorBar from "components/Common/Errorbar"
 
 const useStyles = makeStyles(() => ({
@@ -40,14 +41,22 @@ const SignInPage: FC = () => {
   return isAuthenticated ? (
     <Redirect to={{ pathname: "/home" }} />
   ) : (
-    <div className={classes.root}>
+    <div>
       <Helmet title="SportSeek - Sign in" />
-      <div className={classes.signinWrapper}>
+      <div>
         {authStatus === AuthStatus.PROCESSING ? <LinearProgress /> : null}
-        <SigninForm />
+        <SignInSide />
       </div>
       {showErrorBar && <ErrorBar errors={authErrors as []} />}
     </div>
+    // <div className={classes.root}>
+    //   <Helmet title="SportSeek - Sign in" />
+    //   <div className={classes.signinWrapper}>
+    //     {authStatus === AuthStatus.PROCESSING ? <LinearProgress /> : null}
+    //     <SignInSide />
+    //   </div>
+    //   {showErrorBar && <ErrorBar errors={authErrors as []} />}
+    // </div>
   )
 }
 export default SignInPage

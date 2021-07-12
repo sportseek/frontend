@@ -3,6 +3,7 @@ import {
   SearchEventPayload,
   UpdateInterestedPayload,
   UpdateRegisteredPayload,
+  SearchEventsByCreatorPayload,
 } from "types/Event"
 import axios from "utils/axios"
 
@@ -56,6 +57,7 @@ const updateRegistered = async (registeredPayload: UpdateRegisteredPayload) => {
   const url = `/${eventEndpoint}/updateRegistered/${registeredPayload.eventId}`
   const response = await axios.put(url, {
     registered: registeredPayload.registered,
+    fee: registeredPayload.fee,
   })
   return response
 }
@@ -71,6 +73,14 @@ export const findSportEventById = async (id: string) => {
 const getMinMaxPrice = async () => {
   const url = `/${eventEndpoint}/getMinMaxPrice`
   const response = await axios.get(url)
+  return response
+}
+
+const fetchAllEventsByCreator = async (
+  searchPayload: SearchEventsByCreatorPayload
+) => {
+  const url = `/${eventEndpoint}/fetchAllEventsByCreator`
+  const response = await axios.post(url, searchPayload)
   return response
 }
 
@@ -91,5 +101,6 @@ export default {
   updateRegistered,
   findSportEventById,
   getMinMaxPrice,
+  fetchAllEventsByCreator,
   getMinMaxDate,
 }

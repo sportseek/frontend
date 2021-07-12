@@ -12,3 +12,8 @@ export type PEventPayload = {
   end: string
   title: string
 }
+
+export interface SearchPEventPayload {
+  eventStartTime?: string
+  eventEndTime?: string
+}

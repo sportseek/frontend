@@ -48,4 +48,9 @@ export interface UpdateInterestedPayload {
 export interface UpdateRegisteredPayload {
   eventId: string
   registered: boolean
+  fee: number
+}
+
+export interface SearchEventsByCreatorPayload {
+  creator: string
 }

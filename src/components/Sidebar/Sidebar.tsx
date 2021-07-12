@@ -51,9 +51,11 @@ const useStyles = makeStyles((theme) => ({
     width: theme.sidebar.width,
     flexShrink: 0,
     whiteSpace: "nowrap",
+    //background: theme.sidebar.background,
   },
   list: {
     width: theme.sidebar.width,
+    //background: theme.sidebar.background,
   },
   drawerPaper: {
     overflow: "hidden",

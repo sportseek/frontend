@@ -1,11 +1,15 @@
 import { grey } from "@material-ui/core/colors"
 import { ThemeOptions } from "./types"
 
+// palette1:
+// #FBE8A6, F4976C, 303C6C, B4DFE5, D2FDFF
+
 const lightVariant: ThemeOptions = {
   palette: {
     type: "light",
     primary: {
       main: "#3A4458",
+      //main: "#FBE8E6",
       light: "#9fb0d1",
       contrastText: "#FFF",
     },
@@ -22,24 +26,28 @@ const lightVariant: ThemeOptions = {
   },
   header: {
     height: 60,
-    background: "#4b636e",
+    //background: "#4b636e",
+    background: "#303C6C",
   },
   sidebar: {
     width: 210,
+    background: "#D2FDFF",
     footer: {
-      color: grey[200],
+      color: "#FBE8A6",
       background: "#62757f",
     },
   },
   filterbar: {
     width: 260,
+    background: "#D2FDFF",
     footer: {
       color: grey[200],
-      background: "#62757f",
+      background: "#FBE8A6",
     },
   },
   body: {
-    background: "#efeadd ",
+    //background: "#efeadd ",
+    background: "#FBE8A6",
   },
   calendar: {
     interestedEventColor: { main: "#ffc93c", disabled: "#ffefc5" },
