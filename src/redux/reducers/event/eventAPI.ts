@@ -74,6 +74,12 @@ const getMinMaxPrice = async () => {
   return response
 }
 
+const getMinMaxDate = async () => {
+  const url = `/${eventEndpoint}/getMinMaxDate`
+  const response = await axios.get(url)
+  return response
+}
+
 export default {
   fetchById,
   update,
@@ -85,4 +91,5 @@ export default {
   updateRegistered,
   findSportEventById,
   getMinMaxPrice,
+  getMinMaxDate,
 }

@@ -120,11 +120,11 @@ const EventCard: React.FC<Props> = (props: Props) => {
             </Grid>
             <Grid item xs={3}>
               <div className={classes.iconStyle}>
-                <Tooltip title="Participating">
+                <Tooltip title="Participating/Maximum Players">
                   <People style={{ marginRight: "4px" }} />
                 </Tooltip>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  <b>{event.registeredPlayers.length}</b>
+                  <b>{event.registeredPlayers.length}/{event.maxPlayers}</b>
                 </Typography>
               </div>
             </Grid>
