@@ -68,7 +68,8 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
       if (isAlreadyInterested) setInterested(true)
       else setInterested(false)
     } else setInterested(false)
-  }, [currentEvent])
+  }, [currentEvent, currentUser._id])
+
   const handleUpdateInterested = () => {
     setInterested(!interested)
     dispatch(
@@ -78,7 +79,7 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
       })
     )
   }
-  ///////////////////
+
   useEffect(() => {
     if (currentEvent.registeredPlayers) {
       const isAlreadyRegistered = currentEvent.registeredPlayers.find(
@@ -88,7 +89,8 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
       if (isAlreadyRegistered) setRegistered(true)
       else setRegistered(false)
     } else setRegistered(false)
-  }, [currentEvent])
+  }, [currentEvent, currentUser._id])
+
   const handleUpdateRegistered = () => {
     setRegistered(!registered)
     dispatch(
