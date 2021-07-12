@@ -35,6 +35,9 @@ export interface SearchEventPayload {
   eventStartTime?: string
   eventEndTime?: string
   eventFee?: number[]
+  location?: any
+  sortBy?: string
+  sortValue?: number
 }
 
 export interface UpdateInterestedPayload {

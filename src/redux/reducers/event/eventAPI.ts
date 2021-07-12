@@ -84,6 +84,12 @@ const fetchAllEventsByCreator = async (
   return response
 }
 
+const getMinMaxDate = async () => {
+  const url = `/${eventEndpoint}/getMinMaxDate`
+  const response = await axios.get(url)
+  return response
+}
+
 export default {
   fetchById,
   update,
@@ -96,4 +102,5 @@ export default {
   findSportEventById,
   getMinMaxPrice,
   fetchAllEventsByCreator,
+  getMinMaxDate,
 }

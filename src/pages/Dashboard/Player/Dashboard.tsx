@@ -71,9 +71,9 @@ const Dashboard = () => {
               <Grid item xs={12} lg={4}>
                 <Wallet />
               </Grid>
-              <Grid item xs={12} lg>
+              {/* <Grid item xs={12} lg>
                 <Friends />
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
         </Grid>
