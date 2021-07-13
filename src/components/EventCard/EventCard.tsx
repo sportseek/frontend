@@ -64,7 +64,17 @@ const EventCard: React.FC<Props> = (props: Props) => {
   }
 
   return (
-    <Card className={classes.root} onClick={handleClick}>
+    <Card
+      className={classes.root}
+      onClick={handleClick}
+      style={{
+        background:
+          "radial-gradient( circle 592px at 48.2% 50%,  rgba(255,255,249,0.6) 0%, rgba(160,199,254,1) 74.6% )",
+        borderStyle: "solid",
+        borderWidth: "0.5px",
+        borderColor: "#D2FDFF",
+      }}
+    >
       <CardActionArea>
         <CardMedia
           image={event.eventImageUrl}
@@ -124,7 +134,9 @@ const EventCard: React.FC<Props> = (props: Props) => {
                   <People style={{ marginRight: "4px" }} />
                 </Tooltip>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  <b>{event.registeredPlayers.length}/{event.maxPlayers}</b>
+                  <b>
+                    {event.registeredPlayers.length}/{event.maxPlayers}
+                  </b>
                 </Typography>
               </div>
             </Grid>

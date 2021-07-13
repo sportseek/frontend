@@ -53,8 +53,6 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
     if (currentEvent.creator) dispatch(fetchArenaById(currentEvent.creator))
   }, [dispatch, currentEvent.creator])
 
-  console.log(eventsByCreator)
-
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>

@@ -86,27 +86,27 @@ const EventInvite: React.FC<PropsComp> = ({ registered: registered }) => {
     }
   }, [friends])
 
-  React.useEffect(() => {
-    dispatch(
-      getAllPEvents({
-        eventStartTime: currentEvent.start?.toString(),
-        eventEndTime: currentEvent.end?.toString(),
-      })
-    )
-  }, [currentEvent])
+  // React.useEffect(() => {
+  //   dispatch(
+  //     getAllPEvents({
+  //       eventStartTime: currentEvent.start?.toString(),
+  //       eventEndTime: currentEvent.end?.toString(),
+  //     })
+  //   )
+  // }, [currentEvent])
 
-  const pEvents = useAppSelector(selectInviteEvents)
+  //const pEvents = useAppSelector(selectInviteEvents)
 
-  React.useEffect(() => {
-    pEvents.map((item) => {
-      list.map((friend) => {
-        if (item.creator === friend.id) {
-          console.log(item.creator, friend.id, friend.name)
-          setList(list.filter((friendItem) => friendItem.id != item.creator))
-        }
-      })
-    })
-  }, [pEvents])
+  // React.useEffect(() => {
+  //   pEvents.map((item) => {
+  //     list.map((friend) => {
+  //       if (item.creator === friend.id) {
+  //         console.log(item.creator, friend.id, friend.name)
+  //         setList(list.filter((friendItem) => friendItem.id != item.creator))
+  //       }
+  //     })
+  //   })
+  // }, [pEvents])
 
   //console.log(list)
 
