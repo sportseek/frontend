@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FormEvent, useState } from "react"
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
@@ -18,6 +19,8 @@ import {
   AuthStatus,
 } from "redux/reducers/auth/authSlice"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
+
+import SignInLogo from "assets/signin_logo_transparent.png"
 
 export interface UserSigninPayload {
   email: string
@@ -47,9 +50,14 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
   },
+  link: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
   paper: {
     flex: 1,
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(4, 4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -61,6 +69,11 @@ const useStyles = makeStyles((theme) => ({
   avatarCircle: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.common.white,
+  },
+  logo: {
+    margin: theme.spacing(1),
+    height: 250,
+    width: 250,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -88,6 +101,8 @@ export default function SignInSide() {
     if (name === "password") setPassword(value)
   }
 
+  const preventDefault = (event: React.SyntheticEvent) => event.preventDefault()
+
   const handleSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const payload: UserSigninPayload = {
@@ -101,9 +116,15 @@ export default function SignInSide() {
   return (
     <Grid container>
       <CssBaseline />
-      <Grid item xs sm md className={classes.image} />
-      <Grid item xs={12} sm={8} md={3} className={classes.signin}>
+      <Grid item sm md lg className={classes.image} />
+      <Grid item xs={12} sm={9} md={6} lg={4} className={classes.signin}>
         <div className={classes.paper}>
+          <img
+            src={SignInLogo}
+            alt="Seek your Sport"
+            className={classes.logo}
+          />
+
           {authStatus === AuthStatus.PROCESSING ? (
             <Avatar className={classes.avatarCircle}>
               <CircularProgress color="secondary" />
@@ -154,15 +175,21 @@ export default function SignInSide() {
             >
               Sign In
             </Button>
-            <Grid container>
+            <Grid container direction="row">
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="#" onClick={preventDefault} variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  Don't have an account? Sign Up
+              <Grid item className={classes.link}>
+                <Typography variant="body2">New to SportSeek?&ensp;</Typography>
+                <Link
+                  href="/signup"
+                  variant="body2"
+                  color="secondary"
+                  underline="always"
+                >
+                  Sign Up
                 </Link>
               </Grid>
             </Grid>
