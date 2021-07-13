@@ -7,11 +7,12 @@ module.exports = merge(common, {
   mode: "development",
   target: "web",
   devServer: {
-    contentBase: path.resolve(__dirname, "dist"),
+    contentBase: path.resolve(__dirname, "..", "dist"),
     compress: true,
     port: 9000,
     hot: true,
     open: true,
     writeToDisk: true,
+    historyApiFallback: true,
   },
 })

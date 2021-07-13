@@ -9,7 +9,7 @@ const FaviconsWebpackPlugin = require("favicons-webpack-plugin")
 const config = {
   entry: "./src/index.tsx",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "..", "dist"),
     filename: "bundle.js",
   },
   module: {
@@ -51,6 +51,7 @@ const config = {
   },
   resolve: {
     extensions: [".js", ".jsx", ".tsx", ".ts"],
+    modules: ["node_modules", path.resolve(__dirname, "..", "src")],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -64,7 +65,7 @@ const config = {
       path: "config/.env",
     }),
     new FaviconsWebpackPlugin({
-      logo: "./public/logo512.png",
+      logo: "./public/logo.png",
       mode: "webapp",
       manifest: "./public/manifest.json",
     }),
