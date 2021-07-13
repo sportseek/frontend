@@ -13,6 +13,7 @@ const Footer = styled("div")(({ theme }) => ({
   background: theme.footer.background,
   minHeight: theme.footer.height,
   zIndex: 700,
+  width: "100%",
 }))
 
 const FooterFC = () => {

@@ -107,7 +107,7 @@ const Friends = () => {
   }
 
   return (
-    <Card className={classes.simpleCard}>
+    <Card className={classes.simpleCard} raised>
       <CardHeader
         title="Friends"
         action={

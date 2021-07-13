@@ -2,10 +2,17 @@ import React, { useEffect } from "react"
 import MainFeaturedPost from "components/MainFeaturedPost/MainFeaturedPost"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 
-import { Button, Typography } from "@material-ui/core"
+import { Typography } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
 
 import { IEvent } from "types"
+
+import {
+  fetchArenaById,
+  selectCurrentArena,
+} from "redux/reducers/arena/arenaSlice"
+
+import { fetchAllEventsByCreator } from "redux/reducers/event/eventSlice"
 
 import Location from "components/Location"
 import EventAndArenaDesc from "./EventAndArenaDesc"
@@ -14,24 +21,14 @@ import PlayerNumbers from "./EventPlayerNumbers"
 import EventParticipate from "./EventParticipate"
 import EventInterested from "./EventInterested"
 import ArenaContact from "./ArenaContact"
-import EventInvite from "./EventInvite"
 import EventsByCreator from "./EventsByCreator"
-
-import {
-  fetchArenaById,
-  selectCurrentArena,
-} from "redux/reducers/arena/arenaSlice"
-
-import {
-  fetchAllEventsByCreator,
-  selectAllEventsByCreator,
-} from "redux/reducers/event/eventSlice"
 
 type Props = {
   event: IEvent
 }
 
-const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
+const EventDetails: React.FC<Props> = (props: Props) => {
+  const { event: currentEvent } = props
   const newEntryFee = currentEvent.entryFee / currentEvent.minPlayers
 
   const mainFeaturedPost = {
@@ -42,7 +39,6 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
   const euro = "\u20AC"
   const dispatch = useAppDispatch()
   const currentArena = useAppSelector(selectCurrentArena)
-  const eventsByCreator = useAppSelector(selectAllEventsByCreator)
 
   useEffect(() => {
     if (currentEvent.creator)
@@ -119,4 +115,4 @@ const EventInfoCard: React.FC<Props> = ({ event: currentEvent }) => {
   )
 }
 
-export default EventInfoCard
+export default EventDetails

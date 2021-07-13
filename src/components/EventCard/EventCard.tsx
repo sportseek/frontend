@@ -4,11 +4,8 @@ import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
 import CardActionArea from "@material-ui/core/CardActionArea"
-import CardActions from "@material-ui/core/CardActions"
 import CardMedia from "@material-ui/core/CardMedia"
-import Button from "@material-ui/core/Button"
 import { IEvent } from "types"
-import { Link } from "react-router-dom"
 import moment from "moment"
 import { People, Star, Euro } from "@material-ui/icons"
 import { Tooltip } from "@material-ui/core"
@@ -64,6 +61,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
   }
 
   return (
+<<<<<<< HEAD
     <Card
       className={classes.root}
       onClick={handleClick}
@@ -75,6 +73,9 @@ const EventCard: React.FC<Props> = (props: Props) => {
         borderColor: "#D2FDFF",
       }}
     >
+=======
+    <Card className={classes.root} onClick={handleClick} raised>
+>>>>>>> dev
       <CardActionArea>
         <CardMedia
           image={event.eventImageUrl}
