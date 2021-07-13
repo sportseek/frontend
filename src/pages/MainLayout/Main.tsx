@@ -21,8 +21,10 @@ const MainContent = styled("main")({
 const Page = styled("div")(({ theme }) => ({
   flexGrow: 1,
   background: theme.body.background,
+  backgroundImage:
+    "url(https://source.unsplash.com/collection/21649636/1600x900)",
   padding: theme.spacing(2),
-  overflowY: "auto",
+  // overflowY: "auto",
   overflowX: "hidden",
   height: "100%",
 }))

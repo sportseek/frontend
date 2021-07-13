@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { makeStyles, createStyles } from "@material-ui/core/styles"
-import { Grid, Theme } from "@material-ui/core"
+import { Grid, Grow, Theme } from "@material-ui/core"
 import Helmet from "react-helmet"
 import TabPanel from "components/Common/TabPanel"
 import EventDetailsView from "pages/EventDetails"
@@ -54,10 +54,12 @@ const EventSearch = () => {
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(getAllEvents({
-      sortBy:"start",
-      sortValue:-1
-    }))
+    dispatch(
+      getAllEvents({
+        sortBy: "start",
+        sortValue: -1,
+      })
+    )
     dispatch(getMinMaxPrice())
     dispatch(getMinMaxDate())
   }, [dispatch, tabIndex])
@@ -78,10 +80,17 @@ const EventSearch = () => {
             justify="space-around"
             alignItems="center"
           >
-            {allEvents.map((item) => (
-              <Grid item xs={12} md={6} lg={3} key={item._id}>
-                <EventCard event={item} openDetails={gotoEventDetails} />
-              </Grid>
+            {allEvents.map((item, index) => (
+              <Grow
+                in
+                key={item._id}
+                style={{ transformOrigin: "0 0 0" }}
+                timeout={1000 + index * 150}
+              >
+                <Grid item xs={12} md={6} lg={3}>
+                  <EventCard event={item} openDetails={gotoEventDetails} />
+                </Grid>
+              </Grow>
             ))}
           </Grid>
         </main>

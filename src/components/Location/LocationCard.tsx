@@ -52,7 +52,7 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
   }
 
   return (
-    <Card>
+    <Card raised={editable}>
       <CardHeader
         className={classes.cardHeader}
         title="Location"

@@ -5,15 +5,18 @@ import CssBaseline from "@material-ui/core/CssBaseline"
 import TextField from "@material-ui/core/TextField"
 
 import Link from "@material-ui/core/Link"
-import Paper from "@material-ui/core/Paper"
-
+import CircularProgress from "@material-ui/core/CircularProgress"
 import Grid from "@material-ui/core/Grid"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
-
-import Container from "@material-ui/core/Container"
-import { userSignIn, selectAuthErrors } from "redux/reducers/auth/authSlice"
+import Footer from "components/Footer"
+import {
+  userSignIn,
+  selectAuthErrors,
+  selectAuthStatus,
+  AuthStatus,
+} from "redux/reducers/auth/authSlice"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 
 export interface UserSigninPayload {
@@ -22,11 +25,13 @@ export interface UserSigninPayload {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "100vh",
+  filler: {
+    flexGrow: 1,
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    height: "100vh",
+    backgroundImage:
+      "url(https://source.unsplash.com/collection/21649636/1600x900)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -35,7 +40,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     backgroundPosition: "center",
   },
+  signin: {
+    height: "100vh",
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
   paper: {
+    flex: 1,
     margin: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
@@ -44,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+  },
+  avatarCircle: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.common.white,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -60,6 +77,7 @@ export default function SignInSide() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
+  const authStatus = useAppSelector(selectAuthStatus)
   const authErrors = useAppSelector(selectAuthErrors) as UserSigninPayload
 
   const dispatch = useAppDispatch()
@@ -81,14 +99,20 @@ export default function SignInSide() {
   }
 
   return (
-    <Grid container component="main" className={classes.root}>
+    <Grid container>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs sm md className={classes.image} />
+      <Grid item xs={12} sm={8} md={3} className={classes.signin}>
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
+          {authStatus === AuthStatus.PROCESSING ? (
+            <Avatar className={classes.avatarCircle}>
+              <CircularProgress color="secondary" />
+            </Avatar>
+          ) : (
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+          )}
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -138,12 +162,13 @@ export default function SignInSide() {
               </Grid>
               <Grid item>
                 <Link href="/signup" variant="body2">
-                  Don't have an account? Sign Up"
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
           </form>
         </div>
+        <Footer />
       </Grid>
     </Grid>
   )
