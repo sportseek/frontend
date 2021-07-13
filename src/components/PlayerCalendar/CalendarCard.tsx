@@ -154,7 +154,7 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   }
 
   return (
-    <Card>
+    <Card raised>
       <CardHeader
         showActions={!isSmallScreen}
         openSchedule={openInfoPopUp}

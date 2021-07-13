@@ -67,6 +67,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawerPaper: {
       width: theme.filterbar.width,
+      background: theme.filterbar.background,
       overflow: "hidden",
       zIndex: 600,
     },
@@ -86,10 +87,15 @@ const useStyles = makeStyles((theme: Theme) =>
     emptyDiv: {
       height: "16px",
     },
+    buttons: {
+      display: "flex",
+      alignContent: "center",
+      justifyContent: "space-between",
+    },
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      width: 190,
+      width: 195,
     },
   })
 )
@@ -204,7 +210,6 @@ const FilterEvents = () => {
   const [eventTitle, setEventTitle] = useState("")
   const [sportsType, setSportsType] = useState("all")
 
-
   const [eventStartTime, setEventStartTime] = useState(
     moment().format("YYYY-MM-DDTHH:MM")
   )
@@ -216,7 +221,7 @@ const FilterEvents = () => {
 
   const [sortBy, setSortBy] = useState("start")
   const [sortValue, setSortValue] = useState(-1)
-  const [sortShow, setSortShow] = useState("start") 
+  const [sortShow, setSortShow] = useState("start")
   useEffect(() => {
     setEventFee([minPrice, maxPrice])
   }, [minPrice, maxPrice])
@@ -283,10 +288,9 @@ const FilterEvents = () => {
         eventStartTime: new Date(eventStartTime).toISOString(),
         eventEndTime: new Date(eventEndTime).toISOString(),
         eventFee: eventFee,
-        location: lat===0? "":{lat, lng},
+        location: lat === 0 ? "" : { lat, lng },
         sortBy: sortBy,
-        sortValue: sortValue
-
+        sortValue: sortValue,
       })
     )
   }
@@ -300,27 +304,19 @@ const FilterEvents = () => {
 
     if (name === "sortBy") {
       setSortShow(value)
-      if(value==="priceDescending")
-      {
+      if (value === "priceDescending") {
         setSortBy("entryFee")
         setSortValue(-1)
-      }
-      else if(value==="priceAscending")
-      {
+      } else if (value === "priceAscending") {
         setSortBy("entryFee")
         setSortValue(1)
-      }
-      else if(value==="registeredPlayersDescending")
-      {
+      } else if (value === "registeredPlayersDescending") {
         setSortBy("registeredPlayers")
         setSortValue(-1)
-      }
-      else if(value==="registeredPlayersAscending")
-      {
+      } else if (value === "registeredPlayersAscending") {
         setSortBy("registeredPlayers")
         setSortValue(1)
-      }
-      else{
+      } else {
         setSortBy(value)
       }
     }
@@ -358,7 +354,7 @@ const FilterEvents = () => {
                 />
               </Grid>
               <Grid item xs={2}>
-                <Search />
+                <Search color="secondary" />
               </Grid>
               <Grid item xs={10}>
                 <Autocomplete
@@ -446,7 +442,7 @@ const FilterEvents = () => {
                 </TextField>
               </Grid>
               <Grid item xs={2}>
-                <SportsBasketball />
+                <SportsBasketball color="secondary" />
               </Grid>
             </Grid>
             <div className={classes.emptyDiv} />
@@ -492,6 +488,7 @@ const FilterEvents = () => {
                   getAriaValueText={valuetext}
                   id="eventFee"
                   name="eventFee"
+                  color="secondary"
                 />
               </Grid>
             </Grid>
@@ -517,13 +514,24 @@ const FilterEvents = () => {
                 </TextField>
               </Grid>
               <Grid item xs={2}>
-                <Sort />
+                <Sort color="secondary" />
               </Grid>
             </Grid>
             <div className={classes.emptyDiv} />
             <Divider />
             <div className={classes.emptyDiv} />
-            <Button onClick={handleSearch}>Search</Button>
+            <div className={classes.buttons}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSearch}
+              >
+                Search
+              </Button>
+              <Button variant="contained" color="primary">
+                Clear
+              </Button>
+            </div>
           </div>
         </div>
       </Drawer>

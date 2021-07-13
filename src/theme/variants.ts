@@ -9,7 +9,7 @@ const lightVariant: ThemeOptions = {
     type: "light",
     primary: {
       main: "#3A4458",
-      //main: "#FBE8E6",
+      // main: "#FBE8E6",
       light: "#9fb0d1",
       contrastText: "#FFF",
     },
@@ -26,7 +26,7 @@ const lightVariant: ThemeOptions = {
   },
   header: {
     height: 60,
-    //background: "#4b636e",
+    // background: "#4b636e",
     background: "#303C6C",
   },
   sidebar: {
@@ -46,8 +46,8 @@ const lightVariant: ThemeOptions = {
     },
   },
   body: {
-    //background: "#efeadd ",
-    background: "#FBE8A6",
+    // background: "#efeadd ",
+    background: "#F6F6F6",
   },
   calendar: {
     interestedEventColor: { main: "#ffc93c", disabled: "#ffefc5" },

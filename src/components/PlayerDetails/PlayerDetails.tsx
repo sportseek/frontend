@@ -59,7 +59,7 @@ export default function PersonalInfoCard() {
   const closeFormPopUp = () => setOpenEditForm(false)
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} raised>
       <CardHeader
         className={classes.cardHeader}
         title="Personal info"
