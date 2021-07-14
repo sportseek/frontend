@@ -8,9 +8,8 @@ const lightVariant: ThemeOptions = {
   palette: {
     type: "light",
     primary: {
-      main: "#3A4458",
-      // main: "#FBE8E6",
-      light: "#9fb0d1",
+      main: "#303C6C",
+      light: "#7580AB",
       contrastText: "#FFF",
     },
     secondary: {
@@ -25,9 +24,8 @@ const lightVariant: ThemeOptions = {
     },
   },
   header: {
-    height: 60,
-    // background: "#4b636e",
-    background: "#303C6C",
+    height: 70,
+    background: "linear-gradient(to bottom, #303C6C 0%, #1E2645 50%, #0D111E 100%)",
   },
   sidebar: {
     width: 210,
@@ -46,7 +44,6 @@ const lightVariant: ThemeOptions = {
     },
   },
   body: {
-    // background: "#efeadd ",
     background: "#F6F6F6",
   },
   calendar: {
@@ -55,7 +52,7 @@ const lightVariant: ThemeOptions = {
     personalEventColor: { main: "#a7bbc7", disabled: "#d7e0e6" },
   },
   footer: {
-    background: "#4b636e",
+    background: "#EBECF3",
     height: 28,
   },
 }

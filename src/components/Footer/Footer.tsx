@@ -1,9 +1,9 @@
-import { Typography } from "@material-ui/core"
+import { Divider, Typography } from "@material-ui/core"
 import React from "react"
 import { styled } from "@material-ui/core/styles"
 import { Copyright } from "@material-ui/icons"
 
-import { COPYRIGHT_INFO } from "utils/constants"
+import { COMPANY_NAME, COPYRIGHT_INFO } from "utils/constants"
 
 const Footer = styled("div")(({ theme }) => ({
   display: "flex",
@@ -18,12 +18,16 @@ const Footer = styled("div")(({ theme }) => ({
 
 const FooterFC = () => {
   const year = new Date().getFullYear()
-  const footerText = `${year} ${COPYRIGHT_INFO}`
   return (
     <Footer>
-      <Copyright />
+      <Divider/>
+      <Copyright fontSize="small" />
       &nbsp;
-      <Typography variant="caption">{footerText}</Typography>
+      <Typography variant="body1">{year}</Typography>
+      &nbsp;
+      <Typography variant="body1" color="primary">{COMPANY_NAME}</Typography>
+      &nbsp;
+      <Typography variant="body1">{COPYRIGHT_INFO}</Typography>
     </Footer>
   )
 }

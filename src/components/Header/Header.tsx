@@ -94,12 +94,6 @@ const HeaderFC = () => {
           SportSeek
         </Typography>
         <Filler />
-        {/* <IconButton aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={17} color="secondary">
-            <Notifications />
-          </Badge>
-        </IconButton> */}
-        <NotificationComponent />
         <IconButton disabled>
           <Avatar alt={name} src={profileImageUrl} className={classes.orange}>
             {firstLetterOfName}
@@ -117,6 +111,7 @@ const HeaderFC = () => {
             {name}
           </Typography>
         </IconButton>
+        <NotificationComponent />
         <Tooltip title="Log out" aria-label="logout">
           <IconButton
             edge="end"
