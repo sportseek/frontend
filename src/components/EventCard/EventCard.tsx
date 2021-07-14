@@ -61,21 +61,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
   }
 
   return (
-<<<<<<< HEAD
-    <Card
-      className={classes.root}
-      onClick={handleClick}
-      style={{
-        background:
-          "radial-gradient( circle 592px at 48.2% 50%,  rgba(255,255,249,0.6) 0%, rgba(160,199,254,1) 74.6% )",
-        borderStyle: "solid",
-        borderWidth: "0.5px",
-        borderColor: "#D2FDFF",
-      }}
-    >
-=======
     <Card className={classes.root} onClick={handleClick} raised>
->>>>>>> dev
       <CardActionArea>
         <CardMedia
           image={event.eventImageUrl}

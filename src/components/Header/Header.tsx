@@ -23,6 +23,9 @@ import Tooltip from "components/Common/Tooltip"
 import { deepOrange } from "@material-ui/core/colors"
 import NotificationComponent from "components/Notification"
 
+import SignInLogo from "assets/signin_logo_transparent.png"
+import SSLogo from "assets/sslogo2.png"
+
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
@@ -36,6 +39,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
+  },
+  logo: {
+    maxWidth: 160,
   },
 }))
 
@@ -90,9 +96,12 @@ const HeaderFC = () => {
             <Menu />
           </IconButton>
         </Hidden>
-        <Typography variant="h6" noWrap>
+        <Toolbar>
+          <img src={SSLogo} alt="logo" className={classes.logo} />
+        </Toolbar>
+        {/* <Typography variant="h6" noWrap>
           SportSeek
-        </Typography>
+        </Typography> */}
         <Filler />
         {/* <IconButton aria-label="show 17 new notifications" color="inherit">
           <Badge badgeContent={17} color="secondary">

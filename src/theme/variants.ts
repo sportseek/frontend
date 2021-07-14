@@ -53,13 +53,11 @@ const lightVariant: ThemeOptions = {
     },
   },
   body: {
-<<<<<<< HEAD
     //background: "#efeadd ",
-    background: "linear-gradient(to top, #a8edea 0%, #fed6e3 100%)",
-=======
+    //background: "linear-gradient(to top, #a8edea 0%, #fed6e3 100%)",
     // background: "#efeadd ",
-    background: "#F6F6F6",
->>>>>>> dev
+    //background: "#F6F6F6",
+    background: "#d9fffd",
   },
   calendar: {
     interestedEventColor: { main: "#ffc93c", disabled: "#ffefc5" },
