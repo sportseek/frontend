@@ -25,8 +25,8 @@ const lightVariant: ThemeOptions = {
   },
   header: {
     height: 70,
-    background:
-      "linear-gradient(to bottom, #303C6C 0%, #1E2645 50%, #0D111E 100%)",
+    background: "#303C6C"
+      // "linear-gradient(to bottom, #303C6C 0%, #1E2645 50%, #0D111E 100%)",
   },
   sidebar: {
     width: 210,
