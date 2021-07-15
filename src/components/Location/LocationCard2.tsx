@@ -4,14 +4,10 @@ import { Card, CardHeader, CardContent, IconButton } from "@material-ui/core"
 import { EditLocationRounded as Edit } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 
-import { getFormattedAddress, isEmpty } from "utils/stringUtils"
+import { isEmpty } from "utils/stringUtils"
 import { IAddress, ILocation, IUser } from "types"
 import Tooltip from "components/Common/Tooltip"
-import {
-  GoogleMap,
-  LoadScript,
-  Marker as GoogleMapMarker,
-} from "@react-google-maps/api"
+import { GoogleMap, Marker } from "@react-google-maps/api"
 
 import {
   selectLoggedInUser,
@@ -46,10 +42,8 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
   const userPosition = useAppSelector(selectUserLocation)
   const { address: userAddress } = useAppSelector(selectLoggedInUser)
   const dispatch = useAppDispatch()
-  const pinPosition = isEmpty(position) ? userPosition : position
+  const center = isEmpty(position) ? userPosition : position
   const [open, setOpen] = useState(false)
-
-  const API_KEY = process.env.GOOGLE_MAPS_API as string
 
   const updatePos = (location: ILocation, address: IAddress) => {
     dispatch(updateUser({ location, address } as IUser))
@@ -75,21 +69,19 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
         }
       />
       <CardContent>
-        <LoadScript googleMapsApiKey={API_KEY}>
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={pinPosition}
-            zoom={10}
-          >
-            <GoogleMapMarker position={pinPosition} />
-          </GoogleMap>
-        </LoadScript>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={10}
+        >
+          <Marker position={center} />
+        </GoogleMap>
         {open && (
           <EditLocationDialog
             open={open}
             setOpen={setOpen}
             updatePos={updatePos}
-            position={pinPosition}
+            position={center}
             userAddress={userAddress}
           />
         )}

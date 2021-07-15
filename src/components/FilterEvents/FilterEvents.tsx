@@ -25,18 +25,6 @@ import parse from "autosuggest-highlight/parse"
 import throttle from "lodash/throttle"
 import Geocode from "utils/geoCodeUtils"
 
-function loadScript(src: string, position: HTMLElement | null, id: string) {
-  if (!position) {
-    return
-  }
-
-  const script = document.createElement("script")
-  script.setAttribute("async", "")
-  script.setAttribute("id", id)
-  script.src = src
-  position.appendChild(script)
-}
-
 const autocompleteService = { current: null }
 
 interface PlaceType {
@@ -168,19 +156,6 @@ const FilterEvents = () => {
   const [location, setLocation] = React.useState<PlaceType | null>(null)
   const [inputLoc, setInputLoc] = React.useState("")
   const [options, setOptions] = React.useState<PlaceType[]>([])
-  const loaded = React.useRef(false)
-
-  if (typeof window !== "undefined" && !loaded.current) {
-    if (!document.querySelector("#google-maps")) {
-      loadScript(
-        "https://maps.googleapis.com/maps/api/js?key=AIzaSyDF_-gtDuOK1_Y7T9HhOTuLJgOuo1yoM-w&libraries=places",
-        document.querySelector("head"),
-        "google-maps"
-      )
-    }
-
-    loaded.current = true
-  }
 
   const fetch = React.useMemo(
     () =>
