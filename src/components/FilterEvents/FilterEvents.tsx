@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawerPaper: {
       width: theme.filterbar.width,
-      background: theme.filterbar.background,
+      background: theme.palette.secondary.light,
       overflow: "hidden",
       zIndex: 600,
     },
@@ -354,7 +354,7 @@ const FilterEvents = () => {
                 />
               </Grid>
               <Grid item xs={2}>
-                <Search color="secondary" />
+                <Search color="primary" />
               </Grid>
               <Grid item xs={10}>
                 <Autocomplete
@@ -420,7 +420,7 @@ const FilterEvents = () => {
                 />
               </Grid>
               <Grid item xs={2}>
-                <LocationOn color="secondary" />
+                <LocationOn color="primary" />
               </Grid>
             </Grid>
             <Grid container spacing={2} alignItems="flex-end">
@@ -442,7 +442,7 @@ const FilterEvents = () => {
                 </TextField>
               </Grid>
               <Grid item xs={2}>
-                <SportsBasketball color="secondary" />
+                <SportsBasketball color="primary" />
               </Grid>
             </Grid>
             <div className={classes.emptyDiv} />
@@ -488,7 +488,7 @@ const FilterEvents = () => {
                   getAriaValueText={valuetext}
                   id="eventFee"
                   name="eventFee"
-                  color="secondary"
+                  color="primary"
                 />
               </Grid>
             </Grid>
@@ -514,7 +514,7 @@ const FilterEvents = () => {
                 </TextField>
               </Grid>
               <Grid item xs={2}>
-                <Sort color="secondary" />
+                <Sort color="primary" />
               </Grid>
             </Grid>
             <div className={classes.emptyDiv} />

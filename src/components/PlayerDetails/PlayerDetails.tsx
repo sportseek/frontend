@@ -66,7 +66,7 @@ export default function PersonalInfoCard() {
         action={
           <Tooltip title="Edit Details" placement="left">
             <IconButton
-              color="secondary"
+              color="primary"
               aria-label="edit user details"
               onClick={popUpEditCustomerForm}
             >

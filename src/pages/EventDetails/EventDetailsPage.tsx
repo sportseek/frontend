@@ -72,16 +72,11 @@ const EventDetailsPage = (props: EventDetailsProps) => {
               {" "}
               {EVENT_DETAILS_HEADER}{" "}
             </Typography>
-            <Typography variant="subtitle2" color="secondary">
+            <Typography variant="subtitle2" color="primary">
               {title}
             </Typography>
           </Breadcrumbs>
-          <Fab
-            variant="extended"
-            size="small"
-            color="secondary"
-            onClick={goBack}
-          >
+          <Fab variant="extended" size="small" color="primary" onClick={goBack}>
             <ChevronLeft />
             Back
           </Fab>

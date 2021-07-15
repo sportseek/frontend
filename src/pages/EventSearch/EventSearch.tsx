@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useCallback, useEffect, useState } from "react"
 import { makeStyles, createStyles } from "@material-ui/core/styles"
 import { Grid, Grow, Theme } from "@material-ui/core"
@@ -83,7 +84,7 @@ const EventSearch = () => {
             {allEvents.map((item, index) => (
               <Grow
                 in
-                key={item._id}
+                key={`${item._id} ${index}`}
                 style={{ transformOrigin: "0 0 0" }}
                 timeout={1000 + index * 150}
               >
