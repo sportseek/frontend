@@ -31,7 +31,7 @@ const useStyles = makeStyles({
   cardActions: {
     paddingTop: 0,
     paddingRight: 16,
-    paddingBottom: 4,
+    paddingBottom: 16,
     justifyContent: "flex-end",
   },
   card: {
@@ -57,7 +57,7 @@ export default function ArenaDetails() {
   }
 
   return (
-    <Card className={classes.card}>
+    <Card raised className={classes.card}>
       <CardHeader className={classes.cardHeader} title="Personal info" />
       <CardContent className={classes.cardContent}>
         <Grid container spacing={0}>
@@ -88,7 +88,12 @@ export default function ArenaDetails() {
         </Grid>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button onClick={handleClickOpen} size="small">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleClickOpen}
+          size="small"
+        >
           <Typography>Edit details</Typography>
         </Button>
         <UpdateArenaDialog

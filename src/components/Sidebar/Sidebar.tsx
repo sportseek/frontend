@@ -52,12 +52,10 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     whiteSpace: "nowrap",
   },
-  list: {
-    width: theme.sidebar.width,
-  },
   drawerPaper: {
     overflow: "hidden",
-    background: theme.sidebar.background,
+    paddingTop: theme.spacing(2),
+    backgroundImage: "url(https://source.unsplash.com/YGGXciK3oa8/1600x1200)",
   },
   drawerOpen: {
     width: theme.sidebar.width,
@@ -139,7 +137,6 @@ const SideBar = (props: WithWidthProps) => {
         >
           <Toolbar />
           <div
-            className={classes.list}
             role="presentation"
             onClick={toggleDrawerMobile}
             onKeyDown={toggleDrawerMobile}
@@ -185,7 +182,7 @@ const SideBar = (props: WithWidthProps) => {
             <Slider
               variant="contained"
               onClick={toggleDrawer}
-              color="default"
+              color="secondary"
               startIcon={<SliderIcon />}
             >
               {open && <Typography variant="body2">{BUTTON_SLIDER}</Typography>}

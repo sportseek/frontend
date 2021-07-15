@@ -20,7 +20,6 @@ import {
 } from "redux/reducers/user/userSlice"
 import { getUserName } from "utils/stringUtils"
 import Tooltip from "components/Common/Tooltip"
-import { deepOrange } from "@material-ui/core/colors"
 import NotificationComponent from "components/Notification"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -28,8 +27,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: theme.spacing(2),
   },
   orange: {
-    color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500],
+    color: theme.palette.common.white,
+    backgroundColor: theme.palette.secondary.main,
   },
   title: {
     display: "none",

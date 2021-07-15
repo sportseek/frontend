@@ -216,7 +216,7 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
                     vertical: "bottom",
                     horizontal: "right",
                   }}
-                  badgeContent={<EditRounded color="secondary" />}
+                  badgeContent={<EditRounded color="primary" />}
                 >
                   {loading ? (
                     <Avatar
@@ -227,7 +227,7 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
                         height: "150px",
                       }}
                     >
-                      <CircularProgress color="secondary" />
+                      <CircularProgress color="primary" />
                     </Avatar>
                   ) : (
                     <Avatar
@@ -403,7 +403,7 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
       </DialogContent>
       <DialogActions className={classes.actions}>
         <Button
-          color="secondary"
+          color="primary"
           variant="contained"
           disabled={disabled}
           onClick={handleSave}

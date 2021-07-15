@@ -66,7 +66,7 @@ const ArenaEvents = () => {
   }
   return (
     <div>
-      <Card className={classes.card}>
+      <Card raised className={classes.card}>
         <CardHeader className={classes.cardHeader} title="Events" />
         <CardActions className={classes.cardActions}>
           <Button

@@ -13,8 +13,8 @@ const lightVariant: ThemeOptions = {
       contrastText: "#FFF",
     },
     secondary: {
-      main: "#5B9DD2",
-      light: "#abe4eb",
+      main: "#00acc1", // "#9c27b0",
+      light: "#E4F6F8", // "#D4A2DD",
       contrastText: "#FFF",
     },
   },
@@ -25,7 +25,8 @@ const lightVariant: ThemeOptions = {
   },
   header: {
     height: 70,
-    background: "linear-gradient(to bottom, #303C6C 0%, #1E2645 50%, #0D111E 100%)",
+    background:
+      "linear-gradient(to bottom, #303C6C 0%, #1E2645 50%, #0D111E 100%)",
   },
   sidebar: {
     width: 210,
@@ -44,12 +45,12 @@ const lightVariant: ThemeOptions = {
     },
   },
   body: {
-    background: "#F6F6F6",
+    background: "#EEE",
   },
   calendar: {
-    interestedEventColor: { main: "#ffc93c", disabled: "#ffefc5" },
-    registeredEventColor: { main: "#4aa96c", disabled: "#cde9d8" },
-    personalEventColor: { main: "#a7bbc7", disabled: "#d7e0e6" },
+    interestedEventColor: { main: "#ff9800", disabled: "#ffefc5" },
+    registeredEventColor: { main: "#4caf50", disabled: "#cde9d8" },
+    personalEventColor: { main: "#7580AB", disabled: "#d7e0e6" },
   },
   footer: {
     background: "#EBECF3",

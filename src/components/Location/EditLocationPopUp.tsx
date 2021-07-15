@@ -119,7 +119,7 @@ const EditLocation: FC<Props> = (props: Props) => {
         {EDIT_LOCATION_HEADER}
       </DialogTitle>
       <DialogContent>
-        {loading && <LinearProgress color="secondary" />}
+        {loading && <LinearProgress color="primary" />}
         <MapContainer
           className={classes.map}
           center={position}
@@ -139,10 +139,10 @@ const EditLocation: FC<Props> = (props: Props) => {
         </MapContainer>
       </DialogContent>
       <DialogActions className={classes.actions}>
-        <Button onClick={handleSave} color="secondary" variant="contained">
+        <Button onClick={handleSave} color="primary" variant="contained">
           Save
         </Button>
-        <Button onClick={handleClose} variant="contained" color="secondary">
+        <Button onClick={handleClose} variant="contained" color="primary">
           Cancel
         </Button>
       </DialogActions>

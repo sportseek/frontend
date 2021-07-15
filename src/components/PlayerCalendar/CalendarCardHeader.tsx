@@ -17,7 +17,7 @@ const CardHeader = (props: HeaderProps) => {
         (selectable ? (
           <Button
             variant="outlined"
-            color="secondary"
+            color="primary"
             startIcon={<ArrowForwardIos />}
             onClick={closeSchedule}
           >
@@ -26,7 +26,7 @@ const CardHeader = (props: HeaderProps) => {
         ) : (
           <Button
             variant="outlined"
-            color="secondary"
+            color="primary"
             startIcon={<ScheduleOutlined />}
             onClick={openSchedule}
           >

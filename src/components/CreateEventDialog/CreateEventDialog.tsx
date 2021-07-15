@@ -275,7 +275,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
 
               <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 type="button"
                 className={classes.dialogBtn}
                 onClick={handleClose}

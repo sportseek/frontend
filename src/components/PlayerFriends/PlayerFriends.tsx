@@ -114,7 +114,7 @@ const Friends = () => {
           <>
             <Tooltip title="Add" placement="left">
               <IconButton
-                color="secondary"
+                color="primary"
                 aria-label="add friend"
                 onClick={handleClickAdd}
               >
@@ -124,7 +124,7 @@ const Friends = () => {
             <Tooltip title="Remove" placement="bottom">
               <span>
                 <IconButton
-                  color="secondary"
+                  color="primary"
                   aria-label="remove friend"
                   disabled={list.length === 0}
                   onClick={handleClickRemove}

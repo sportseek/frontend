@@ -7,8 +7,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary"
 import AccordionDetails from "@material-ui/core/AccordionDetails"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 
-import { IEvent } from "types"
-import { IArenaOwner } from "types"
+import { IArenaOwner, IEvent } from "types"
 
 type Props = {
   event: IEvent
@@ -30,7 +29,7 @@ const EventAndArenaDesc: React.FC<Props> = ({
 }) => {
   const classes = useStyles()
   return (
-    <Accordion>
+    <Accordion elevation={8}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"

@@ -20,12 +20,14 @@ const FooterFC = () => {
   const year = new Date().getFullYear()
   return (
     <Footer>
-      <Divider/>
+      <Divider />
       <Copyright fontSize="small" />
       &nbsp;
       <Typography variant="body1">{year}</Typography>
       &nbsp;
-      <Typography variant="body1" color="primary">{COMPANY_NAME}</Typography>
+      <Typography variant="body1" color="primary">
+        {COMPANY_NAME}
+      </Typography>
       &nbsp;
       <Typography variant="body1">{COPYRIGHT_INFO}</Typography>
     </Footer>

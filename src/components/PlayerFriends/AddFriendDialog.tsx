@@ -104,6 +104,7 @@ export default function AddFriendDialog(props: Props) {
           style={{ width: 400 }}
           open={open}
           autoHighlight
+          color="primary"
           onOpen={() => {
             setOpen(true)
           }}
@@ -131,12 +132,13 @@ export default function AddFriendDialog(props: Props) {
               {...params}
               label="Search"
               variant="outlined"
+              color="primary"
               InputProps={{
                 ...params.InputProps,
                 endAdornment: (
                   <>
                     {loading ? (
-                      <CircularProgress color="inherit" size={20} />
+                      <CircularProgress color="primary" size={20} />
                     ) : null}
                     {params.InputProps.endAdornment}
                   </>

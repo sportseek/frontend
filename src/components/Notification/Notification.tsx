@@ -17,7 +17,6 @@ import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked"
 import Tooltip from "components/Common/Tooltip"
 
 const useStyles = makeStyles(() => ({
-
   notificationMenu: {
     overflow: "auto",
     maxHeight: "200px",
@@ -79,15 +78,15 @@ const Notification = () => {
   return (
     <div>
       <Tooltip title="Toggle notifications panel">
-      <IconButton
-        aria-label="notifications"
-        color="inherit"
-        onClick={openNotificationMenu}
-      >
-        <Badge badgeContent={unreadNotification} color="error">
-          <NotificationsOutlined />
-        </Badge>
-      </IconButton>
+        <IconButton
+          aria-label="notifications"
+          color="inherit"
+          onClick={openNotificationMenu}
+        >
+          <Badge badgeContent={unreadNotification} color="error">
+            <NotificationsOutlined />
+          </Badge>
+        </IconButton>
       </Tooltip>
       <Menu
         id="simple-menu"
