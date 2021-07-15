@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: -1,
     },
   },
+  avatar: {
+    backgroundColor: theme.palette.primary.main,
+  },
 }))
 
 type Props = {
@@ -41,7 +44,7 @@ type Props = {
 
 const FriendList = (props: Props) => {
   const { list = [] } = props
-
+  const classes = useStyles()
   return (
     <>
       {list.length > 0
@@ -51,9 +54,13 @@ const FriendList = (props: Props) => {
               title={item.name}
               placement="top"
             >
-              <Avatar alt={item.name} src={item.imageURL}>
-                {item.name[0]}
-              </Avatar>
+              {item.imageURL ? (
+                <Avatar alt={item.name} src={item.imageURL} />
+              ) : (
+                <Avatar alt={item.name} className={classes.avatar}>
+                  {item.name[0]}
+                </Avatar>
+              )}
             </Tooltip>
           ))
         : null}

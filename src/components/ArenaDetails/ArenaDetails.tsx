@@ -13,8 +13,10 @@ import {
 
 import { useAppSelector } from "redux/hooks"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
-import { IArenaOwner, IPlayer } from "types"
+import { IAddress, IArenaOwner } from "types"
 import UpdateArenaDialog from "components/UpdateArenaDialog"
+
+import { getFormattedAddress } from "utils/stringUtils"
 
 const Card = styled(MuiCard)(spacing)
 
@@ -44,7 +46,7 @@ export default function ArenaDetails() {
   const classes = useStyles()
   const arena = useAppSelector(selectLoggedInUser) as IArenaOwner
 
-  const { arenaName, email, phone } = arena
+  const { arenaName, email, phone, address = {} as IAddress } = arena
 
   const [open, setOpen] = React.useState(false)
 
@@ -58,7 +60,7 @@ export default function ArenaDetails() {
 
   return (
     <Card raised className={classes.card}>
-      <CardHeader className={classes.cardHeader} title="Personal info" />
+      <CardHeader className={classes.cardHeader} title="Arena info" />
       <CardContent className={classes.cardContent}>
         <Grid container spacing={0}>
           <Grid item xs={6}>
@@ -84,6 +86,12 @@ export default function ArenaDetails() {
             <Typography variant="body2" gutterBottom>
               {phone}
             </Typography>
+            <Typography variant="caption" gutterBottom>
+              Address
+            </Typography>
+            <Typography variant="body2" gutterBottom>
+              {getFormattedAddress(address)}
+            </Typography>
           </Grid>
         </Grid>
       </CardContent>
@@ -99,7 +107,7 @@ export default function ArenaDetails() {
         <UpdateArenaDialog
           open={open}
           onClose={handleClose}
-          isUpdate={true}
+          isUpdate
           arenaDetails={arena}
         />
       </CardActions>

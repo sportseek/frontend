@@ -8,7 +8,7 @@ import {
   readNotification,
   selectUserNotification,
 } from "redux/reducers/user/userSlice"
-import { NotificationsOutlined } from "@material-ui/icons"
+import { Notifications } from "@material-ui/icons"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import Button from "@material-ui/core/Button"
@@ -84,7 +84,7 @@ const Notification = () => {
           onClick={openNotificationMenu}
         >
           <Badge badgeContent={unreadNotification} color="error">
-            <NotificationsOutlined />
+            <Notifications />
           </Badge>
         </IconButton>
       </Tooltip>
