@@ -22,7 +22,7 @@ export interface FrdDetails {
   email: string
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   option: {
     fontSize: 15,
     "& > span": {
@@ -30,7 +30,10 @@ const useStyles = makeStyles({
       fontSize: 18,
     },
   },
-})
+  avatar: {
+    backgroundColor: theme.palette.primary.main,
+  },
+}))
 
 type Props = {
   open: boolean
@@ -104,6 +107,7 @@ export default function AddFriendDialog(props: Props) {
           style={{ width: 400 }}
           open={open}
           autoHighlight
+          color="primary"
           onOpen={() => {
             setOpen(true)
           }}
@@ -118,7 +122,9 @@ export default function AddFriendDialog(props: Props) {
           renderOption={(option) => (
             <>
               <span>
-                <Avatar src={option.imageURL} />
+                <Avatar src={option.imageURL} className={classes.avatar}>
+                  {option.name[0]}
+                </Avatar>
               </span>
               <Typography variant="caption">{option.name}</Typography>
             </>
@@ -131,12 +137,13 @@ export default function AddFriendDialog(props: Props) {
               {...params}
               label="Search"
               variant="outlined"
+              color="primary"
               InputProps={{
                 ...params.InputProps,
                 endAdornment: (
                   <>
                     {loading ? (
-                      <CircularProgress color="inherit" size={20} />
+                      <CircularProgress color="primary" size={20} />
                     ) : null}
                     {params.InputProps.endAdornment}
                   </>

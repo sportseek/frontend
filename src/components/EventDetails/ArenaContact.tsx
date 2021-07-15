@@ -42,15 +42,12 @@ const useStyles = makeStyles({
 const ArenaContact: React.FC<Props> = ({ arena: currentArena }) => {
   const classes = useStyles()
   return (
-    <Card className={classes.card}>
-      <CardHeader
-        className={classes.cardHeader}
-        title="Contact Information"
-      ></CardHeader>
+    <Card raised className={classes.card}>
+      <CardHeader className={classes.cardHeader} title="Contact Information" />
       <CardContent className={classes.cardContent}>
         <Grid container direction="row" alignItems="center">
           <Grid item>
-            <PhoneIcon style={{ marginRight: "10px" }} />
+            <PhoneIcon color="primary" style={{ marginRight: "10px" }} />
           </Grid>
           <Grid item>
             <Typography variant="h6" gutterBottom>
@@ -60,7 +57,7 @@ const ArenaContact: React.FC<Props> = ({ arena: currentArena }) => {
         </Grid>
         <Grid container direction="row" alignItems="center">
           <Grid item>
-            <EmailIcon style={{ marginRight: "10px" }} />
+            <EmailIcon color="primary" style={{ marginRight: "10px" }} />
           </Grid>
           <Grid item>
             <Typography variant="h6" gutterBottom>

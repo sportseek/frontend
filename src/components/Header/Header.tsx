@@ -20,7 +20,6 @@ import {
 } from "redux/reducers/user/userSlice"
 import { getUserName } from "utils/stringUtils"
 import Tooltip from "components/Common/Tooltip"
-import { deepOrange } from "@material-ui/core/colors"
 import NotificationComponent from "components/Notification"
 
 import SignInLogo from "assets/signin_logo_transparent.png"
@@ -30,9 +29,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  orange: {
-    color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500],
+  avatar: {
+    color: theme.palette.common.white,
+    backgroundColor: theme.palette.secondary.main,
   },
   title: {
     display: "none",
@@ -41,7 +40,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   logo: {
-    maxWidth: 160,
+    height: 60,
+    width: 204,
+    //maxWidth: 160,
   },
 }))
 
@@ -103,14 +104,8 @@ const HeaderFC = () => {
           SportSeek
         </Typography> */}
         <Filler />
-        {/* <IconButton aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={17} color="secondary">
-            <Notifications />
-          </Badge>
-        </IconButton> */}
-        <NotificationComponent />
         <IconButton disabled>
-          <Avatar alt={name} src={profileImageUrl} className={classes.orange}>
+          <Avatar alt={name} src={profileImageUrl} className={classes.avatar}>
             {firstLetterOfName}
           </Avatar>
         </IconButton>
@@ -126,6 +121,7 @@ const HeaderFC = () => {
             {name}
           </Typography>
         </IconButton>
+        <NotificationComponent />
         <Tooltip title="Log out" aria-label="logout">
           <IconButton
             edge="end"

@@ -5,22 +5,24 @@ import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
 import CardActionArea from "@material-ui/core/CardActionArea"
 import CardMedia from "@material-ui/core/CardMedia"
-import { IEvent } from "types"
+import { IEvent, ILocation } from "types"
 import moment from "moment"
 import { People, Star, Euro } from "@material-ui/icons"
-import { Tooltip } from "@material-ui/core"
-import Geocode from "react-geocode"
+import Tooltip from "components/Common/Tooltip"
 import Grid from "@material-ui/core/Grid"
+import { getFormattedAddress } from "utils/stringUtils"
+import { generateAddressFromLocation } from "utils/geoCodeUtils"
 
-Geocode.setApiKey("AIzaSyC3piWVpJ50bb8sVq-vGZnf6nbJMgyNtSE")
-Geocode.setLanguage("en")
-
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
+    background: theme.palette.common.white,
   },
   media: {
     height: 140,
+  },
+  content: {
+    background: theme.palette.common.white,
   },
   customLink: {
     textDecoration: "none",
@@ -31,7 +33,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     flexWrap: "wrap",
   },
-})
+}))
 
 type Props = {
   event: IEvent
@@ -41,24 +43,21 @@ const EventCard: React.FC<Props> = (props: Props) => {
   const classes = useStyles()
   const { event, openDetails } = props
   const handleClick = () => openDetails(event._id)
-  const [address, setAddress] = useState("")
+  const [address, setAddress] = useState<String>("")
 
   useEffect(() => {
-    addressGen(String(event.location.lat), String(event.location.lng))
-  }, [])
-
-  function addressGen(lat: string, lng: string) {
-    var address
-    Geocode.fromLatLng(lat, lng).then(
-      (response) => {
-        address = response.results[0].formatted_address
-        setAddress(address)
-      },
-      (error) => {
-        console.error("There was error trying to connect to GeoCode")
-      }
-    )
-  }
+    const getAddress = async (location: ILocation) => {
+      const add = await generateAddressFromLocation(location)
+      setAddress(add)
+    }
+    let add = ""
+    if (event.address) {
+      add = getFormattedAddress(event.address)
+      setAddress(add)
+    } else {
+      getAddress(event.location)
+    }
+  }, [event.address, event.location])
 
   return (
     <Card className={classes.root} onClick={handleClick} raised>
@@ -68,7 +67,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
           className={classes.media}
           title="Event 1"
         />
-        <CardContent>
+        <CardContent className={classes.content}>
           <Grid
             container
             direction="row"
@@ -108,7 +107,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
             <Grid item xs={3}>
               <div className={classes.iconStyle}>
                 <Tooltip title="Entry Fee">
-                  <Euro style={{ marginRight: "4px" }} />
+                  <Euro color="primary" style={{ marginRight: "4px" }} />
                 </Tooltip>
                 <Typography variant="body2" color="textSecondary" component="p">
                   <b>{event.entryFee}</b>
@@ -118,7 +117,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
             <Grid item xs={3}>
               <div className={classes.iconStyle}>
                 <Tooltip title="Participating/Maximum Players">
-                  <People style={{ marginRight: "4px" }} />
+                  <People color="primary" style={{ marginRight: "4px" }} />
                 </Tooltip>
                 <Typography variant="body2" color="textSecondary" component="p">
                   <b>
@@ -130,7 +129,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
             <Grid item xs={3}>
               <div className={classes.iconStyle}>
                 <Tooltip title="Interested">
-                  <Star style={{ marginRight: "4px" }} />
+                  <Star color="primary" style={{ marginRight: "4px" }} />
                 </Tooltip>
                 <Typography variant="body2" color="textSecondary" component="p">
                   <b>{event.interestedPlayers.length}</b>

@@ -83,7 +83,7 @@ const UpdateArenaDialog = (props: UpdateArenaDialogProps) => {
       setEmail(arenaDetails.email)
       setPhone(arenaDetails.phone)
     }
-  }, [user])
+  }, [arenaDetails, isUpdate, user])
 
   const handleClose = () => {
     onClose()
@@ -183,7 +183,7 @@ const UpdateArenaDialog = (props: UpdateArenaDialogProps) => {
 
               <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 type="button"
                 className={classes.dialogBtn}
                 onClick={handleClose}
