@@ -221,6 +221,8 @@ const FilterEvents = () => {
 
     if (inputLoc === "") {
       setOptions(location ? [location] : [])
+      setLat(0)
+      setLng(0)
       return undefined
     }
 
@@ -370,7 +372,7 @@ const FilterEvents = () => {
                     return (
                       <Grid container alignItems="center">
                         <Grid item>
-                          <LocationOn />
+                          <LocationOn color="primary" />
                         </Grid>
                         <Grid item xs>
                           {parts.map((part: any, index: number) => (
