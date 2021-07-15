@@ -3,18 +3,15 @@ import { makeStyles } from "@material-ui/core/styles"
 import { Card, CardHeader, CardContent, IconButton } from "@material-ui/core"
 import { EditLocationRounded as Edit } from "@material-ui/icons"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  useMap,
-  Popup,
-  Tooltip as MapTooltip,
-} from "react-leaflet"
 
 import { getFormattedAddress, isEmpty } from "utils/stringUtils"
 import { IAddress, ILocation, IUser } from "types"
 import Tooltip from "components/Common/Tooltip"
+import {
+  GoogleMap,
+  LoadScript,
+  Marker as GoogleMapMarker,
+} from "@react-google-maps/api"
 
 import {
   selectLoggedInUser,
@@ -24,6 +21,11 @@ import {
 
 import EditLocationDialog from "./EditLocationPopUp"
 
+const containerStyle = {
+  width: "100%",
+  height: "360px",
+}
+
 const useStyles = makeStyles({
   map: {
     height: 360,
@@ -32,23 +34,6 @@ const useStyles = makeStyles({
     paddingBottom: 0,
   },
 })
-
-type MarkerProps = {
-  position: ILocation
-  address: IAddress
-}
-
-function LocationMarker(props: MarkerProps) {
-  const { position, address } = props
-  const map = useMap()
-  map.flyTo(position, map.getZoom())
-
-  return isEmpty(position) ? null : (
-    <Marker position={position}>
-      <MapTooltip>{getFormattedAddress(address)}</MapTooltip>
-    </Marker>
-  )
-}
 
 type LocationCardProps = {
   editable?: boolean
@@ -63,6 +48,8 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
   const dispatch = useAppDispatch()
   const pinPosition = isEmpty(position) ? userPosition : position
   const [open, setOpen] = useState(false)
+
+  const API_KEY = process.env.GOOGLE_MAPS_API as string
 
   const updatePos = (location: ILocation, address: IAddress) => {
     dispatch(updateUser({ location, address } as IUser))
@@ -88,18 +75,15 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
         }
       />
       <CardContent>
-        <MapContainer
-          className={classes.map}
-          center={pinPosition}
-          zoom={13}
-          scrollWheelZoom={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <LocationMarker position={pinPosition} address={userAddress} />
-        </MapContainer>
+        <LoadScript googleMapsApiKey={API_KEY}>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={pinPosition}
+            zoom={10}
+          >
+            <GoogleMapMarker position={pinPosition} />
+          </GoogleMap>
+        </LoadScript>
         {open && (
           <EditLocationDialog
             open={open}

@@ -15,6 +15,7 @@ import {
   DialogTitle,
   Slide,
   LinearProgress,
+  DialogContentText,
 } from "@material-ui/core"
 import { MapContainer, TileLayer } from "react-leaflet"
 import { Marker as LeafletMarker } from "leaflet"
@@ -27,12 +28,13 @@ import {
   selectUserErrors,
 } from "redux/reducers/user/userSlice"
 import { EDIT_LOCATION_HEADER } from "utils/constants"
-import { ILocation } from "types"
+import { IAddress, ILocation } from "types"
 import Errorbar from "components/Common/Errorbar"
-
+import { getFormattedAddress } from "utils/stringUtils"
+import { getAddress } from "utils/geoCodeUtils"
 import DraggableMarker from "./DraggableMarker"
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   map: {
     height: 500,
   },
@@ -42,6 +44,16 @@ const useStyles = makeStyles(() => ({
     paddingLeft: 24,
     paddingRight: 24,
     paddingBottom: 16,
+  },
+  title: {
+    paddingBottom: 0,
+  },
+  contenttext: {
+    paddingTop: 0,
+    display: "flex",
+    flex: 1,
+    justifyContent: "flex-end",
+    color: theme.palette.primary.main,
   },
 }))
 
@@ -54,8 +66,9 @@ const Transition = React.forwardRef(
 type Props = {
   open: boolean
   position: ILocation
-  updatePos: (pos: ILocation) => void
+  updatePos: (pos: ILocation, add: IAddress) => void
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  userAddress: IAddress
 }
 
 const EditLocation: FC<Props> = (props: Props) => {
@@ -64,9 +77,10 @@ const EditLocation: FC<Props> = (props: Props) => {
   const hasErrors = useAppSelector(selectHasUserErrors)
   const loading = useAppSelector(selectLoadingUserData)
 
-  const { updatePos, open, setOpen, position } = props
+  const { updatePos, open, setOpen, position, userAddress } = props
 
   const [pinPos, setPinPos] = useState<ILocation>(position)
+  const [address, setAddress] = useState<IAddress>(userAddress)
 
   const globalErrors = useAppSelector(selectUserErrors)
 
@@ -81,9 +95,19 @@ const EditLocation: FC<Props> = (props: Props) => {
 
   const handleSave = () => {
     dispatch(prepareForValidation())
-    updatePos(pinPos as ILocation)
+    updatePos(pinPos as ILocation, address)
     if (!hasErrors) handleClose()
   }
+
+  useEffect(() => {
+    const fetchAddress = async (location: ILocation) => {
+      const add = await getAddress(location)
+      setAddress(add)
+    }
+
+    if (JSON.stringify(pinPos) !== JSON.stringify(position))
+      fetchAddress(pinPos)
+  }, [pinPos, position])
 
   useEffect(() => {
     if (!hasErrors && !loading) {
@@ -115,10 +139,16 @@ const EditLocation: FC<Props> = (props: Props) => {
       aria-labelledby="edit-location-dialog-slide-title"
       aria-describedby="edit-location-slide-description"
     >
-      <DialogTitle id="edit-location-dialog-slide-title">
+      <DialogTitle
+        className={classes.title}
+        id="edit-location-dialog-slide-title"
+      >
         {EDIT_LOCATION_HEADER}
       </DialogTitle>
       <DialogContent>
+        <DialogContentText className={classes.contenttext}>
+          {getFormattedAddress(address)}
+        </DialogContentText>
         {loading && <LinearProgress color="primary" />}
         <MapContainer
           className={classes.map}

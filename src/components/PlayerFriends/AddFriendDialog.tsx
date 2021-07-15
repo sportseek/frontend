@@ -22,7 +22,7 @@ export interface FrdDetails {
   email: string
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   option: {
     fontSize: 15,
     "& > span": {
@@ -30,7 +30,10 @@ const useStyles = makeStyles({
       fontSize: 18,
     },
   },
-})
+  avatar: {
+    backgroundColor: theme.palette.primary.main,
+  },
+}))
 
 type Props = {
   open: boolean
@@ -119,7 +122,9 @@ export default function AddFriendDialog(props: Props) {
           renderOption={(option) => (
             <>
               <span>
-                <Avatar src={option.imageURL} />
+                <Avatar src={option.imageURL} className={classes.avatar}>
+                  {option.name[0]}
+                </Avatar>
               </span>
               <Typography variant="caption">{option.name}</Typography>
             </>

@@ -5,15 +5,13 @@ import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
 import CardActionArea from "@material-ui/core/CardActionArea"
 import CardMedia from "@material-ui/core/CardMedia"
-import { IEvent } from "types"
+import { IEvent, ILocation } from "types"
 import moment from "moment"
 import { People, Star, Euro } from "@material-ui/icons"
 import Tooltip from "components/Common/Tooltip"
-import Geocode from "react-geocode"
 import Grid from "@material-ui/core/Grid"
-
-Geocode.setApiKey("AIzaSyC3piWVpJ50bb8sVq-vGZnf6nbJMgyNtSE")
-Geocode.setLanguage("en")
+import { getFormattedAddress } from "utils/stringUtils"
+import { generateAddressFromLocation } from "utils/geoCodeUtils"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,24 +43,21 @@ const EventCard: React.FC<Props> = (props: Props) => {
   const classes = useStyles()
   const { event, openDetails } = props
   const handleClick = () => openDetails(event._id)
-  const [address, setAddress] = useState("")
+  const [address, setAddress] = useState<String>("")
 
   useEffect(() => {
-    addressGen(String(event.location.lat), String(event.location.lng))
-  }, [event.location.lat, event.location.lng])
-
-  function addressGen(lat: string, lng: string) {
-    var address
-    Geocode.fromLatLng(lat, lng).then(
-      (response) => {
-        address = response.results[0].formatted_address
-        setAddress(address)
-      },
-      (error) => {
-        console.error("There was error trying to connect to GeoCode")
-      }
-    )
-  }
+    const getAddress = async (location: ILocation) => {
+      const add = await generateAddressFromLocation(location)
+      setAddress(add)
+    }
+    let add = ""
+    if (event.address) {
+      add = getFormattedAddress(event.address)
+      setAddress(add)
+    } else {
+      getAddress(event.location)
+    }
+  }, [event.address, event.location])
 
   return (
     <Card className={classes.root} onClick={handleClick} raised>

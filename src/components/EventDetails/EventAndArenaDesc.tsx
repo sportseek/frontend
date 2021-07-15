@@ -7,6 +7,8 @@ import AccordionSummary from "@material-ui/core/AccordionSummary"
 import AccordionDetails from "@material-ui/core/AccordionDetails"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 
+import { getFormattedAddress } from "utils/stringUtils"
+
 import { IArenaOwner, IEvent } from "types"
 
 type Props = {
@@ -44,7 +46,7 @@ const EventAndArenaDesc: React.FC<Props> = ({
           <b>Hosted By:</b> {currentArena.arenaName}
         </Typography>
         <Typography variant="h6" display="block" align="left">
-          <b>Address:</b> {currentArena.address}
+          <b>Address:</b> {getFormattedAddress(currentArena.address)}
         </Typography>
       </AccordionDetails>
       <AccordionDetails>
