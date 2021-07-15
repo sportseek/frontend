@@ -270,6 +270,15 @@ const FilterEvents = () => {
     )
   }
 
+  const handleClear = () => {
+    dispatch(
+      getAllEvents({
+        sortBy: "start",
+        sortValue: -1,
+      })
+    )
+  }
+
   const handleInputChange = (e: any) => {
     const { name, value } = e.target
     if (name === "eventTitle") setEventTitle(value)
@@ -501,7 +510,7 @@ const FilterEvents = () => {
               >
                 Search
               </Button>
-              <Button variant="contained" color="primary">
+              <Button variant="contained" color="primary" onClick={handleClear}>
                 Clear
               </Button>
             </div>
