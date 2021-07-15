@@ -23,24 +23,10 @@ import moment from "moment"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import parse from "autosuggest-highlight/parse"
 import throttle from "lodash/throttle"
-import Geocode from "react-geocode"
-
-Geocode.setApiKey("AIzaSyC3piWVpJ50bb8sVq-vGZnf6nbJMgyNtSE")
-Geocode.setLanguage("en")
-
-function loadScript(src: string, position: HTMLElement | null, id: string) {
-  if (!position) {
-    return
-  }
-
-  const script = document.createElement("script")
-  script.setAttribute("async", "")
-  script.setAttribute("id", id)
-  script.src = src
-  position.appendChild(script)
-}
+import Geocode from "utils/geoCodeUtils"
 
 const autocompleteService = { current: null }
+
 interface PlaceType {
   description: string
   structured_formatting: {
@@ -153,10 +139,10 @@ const FilterEvents = () => {
   function latlngGen(place: string) {
     Geocode.fromAddress(place).then(
       (response) => {
-        const { lat, lng } = response.results[0].geometry.location
-        setLat(lat)
-        setLng(lng)
-        console.log(lat, lng)
+        const { lat: resLat, lng: resLng } =
+          response.results[0].geometry.location
+        setLat(resLat)
+        setLng(resLng)
       },
       (error) => {
         console.error(error)
@@ -170,19 +156,6 @@ const FilterEvents = () => {
   const [location, setLocation] = React.useState<PlaceType | null>(null)
   const [inputLoc, setInputLoc] = React.useState("")
   const [options, setOptions] = React.useState<PlaceType[]>([])
-  const loaded = React.useRef(false)
-
-  if (typeof window !== "undefined" && !loaded.current) {
-    if (!document.querySelector("#google-maps")) {
-      loadScript(
-        "https://maps.googleapis.com/maps/api/js?key=AIzaSyDF_-gtDuOK1_Y7T9HhOTuLJgOuo1yoM-w&libraries=places",
-        document.querySelector("head"),
-        "google-maps"
-      )
-    }
-
-    loaded.current = true
-  }
 
   const fetch = React.useMemo(
     () =>
@@ -204,8 +177,8 @@ const FilterEvents = () => {
   const minPrice = useAppSelector(selectEventMinPrice)
   const maxPrice = useAppSelector(selectEventMaxPrice)
 
-  let minDate = useAppSelector(selectEventMinDate)
-  let maxDate = useAppSelector(selectEventMaxDate)
+  const minDate = useAppSelector(selectEventMinDate)
+  const maxDate = useAppSelector(selectEventMaxDate)
 
   const [eventTitle, setEventTitle] = useState("")
   const [sportsType, setSportsType] = useState("all")
@@ -283,14 +256,14 @@ const FilterEvents = () => {
   const handleSearch = () => {
     dispatch(
       getAllEvents({
-        eventTitle: eventTitle,
+        eventTitle,
         sportType: sportsType === "all" ? "" : sportsType,
         eventStartTime: new Date(eventStartTime).toISOString(),
         eventEndTime: new Date(eventEndTime).toISOString(),
-        eventFee: eventFee,
+        eventFee,
         location: lat === 0 ? "" : { lat, lng },
-        sortBy: sortBy,
-        sortValue: sortValue,
+        sortBy,
+        sortValue,
       })
     )
   }
@@ -371,9 +344,7 @@ const FilterEvents = () => {
                   onChange={(event: any, newValue: PlaceType | null) => {
                     setOptions(newValue ? [newValue, ...options] : options)
                     setLocation(newValue)
-                    newValue
-                      ? latlngGen(newValue.description)
-                      : console.log("NULL")
+                    if (newValue) latlngGen(newValue.description)
                   }}
                   onInputChange={(event, newInputValue) => {
                     setInputLoc(newInputValue)
@@ -402,7 +373,7 @@ const FilterEvents = () => {
                           <LocationOn />
                         </Grid>
                         <Grid item xs>
-                          {parts.map((part: any, index: any) => (
+                          {parts.map((part: any, index: number) => (
                             <span
                               key={index}
                               style={{ fontWeight: part.highlight ? 700 : 400 }}

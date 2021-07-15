@@ -13,7 +13,7 @@ import { EditRounded } from "@material-ui/icons"
 import { useAppSelector } from "redux/hooks"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import { InitialAddress, IPlayer } from "types"
-import { getUserAddress } from "utils/stringUtils"
+import { getFormattedAddress } from "utils/stringUtils"
 import Tooltip from "components/Common/Tooltip"
 import EditCustomerForm from "./EditDetails"
 
@@ -114,7 +114,7 @@ export default function PersonalInfoCard() {
               Address
             </Typography>
             <Typography variant="body2" gutterBottom>
-              {getUserAddress(address)}
+              {getFormattedAddress(address)}
             </Typography>
           </Grid>
         </Grid>

@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  orange: {
+  avatar: {
     color: theme.palette.common.white,
     backgroundColor: theme.palette.secondary.main,
   },
@@ -94,7 +94,7 @@ const HeaderFC = () => {
         </Typography>
         <Filler />
         <IconButton disabled>
-          <Avatar alt={name} src={profileImageUrl} className={classes.orange}>
+          <Avatar alt={name} src={profileImageUrl} className={classes.avatar}>
             {firstLetterOfName}
           </Avatar>
         </IconButton>
