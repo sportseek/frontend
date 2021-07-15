@@ -380,9 +380,6 @@ const FilterEvents = () => {
 
                     return (
                       <Grid container alignItems="center">
-                        <Grid item>
-                          <LocationOn color="primary" />
-                        </Grid>
                         <Grid item xs>
                           {parts.map((part: any, index: number) => (
                             <span
@@ -395,6 +392,9 @@ const FilterEvents = () => {
                           <Typography variant="body2" color="textSecondary">
                             {option.structured_formatting.secondary_text}
                           </Typography>
+                        </Grid>
+                        <Grid item>
+                          <LocationOn color="primary" />
                         </Grid>
                       </Grid>
                     )
