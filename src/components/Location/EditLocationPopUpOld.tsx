@@ -1,6 +1,12 @@
-import React, { FC, useCallback, useEffect, useState } from "react"
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { makeStyles } from "@material-ui/core/styles"
-import { GoogleMap, Marker } from "@react-google-maps/api"
 import {
   Button,
   Dialog,
@@ -11,6 +17,8 @@ import {
   LinearProgress,
   DialogContentText,
 } from "@material-ui/core"
+import { MapContainer, TileLayer } from "react-leaflet"
+import { Marker as LeafletMarker } from "leaflet"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { TransitionProps } from "@material-ui/core/transitions"
 import {
@@ -24,11 +32,7 @@ import { IAddress, ILocation } from "types"
 import Errorbar from "components/Common/Errorbar"
 import { getFormattedAddress } from "utils/stringUtils"
 import { getAddress } from "utils/geoCodeUtils"
-
-const containerStyle = {
-  width: "100%",
-  height: "500px",
-}
+import DraggableMarker from "./DraggableMarker"
 
 const useStyles = makeStyles((theme) => ({
   map: {
@@ -82,6 +86,8 @@ const EditLocation: FC<Props> = (props: Props) => {
 
   const showErrorBar = globalErrors instanceof Array && globalErrors.length > 0
 
+  const markerRef = useRef<LeafletMarker>(null)
+
   const handleClose = useCallback(() => {
     dispatch(prepareForValidation())
     setOpen(false)
@@ -109,11 +115,18 @@ const EditLocation: FC<Props> = (props: Props) => {
     }
   }, [handleClose, hasErrors, loading])
 
-  const onDragEnd = (e: { latLng: { lat: () => any; lng: () => any } }) => {
-    const lat = e.latLng.lat()
-    const lng = e.latLng.lng()
-    setPinPos({ lat, lng })
-  }
+  const eventHandlers = useMemo(
+    () => ({
+      dragend() {
+        const marker = markerRef.current
+        if (marker != null) {
+          const newPinPos = marker.getLatLng()
+          setPinPos(newPinPos)
+        }
+      },
+    }),
+    []
+  )
 
   return (
     <Dialog
@@ -137,13 +150,23 @@ const EditLocation: FC<Props> = (props: Props) => {
           {getFormattedAddress(address)}
         </DialogContentText>
         {loading && <LinearProgress color="primary" />}
-        <GoogleMap
-          mapContainerStyle={containerStyle}
+        <MapContainer
+          className={classes.map}
           center={position}
-          zoom={10}
+          zoom={13}
+          scrollWheelZoom={false}
         >
-          <Marker position={position} draggable onDragEnd={onDragEnd} />
-        </GoogleMap>
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+
+          <DraggableMarker
+            eventHandlers={eventHandlers}
+            position={position}
+            markerRef={markerRef}
+          />
+        </MapContainer>
       </DialogContent>
       <DialogActions className={classes.actions}>
         <Button onClick={handleSave} color="primary" variant="contained">
