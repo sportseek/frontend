@@ -221,6 +221,8 @@ const FilterEvents = () => {
 
     if (inputLoc === "") {
       setOptions(location ? [location] : [])
+      setLat(0)
+      setLng(0)
       return undefined
     }
 
@@ -264,6 +266,15 @@ const FilterEvents = () => {
         location: lat === 0 ? "" : { lat, lng },
         sortBy,
         sortValue,
+      })
+    )
+  }
+
+  const handleClear = () => {
+    dispatch(
+      getAllEvents({
+        sortBy: "start",
+        sortValue: -1,
       })
     )
   }
@@ -369,9 +380,6 @@ const FilterEvents = () => {
 
                     return (
                       <Grid container alignItems="center">
-                        <Grid item>
-                          <LocationOn />
-                        </Grid>
                         <Grid item xs>
                           {parts.map((part: any, index: number) => (
                             <span
@@ -384,6 +392,9 @@ const FilterEvents = () => {
                           <Typography variant="body2" color="textSecondary">
                             {option.structured_formatting.secondary_text}
                           </Typography>
+                        </Grid>
+                        <Grid item>
+                          <LocationOn color="primary" />
                         </Grid>
                       </Grid>
                     )
@@ -499,7 +510,7 @@ const FilterEvents = () => {
               >
                 Search
               </Button>
-              <Button variant="contained" color="primary">
+              <Button variant="contained" color="primary" onClick={handleClear}>
                 Clear
               </Button>
             </div>
