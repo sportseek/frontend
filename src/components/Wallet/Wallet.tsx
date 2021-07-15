@@ -34,7 +34,7 @@ const Wallet = () => {
         <Typography
           align="center"
           variant="h3"
-          color="secondary"
+          color="primary"
           className={classes.cardValue}
         >
           {`${wallet} ${euro}`}

@@ -52,7 +52,7 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
   }
 
   return (
-    <Card raised={editable}>
+    <Card raised>
       <CardHeader
         className={classes.cardHeader}
         title="Location"
@@ -60,7 +60,7 @@ const LocationCard: FC<LocationCardProps> = (props: LocationCardProps) => {
           editable && (
             <Tooltip title="Edit location" placement="left">
               <IconButton
-                color="secondary"
+                color="primary"
                 aria-label="edit location"
                 onClick={() => setOpen(true)}
               >

@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   avatarCircle: {
     margin: theme.spacing(1),
@@ -127,7 +127,7 @@ export default function SignInSide() {
 
           {authStatus === AuthStatus.PROCESSING ? (
             <Avatar className={classes.avatarCircle}>
-              <CircularProgress color="secondary" />
+              <CircularProgress color="primary" />
             </Avatar>
           ) : (
             <Avatar className={classes.avatar}>
@@ -186,7 +186,7 @@ export default function SignInSide() {
                 <Link
                   href="/signup"
                   variant="body2"
-                  color="secondary"
+                  color="primary"
                   underline="always"
                 >
                   Sign Up

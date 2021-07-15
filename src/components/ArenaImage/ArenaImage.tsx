@@ -80,7 +80,7 @@ const ArenaImage = () => {
 
   return (
     <div>
-      <Card className={classes.card}>
+      <Card raised className={classes.card}>
         <div className={classes.imageWrapper}>
           <img
             src={imageUrl}
@@ -94,7 +94,7 @@ const ArenaImage = () => {
             hidden={hidden}
             onChange={handleImageChange}
           />
-          <IconButton onClick={handleEditPicture}>
+          <IconButton color="primary" onClick={handleEditPicture}>
             <Edit />
           </IconButton>
         </div>

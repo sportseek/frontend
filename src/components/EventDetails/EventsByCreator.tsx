@@ -1,16 +1,8 @@
-import React, { useCallback, useState, useEffect } from "react"
-
+import React, { useCallback, useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { updateRegistered } from "redux/reducers/event/eventSlice"
-
-import { Button, makeStyles, Typography } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
-
-import Tooltip from "components/Common/Tooltip"
 import EventCard from "components/EventCard"
-
 import { IEvent } from "types"
-
 import {
   fetchAllEventsByCreator,
   selectAllEventsByCreator,
@@ -32,7 +24,7 @@ const EventsByCreator: React.FC<Props> = ({ event: currentEvent }) => {
 
   const gotoEventDetails = useCallback(
     (id: string) => {
-      //setTabIndex(1)
+      // setTabIndex(1)
       dispatch(setCurEventId(id))
     },
     [dispatch]

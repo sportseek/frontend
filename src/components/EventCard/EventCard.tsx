@@ -8,19 +8,23 @@ import CardMedia from "@material-ui/core/CardMedia"
 import { IEvent } from "types"
 import moment from "moment"
 import { People, Star, Euro } from "@material-ui/icons"
-import { Tooltip } from "@material-ui/core"
+import Tooltip from "components/Common/Tooltip"
 import Geocode from "react-geocode"
 import Grid from "@material-ui/core/Grid"
 
 Geocode.setApiKey("AIzaSyC3piWVpJ50bb8sVq-vGZnf6nbJMgyNtSE")
 Geocode.setLanguage("en")
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
+    background: theme.palette.common.white,
   },
   media: {
     height: 140,
+  },
+  content: {
+    background: theme.palette.common.white,
   },
   customLink: {
     textDecoration: "none",
@@ -31,7 +35,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     flexWrap: "wrap",
   },
-})
+}))
 
 type Props = {
   event: IEvent
@@ -45,7 +49,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     addressGen(String(event.location.lat), String(event.location.lng))
-  }, [])
+  }, [event.location.lat, event.location.lng])
 
   function addressGen(lat: string, lng: string) {
     var address
@@ -68,7 +72,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
           className={classes.media}
           title="Event 1"
         />
-        <CardContent>
+        <CardContent className={classes.content}>
           <Grid
             container
             direction="row"
@@ -108,7 +112,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
             <Grid item xs={3}>
               <div className={classes.iconStyle}>
                 <Tooltip title="Entry Fee">
-                  <Euro style={{ marginRight: "4px" }} />
+                  <Euro color="primary" style={{ marginRight: "4px" }} />
                 </Tooltip>
                 <Typography variant="body2" color="textSecondary" component="p">
                   <b>{event.entryFee}</b>
@@ -118,7 +122,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
             <Grid item xs={3}>
               <div className={classes.iconStyle}>
                 <Tooltip title="Participating/Maximum Players">
-                  <People style={{ marginRight: "4px" }} />
+                  <People color="primary" style={{ marginRight: "4px" }} />
                 </Tooltip>
                 <Typography variant="body2" color="textSecondary" component="p">
                   <b>
@@ -130,7 +134,7 @@ const EventCard: React.FC<Props> = (props: Props) => {
             <Grid item xs={3}>
               <div className={classes.iconStyle}>
                 <Tooltip title="Interested">
-                  <Star style={{ marginRight: "4px" }} />
+                  <Star color="primary" style={{ marginRight: "4px" }} />
                 </Tooltip>
                 <Typography variant="body2" color="textSecondary" component="p">
                   <b>{event.interestedPlayers.length}</b>

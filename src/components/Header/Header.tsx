@@ -20,7 +20,6 @@ import {
 } from "redux/reducers/user/userSlice"
 import { getUserName } from "utils/stringUtils"
 import Tooltip from "components/Common/Tooltip"
-import { deepOrange } from "@material-ui/core/colors"
 import NotificationComponent from "components/Notification"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -28,8 +27,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: theme.spacing(2),
   },
   orange: {
-    color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500],
+    color: theme.palette.common.white,
+    backgroundColor: theme.palette.secondary.main,
   },
   title: {
     display: "none",
@@ -94,12 +93,6 @@ const HeaderFC = () => {
           SportSeek
         </Typography>
         <Filler />
-        {/* <IconButton aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={17} color="secondary">
-            <Notifications />
-          </Badge>
-        </IconButton> */}
-        <NotificationComponent />
         <IconButton disabled>
           <Avatar alt={name} src={profileImageUrl} className={classes.orange}>
             {firstLetterOfName}
@@ -117,6 +110,7 @@ const HeaderFC = () => {
             {name}
           </Typography>
         </IconButton>
+        <NotificationComponent />
         <Tooltip title="Log out" aria-label="logout">
           <IconButton
             edge="end"

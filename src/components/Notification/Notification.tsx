@@ -1,4 +1,4 @@
-import { makeStyles, Theme } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core"
 import Badge from "@material-ui/core/Badge"
 import IconButton from "@material-ui/core/IconButton"
 import React, { useEffect, useState } from "react"
@@ -8,18 +8,15 @@ import {
   readNotification,
   selectUserNotification,
 } from "redux/reducers/user/userSlice"
-import { Notifications } from "@material-ui/icons"
+import { NotificationsOutlined } from "@material-ui/icons"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import Button from "@material-ui/core/Button"
 import { Link } from "react-router-dom"
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked"
+import Tooltip from "components/Common/Tooltip"
 
-const useStyles = makeStyles((theme: Theme) => ({
-  notificationWrapper: {
-    marginRight: "16px",
-  },
-
+const useStyles = makeStyles(() => ({
   notificationMenu: {
     overflow: "auto",
     maxHeight: "200px",
@@ -51,7 +48,7 @@ const Notification = () => {
 
   useEffect(() => {
     dispatch(getNotifications(pageNumber))
-  }, [])
+  }, [dispatch, pageNumber])
 
   useEffect(() => {
     const unreadCount = userNotifications.filter(
@@ -79,27 +76,25 @@ const Notification = () => {
   }
 
   return (
-    <div className={classes.notificationWrapper}>
-      <IconButton
-        aria-label="show 17 new notifications"
-        color="inherit"
-        onClick={openNotificationMenu}
-      >
-        <Badge badgeContent={unreadNotification} color="secondary">
-          <Notifications />
-        </Badge>
-      </IconButton>
-      {/* <MyButton tip="notifications" onClick={openNotificationMenu}>
-        <Badge badgeContent={user.unreadNotifications} color="secondary">
-          <NotificationsIcon />
-        </Badge>
-      </MyButton> */}
+    <div>
+      <Tooltip title="Toggle notifications panel">
+        <IconButton
+          aria-label="notifications"
+          color="inherit"
+          onClick={openNotificationMenu}
+        >
+          <Badge badgeContent={unreadNotification} color="error">
+            <NotificationsOutlined />
+          </Badge>
+        </IconButton>
+      </Tooltip>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
         onClose={closeNotificationMenu}
+        elevation={0}
       >
         {userNotifications.length > 0 && (
           <div className={classes.notificationMenu}>
@@ -108,7 +103,7 @@ const Notification = () => {
                 key={item._id}
                 onClick={() => handleReadNotification(item._id)}
                 component={Link}
-                to={`/home`}
+                to="/home"
               >
                 <div className={classes.notificationItem}>
                   {" "}
@@ -126,9 +121,6 @@ const Notification = () => {
                 onClick={loadMoreNotifications}
               >
                 Load more
-                {/* {ui.notificationLoading && (
-                  <CircularProgress size={30} className="btn-loader" />
-                )} */}
               </Button>
             </div>
           </div>

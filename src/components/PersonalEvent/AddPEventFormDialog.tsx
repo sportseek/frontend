@@ -118,11 +118,11 @@ const AddPersonalEventFormDialog = (props: FormProps) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleFormClose} color="primary">
-          Cancel
-        </Button>
         <Button onClick={handleCreate} color="primary">
           Save
+        </Button>
+        <Button onClick={handleFormClose} color="primary">
+          Cancel
         </Button>
       </DialogActions>
       {showErrorBar && <Errorbar errors={errors as []} />}

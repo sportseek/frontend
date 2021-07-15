@@ -88,6 +88,7 @@ export default function RemoveFriendDialog(props: Props) {
                       ) !== -1
                     }
                     inputProps={{ "aria-labelledby": labelId }}
+                    color="primary"
                   />
                 </ListItemSecondaryAction>
               </ListItem>
