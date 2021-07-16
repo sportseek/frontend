@@ -38,6 +38,8 @@ export interface SearchEventPayload {
   location?: any
   sortBy?: string
   sortValue?: number
+  pageSize?: number
+  pageNumber?: number
 }
 
 export interface UpdateInterestedPayload {

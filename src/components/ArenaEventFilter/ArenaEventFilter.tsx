@@ -1,28 +1,19 @@
 import { makeStyles, Theme, createStyles } from "@material-ui/core"
-import Badge from "@material-ui/core/Badge"
 import IconButton from "@material-ui/core/IconButton"
-import React, { useEffect, useState } from "react"
-import { useAppDispatch, useAppSelector } from "redux/hooks"
-import {
-  getNotifications,
-  readNotification,
-  selectUserNotification,
-} from "redux/reducers/user/userSlice"
-import { Notifications } from "@material-ui/icons"
+import React, {  useState } from "react"
+import { useAppDispatch } from "redux/hooks"
+
 import Menu from "@material-ui/core/Menu"
 import Button from "@material-ui/core/Button"
-import { Link } from "react-router-dom"
-import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked"
 import Tooltip from "components/Common/Tooltip"
 import FilterListIcon from "@material-ui/icons/FilterList"
 import moment from "moment"
 import Typography from "@material-ui/core/Typography"
 import Divider from "@material-ui/core/Divider"
-import CssBaseline from "@material-ui/core/CssBaseline"
 import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
 import MenuItem from "@material-ui/core/MenuItem"
-import { LocationOn, SportsBasketball, Search, Sort } from "@material-ui/icons"
+import {  SportsBasketball, Search } from "@material-ui/icons"
 import { getEvents } from "redux/reducers/event/eventSlice"
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -131,6 +122,8 @@ const ArenaEventFilter = () => {
           ? new Date(eventStartTime).toISOString()
           : "",
         eventEndTime: eventEndTime ? new Date(eventEndTime).toISOString() : "",
+        pageNumber: 1,
+        pageSize: 5,
       })
     )
     setInitialState()
