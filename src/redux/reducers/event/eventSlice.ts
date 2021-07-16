@@ -50,15 +50,15 @@ export const fetchEventById = createAsyncThunk(
 
 export const updateEvent = createAsyncThunk(
   "event/update",
-  async (event: CreateEventPayload) => {
-    const response = await eventAPI.update(event)
+  async (event: any) => {
+    const response = await eventAPI.update(event.payload, event.eventId)
     return response.data
   }
 )
 
 export const createEvent = createAsyncThunk(
   "events/create",
-  async (payload: CreateEventPayload) => {
+  async (payload: any) => {
     const response = await eventAPI.create(payload)
     return response.data
   }

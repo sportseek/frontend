@@ -46,13 +46,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: 0,
     paddingLeft: 24,
     paddingBottom: 4,
+    borderBottom: "1px solid"
   },
   pagination: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    marginBottom: "16px",
+    borderTop: "1px solid",
+    padding: "8px",
   },
 }))
 
