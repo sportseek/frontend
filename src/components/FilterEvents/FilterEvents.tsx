@@ -53,11 +53,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawerPaper: {
       width: theme.filterbar.width,
-      //background: theme.palette.secondary.light,
-      background: "linear-gradient(to top, #03142b 0%, #1e3f59 100%);",
+      background: theme.filterbar.background,
       overflow: "hidden",
       zIndex: 600,
-      color: "#FFFFFF",
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
@@ -65,9 +63,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       backgroundColor: theme.palette.background.default,
       padding: theme.spacing(3),
-    },
-    drawerContainer: {
-      // overflow: "auto",
     },
     margin: {
       margin: theme.spacing(1),
@@ -84,18 +79,12 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
       width: 195,
-      input: {
-        color: "white",
-      },
     },
-    text: {
+    headertext: {
       color: theme.palette.common.white,
     },
-    input: {
-      color: "white",
-    },
-    inputRoot: {
-      color: "white",
+    inputColor: {
+      color: theme.palette.common.white,
     },
   })
 )
@@ -332,7 +321,7 @@ const FilterEvents = () => {
         anchor="right"
       >
         <div className={classes.toolbar} />
-        <div className={classes.drawerContainer}>
+        <div>
           <Divider />
           <div className={classes.margin}>
             <Grid container spacing={2} alignItems="flex-end">
@@ -341,7 +330,7 @@ const FilterEvents = () => {
                   gutterBottom
                   variant="h5"
                   component="h2"
-                  className={classes.text}
+                  className={classes.headertext}
                 >
                   Filters
                 </Typography>
@@ -353,12 +342,13 @@ const FilterEvents = () => {
                   id="eventTitle"
                   name="eventTitle"
                   value={eventTitle}
+                  color="secondary"
                   onChange={handleInputChange}
                   InputProps={{
-                    className: classes.input,
+                    className: classes.inputColor,
                   }}
                   InputLabelProps={{
-                    style: { color: "#fff" },
+                    className: classes.inputColor,
                   }}
                 />
               </Grid>
@@ -368,7 +358,10 @@ const FilterEvents = () => {
               <Grid item xs={10}>
                 <Autocomplete
                   style={{ width: 300 }}
-                  classes={{ inputRoot: classes.inputRoot }}
+                  classes={{
+                    inputRoot: classes.inputColor,
+                    clearIndicator: classes.inputColor,
+                  }}
                   getOptionLabel={(option) =>
                     typeof option === "string" ? option : option.description
                   }
@@ -391,8 +384,9 @@ const FilterEvents = () => {
                       {...params}
                       label="Location"
                       className={classes.textField}
+                      color="secondary"
                       InputLabelProps={{
-                        style: { color: "#fff" },
+                        className: classes.inputColor,
                       }}
                     />
                   )}
@@ -439,16 +433,20 @@ const FilterEvents = () => {
                 <TextField
                   select
                   label="Sports Type"
+                  color="secondary"
                   value={sportsType}
                   onChange={handleInputChange}
                   className={classes.textField}
                   id="sportsType"
                   name="sportsType"
                   InputProps={{
-                    className: classes.input,
+                    className: classes.inputColor,
                   }}
                   InputLabelProps={{
-                    style: { color: "#fff" },
+                    className: classes.inputColor,
+                  }}
+                  SelectProps={{
+                    classes: { icon: classes.inputColor },
                   }}
                 >
                   {sportTypes.map((option) => (
@@ -470,16 +468,17 @@ const FilterEvents = () => {
                 <TextField
                   label="From Date/Time"
                   type="datetime-local"
+                  color="secondary"
                   className={classes.textField}
                   id="eventStartTime"
                   name="eventStartTime"
                   value={eventStartTime}
                   onChange={handleInputChange}
                   InputProps={{
-                    className: classes.input,
+                    className: classes.inputColor,
                   }}
                   InputLabelProps={{
-                    style: { color: "#fff" },
+                    className: classes.inputColor,
                   }}
                 />
               </Grid>
@@ -487,16 +486,17 @@ const FilterEvents = () => {
                 <TextField
                   label="To Date/Time"
                   type="datetime-local"
+                  color="secondary"
                   className={classes.textField}
                   id="eventEndTime"
                   name="eventEndTime"
                   value={eventEndTime}
                   onChange={handleInputChange}
                   InputProps={{
-                    className: classes.input,
+                    className: classes.inputColor,
                   }}
                   InputLabelProps={{
-                    style: { color: "#fff" },
+                    className: classes.inputColor,
                   }}
                 />
               </Grid>
@@ -506,7 +506,9 @@ const FilterEvents = () => {
             <div className={classes.emptyDiv} />
             <Grid container spacing={2} alignItems="flex-end">
               <Grid item xs={12}>
-                <Typography gutterBottom>Price Range (€)</Typography>
+                <Typography gutterBottom className={classes.inputColor}>
+                  Price Range (€)
+                </Typography>
                 <Slider
                   value={eventFee}
                   max={maxPrice}
@@ -529,16 +531,20 @@ const FilterEvents = () => {
                 <TextField
                   select
                   label="Sort By:"
+                  color="secondary"
                   value={sortShow}
                   onChange={handleInputChange}
                   className={classes.textField}
                   id="sortBy"
                   name="sortBy"
                   InputProps={{
-                    className: classes.input,
+                    className: classes.inputColor,
                   }}
                   InputLabelProps={{
-                    style: { color: "#fff" },
+                    className: classes.inputColor,
+                  }}
+                  SelectProps={{
+                    classes: { icon: classes.inputColor },
                   }}
                 >
                   {sortByOptions.map((option) => (
