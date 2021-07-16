@@ -29,7 +29,13 @@ type Props = {
 
 const EventDetails: React.FC<Props> = (props: Props) => {
   const { event: currentEvent } = props
-  const newEntryFee = currentEvent.entryFee / currentEvent.minPlayers
+  const newEntryFee =
+    Math.round(
+      (currentEvent.entryFee /
+        ((currentEvent.minPlayers + currentEvent.maxPlayers) / 2)) *
+        100 +
+        Number.EPSILON
+    ) / 100
 
   const mainFeaturedPost = {
     title: currentEvent.title,
@@ -87,8 +93,8 @@ const EventDetails: React.FC<Props> = (props: Props) => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1">
-              Credits earned if event is cancelled: {newEntryFee * 0.99}, Rev:{" "}
-              {currentEvent.revenue}
+              Credits earned if event is cancelled:{" "}
+              {Math.floor(newEntryFee * 0.99 * 10)}, Rev: {currentEvent.revenue}
             </Typography>
           </Grid>
         </Grid>
