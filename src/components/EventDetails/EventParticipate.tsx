@@ -50,7 +50,14 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
   const currentUser = useAppSelector(selectLoggedInUser)
 
   const [registered, setRegistered] = useState(false)
-  const newEntryFee = currentEvent.entryFee / currentEvent.minPlayers
+
+  const newEntryFee =
+    Math.round(
+      (currentEvent.entryFee /
+        ((currentEvent.minPlayers + currentEvent.maxPlayers) / 2)) *
+        100 +
+        Number.EPSILON
+    ) / 100
 
   useEffect(() => {
     if (currentEvent.registeredPlayers) {

@@ -27,7 +27,7 @@ const ColorButton = withStyles((theme: Theme) => ({
     padding: "15px 40px",
     background: "linear-gradient(45deg, #11f29c, #11cf00)",
     "&:hover": {
-      background: "linear-gradient(45deg, #00cc7e, #0d9c00)",
+      background: "linear-gradient(45deg, #02e08b, #0fbd00)",
     },
   },
 }))(Button)
@@ -98,28 +98,6 @@ const EventInvite: React.FC<PropsComp> = ({ registered: registered }) => {
       setList([])
     }
   }, [friends])
-
-  React.useEffect(() => {
-    dispatch(
-      getAllPEvents({
-        eventStartTime: currentEvent.start?.toString(),
-        eventEndTime: currentEvent.end?.toString(),
-      })
-    )
-  }, [currentEvent, dispatch])
-
-  const pEvents = useAppSelector(selectInviteEvents)
-
-  React.useEffect(() => {
-    pEvents.forEach((item) => {
-      list.forEach((friend) => {
-        if (item.creator === friend.id) {
-          console.log(item.creator, friend.id, friend.name)
-          setList(list.filter((friendItem) => friendItem.id !== item.creator))
-        }
-      })
-    })
-  }, [list, pEvents])
 
   const handleClickRemove = () => {
     setOpenR(true)
