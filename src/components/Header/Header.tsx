@@ -23,7 +23,7 @@ import Tooltip from "components/Common/Tooltip"
 import NotificationComponent from "components/Notification"
 
 import SignInLogo from "assets/signin_logo_transparent.png"
-import SSLogo from "assets/sslogo2.png"
+import SSLogo from "assets/sslogo6.png"
 
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   logo: {
-    height: 55,
-    width: 190,
+    height: 60,
+    width: 205,
     //maxWidth: 160,
   },
 }))
