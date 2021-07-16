@@ -88,7 +88,7 @@ const EventSearch = () => {
                 style={{ transformOrigin: "0 0 0" }}
                 timeout={1000 + index * 150}
               >
-                <Grid item xs={12} md={6} lg={3}>
+                <Grid item xs={12} md={6} lg={4}>
                   <EventCard event={item} openDetails={gotoEventDetails} />
                 </Grid>
               </Grow>

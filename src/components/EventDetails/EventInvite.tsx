@@ -24,6 +24,7 @@ const ColorButton = withStyles((theme: Theme) => ({
     border: 0,
     borderRadius: 15,
     color: "white",
+    width: "200px",
     padding: "15px 40px",
     background: "linear-gradient(45deg, #11f29c, #11cf00)",
     "&:hover": {
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     background: "linear-gradient(45deg, #737573, #737573)",
     border: 0,
     borderRadius: 15,
+    width: "200px",
     color: "white",
     padding: "15px 40px",
   },
