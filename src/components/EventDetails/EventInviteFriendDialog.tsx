@@ -2,7 +2,7 @@ import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
 import Dialog from "@material-ui/core/Dialog"
-import { useAppDispatch } from "redux/hooks"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
 import Avatar from "@material-ui/core/Avatar"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogContent from "@material-ui/core/DialogContent"
@@ -16,6 +16,11 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar"
 import { removeFriend } from "redux/reducers/user/userSlice"
 import Checkbox from "@material-ui/core/Checkbox"
 import { FrdDetails } from "../PlayerFriends/AddFriendDialog"
+import {
+  getAllPEvents,
+  selectInviteEvents,
+} from "redux/reducers/pEvent/pEventSlice"
+import { selectCurrentEvent } from "redux/reducers/event/eventSlice"
 
 const useStyles = makeStyles({
   root: {
@@ -34,8 +39,22 @@ type Props = {
 export default function InviteFriendDialog(props: Props) {
   const classes = useStyles()
   const dispatch = useAppDispatch()
+  const currentEvent = useAppSelector(selectCurrentEvent)
+  React.useEffect(() => {
+    dispatch(
+      getAllPEvents({
+        eventStartTime: currentEvent.start?.toString(),
+        eventEndTime: currentEvent.end?.toString(),
+      })
+    )
+  }, [currentEvent])
+
+  const pEvents = useAppSelector(selectInviteEvents)
+  console.log(pEvents)
+
   const { open: openDialog, handleClose, friends = [] } = props
   const [checked, setChecked] = React.useState<FrdDetails[]>([])
+  const [canInvite, setCanInvite] = React.useState(false)
 
   const handleToggle = (value: FrdDetails) => () => {
     const currentIndex = checked.findIndex((item) => item.email === value.email)
@@ -93,6 +112,29 @@ export default function InviteFriendDialog(props: Props) {
               </ListItem>
             )
           })}
+          {/* {friends.map((value) => {
+            const labelId = `checkbox-list-secondary-label-${value.email}`
+            return (
+              <ListItem key={value.email} button>
+                <ListItemAvatar>
+                  <Avatar alt={value.name} src={value.imageURL} />
+                </ListItemAvatar>
+                <ListItemText id={labelId} primary={value.name} />
+                <ListItemSecondaryAction>
+                  <Checkbox
+                    edge="end"
+                    onChange={handleToggle(value)}
+                    checked={
+                      checked.findIndex(
+                        (item) => item.email === value.email
+                      ) !== -1
+                    }
+                    inputProps={{ "aria-labelledby": labelId }}
+                  />
+                </ListItemSecondaryAction>
+              </ListItem>
+            )
+          })} */}
         </List>
       </DialogContent>
       <DialogActions>

@@ -21,6 +21,7 @@ import {
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 
 import SignInLogo from "assets/signin_logo_transparent.png"
+import SSLogo from "assets/sslogo4.png"
 
 export interface UserSigninPayload {
   email: string
@@ -72,8 +73,8 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     margin: theme.spacing(1),
-    height: 250,
-    width: 250,
+    height: 145,
+    width: 500,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -119,11 +120,7 @@ export default function SignInSide() {
       <Grid item sm md lg className={classes.image} />
       <Grid item xs={12} sm={9} md={6} lg={4} className={classes.signin}>
         <div className={classes.paper}>
-          <img
-            src={SignInLogo}
-            alt="Seek your Sport"
-            className={classes.logo}
-          />
+          <img src={SSLogo} alt="Seek your Sport" className={classes.logo} />
 
           {authStatus === AuthStatus.PROCESSING ? (
             <Avatar className={classes.avatarCircle}>
