@@ -26,6 +26,7 @@ const ColorButton = withStyles((theme: Theme) => ({
     border: 0,
     borderRadius: 15,
     color: "white",
+    maxWidth: "40px",
     padding: "15px 40px",
     background: "linear-gradient(45deg, #52bfff, #6242ff)",
     "&:hover": {
