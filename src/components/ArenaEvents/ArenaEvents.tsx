@@ -77,8 +77,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   singleChip: {
     marginRight: "4px",
-    marginBottom: "4px"
-  }
+    marginBottom: "4px",
+  },
 }))
 
 const pageSizeNumbers = [
@@ -174,8 +174,21 @@ const ArenaEvents = () => {
     setFilterPayload({})
     dispatch(
       getEvents({
-        pageNumber,
-        pageSize,
+        pageNumber: 1,
+        pageSize: 5,
+      })
+    )
+  }
+
+  const clearSingleFilter = (filterName: any) => {
+    const filters: any = { ...filterPayload }
+    delete filters[filterName]
+    setFilterPayload(filters)
+    dispatch(
+      getEvents({
+        ...filters,
+        pageNumber: 1,
+        pageSize: 5,
       })
     )
   }
@@ -221,23 +234,39 @@ const ArenaEvents = () => {
           </div>
           <div>
             {filterPayload.eventTitle && (
-              <Chip className={classes.singleChip} label={`title: ${filterPayload.eventTitle}`} />
+              <Chip
+                className={classes.singleChip}
+                label={`title: ${filterPayload.eventTitle}`}
+                onDelete={() => clearSingleFilter("eventTitle")}
+                deleteIcon={<ClearIcon />}
+              />
             )}
             {filterPayload.sportType && (
-              <Chip label={`Sport type: ${filterPayload.sportType}`} />
+              <Chip
+                className={classes.singleChip}
+                label={`Sport type: ${filterPayload.sportType}`}
+                onDelete={() => clearSingleFilter("sportType")}
+                deleteIcon={<ClearIcon />}
+              />
             )}
             {filterPayload.eventStartTime && (
               <Chip
+                className={classes.singleChip}
                 label={`Event start: ${moment(
                   filterPayload.eventStartTime
                 ).format("MMMM Do, YYYY")}`}
+                onDelete={() => clearSingleFilter("eventStartTime")}
+                deleteIcon={<ClearIcon />}
               />
             )}
             {filterPayload.eventEndTime && (
               <Chip
-                label={`Event end: ${moment(
-                  filterPayload.eventStartTime
-                ).format("MMMM Do, YYYY")}`}
+                className={classes.singleChip}
+                label={`Event end: ${moment(filterPayload.eventEndTime).format(
+                  "MMMM Do, YYYY"
+                )}`}
+                onDelete={() => clearSingleFilter("eventEndTime")}
+                deleteIcon={<ClearIcon />}
               />
             )}
           </div>
