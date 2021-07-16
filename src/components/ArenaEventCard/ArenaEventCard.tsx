@@ -88,7 +88,10 @@ const ArenaEventCard = (props: ArenaEventCardProps) => {
       <div style={{ width: "40%" }}>
         <Chip label={event.sportType} />
       </div>
-      <p>{event.description.slice(0,50)} {event.description.length > 50 && "..."}</p>
+      <p>
+        {event.description.slice(0, 50)}{" "}
+        {event.description.length > 50 && "..."}
+      </p>
       <div>
         <b>Entry fee:</b> {event.entryFee}
       </div>

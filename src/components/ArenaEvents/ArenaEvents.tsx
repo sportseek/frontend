@@ -77,8 +77,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   singleChip: {
     marginRight: "4px",
-    marginBottom: "4px"
-  }
+    marginBottom: "4px",
+  },
 }))
 
 const pageSizeNumbers = [
@@ -221,7 +221,10 @@ const ArenaEvents = () => {
           </div>
           <div>
             {filterPayload.eventTitle && (
-              <Chip className={classes.singleChip} label={`title: ${filterPayload.eventTitle}`} />
+              <Chip
+                className={classes.singleChip}
+                label={`title: ${filterPayload.eventTitle}`}
+              />
             )}
             {filterPayload.sportType && (
               <Chip label={`Sport type: ${filterPayload.sportType}`} />
