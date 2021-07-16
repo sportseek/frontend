@@ -70,8 +70,8 @@ export const cancelEvent = createAsyncThunk(
   }
 )
 
-export const getEvents = createAsyncThunk("events/fetchEvents", async () => {
-  const response = await eventAPI.fetchEventList()
+export const getEvents = createAsyncThunk("events/fetchEvents", async (payload: SearchEventPayload) => {
+  const response = await eventAPI.fetchEventList(payload)
   return response.data
 })
 

@@ -33,9 +33,9 @@ const cancel = async (eventId: string) => {
   return response
 }
 
-const fetchEventList = async () => {
+const fetchEventList = async (payload: SearchEventPayload) => {
   const url = `/${eventEndpoint}/fetchEventList`
-  const response = await axios.get(url)
+  const response = await axios.post(url, payload)
   return response
 }
 

@@ -20,6 +20,7 @@ import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import { IArenaOwner } from "types"
 
 import { eventsData } from "./arenaEventsData"
+import ArenaEventFilter from "components/ArenaEventFilter"
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -54,7 +55,7 @@ const ArenaEvents = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getEvents())
+    dispatch(getEvents({}))
   }, [dispatch, reloadEvents])
 
   const handleClickOpen = () => {
@@ -77,6 +78,7 @@ const ArenaEvents = () => {
           >
             Create Event
           </Button>
+          <ArenaEventFilter />
           {!user.profileImageUrl && (
             <h4>
               Upload your arena image and setup arena location to start creating
