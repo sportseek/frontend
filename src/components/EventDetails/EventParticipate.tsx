@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { updateRegistered } from "redux/reducers/event/eventSlice"
 
-import { Button, makeStyles, Typography } from "@material-ui/core"
+import { Button, makeStyles, Theme, Typography } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
 import PaymentIcon from "@material-ui/icons/Payment"
 import ThumbUpIcon from "@material-ui/icons/ThumbUp"
@@ -15,10 +15,24 @@ import { IEvent } from "types"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 
 import EventInvite from "./EventInvite"
+import { withStyles } from "@material-ui/styles"
 
 type Props = {
   event: IEvent
 }
+
+const ColorButton = withStyles((theme: Theme) => ({
+  root: {
+    border: 0,
+    borderRadius: 15,
+    color: "white",
+    padding: "15px 40px",
+    background: "linear-gradient(45deg, #52bfff, #6242ff)",
+    "&:hover": {
+      background: "linear-gradient(45deg, #29b0ff, #4b26ff)",
+    },
+  },
+}))(Button)
 
 const useStyles = makeStyles({
   participate: {
@@ -65,13 +79,13 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
         <Grid container spacing={3}>
           <Grid item>
             <Tooltip title="You will receive equivalent Credits.">
-              <Button
+              <ColorButton
                 startIcon={<ThumbDownIcon />}
-                className={classes.participate}
+                variant="contained"
                 onClick={handleUpdateRegistered}
               >
                 Deregister
-              </Button>
+              </ColorButton>
             </Tooltip>
           </Grid>
           <Grid item>
@@ -82,13 +96,13 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
         <Grid container spacing={3}>
           <Grid item>
             <Tooltip title="Pay and confirm participation.">
-              <Button
+              <ColorButton
                 startIcon={<PaymentIcon />}
-                className={classes.participate}
+                variant="contained"
                 onClick={handleUpdateRegistered}
               >
                 Participate
-              </Button>
+              </ColorButton>
             </Tooltip>
           </Grid>
           <Grid item>
