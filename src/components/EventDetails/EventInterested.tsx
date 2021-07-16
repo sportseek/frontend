@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { updateInterested } from "redux/reducers/event/eventSlice"
 
-import { Button, makeStyles, Typography } from "@material-ui/core"
+import { Button, makeStyles, Theme, Typography } from "@material-ui/core"
 import ThumbUpIcon from "@material-ui/icons/ThumbUp"
 import ThumbDownIcon from "@material-ui/icons/ThumbDown"
 
@@ -11,10 +11,24 @@ import Tooltip from "components/Common/Tooltip"
 
 import { IEvent } from "types"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
+import { withStyles } from "@material-ui/styles"
 
 type Props = {
   event: IEvent
 }
+
+const ColorButton = withStyles((theme: Theme) => ({
+  root: {
+    border: 0,
+    borderRadius: 15,
+    color: "white",
+    padding: "15px 40px",
+    background: "linear-gradient(45deg, #FE6B8B, #FF8E53)",
+    "&:hover": {
+      background: "linear-gradient(45deg, #fc4970, #ff8140)",
+    },
+  },
+}))(Button)
 
 const useStyles = makeStyles({
   interested: {
@@ -55,22 +69,22 @@ const EventInterested: React.FC<Props> = ({ event: currentEvent }) => {
   return (
     <div>
       {interested ? (
-        <Button
+        <ColorButton
           startIcon={<ThumbDownIcon />}
-          className={classes.interested}
+          variant="contained"
           onClick={handleUpdateInterested}
         >
           Not Interested
-        </Button>
+        </ColorButton>
       ) : (
         <Tooltip title="No payment required. Access interested events from your dashboard.">
-          <Button
+          <ColorButton
             startIcon={<ThumbUpIcon />}
-            className={classes.interested}
+            variant="contained"
             onClick={handleUpdateInterested}
           >
             Interested
-          </Button>
+          </ColorButton>
         </Tooltip>
       )}
     </div>

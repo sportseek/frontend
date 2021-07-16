@@ -50,7 +50,11 @@ export default function InviteFriendDialog(props: Props) {
   }, [currentEvent])
 
   const pEvents = useAppSelector(selectInviteEvents)
-  console.log(pEvents)
+
+  const pEventMap = new Map()
+  pEvents.map((value) => {
+    pEventMap.set(value.creator, true)
+  })
 
   const { open: openDialog, handleClose, friends = [] } = props
   const [checked, setChecked] = React.useState<FrdDetails[]>([])
@@ -107,34 +111,12 @@ export default function InviteFriendDialog(props: Props) {
                       ) !== -1
                     }
                     inputProps={{ "aria-labelledby": labelId }}
+                    disabled={pEventMap.has(value.id)}
                   />
                 </ListItemSecondaryAction>
               </ListItem>
             )
           })}
-          {/* {friends.map((value) => {
-            const labelId = `checkbox-list-secondary-label-${value.email}`
-            return (
-              <ListItem key={value.email} button>
-                <ListItemAvatar>
-                  <Avatar alt={value.name} src={value.imageURL} />
-                </ListItemAvatar>
-                <ListItemText id={labelId} primary={value.name} />
-                <ListItemSecondaryAction>
-                  <Checkbox
-                    edge="end"
-                    onChange={handleToggle(value)}
-                    checked={
-                      checked.findIndex(
-                        (item) => item.email === value.email
-                      ) !== -1
-                    }
-                    inputProps={{ "aria-labelledby": labelId }}
-                  />
-                </ListItemSecondaryAction>
-              </ListItem>
-            )
-          })} */}
         </List>
       </DialogContent>
       <DialogActions>
@@ -143,7 +125,7 @@ export default function InviteFriendDialog(props: Props) {
           color="primary"
           disabled={checked.length === 0}
         >
-          Remove
+          Invite
         </Button>
         <Button onClick={handleClose} color="primary">
           Cancel

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React from "react"
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles, Theme } from "@material-ui/core/styles"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import UserAPI from "redux/reducers/user/userAPI"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
@@ -17,6 +17,20 @@ import { selectCurrentEvent } from "redux/reducers/event/eventSlice"
 
 import { FrdDetails } from "../PlayerFriends/AddFriendDialog"
 import InviteFriendDialog from "./EventInviteFriendDialog"
+import { withStyles } from "@material-ui/styles"
+
+const ColorButton = withStyles((theme: Theme) => ({
+  root: {
+    border: 0,
+    borderRadius: 15,
+    color: "white",
+    padding: "15px 40px",
+    background: "linear-gradient(45deg, #11f29c, #11cf00)",
+    "&:hover": {
+      background: "linear-gradient(45deg, #02e08b, #0fbd00)",
+    },
+  },
+}))(Button)
 
 const useStyles = makeStyles((theme) => ({
   simpleCard: {
@@ -85,28 +99,6 @@ const EventInvite: React.FC<PropsComp> = ({ registered: registered }) => {
     }
   }, [friends])
 
-  React.useEffect(() => {
-    dispatch(
-      getAllPEvents({
-        eventStartTime: currentEvent.start?.toString(),
-        eventEndTime: currentEvent.end?.toString(),
-      })
-    )
-  }, [currentEvent, dispatch])
-
-  const pEvents = useAppSelector(selectInviteEvents)
-
-  React.useEffect(() => {
-    pEvents.forEach((item) => {
-      list.forEach((friend) => {
-        if (item.creator === friend.id) {
-          console.log(item.creator, friend.id, friend.name)
-          setList(list.filter((friendItem) => friendItem.id !== item.creator))
-        }
-      })
-    })
-  }, [list, pEvents])
-
   const handleClickRemove = () => {
     setOpenR(true)
   }
@@ -120,13 +112,13 @@ const EventInvite: React.FC<PropsComp> = ({ registered: registered }) => {
       {registered && list.length > 0 ? (
         <div>
           <Tooltip title="You can invite if you have added friends and registered for the event">
-            <Button
+            <ColorButton
               startIcon={<PeopleIcon />}
               onClick={handleClickRemove}
-              className={classes.invite}
+              variant="contained"
             >
               Invite Friends
-            </Button>
+            </ColorButton>
           </Tooltip>
           <InviteFriendDialog
             open={openR}
@@ -140,6 +132,7 @@ const EventInvite: React.FC<PropsComp> = ({ registered: registered }) => {
             <Button
               startIcon={<PeopleIcon />}
               className={classes.inviteDisabled}
+              variant="contained"
             >
               Invite Friends
             </Button>
