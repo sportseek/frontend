@@ -16,6 +16,8 @@ import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 
 import EventInvite from "./EventInvite"
 import { withStyles } from "@material-ui/styles"
+import Payment from "./Payment"
+import StripeCheckout from "./Payment"
 
 type Props = {
   event: IEvent
@@ -56,6 +58,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
   const currentUser = useAppSelector(selectLoggedInUser)
 
   const [registered, setRegistered] = useState(false)
+  const [openPayment, setOpenPayment] = useState(false)
 
   useEffect(() => {
     if (currentEvent.registeredPlayers) {
@@ -67,15 +70,24 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
     } else setRegistered(false)
   }, [currentEvent, currentUser._id])
 
-  const handleUpdateRegistered = () => {
+  const handleUpdateRegistered = (withWallet: boolean) => {
     setRegistered(!registered)
     dispatch(
       updateRegistered({
         eventId: currentEvent._id,
         registered: !registered,
         fee: currentEvent.entryFee,
+        withWallet,
       })
     )
+  }
+
+  const handleOpenPayment = () => {
+    setOpenPayment(true)
+  }
+
+  const handleClosePayment = () => {
+    setOpenPayment(false)
   }
 
   return (
@@ -87,7 +99,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
               <ColorButton
                 startIcon={<ThumbDownIcon />}
                 variant="contained"
-                onClick={handleUpdateRegistered}
+                onClick={() => handleUpdateRegistered(false)}
               >
                 Deregister
               </ColorButton>
@@ -104,7 +116,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
               <ColorButton
                 startIcon={<PaymentIcon />}
                 variant="contained"
-                onClick={handleUpdateRegistered}
+                onClick={handleOpenPayment}
               >
                 Participate
               </ColorButton>
@@ -115,6 +127,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
           </Grid>
         </Grid>
       )}
+      <StripeCheckout open={openPayment} submitPayment={handleUpdateRegistered} closePaymentDialog={handleClosePayment} />
     </div>
   )
 }
