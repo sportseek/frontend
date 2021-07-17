@@ -24,7 +24,7 @@ interface EventState {
   minPrice: number
   maxDate: string
   minDate: string
-  totalArenaEvents: number,
+  totalArenaEvents: number
 }
 
 const initialState: EventState = {
@@ -72,10 +72,13 @@ export const cancelEvent = createAsyncThunk(
   }
 )
 
-export const getEvents = createAsyncThunk("events/fetchEvents", async (payload: SearchEventPayload) => {
-  const response = await eventAPI.fetchEventList(payload)
-  return response.data
-})
+export const getEvents = createAsyncThunk(
+  "events/fetchEvents",
+  async (payload: SearchEventPayload) => {
+    const response = await eventAPI.fetchEventList(payload)
+    return response.data
+  }
+)
 
 export const getAllEvents = createAsyncThunk(
   "events/fetchAllEvents",
@@ -184,7 +187,8 @@ export const eventSlice = createSlice({
 
 export const selectCurrentEvent = (state: RootState) => state.event.currentEvent
 export const selectEvents = (state: RootState) => state.event.events
-export const selectTotalArenaEvents = (state: RootState) => state.event.totalArenaEvents
+export const selectTotalArenaEvents = (state: RootState) =>
+  state.event.totalArenaEvents
 export const selectReloadEvents = (state: RootState) => state.event.reloadEvents
 export const selectAllEvents = (state: RootState) => state.event.allEvents
 export const selectCurrentEventId = (state: RootState) => state.event.curEventId

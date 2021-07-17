@@ -6,7 +6,6 @@ export interface IPersonalEvent extends ICalendarEvent {
 }
 
 export type PEventPayload = {
-  creator: string
   description: string
   start: string
   end: string

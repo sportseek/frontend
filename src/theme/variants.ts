@@ -60,7 +60,7 @@ const lightVariant: ThemeOptions = {
     // background: "#EEE",
   },
   calendar: {
-    interestedEventColor: { main: "#ff9800", disabled: "#ffefc5" },
+    interestedEventColor: { main: "#ff9800", disabled: "#ffd79d" },
     registeredEventColor: { main: "#4caf50", disabled: "#cde9d8" },
     personalEventColor: { main: "#7580AB", disabled: "#d7e0e6" },
   },

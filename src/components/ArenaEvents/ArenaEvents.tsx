@@ -4,7 +4,6 @@ import {
   CardContent,
   CardActions,
   Button,
-  Typography,
 } from "@material-ui/core"
 import { makeStyles, Theme } from "@material-ui/core/styles"
 import ArenaEventCard from "components/ArenaEventCard"
@@ -24,6 +23,12 @@ import ArenaEventFilter from "components/ArenaEventFilter"
 import Pagination from "@material-ui/lab/Pagination"
 import TextField from "@material-ui/core/TextField"
 import MenuItem from "@material-ui/core/MenuItem"
+import { SearchEventPayload } from "types/Event"
+import Tooltip from "components/Common/Tooltip"
+import ClearIcon from "@material-ui/icons/Clear"
+import IconButton from "@material-ui/core/IconButton"
+import Chip from "@material-ui/core/Chip"
+import moment from "moment"
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -46,7 +51,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: 0,
     paddingLeft: 24,
     paddingBottom: 4,
-    borderBottom: "1px solid"
+    borderBottom: "1px solid",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignItems: "flex-start",
   },
   pagination: {
     display: "flex",
@@ -55,6 +64,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: "center",
     borderTop: "1px solid",
     padding: "8px",
+  },
+  chipContainer: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    marginBottom: "12px",
+  },
+  singleChip: {
+    marginRight: "4px",
+    marginBottom: "4px",
   },
 }))
 
@@ -78,6 +100,7 @@ const ArenaEvents = () => {
   const [pageNumber, setPageNumber] = React.useState(1)
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
+  const [filterPayload, setFilterPayload] = useState<SearchEventPayload>({})
   const user = useAppSelector(selectLoggedInUser) as IArenaOwner
   const arenaEvents = useAppSelector(selectEvents)
   const reloadEvents = useAppSelector(selectReloadEvents)
@@ -92,7 +115,7 @@ const ArenaEvents = () => {
         pageSize,
       })
     )
-  }, [dispatch, reloadEvents])
+  }, [dispatch, pageNumber, pageSize, reloadEvents])
 
   useEffect(() => {
     setPageSize(5)
@@ -105,6 +128,7 @@ const ArenaEvents = () => {
       setPageSize(value)
       dispatch(
         getEvents({
+          ...filterPayload,
           pageNumber,
           pageSize: value,
         })
@@ -127,8 +151,43 @@ const ArenaEvents = () => {
     setPageNumber(value)
     dispatch(
       getEvents({
+        ...filterPayload,
         pageNumber: value,
         pageSize,
+      })
+    )
+  }
+
+  const getArenaFilterPayload = (payload: SearchEventPayload) => {
+    setFilterPayload(payload)
+    dispatch(
+      getEvents({
+        ...payload,
+        pageNumber: 1,
+        pageSize: 5,
+      })
+    )
+  }
+
+  const clearFilters = () => {
+    setFilterPayload({})
+    dispatch(
+      getEvents({
+        pageNumber: 1,
+        pageSize: 5,
+      })
+    )
+  }
+
+  const clearSingleFilter = (filterName: any) => {
+    const filters: any = { ...filterPayload }
+    delete filters[filterName]
+    setFilterPayload(filters)
+    dispatch(
+      getEvents({
+        ...filters,
+        pageNumber: 1,
+        pageSize: 5,
       })
     )
   }
@@ -138,26 +197,78 @@ const ArenaEvents = () => {
       <Card raised className={classes.card}>
         <CardHeader className={classes.cardHeader} title="Events" />
         <CardActions className={classes.cardActions}>
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={user.profileImageUrl ? false : true}
-            onClick={handleClickOpen}
-          >
-            Create Event
-          </Button>
-          <ArenaEventFilter />
-          {!user.profileImageUrl && (
-            <h4>
-              Upload your arena image and setup arena location to start creating
-              events
-            </h4>
-          )}
-          <CreateEventDialog
-            open={open}
-            onClose={handleClose}
-            isUpdate={false}
-          />
+          <div className={classes.buttonContainer}>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={user.profileImageUrl ? false : true}
+              onClick={handleClickOpen}
+            >
+              Create Event
+            </Button>
+            <ArenaEventFilter getFilterPayload={getArenaFilterPayload} />
+
+            <Tooltip title="clear filter">
+              <IconButton
+                aria-label="filter"
+                color="inherit"
+                onClick={clearFilters}
+              >
+                <ClearIcon />
+              </IconButton>
+            </Tooltip>
+
+            {!user.profileImageUrl && (
+              <h4>
+                Upload your arena image and setup arena location to start
+                creating events
+              </h4>
+            )}
+
+            <CreateEventDialog
+              open={open}
+              onClose={handleClose}
+              isUpdate={false}
+            />
+          </div>
+          <div>
+            {filterPayload.eventTitle && (
+              <Chip
+                className={classes.singleChip}
+                label={`title: ${filterPayload.eventTitle}`}
+                onDelete={() => clearSingleFilter("eventTitle")}
+                deleteIcon={<ClearIcon />}
+              />
+            )}
+            {filterPayload.sportType && (
+              <Chip
+                className={classes.singleChip}
+                label={`Sport type: ${filterPayload.sportType}`}
+                onDelete={() => clearSingleFilter("sportType")}
+                deleteIcon={<ClearIcon />}
+              />
+            )}
+            {filterPayload.eventStartTime && (
+              <Chip
+                className={classes.singleChip}
+                label={`Event start: ${moment(
+                  filterPayload.eventStartTime
+                ).format("MMMM Do, YYYY")}`}
+                onDelete={() => clearSingleFilter("eventStartTime")}
+                deleteIcon={<ClearIcon />}
+              />
+            )}
+            {filterPayload.eventEndTime && (
+              <Chip
+                className={classes.singleChip}
+                label={`Event end: ${moment(filterPayload.eventEndTime).format(
+                  "MMMM Do, YYYY"
+                )}`}
+                onDelete={() => clearSingleFilter("eventEndTime")}
+                deleteIcon={<ClearIcon />}
+              />
+            )}
+          </div>
         </CardActions>
         <CardContent className={classes.cardContent}>
           {arenaEvents.length > 0 &&
@@ -185,7 +296,7 @@ const ArenaEvents = () => {
             ))}
           </TextField>
           <Pagination
-            count={Math.ceil( totalArenaEvents / pageSize)}
+            count={Math.ceil(totalArenaEvents / pageSize)}
             page={pageNumber}
             onChange={handlePageChange}
           />

@@ -19,6 +19,7 @@ import {
   getViews,
   getView,
   localizer,
+  changeColor,
   setEventColor,
   getCalendarInfo,
   convertToCalenderEvent,
@@ -55,22 +56,12 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   const [personalEvents, setPEvents] = useState<ICalendarEvent[]>([])
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const [pEvent, setPEvent] = useState<IPersonalEvent>({} as IPersonalEvent)
+  const [events, setEvents] = useState<ICalendarEvent[]>([])
 
-  const events = sportEvents.concat(personalEvents)
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
   const { interestedEvents = [], registeredEvents = [] } = player
   const { interestedEventColor, registeredEventColor, personalEventColor } =
     theme.calendar
-
-  const pEColor = selectable
-    ? personalEventColor.disabled
-    : personalEventColor.main
-  const iEColor = selectable
-    ? interestedEventColor.disabled
-    : interestedEventColor.main
-  const rEColor = selectable
-    ? registeredEventColor.disabled
-    : registeredEventColor.main
 
   useEffect(() => {
     dispatch(fetchLoggedInUser())
@@ -81,18 +72,23 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   }, [dispatch, isPEventsUpdated])
 
   useEffect(() => {
-    setPEvents(convertToCalenderEvent(playerEvents, pEColor))
-  }, [pEColor, playerEvents])
+    setPEvents(convertToCalenderEvent(playerEvents, personalEventColor))
+  }, [personalEventColor, playerEvents])
 
   const sportEventIds: ICalendarEvent[] = useMemo(
     () => [
       ...setEventColor(
         interestedEvents.filter((item) => registeredEvents.indexOf(item) < 0),
-        iEColor
+        interestedEventColor
       ),
-      ...setEventColor(registeredEvents, rEColor),
+      ...setEventColor(registeredEvents, registeredEventColor),
     ],
-    [interestedEvents, registeredEvents, iEColor, rEColor]
+    [
+      interestedEventColor,
+      interestedEvents,
+      registeredEventColor,
+      registeredEvents,
+    ]
   )
 
   useEffect(() => {
@@ -115,6 +111,12 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
     setViews(getViews(isSmallScreen))
     setView(getView(isSmallScreen))
   }, [isSmallScreen])
+
+  useEffect(() => {
+    let e = sportEvents.concat(personalEvents)
+    e = changeColor(e, selectable)
+    setEvents(e)
+  }, [personalEvents, sportEvents, selectable])
 
   const handleViewChange = (v: View) => setView(v)
   const openInfoPopUp = () => setOpenInfoDialog(true)
@@ -139,11 +141,16 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   const onSelectEvent = (
     event: ICalendarEvent,
     e: React.SyntheticEvent<HTMLElement, Event>
-  ) =>
-    event.color && !selectable && event.color !== personalEventColor.main
-      ? gotoEventDetails(event._id)
-      : onSelectPEvent(event, e)
-
+  ) => {
+    if (!selectable) {
+      if (
+        event.bgcolor === personalEventColor.main ||
+        event.bgcolor === personalEventColor.disabled
+      )
+        onSelectPEvent(event, e)
+      else gotoEventDetails(event._id)
+    }
+  }
   const onSelectSlot = (si: SlotInfo) => {
     setSlotInfo(si)
     openFormPopUp()
@@ -177,7 +184,7 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
           onSelectEvent={onSelectEvent}
           eventPropGetter={(event) => ({
             style: {
-              backgroundColor: event.color,
+              backgroundColor: event.bgcolor,
             },
           })}
         />
@@ -188,7 +195,6 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
         />
         <AddPersonalEventFormDialog
           open={openFormDialog}
-          userId={player._id}
           slotInfo={slotInfo}
           handleClose={closeFormPopUp}
           goBack={goBackToNormalMode}

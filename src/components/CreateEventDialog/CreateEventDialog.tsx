@@ -106,7 +106,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     "https://res.cloudinary.com/fshahriar008/image/upload/v1609701702/user_bccush.png"
   const [imageUrl, setImageUrl] = useState(defaultImage)
   const hidden = true
-  
+
   const setInitailState = () => {
     setEventTitle("")
     setSportType("")

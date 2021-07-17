@@ -1,6 +1,6 @@
 import { makeStyles, Theme, createStyles } from "@material-ui/core"
 import IconButton from "@material-ui/core/IconButton"
-import React, {  useState } from "react"
+import React, { useState } from "react"
 import { useAppDispatch } from "redux/hooks"
 
 import Menu from "@material-ui/core/Menu"
@@ -13,7 +13,7 @@ import Divider from "@material-ui/core/Divider"
 import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
 import MenuItem from "@material-ui/core/MenuItem"
-import {  SportsBasketball, Search } from "@material-ui/icons"
+import { SportsBasketball, Search } from "@material-ui/icons"
 import { getEvents } from "redux/reducers/event/eventSlice"
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -79,7 +79,10 @@ const sportTypes = [
   },
 ]
 
-const ArenaEventFilter = () => {
+type Props = {
+  getFilterPayload: Function
+}
+const ArenaEventFilter: React.FC<Props> = ({ getFilterPayload }) => {
   const classes = useStyles()
   const dispatch = useAppDispatch()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -114,18 +117,28 @@ const ArenaEventFilter = () => {
   }
 
   const handleFilter = () => {
-    dispatch(
-      getEvents({
-        eventTitle,
-        sportType: sportsType === "all" ? "" : sportsType,
-        eventStartTime: eventStartTime
-          ? new Date(eventStartTime).toISOString()
-          : "",
-        eventEndTime: eventEndTime ? new Date(eventEndTime).toISOString() : "",
-        pageNumber: 1,
-        pageSize: 5,
-      })
-    )
+    // dispatch(
+    //   getEvents({
+    //     eventTitle,
+    //     sportType: sportsType === "all" ? "" : sportsType,
+    //     eventStartTime: eventStartTime
+    //       ? new Date(eventStartTime).toISOString()
+    //       : "",
+    //     eventEndTime: eventEndTime ? new Date(eventEndTime).toISOString() : "",
+    //     pageNumber: 1,
+    //     pageSize: 5,
+    //   })
+    // )
+    getFilterPayload({
+      eventTitle,
+      sportType: sportsType === "all" ? "" : sportsType,
+      eventStartTime: eventStartTime
+        ? new Date(eventStartTime).toISOString()
+        : "",
+      eventEndTime: eventEndTime ? new Date(eventEndTime).toISOString() : "",
+      pageNumber: 1,
+      pageSize: 5,
+    })
     setInitialState()
     closeFilterMenu()
   }
@@ -147,6 +160,7 @@ const ArenaEventFilter = () => {
           <FilterListIcon />
         </IconButton>
       </Tooltip>
+
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
