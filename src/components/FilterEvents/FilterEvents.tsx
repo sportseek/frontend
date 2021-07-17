@@ -590,20 +590,32 @@ const FilterEvents = () => {
             <Divider />
             <div className={classes.emptyDiv} />
             <div className={classes.buttons}>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleSearch}
+              <Grid
+                container
+                direction="row"
+                justify="flex-start"
+                alignItems="flex-start"
+                spacing={2}
               >
-                Search
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleClear}
-              >
-                Clear
-              </Button>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleSearch}
+                  >
+                    Search
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleClear}
+                  >
+                    Clear
+                  </Button>
+                </Grid>
+              </Grid>
             </div>
           </div>
         </div>
