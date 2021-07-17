@@ -61,16 +61,19 @@ const EventSearch = () => {
   }, [dispatch])
 
   useEffect(() => {
-    if(maxDate)
-    {
-    dispatch(
-      getAllEvents({
-        eventStartTime: new Date(moment().format("YYYY-MM-DDTHH:MM")).toISOString(),
-        eventEndTime: new Date(moment(maxDate).format("YYYY-MM-DDTHH:MM")).toISOString(),
-        sortBy: "start",
-        sortValue: 1,
-      })
-    )
+    if (maxDate) {
+      dispatch(
+        getAllEvents({
+          eventStartTime: new Date(
+            moment().format("YYYY-MM-DDTHH:MM")
+          ).toISOString(),
+          eventEndTime: new Date(
+            moment(maxDate).format("YYYY-MM-DDTHH:MM")
+          ).toISOString(),
+          sortBy: "start",
+          sortValue: 1,
+        })
+      )
     }
     dispatch(getMinMaxPrice())
     // dispatch(getMinMaxDate())

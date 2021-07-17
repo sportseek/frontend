@@ -22,7 +22,6 @@ import { getUserName } from "utils/stringUtils"
 import Tooltip from "components/Common/Tooltip"
 import NotificationComponent from "components/Notification"
 
-import SignInLogo from "assets/signin_logo_transparent.png"
 import SSLogo from "assets/sslogo6.png"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -42,7 +41,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   logo: {
     height: 60,
     width: 205,
-    //maxWidth: 160,
   },
 }))
 
@@ -100,11 +98,8 @@ const HeaderFC = () => {
         <Toolbar>
           <img src={SSLogo} alt="logo" className={classes.logo} />
         </Toolbar>
-        {/* <Typography variant="h6" noWrap>
-          SportSeek
-        </Typography> */}
         <Filler />
-        <IconButton disabled>
+        <IconButton disableRipple disableFocusRipple disableTouchRipple>
           <Avatar alt={name} src={profileImageUrl} className={classes.avatar}>
             {firstLetterOfName}
           </Avatar>

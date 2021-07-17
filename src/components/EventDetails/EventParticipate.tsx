@@ -127,7 +127,11 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
           </Grid>
         </Grid>
       )}
-      <StripeCheckout open={openPayment} submitPayment={handleUpdateRegistered} closePaymentDialog={handleClosePayment} />
+      <StripeCheckout
+        open={openPayment}
+        submitPayment={handleUpdateRegistered}
+        closePaymentDialog={handleClosePayment}
+      />
     </div>
   )
 }

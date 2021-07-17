@@ -30,7 +30,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Chip from "@material-ui/core/Chip"
 import moment from "moment"
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   card: {
     height: "100%",
     display: "flex",
@@ -116,7 +116,7 @@ const ArenaEvents = () => {
         pageSize,
       })
     )
-  }, [dispatch, pageNumber, pageSize, reloadEvents])
+  }, [dispatch, filterPayload, pageNumber, pageSize, reloadEvents])
 
   useEffect(() => {
     setPageSize(5)
