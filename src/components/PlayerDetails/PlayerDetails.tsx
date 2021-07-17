@@ -51,6 +51,7 @@ export default function PersonalInfoCard() {
     phone = "",
     email = "",
     profileImageUrl = "",
+    location = { lat: 0, lng: 0 },
     address = InitialAddress,
   } = player
 
@@ -126,6 +127,7 @@ export default function PersonalInfoCard() {
           email={email}
           phone={phone}
           oldAddress={address}
+          oldLocation={location}
           profileImageUrl={profileImageUrl}
         />
       </CardContent>
