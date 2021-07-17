@@ -43,7 +43,7 @@ const initialState: EventState = {
   minDate: "",
   totalArenaEvents: 0,
   hasError: false,
-  paymentSecretKey: ""
+  paymentSecretKey: "",
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -225,7 +225,8 @@ export const selectEventMinPrice = (state: RootState) => state.event.minPrice
 export const selectAllEventsByCreator = (state: RootState) => state.event.events
 export const selectEventMaxDate = (state: RootState) => state.event.maxDate
 export const selectEventMinDate = (state: RootState) => state.event.minDate
-export const selectStripeClientSecretKey = (state: RootState) => state.event.paymentSecretKey
+export const selectStripeClientSecretKey = (state: RootState) =>
+  state.event.paymentSecretKey
 
 export const { clearEventDetails, setCurEventId } = eventSlice.actions
 

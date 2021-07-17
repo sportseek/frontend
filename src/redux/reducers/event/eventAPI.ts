@@ -115,5 +115,5 @@ export default {
   fetchAllEventsByCreator,
   getMinMaxDate,
   inviteFriends,
-  createPaymentIntent
+  createPaymentIntent,
 }
