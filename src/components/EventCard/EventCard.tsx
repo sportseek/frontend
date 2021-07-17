@@ -60,10 +60,12 @@ const EventCard: React.FC<Props> = (props: Props) => {
   }, [event.address, event.location])
 
   const newEntryFee =
-    Math.round(
-      (event.entryFee / ((event.minPlayers + event.maxPlayers) / 2)) * 100 +
-        Number.EPSILON
-    ) / 100
+    event.entryFee && event.minPlayers && event.maxPlayers
+      ? Math.round(
+          (event.entryFee / ((event.minPlayers + event.maxPlayers) / 2)) * 100 +
+            Number.EPSILON
+        ) / 100
+      : 0
 
   return (
     <Card className={classes.root} onClick={handleClick} raised>

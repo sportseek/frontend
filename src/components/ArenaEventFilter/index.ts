@@ -1,3 +1,3 @@
-import ArenaEventFilter from "./ArenaEventFilter";
+import ArenaEventFilter from "./ArenaEventFilter"
 
-export default ArenaEventFilter;
+export default ArenaEventFilter

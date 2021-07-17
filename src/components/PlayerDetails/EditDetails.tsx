@@ -32,7 +32,9 @@ import {
   selectUserErrors,
 } from "redux/reducers/user/userSlice"
 import Errorbar from "components/Common/Errorbar"
-import { IAddress, InitialAddress, IPlayer } from "types"
+import { IAddress, ILocation, InitialAddress, IPlayer } from "types"
+import { getLatLngFromAddress } from "utils/geoCodeUtils"
+import { getFormattedAddress } from "utils/stringUtils"
 
 type DetailsFormProps = {
   open: boolean
@@ -41,6 +43,7 @@ type DetailsFormProps = {
   lastName: string
   email: string
   phone: string
+  oldLocation: ILocation
   oldAddress: IAddress
   profileImageUrl: string
 }
@@ -83,6 +86,7 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
     phone,
     email,
     oldAddress,
+    oldLocation,
     profileImageUrl = "",
   } = props
 
@@ -101,6 +105,7 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
     email,
     phone,
     address: oldAddress,
+    location: oldLocation,
   })
   const [address, setAddress] = useState<IAddress>(oldAddress)
 
@@ -111,8 +116,12 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
     close()
   }, [dispatch, close])
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const tempuser = { ...player }
+    if (JSON.stringify(address) !== JSON.stringify(oldAddress)) {
+      const loc = await getLatLngFromAddress(getFormattedAddress(address))
+      if (loc) tempuser.location = loc
+    }
     tempuser.address = { ...tempuser.address, ...address }
     dispatch(prepareForValidation())
     dispatch(updateUser(tempuser as IPlayer))
@@ -162,6 +171,7 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
         email,
         phone,
         address: oldAddress,
+        location: oldLocation,
       })
       setAddress(oldAddress)
     } else {
@@ -173,10 +183,11 @@ const PlayerDetailsForm = (props: DetailsFormProps) => {
         email: "",
         phone: "",
         address: InitialAddress,
+        location: { lat: 0, lng: 0 },
       })
       setAddress(InitialAddress)
     }
-  }, [email, firstName, lastName, oldAddress, phone, open])
+  }, [email, firstName, lastName, oldAddress, phone, open, oldLocation])
 
   useEffect(() => {
     if (!hasErrors && !imageClicked && !loading) {
