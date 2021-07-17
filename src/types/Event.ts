@@ -62,3 +62,7 @@ export interface InviteFriendsPayload {
   friendsIds: string[],
   eventId: string,
 }
+
+export interface PaymentIntentPayload {
+  amount: number
+}

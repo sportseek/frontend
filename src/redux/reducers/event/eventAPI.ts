@@ -5,6 +5,7 @@ import {
   UpdateRegisteredPayload,
   SearchEventsByCreatorPayload,
   InviteFriendsPayload,
+  PaymentIntentPayload,
 } from "types/Event"
 import axios from "utils/axios"
 
@@ -97,6 +98,12 @@ const inviteFriends = async (payload: InviteFriendsPayload) => {
   return response
 }
 
+const createPaymentIntent = async (payload: PaymentIntentPayload) => {
+  const url = `/${eventEndpoint}/createPaymentIntent`
+  const response = await axios.post(url, payload)
+  return response
+}
+
 export default {
   fetchById,
   update,
@@ -110,5 +117,6 @@ export default {
   getMinMaxPrice,
   fetchAllEventsByCreator,
   getMinMaxDate,
-  inviteFriends
+  inviteFriends,
+  createPaymentIntent
 }
