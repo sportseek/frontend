@@ -171,7 +171,7 @@ const Payment: React.FC<Props> = ({
           </article>
         )}
         {!payWithWallet && !succeeded && (
-          <form id="payment-form" onSubmit={handleSubmitPayment}>
+          <form id="payment-form" onSubmit={handleSubmitPayment} className="custom-form">
             <CardElement id="card-element" onChange={handleChange} />
             <Button color="primary" type="submit" className="paymentButton">
               Pay
