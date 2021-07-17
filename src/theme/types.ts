@@ -43,19 +43,23 @@ export interface Body {
 
 export type BodyOptions = Partial<Body>
 
+export interface InterestedEventColor {
+  main: React.CSSProperties["color"]
+  disabled: React.CSSProperties["color"]
+}
+export interface RegisteredEventColor {
+  main: React.CSSProperties["color"]
+  disabled: React.CSSProperties["color"]
+}
+export interface PersonalEventColor {
+  main: React.CSSProperties["color"]
+  disabled: React.CSSProperties["color"]
+}
+
 export interface Calendar {
-  interestedEventColor: {
-    main: React.CSSProperties["color"]
-    disabled: React.CSSProperties["color"]
-  }
-  registeredEventColor: {
-    main: React.CSSProperties["color"]
-    disabled: React.CSSProperties["color"]
-  }
-  personalEventColor: {
-    main: React.CSSProperties["color"]
-    disabled: React.CSSProperties["color"]
-  }
+  interestedEventColor: InterestedEventColor,
+  registeredEventColor: RegisteredEventColor,
+  personalEventColor: PersonalEventColor
 }
 
 export type CalendarOptions = Partial<Calendar>

@@ -188,7 +188,6 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
         />
         <AddPersonalEventFormDialog
           open={openFormDialog}
-          userId={player._id}
           slotInfo={slotInfo}
           handleClose={closeFormPopUp}
           goBack={goBackToNormalMode}
