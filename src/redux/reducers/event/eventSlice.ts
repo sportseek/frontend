@@ -11,6 +11,7 @@ import {
   UpdateInterestedPayload,
   UpdateRegisteredPayload,
   SearchEventsByCreatorPayload,
+  InviteFriendsPayload,
 } from "types/Event"
 import eventAPI from "./eventAPI"
 
@@ -25,6 +26,7 @@ interface EventState {
   maxDate: string
   minDate: string
   totalArenaEvents: number
+  hasError: boolean
 }
 
 const initialState: EventState = {
@@ -38,6 +40,7 @@ const initialState: EventState = {
   maxDate: "",
   minDate: "",
   totalArenaEvents: 0,
+  hasError: false,
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -128,6 +131,14 @@ export const getMinMaxDate = createAsyncThunk(
   }
 )
 
+export const inviteFriends = createAsyncThunk(
+  "event/inviteFriends",
+  async (payload: InviteFriendsPayload) => {
+    const response = await eventAPI.inviteFriends(payload)
+    return response.data
+  }
+)
+
 export const eventSlice = createSlice({
   name: "event",
   initialState,
@@ -175,6 +186,9 @@ export const eventSlice = createSlice({
       .addCase(getMinMaxDate.fulfilled, (state, action) => {
         state.minDate = action.payload.minEvent.start
         state.maxDate = action.payload.maxEvent.start
+      })
+      .addCase(inviteFriends.fulfilled, (state, action) => {
+        state.hasError = false
       })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
