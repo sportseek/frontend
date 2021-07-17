@@ -96,6 +96,11 @@ const useStyles = makeStyles((theme: Theme) =>
           display: "none",
         },
     },
+    slider: {
+      width: 215,
+      marginLeft: theme.spacing(2),
+      marginRight: theme.spacing(2),
+    }
   })
 )
 
@@ -538,6 +543,7 @@ const FilterEvents = () => {
                   Price Range (€)
                 </Typography>
                 <Slider
+                  className={classes.slider}
                   value={eventFee}
                   max={maxPrice}
                   min={minPrice}
