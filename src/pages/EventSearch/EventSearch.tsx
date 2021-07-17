@@ -15,7 +15,9 @@ import {
   selectAllEvents,
   selectCurrentEventId,
   setCurEventId,
+  selectEventMaxDate,
 } from "redux/reducers/event/eventSlice"
+import moment from "moment"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,7 +39,7 @@ const EventSearch = () => {
 
   const dispatch = useAppDispatch()
   const allEvents = useAppSelector(selectAllEvents)
-
+  const maxDate = useAppSelector(selectEventMaxDate)
   const eventId = useAppSelector(selectCurrentEventId)
   const [tabIndex, setTabIndex] = useState(0)
 
@@ -55,15 +57,24 @@ const EventSearch = () => {
   }, [dispatch])
 
   useEffect(() => {
+    dispatch(getMinMaxDate())
+  }, [dispatch])
+
+  useEffect(() => {
+    if(maxDate)
+    {
     dispatch(
       getAllEvents({
+        eventStartTime: new Date(moment().format("YYYY-MM-DDTHH:MM")).toISOString(),
+        eventEndTime: new Date(moment(maxDate).format("YYYY-MM-DDTHH:MM")).toISOString(),
         sortBy: "start",
-        sortValue: -1,
+        sortValue: 1,
       })
     )
+    }
     dispatch(getMinMaxPrice())
-    dispatch(getMinMaxDate())
-  }, [dispatch, tabIndex])
+    // dispatch(getMinMaxDate())
+  }, [dispatch, tabIndex, maxDate])
 
   useEffect(() => {
     if (eventId) gotoEventDetails(eventId)
