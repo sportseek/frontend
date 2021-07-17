@@ -61,16 +61,19 @@ const EventSearch = () => {
   }, [dispatch])
 
   useEffect(() => {
-    if(maxDate)
-    {
-    dispatch(
-      getAllEvents({
-        eventStartTime: new Date(moment().format("YYYY-MM-DDTHH:MM")).toISOString(),
-        eventEndTime: new Date(moment(maxDate).format("YYYY-MM-DDTHH:MM")).toISOString(),
-        sortBy: "start",
-        sortValue: 1,
-      })
-    )
+    if (maxDate) {
+      dispatch(
+        getAllEvents({
+          eventStartTime: new Date(
+            moment().format("YYYY-MM-DDTHH:MM")
+          ).toISOString(),
+          eventEndTime: new Date(
+            moment(maxDate).format("YYYY-MM-DDTHH:MM")
+          ).toISOString(),
+          sortBy: "start",
+          sortValue: 1,
+        })
+      )
     }
     dispatch(getMinMaxPrice())
     // dispatch(getMinMaxDate())
@@ -99,7 +102,7 @@ const EventSearch = () => {
                 style={{ transformOrigin: "0 0 0" }}
                 timeout={1000 + index * 150}
               >
-                <Grid item xs={12} md={6} lg={3}>
+                <Grid item xs={12} md={6} lg={4}>
                   <EventCard event={item} openDetails={gotoEventDetails} />
                 </Grid>
               </Grow>

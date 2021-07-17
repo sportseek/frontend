@@ -13,14 +13,16 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemAvatar from "@material-ui/core/ListItemAvatar"
-import { removeFriend } from "redux/reducers/user/userSlice"
 import Checkbox from "@material-ui/core/Checkbox"
-import { FrdDetails } from "../PlayerFriends/AddFriendDialog"
 import {
   getAllPEvents,
   selectInviteEvents,
 } from "redux/reducers/pEvent/pEventSlice"
-import { inviteFriends, selectCurrentEvent } from "redux/reducers/event/eventSlice"
+import {
+  inviteFriends,
+  selectCurrentEvent,
+} from "redux/reducers/event/eventSlice"
+import { FrdDetails } from "../PlayerFriends/AddFriendDialog"
 
 const useStyles = makeStyles({
   root: {
@@ -47,12 +49,12 @@ export default function InviteFriendDialog(props: Props) {
         eventEndTime: currentEvent.end?.toString(),
       })
     )
-  }, [currentEvent])
+  }, [currentEvent, dispatch])
 
   const pEvents = useAppSelector(selectInviteEvents)
 
   const pEventMap = new Map()
-  pEvents.map((value) => {
+  pEvents.forEach((value) => {
     pEventMap.set(value.creator, true)
   })
 
@@ -76,10 +78,12 @@ export default function InviteFriendDialog(props: Props) {
   const handleSave = () => {
     if (checked.length > 0) {
       const ids = checked.map((item) => item.id)
-      dispatch(inviteFriends({
-        friendsIds: ids,
-        eventId: currentEvent._id,
-      }))
+      dispatch(
+        inviteFriends({
+          friendsIds: ids,
+          eventId: currentEvent._id,
+        })
+      )
     }
     handleClose()
   }

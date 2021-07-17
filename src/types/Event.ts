@@ -51,14 +51,18 @@ export interface UpdateRegisteredPayload {
   eventId: string
   registered: boolean
   fee: number
+  withWallet: boolean
 }
 
 export interface SearchEventsByCreatorPayload {
   creator: string
 }
 
-
 export interface InviteFriendsPayload {
-  friendsIds: string[],
-  eventId: string,
+  friendsIds: string[]
+  eventId: string
+}
+
+export interface PaymentIntentPayload {
+  amount: number
 }

@@ -12,6 +12,7 @@ import {
   UpdateRegisteredPayload,
   SearchEventsByCreatorPayload,
   InviteFriendsPayload,
+  PaymentIntentPayload,
 } from "types/Event"
 import eventAPI from "./eventAPI"
 
@@ -27,6 +28,7 @@ interface EventState {
   minDate: string
   totalArenaEvents: number
   hasError: boolean
+  paymentSecretKey: string
 }
 
 const initialState: EventState = {
@@ -41,6 +43,7 @@ const initialState: EventState = {
   minDate: "",
   totalArenaEvents: 0,
   hasError: false,
+  paymentSecretKey: "",
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -139,6 +142,14 @@ export const inviteFriends = createAsyncThunk(
   }
 )
 
+export const createPaymentIntent = createAsyncThunk(
+  "event/createPaymentIntent",
+  async (payload: PaymentIntentPayload) => {
+    const response = await eventAPI.createPaymentIntent(payload)
+    return response.data
+  }
+)
+
 export const eventSlice = createSlice({
   name: "event",
   initialState,
@@ -190,6 +201,9 @@ export const eventSlice = createSlice({
       .addCase(inviteFriends.fulfilled, (state, action) => {
         state.hasError = false
       })
+      .addCase(createPaymentIntent.fulfilled, (state, action) => {
+        state.paymentSecretKey = action.payload.secretKey
+      })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
         (state) => {
@@ -211,6 +225,8 @@ export const selectEventMinPrice = (state: RootState) => state.event.minPrice
 export const selectAllEventsByCreator = (state: RootState) => state.event.events
 export const selectEventMaxDate = (state: RootState) => state.event.maxDate
 export const selectEventMinDate = (state: RootState) => state.event.minDate
+export const selectStripeClientSecretKey = (state: RootState) =>
+  state.event.paymentSecretKey
 
 export const { clearEventDetails, setCurEventId } = eventSlice.actions
 

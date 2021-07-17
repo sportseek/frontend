@@ -16,6 +16,8 @@ import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 
 import EventInvite from "./EventInvite"
 import { withStyles } from "@material-ui/styles"
+import Payment from "./Payment"
+import StripeCheckout from "./Payment"
 
 type Props = {
   event: IEvent
@@ -26,10 +28,16 @@ const ColorButton = withStyles((theme: Theme) => ({
     border: 0,
     borderRadius: 15,
     color: "white",
+    width: "200px",
     padding: "15px 40px",
-    background: "linear-gradient(45deg, #52bfff, #6242ff)",
+    backgroundImage:
+      "linear-gradient(to right, #085078 0%, #85D8CE  51%, #085078  100%)",
+    transition: "0.5s",
+    backgroundSize: "200% auto",
+    //background: "linear-gradient(45deg, #52bfff, #6242ff)",
     "&:hover": {
-      background: "linear-gradient(45deg, #29b0ff, #4b26ff)",
+      backgroundPosition: "right center",
+      //background: "linear-gradient(45deg, #29b0ff, #4b26ff)",
     },
   },
 }))(Button)
@@ -50,14 +58,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
   const currentUser = useAppSelector(selectLoggedInUser)
 
   const [registered, setRegistered] = useState(false)
-
-  const newEntryFee =
-    Math.round(
-      (currentEvent.entryFee /
-        ((currentEvent.minPlayers + currentEvent.maxPlayers) / 2)) *
-        100 +
-        Number.EPSILON
-    ) / 100
+  const [openPayment, setOpenPayment] = useState(false)
 
   useEffect(() => {
     if (currentEvent.registeredPlayers) {
@@ -69,15 +70,24 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
     } else setRegistered(false)
   }, [currentEvent, currentUser._id])
 
-  const handleUpdateRegistered = () => {
+  const handleUpdateRegistered = (withWallet: boolean) => {
     setRegistered(!registered)
     dispatch(
       updateRegistered({
         eventId: currentEvent._id,
         registered: !registered,
-        fee: newEntryFee,
+        fee: currentEvent.entryFee,
+        withWallet,
       })
     )
+  }
+
+  const handleOpenPayment = () => {
+    setOpenPayment(true)
+  }
+
+  const handleClosePayment = () => {
+    setOpenPayment(false)
   }
 
   return (
@@ -89,7 +99,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
               <ColorButton
                 startIcon={<ThumbDownIcon />}
                 variant="contained"
-                onClick={handleUpdateRegistered}
+                onClick={() => handleUpdateRegistered(false)}
               >
                 Deregister
               </ColorButton>
@@ -106,7 +116,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
               <ColorButton
                 startIcon={<PaymentIcon />}
                 variant="contained"
-                onClick={handleUpdateRegistered}
+                onClick={handleOpenPayment}
               >
                 Participate
               </ColorButton>
@@ -117,6 +127,11 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
           </Grid>
         </Grid>
       )}
+      <StripeCheckout
+        open={openPayment}
+        submitPayment={handleUpdateRegistered}
+        closePaymentDialog={handleClosePayment}
+      />
     </div>
   )
 }
