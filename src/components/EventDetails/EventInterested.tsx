@@ -20,13 +20,18 @@ type Props = {
 const ColorButton = withStyles((theme: Theme) => ({
   root: {
     border: 0,
+    backgroundImage:
+      "linear-gradient(to right, #ED4264 0%, #FFEDBC  51%, #ED4264  100%)",
     borderRadius: 15,
+    backgroundSize: "200% auto",
     color: "white",
     width: "200px",
     padding: "15px 40px",
-    background: "linear-gradient(45deg, #FE6B8B, #FF8E53)",
+    transition: "0.5s",
+    //background: "linear-gradient(45deg, #FE6B8B, #FF8E53)",
     "&:hover": {
-      background: "linear-gradient(45deg, #fc4970, #ff8140)",
+      backgroundPosition: "right center",
+      //background: "linear-gradient(45deg, #fc4970, #ff8140)",
     },
   },
 }))(Button)

@@ -28,9 +28,14 @@ const ColorButton = withStyles((theme: Theme) => ({
     color: "white",
     width: "200px",
     padding: "15px 40px",
-    background: "linear-gradient(45deg, #52bfff, #6242ff)",
+    backgroundImage:
+      "linear-gradient(to right, #085078 0%, #85D8CE  51%, #085078  100%)",
+    transition: "0.5s",
+    backgroundSize: "200% auto",
+    //background: "linear-gradient(45deg, #52bfff, #6242ff)",
     "&:hover": {
-      background: "linear-gradient(45deg, #29b0ff, #4b26ff)",
+      backgroundPosition: "right center",
+      //background: "linear-gradient(45deg, #29b0ff, #4b26ff)",
     },
   },
 }))(Button)
