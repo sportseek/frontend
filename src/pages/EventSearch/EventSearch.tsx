@@ -68,7 +68,7 @@ const EventSearch = () => {
         eventStartTime: new Date(moment().format("YYYY-MM-DDTHH:MM")).toISOString(),
         eventEndTime: new Date(moment(maxDate).format("YYYY-MM-DDTHH:MM")).toISOString(),
         sortBy: "start",
-        sortValue: -1,
+        sortValue: 1,
       })
     )
     }

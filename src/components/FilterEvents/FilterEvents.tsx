@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField"
 import MenuItem from "@material-ui/core/MenuItem"
 import Slider from "@material-ui/core/Slider"
 import { LocationOn, SportsBasketball, Search, Sort } from "@material-ui/icons"
-import { Button } from "@material-ui/core"
+import { Button, InputAdornment } from "@material-ui/core"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   getAllEvents,
@@ -24,6 +24,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import parse from "autosuggest-highlight/parse"
 import throttle from "lodash/throttle"
 import Geocode from "utils/geoCodeUtils"
+import KeyboardDateTimePicker from "@material-ui/pickers"
 
 const autocompleteService = { current: null }
 
@@ -86,8 +87,23 @@ const useStyles = makeStyles((theme: Theme) =>
     inputColor: {
       color: theme.palette.common.white,
     },
+    dateField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      width: 232,
+      "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+        {
+          display: "none",
+        },
+    },
   })
 )
+
+const AutocompleteStyles = makeStyles((theme) => ({
+  endAdornment: {
+    display: "none",
+  },
+}))
 
 const sportTypes = [
   {
@@ -125,14 +141,14 @@ const sortByOptions = [
     id: "priceAscending",
     name: "Price: Ascending",
   },
-  {
-    id: "registeredPlayersDescending",
-    name: "Registered Players: Descending",
-  },
-  {
-    id: "registeredPlayersAscending",
-    name: "Registered Players: Ascending",
-  },
+  // {
+  //   id: "registeredPlayersDescending",
+  //   name: "Registered Players: Descending",
+  // },
+  // {
+  //   id: "registeredPlayersAscending",
+  //   name: "Registered Players: Ascending",
+  // },
 ]
 
 const FilterEvents = () => {
@@ -283,8 +299,14 @@ const FilterEvents = () => {
     setSportsType("all")
     dispatch(
       getAllEvents({
+        eventStartTime: new Date(
+          moment().format("YYYY-MM-DDTHH:MM")
+        ).toISOString(),
+        eventEndTime: new Date(
+          moment(maxDate).format("YYYY-MM-DDTHH:MM")
+        ).toISOString(),
         sortBy: "start",
-        sortValue: -1,
+        sortValue: 1,
       })
     )
   }
@@ -315,6 +337,8 @@ const FilterEvents = () => {
       }
     }
   }
+
+  const autocompleteStyles = AutocompleteStyles()
 
   return (
     <div className={classes.root}>
@@ -365,10 +389,7 @@ const FilterEvents = () => {
               <Grid item xs={10}>
                 <Autocomplete
                   style={{ width: 300 }}
-                  classes={{
-                    inputRoot: classes.inputColor,
-                    clearIndicator: classes.inputColor,
-                  }}
+                  classes={autocompleteStyles}
                   getOptionLabel={(option) =>
                     typeof option === "string" ? option : option.description
                   }
@@ -476,7 +497,7 @@ const FilterEvents = () => {
                   label="From Date/Time"
                   type="datetime-local"
                   color="secondary"
-                  className={classes.textField}
+                  className={classes.dateField}
                   id="eventStartTime"
                   name="eventStartTime"
                   value={eventStartTime}
@@ -494,7 +515,7 @@ const FilterEvents = () => {
                   label="To Date/Time"
                   type="datetime-local"
                   color="secondary"
-                  className={classes.textField}
+                  className={classes.dateField}
                   id="eventEndTime"
                   name="eventEndTime"
                   value={eventEndTime}
