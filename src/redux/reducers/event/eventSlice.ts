@@ -11,6 +11,7 @@ import {
   UpdateInterestedPayload,
   UpdateRegisteredPayload,
   SearchEventsByCreatorPayload,
+  InviteFriendsPayload,
 } from "types/Event"
 import eventAPI from "./eventAPI"
 
@@ -24,6 +25,8 @@ interface EventState {
   minPrice: number
   maxDate: string
   minDate: string
+  totalArenaEvents: number
+  hasError: boolean
 }
 
 const initialState: EventState = {
@@ -36,6 +39,8 @@ const initialState: EventState = {
   minPrice: 0,
   maxDate: "",
   minDate: "",
+  totalArenaEvents: 0,
+  hasError: false,
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -48,15 +53,15 @@ export const fetchEventById = createAsyncThunk(
 
 export const updateEvent = createAsyncThunk(
   "event/update",
-  async (event: CreateEventPayload) => {
-    const response = await eventAPI.update(event)
+  async (event: any) => {
+    const response = await eventAPI.update(event.payload, event.eventId)
     return response.data
   }
 )
 
 export const createEvent = createAsyncThunk(
   "events/create",
-  async (payload: CreateEventPayload) => {
+  async (payload: any) => {
     const response = await eventAPI.create(payload)
     return response.data
   }
@@ -70,10 +75,13 @@ export const cancelEvent = createAsyncThunk(
   }
 )
 
-export const getEvents = createAsyncThunk("events/fetchEvents", async () => {
-  const response = await eventAPI.fetchEventList()
-  return response.data
-})
+export const getEvents = createAsyncThunk(
+  "events/fetchEvents",
+  async (payload: SearchEventPayload) => {
+    const response = await eventAPI.fetchEventList(payload)
+    return response.data
+  }
+)
 
 export const getAllEvents = createAsyncThunk(
   "events/fetchAllEvents",
@@ -123,6 +131,14 @@ export const getMinMaxDate = createAsyncThunk(
   }
 )
 
+export const inviteFriends = createAsyncThunk(
+  "event/inviteFriends",
+  async (payload: InviteFriendsPayload) => {
+    const response = await eventAPI.inviteFriends(payload)
+    return response.data
+  }
+)
+
 export const eventSlice = createSlice({
   name: "event",
   initialState,
@@ -145,6 +161,7 @@ export const eventSlice = createSlice({
       })
       .addCase(getEvents.fulfilled, (state, action) => {
         state.events = action.payload.eventList
+        state.totalArenaEvents = action.payload.totalArenaEvents
         state.reloadEvents = false
       })
       .addCase(getAllEvents.fulfilled, (state, action) => {
@@ -165,11 +182,13 @@ export const eventSlice = createSlice({
       })
       .addCase(fetchAllEventsByCreator.fulfilled, (state, action) => {
         state.events = action.payload.eventList
-        //state.reloadEvents = false
       })
       .addCase(getMinMaxDate.fulfilled, (state, action) => {
         state.minDate = action.payload.minEvent.start
         state.maxDate = action.payload.maxEvent.start
+      })
+      .addCase(inviteFriends.fulfilled, (state, action) => {
+        state.hasError = false
       })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
@@ -182,6 +201,8 @@ export const eventSlice = createSlice({
 
 export const selectCurrentEvent = (state: RootState) => state.event.currentEvent
 export const selectEvents = (state: RootState) => state.event.events
+export const selectTotalArenaEvents = (state: RootState) =>
+  state.event.totalArenaEvents
 export const selectReloadEvents = (state: RootState) => state.event.reloadEvents
 export const selectAllEvents = (state: RootState) => state.event.allEvents
 export const selectCurrentEventId = (state: RootState) => state.event.curEventId

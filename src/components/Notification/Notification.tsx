@@ -6,15 +6,18 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   getNotifications,
   readNotification,
+  selectLoggedInUser,
   selectUserNotification,
 } from "redux/reducers/user/userSlice"
 import { Notifications } from "@material-ui/icons"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import Button from "@material-ui/core/Button"
-import { Link } from "react-router-dom"
-import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked"
 import Tooltip from "components/Common/Tooltip"
+import { setCurEventId } from "redux/reducers/event/eventSlice"
+import { INotification } from "types/Notification"
+import MarkunreadIcon from "@material-ui/icons/Markunread"
+import DraftsIcon from "@material-ui/icons/Drafts"
 
 const useStyles = makeStyles(() => ({
   notificationMenu: {
@@ -42,6 +45,7 @@ const Notification = () => {
   const classes = useStyles()
   const dispatch = useAppDispatch()
   const userNotifications = useAppSelector(selectUserNotification)
+  const { type } = useAppSelector(selectLoggedInUser)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [pageNumber, setPageNumber] = useState(1)
   const [unreadNotification, setUnreadNotification] = useState(0)
@@ -64,9 +68,10 @@ const Notification = () => {
     setAnchorEl(null)
   }
 
-  const handleReadNotification = (notificationId: string) => {
+  const handleReadNotification = (notification: INotification) => {
     // readNotification(notificationId, pageNumber);
-    dispatch(readNotification({ notificationId, pageNumber }))
+    if (type === "player") dispatch(setCurEventId(notification.eventId))
+    dispatch(readNotification({ notificationId: notification._id, pageNumber }))
     closeNotificationMenu()
   }
 
@@ -101,14 +106,15 @@ const Notification = () => {
             {userNotifications.map((item) => (
               <MenuItem
                 key={item._id}
-                onClick={() => handleReadNotification(item._id)}
-                component={Link}
-                to="/home"
+                onClick={() => handleReadNotification(item)}
               >
                 <div className={classes.notificationItem}>
                   {" "}
                   {item.unreadStatus && (
-                    <RadioButtonCheckedIcon style={{ marginRight: "8px" }} />
+                    <MarkunreadIcon style={{ marginRight: "8px" }} />
+                  )}
+                  {!item.unreadStatus && (
+                    <DraftsIcon style={{ marginRight: "8px" }} />
                   )}{" "}
                   {item.description}
                 </div>

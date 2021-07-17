@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawerPaper: {
       width: theme.filterbar.width,
-      background: theme.palette.secondary.light,
+      background: theme.filterbar.background,
       overflow: "hidden",
       zIndex: 600,
     },
@@ -63,9 +63,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       backgroundColor: theme.palette.background.default,
       padding: theme.spacing(3),
-    },
-    drawerContainer: {
-      // overflow: "auto",
     },
     margin: {
       margin: theme.spacing(1),
@@ -82,6 +79,12 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
       width: 195,
+    },
+    headertext: {
+      color: theme.palette.common.white,
+    },
+    inputColor: {
+      color: theme.palette.common.white,
     },
   })
 )
@@ -325,12 +328,17 @@ const FilterEvents = () => {
         anchor="right"
       >
         <div className={classes.toolbar} />
-        <div className={classes.drawerContainer}>
+        <div>
           <Divider />
           <div className={classes.margin}>
             <Grid container spacing={2} alignItems="flex-end">
               <Grid item xs={12}>
-                <Typography gutterBottom variant="h5" component="h2">
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="h2"
+                  className={classes.headertext}
+                >
                   Filters
                 </Typography>
               </Grid>
@@ -341,15 +349,26 @@ const FilterEvents = () => {
                   id="eventTitle"
                   name="eventTitle"
                   value={eventTitle}
+                  color="secondary"
                   onChange={handleInputChange}
+                  InputProps={{
+                    className: classes.inputColor,
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputColor,
+                  }}
                 />
               </Grid>
               <Grid item xs={2}>
-                <Search color="primary" />
+                <Search color="secondary" />
               </Grid>
               <Grid item xs={10}>
                 <Autocomplete
                   style={{ width: 300 }}
+                  classes={{
+                    inputRoot: classes.inputColor,
+                    clearIndicator: classes.inputColor,
+                  }}
                   getOptionLabel={(option) =>
                     typeof option === "string" ? option : option.description
                   }
@@ -372,6 +391,10 @@ const FilterEvents = () => {
                       {...params}
                       label="Location"
                       className={classes.textField}
+                      color="secondary"
+                      InputLabelProps={{
+                        className: classes.inputColor,
+                      }}
                     />
                   )}
                   renderOption={(option) => {
@@ -409,7 +432,7 @@ const FilterEvents = () => {
                 />
               </Grid>
               <Grid item xs={2}>
-                <LocationOn color="primary" />
+                <LocationOn color="secondary" />
               </Grid>
             </Grid>
             <Grid container spacing={2} alignItems="flex-end">
@@ -417,11 +440,21 @@ const FilterEvents = () => {
                 <TextField
                   select
                   label="Sports Type"
+                  color="secondary"
                   value={sportsType}
                   onChange={handleInputChange}
                   className={classes.textField}
                   id="sportsType"
                   name="sportsType"
+                  InputProps={{
+                    className: classes.inputColor,
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputColor,
+                  }}
+                  SelectProps={{
+                    classes: { icon: classes.inputColor },
+                  }}
                 >
                   {sportTypes.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
@@ -431,7 +464,7 @@ const FilterEvents = () => {
                 </TextField>
               </Grid>
               <Grid item xs={2}>
-                <SportsBasketball color="primary" />
+                <SportsBasketball color="secondary" />
               </Grid>
             </Grid>
             <div className={classes.emptyDiv} />
@@ -442,22 +475,36 @@ const FilterEvents = () => {
                 <TextField
                   label="From Date/Time"
                   type="datetime-local"
+                  color="secondary"
                   className={classes.textField}
                   id="eventStartTime"
                   name="eventStartTime"
                   value={eventStartTime}
                   onChange={handleInputChange}
+                  InputProps={{
+                    className: classes.inputColor,
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputColor,
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   label="To Date/Time"
                   type="datetime-local"
+                  color="secondary"
                   className={classes.textField}
                   id="eventEndTime"
                   name="eventEndTime"
                   value={eventEndTime}
                   onChange={handleInputChange}
+                  InputProps={{
+                    className: classes.inputColor,
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputColor,
+                  }}
                 />
               </Grid>
             </Grid>
@@ -466,7 +513,9 @@ const FilterEvents = () => {
             <div className={classes.emptyDiv} />
             <Grid container spacing={2} alignItems="flex-end">
               <Grid item xs={12}>
-                <Typography gutterBottom>Price Range (€)</Typography>
+                <Typography gutterBottom className={classes.inputColor}>
+                  Price Range (€)
+                </Typography>
                 <Slider
                   value={eventFee}
                   max={maxPrice}
@@ -477,7 +526,7 @@ const FilterEvents = () => {
                   getAriaValueText={valuetext}
                   id="eventFee"
                   name="eventFee"
-                  color="primary"
+                  color="secondary"
                 />
               </Grid>
             </Grid>
@@ -489,11 +538,21 @@ const FilterEvents = () => {
                 <TextField
                   select
                   label="Sort By:"
+                  color="secondary"
                   value={sortShow}
                   onChange={handleInputChange}
                   className={classes.textField}
                   id="sortBy"
                   name="sortBy"
+                  InputProps={{
+                    className: classes.inputColor,
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputColor,
+                  }}
+                  SelectProps={{
+                    classes: { icon: classes.inputColor },
+                  }}
                 >
                   {sortByOptions.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
@@ -503,7 +562,7 @@ const FilterEvents = () => {
                 </TextField>
               </Grid>
               <Grid item xs={2}>
-                <Sort color="primary" />
+                <Sort color="secondary" />
               </Grid>
             </Grid>
             <div className={classes.emptyDiv} />
@@ -512,12 +571,16 @@ const FilterEvents = () => {
             <div className={classes.buttons}>
               <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 onClick={handleSearch}
               >
                 Search
               </Button>
-              <Button variant="contained" color="primary" onClick={handleClear}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleClear}
+              >
                 Clear
               </Button>
             </div>

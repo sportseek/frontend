@@ -29,6 +29,7 @@ import { PageDataType, getPages } from "pages"
 import { BUTTON_SLIDER } from "utils/constants"
 import Tooltip from "components/Common/Tooltip"
 import NavItem from "./NavItem"
+import AA from "assets/AA.png"
 
 const Root = styled("nav")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
@@ -55,7 +56,8 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     overflow: "hidden",
     paddingTop: theme.spacing(2),
-    backgroundImage: "url(https://source.unsplash.com/YGGXciK3oa8/1600x1200)",
+    backgroundImage: `url(${AA})`,
+    //backgroundImage: "url(https://source.unsplash.com/YGGXciK3oa8/1600x1200)",
   },
   drawerOpen: {
     width: theme.sidebar.width,
