@@ -100,15 +100,13 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 215,
       marginLeft: theme.spacing(2),
       marginRight: theme.spacing(2),
-    }
+    },
+    endAdornment: {
+      display: "none",
+    },
   })
 )
 
-const AutocompleteStyles = makeStyles((theme) => ({
-  endAdornment: {
-    display: "none",
-  },
-}))
 
 const sportTypes = [
   {
@@ -343,7 +341,6 @@ const FilterEvents = () => {
     }
   }
 
-  const autocompleteStyles = AutocompleteStyles()
 
   return (
     <div className={classes.root}>
@@ -394,7 +391,11 @@ const FilterEvents = () => {
               <Grid item xs={10}>
                 <Autocomplete
                   style={{ width: 300 }}
-                  classes={autocompleteStyles}
+                  classes={{
+                    inputRoot: classes.inputColor,
+                    clearIndicator: classes.inputColor,
+                    endAdornment: classes.endAdornment
+                  }}
                   getOptionLabel={(option) =>
                     typeof option === "string" ? option : option.description
                   }
