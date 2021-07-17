@@ -36,6 +36,9 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
   },
+  outlinedBtn: {
+    border: "1px solid",
+  },
 })
 
 type Props = {
@@ -145,12 +148,15 @@ const Payment: React.FC<Props> = ({
 
             <div className={classes.paymentButtonContainer}>
               <Button
+                className={classes.outlinedBtn}
+                style={{marginRight: "32px"}}
                 color="primary"
                 onClick={() => handlePaymentMethod("withoutWallet")}
               >
                 Select pay without wallet
               </Button>
               <Button
+                className={classes.outlinedBtn}
                 disabled={currentEvent.entryFee > player.wallet}
                 color="secondary"
                 onClick={() => handlePaymentMethod("withWallet")}
@@ -180,14 +186,22 @@ const Payment: React.FC<Props> = ({
         )}
         {payWithWallet && (
           <div className={classes.closeBtn}>
-            <Button color="primary" onClick={handleSubmitPayment}>
+            <Button
+              className={classes.outlinedBtn}
+              color="primary"
+              onClick={handleSubmitPayment}
+            >
               Pay with wallet
             </Button>
           </div>
         )}
         {succeeded && (
           <div className={classes.closeBtn}>
-            <Button color="primary" onClick={handleClose}>
+            <Button
+              className={classes.outlinedBtn}
+              color="primary"
+              onClick={handleClose}
+            >
               Close
             </Button>
           </div>

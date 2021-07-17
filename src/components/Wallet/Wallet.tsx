@@ -37,7 +37,7 @@ const Wallet = () => {
           color="primary"
           className={classes.cardValue}
         >
-          {`${wallet} ${euro}`}
+          {`${wallet.toFixed(2)} ${euro}`}
         </Typography>
       </CardContent>
     </Card>
