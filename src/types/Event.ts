@@ -57,8 +57,7 @@ export interface SearchEventsByCreatorPayload {
   creator: string
 }
 
-
 export interface InviteFriendsPayload {
-  friendsIds: string[],
-  eventId: string,
+  friendsIds: string[]
+  eventId: string
 }

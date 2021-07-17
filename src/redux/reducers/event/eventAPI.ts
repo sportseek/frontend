@@ -110,5 +110,5 @@ export default {
   getMinMaxPrice,
   fetchAllEventsByCreator,
   getMinMaxDate,
-  inviteFriends
+  inviteFriends,
 }
