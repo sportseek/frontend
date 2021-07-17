@@ -72,15 +72,16 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
     } else setRegistered(false)
   }, [currentEvent, currentUser._id])
 
-  const handleUpdateRegistered = () => {
-    // setRegistered(!registered)
-    // dispatch(
-    //   updateRegistered({
-    //     eventId: currentEvent._id,
-    //     registered: !registered,
-    //     fee: newEntryFee,
-    //   })
-    // )
+  const handleUpdateRegistered = (withWallet: boolean) => {
+    setRegistered(!registered)
+    dispatch(
+      updateRegistered({
+        eventId: currentEvent._id,
+        registered: !registered,
+        fee: currentEvent.entryFee,
+        withWallet,
+      })
+    )
   }
 
   const handleOpenPayment = () => {
@@ -100,7 +101,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
               <ColorButton
                 startIcon={<ThumbDownIcon />}
                 variant="contained"
-                onClick={handleOpenPayment}
+                onClick={() => handleUpdateRegistered(false)}
               >
                 Deregister
               </ColorButton>
@@ -128,7 +129,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
           </Grid>
         </Grid>
       )}
-      <StripeCheckout open={openPayment} submitSPayment={handleUpdateRegistered} closePaymentDialog={handleClosePayment} />
+      <StripeCheckout open={openPayment} submitPayment={handleUpdateRegistered} closePaymentDialog={handleClosePayment} />
     </div>
   )
 }

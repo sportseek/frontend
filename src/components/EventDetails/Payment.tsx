@@ -30,12 +30,18 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  closeBtn: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 })
 
 type Props = {
   open: boolean
   closePaymentDialog: Function
-  submitSPayment: Function
+  submitPayment: Function
 }
 
 const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY as string)
@@ -43,7 +49,7 @@ const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY as string)
 const Payment: React.FC<Props> = ({
   open,
   closePaymentDialog,
-  submitSPayment,
+  submitPayment,
 }) => {
   const classes = useStyles()
 
@@ -54,7 +60,6 @@ const Payment: React.FC<Props> = ({
   const [error, setError] = useState("")
   const [processing, setProcessing] = useState(false)
   const [disabled, setDisabled] = useState(true)
-  const [clientSecret, setClientSecret] = useState("")
   const stripe = useStripe()
   const elements = useElements()
 
@@ -62,15 +67,19 @@ const Payment: React.FC<Props> = ({
   const player = useAppSelector(selectLoggedInUser) as IPlayer
   const secretKey = useAppSelector(selectStripeClientSecretKey)
 
+  const setInitialState = () => {
+    setSucceeded(false)
+  }
+
   const handleClose = () => {
+    setInitialState()
     closePaymentDialog()
   }
 
   const handleSubmitPayment = async (ev: any) => {
-    // submitSPayment()
     ev.preventDefault()
     setProcessing(true)
-    if (stripe && elements) {
+    if (stripe && elements && !payWithWallet) {
       const payload = await stripe.confirmCardPayment(secretKey, {
         payment_method: {
           card: elements.getElement(CardElement)!,
@@ -83,7 +92,13 @@ const Payment: React.FC<Props> = ({
         setError("")
         setProcessing(false)
         setSucceeded(true)
+        submitPayment(payWithWallet)
+        setPayWithWallet(false)
       }
+    } else if (payWithWallet) {
+      submitPayment(payWithWallet)
+      setSucceeded(true)
+      setPayWithWallet(false)
     }
   }
 
@@ -96,8 +111,8 @@ const Payment: React.FC<Props> = ({
   }
 
   useEffect(() => {
-    if (currentEvent.entryFee) handleCreatePaymentIntent()
-  }, [currentEvent.entryFee])
+    if (currentEvent.entryFee && !payWithWallet) handleCreatePaymentIntent()
+  }, [currentEvent.entryFee, payWithWallet])
 
   const handleChange = async (event: any) => {
     setDisabled(event.empty)
@@ -122,7 +137,6 @@ const Payment: React.FC<Props> = ({
           <article>
             <h4>Thank you</h4>
             <h4>Your payment was successful</h4>
-            <h4>Redirection to home page shortly</h4>
           </article>
         ) : (
           <article>
@@ -134,14 +148,14 @@ const Payment: React.FC<Props> = ({
                 color="primary"
                 onClick={() => handlePaymentMethod("withoutWallet")}
               >
-                Pay without wallet
+                Select pay without wallet
               </Button>
               <Button
                 disabled={currentEvent.entryFee > player.wallet}
                 color="secondary"
                 onClick={() => handlePaymentMethod("withWallet")}
               >
-                Pay with wallet
+                Select pay with wallet
               </Button>
             </div>
 
@@ -150,18 +164,34 @@ const Payment: React.FC<Props> = ({
             <p>Test card number: 4242 4242 4242 4242</p>
           </article>
         )}
-        <form id="payment-form" onSubmit={handleSubmitPayment}>
-          <CardElement id="card-element" onChange={handleChange} />
-          <Button color="primary" type="submit" className="paymentButton">
-            Pay
-          </Button>
-          {/*  show error*/}
-          {error && (
-            <div className="card-error" role="alert">
-              {error}
-            </div>
-          )}
-        </form>
+        {!payWithWallet && !succeeded && (
+          <form id="payment-form" onSubmit={handleSubmitPayment}>
+            <CardElement id="card-element" onChange={handleChange} />
+            <Button color="primary" type="submit" className="paymentButton">
+              Pay
+            </Button>
+            {/*  show error*/}
+            {error && (
+              <div className="card-error" role="alert">
+                {error}
+              </div>
+            )}
+          </form>
+        )}
+        {payWithWallet && (
+          <div className={classes.closeBtn}>
+            <Button color="primary" onClick={handleSubmitPayment}>
+              Pay with wallet
+            </Button>
+          </div>
+        )}
+        {succeeded && (
+          <div className={classes.closeBtn}>
+            <Button color="primary" onClick={handleClose}>
+              Close
+            </Button>
+          </div>
+        )}
       </div>
     </Dialog>
   )
@@ -170,7 +200,7 @@ const Payment: React.FC<Props> = ({
 const StripeCheckout: React.FC<Props> = ({
   open,
   closePaymentDialog,
-  submitSPayment,
+  submitPayment,
 }) => {
   const classes = useStyles()
 
@@ -179,7 +209,7 @@ const StripeCheckout: React.FC<Props> = ({
       <Elements stripe={promise}>
         <Payment
           open={open}
-          submitSPayment={submitSPayment}
+          submitPayment={submitPayment}
           closePaymentDialog={closePaymentDialog}
         />
       </Elements>

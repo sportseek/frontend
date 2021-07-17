@@ -57,10 +57,7 @@ const updateInterested = async (interestedPayload: UpdateInterestedPayload) => {
 
 const updateRegistered = async (registeredPayload: UpdateRegisteredPayload) => {
   const url = `/${eventEndpoint}/updateRegistered/${registeredPayload.eventId}`
-  const response = await axios.put(url, {
-    registered: registeredPayload.registered,
-    fee: registeredPayload.fee,
-  })
+  const response = await axios.put(url, registeredPayload)
   return response
 }
 

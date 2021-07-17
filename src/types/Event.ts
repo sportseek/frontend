@@ -51,6 +51,7 @@ export interface UpdateRegisteredPayload {
   eventId: string
   registered: boolean
   fee: number
+  withWallet: boolean
 }
 
 export interface SearchEventsByCreatorPayload {
