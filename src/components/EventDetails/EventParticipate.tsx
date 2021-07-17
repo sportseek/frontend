@@ -57,14 +57,6 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
 
   const [registered, setRegistered] = useState(false)
 
-  const newEntryFee =
-    Math.round(
-      (currentEvent.entryFee /
-        ((currentEvent.minPlayers + currentEvent.maxPlayers) / 2)) *
-        100 +
-        Number.EPSILON
-    ) / 100
-
   useEffect(() => {
     if (currentEvent.registeredPlayers) {
       const isAlreadyRegistered = currentEvent.registeredPlayers.find(
@@ -81,7 +73,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
       updateRegistered({
         eventId: currentEvent._id,
         registered: !registered,
-        fee: newEntryFee,
+        fee: currentEvent.entryFee,
       })
     )
   }
