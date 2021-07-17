@@ -4,6 +4,7 @@ import {
   UpdateInterestedPayload,
   UpdateRegisteredPayload,
   SearchEventsByCreatorPayload,
+  InviteFriendsPayload,
 } from "types/Event"
 import axios from "utils/axios"
 
@@ -90,6 +91,12 @@ const getMinMaxDate = async () => {
   return response
 }
 
+const inviteFriends = async (payload: InviteFriendsPayload) => {
+  const url = `/${eventEndpoint}/inviteFriends`
+  const response = await axios.post(url, payload)
+  return response
+}
+
 export default {
   fetchById,
   update,
@@ -103,4 +110,5 @@ export default {
   getMinMaxPrice,
   fetchAllEventsByCreator,
   getMinMaxDate,
+  inviteFriends
 }

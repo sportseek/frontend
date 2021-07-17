@@ -20,7 +20,7 @@ import {
   getAllPEvents,
   selectInviteEvents,
 } from "redux/reducers/pEvent/pEventSlice"
-import { selectCurrentEvent } from "redux/reducers/event/eventSlice"
+import { inviteFriends, selectCurrentEvent } from "redux/reducers/event/eventSlice"
 
 const useStyles = makeStyles({
   root: {
@@ -76,7 +76,10 @@ export default function InviteFriendDialog(props: Props) {
   const handleSave = () => {
     if (checked.length > 0) {
       const ids = checked.map((item) => item.id)
-      dispatch(removeFriend(ids))
+      dispatch(inviteFriends({
+        friendsIds: ids,
+        eventId: currentEvent._id,
+      }))
     }
     handleClose()
   }

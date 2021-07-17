@@ -56,3 +56,9 @@ export interface UpdateRegisteredPayload {
 export interface SearchEventsByCreatorPayload {
   creator: string
 }
+
+
+export interface InviteFriendsPayload {
+  friendsIds: string[],
+  eventId: string,
+}

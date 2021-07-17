@@ -111,6 +111,7 @@ const ArenaEvents = () => {
   useEffect(() => {
     dispatch(
       getEvents({
+        ...filterPayload,
         pageNumber,
         pageSize,
       })
