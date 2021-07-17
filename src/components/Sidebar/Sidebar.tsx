@@ -29,7 +29,7 @@ import { PageDataType, getPages } from "pages"
 import { BUTTON_SLIDER } from "utils/constants"
 import Tooltip from "components/Common/Tooltip"
 import NavItem from "./NavItem"
-import AA from "assets/AA.png"
+import AA from "assets/AA2.png"
 
 const Root = styled("nav")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
