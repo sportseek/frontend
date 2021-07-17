@@ -101,7 +101,8 @@ const EditLocation: FC<Props> = (props: Props) => {
 
     if (JSON.stringify(pinPos) !== JSON.stringify(position))
       fetchAddress(pinPos)
-  }, [pinPos, position])
+    else setAddress(userAddress)
+  }, [pinPos, position, userAddress])
 
   useEffect(() => {
     if (!hasErrors && !loading) {
