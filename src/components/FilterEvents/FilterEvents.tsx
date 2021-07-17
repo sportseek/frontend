@@ -271,6 +271,13 @@ const FilterEvents = () => {
   }
 
   const handleClear = () => {
+    setEventStartTime(moment().format("YYYY-MM-DDTHH:MM"))
+    setEventEndTime(moment(maxDate).format("YYYY-MM-DDTHH:MM"))
+    setLocation(null)
+    setSortBy("start")
+    setSortShow("start")
+    setEventTitle("")
+    setSportsType("all")
     dispatch(
       getAllEvents({
         sortBy: "start",
