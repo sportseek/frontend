@@ -26,10 +26,16 @@ const ColorButton = withStyles((theme: Theme) => ({
     border: 0,
     borderRadius: 15,
     color: "white",
+    width: "200px",
     padding: "15px 40px",
-    background: "linear-gradient(45deg, #52bfff, #6242ff)",
+    backgroundImage:
+      "linear-gradient(to right, #085078 0%, #85D8CE  51%, #085078  100%)",
+    transition: "0.5s",
+    backgroundSize: "200% auto",
+    //background: "linear-gradient(45deg, #52bfff, #6242ff)",
     "&:hover": {
-      background: "linear-gradient(45deg, #29b0ff, #4b26ff)",
+      backgroundPosition: "right center",
+      //background: "linear-gradient(45deg, #29b0ff, #4b26ff)",
     },
   },
 }))(Button)
@@ -51,14 +57,6 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
 
   const [registered, setRegistered] = useState(false)
 
-  const newEntryFee =
-    Math.round(
-      (currentEvent.entryFee /
-        ((currentEvent.minPlayers + currentEvent.maxPlayers) / 2)) *
-        100 +
-        Number.EPSILON
-    ) / 100
-
   useEffect(() => {
     if (currentEvent.registeredPlayers) {
       const isAlreadyRegistered = currentEvent.registeredPlayers.find(
@@ -75,7 +73,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
       updateRegistered({
         eventId: currentEvent._id,
         registered: !registered,
-        fee: newEntryFee,
+        fee: currentEvent.entryFee,
       })
     )
   }
