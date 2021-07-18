@@ -8,7 +8,13 @@ import { InputLabel, Select, MenuItem } from "@material-ui/core"
 import moment from "moment"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
-import { createEvent, updateEvent } from "redux/reducers/event/eventSlice"
+import {
+  clearEventErrors,
+  createEvent,
+  selectEventErrors,
+  selectHasErrors,
+  updateEvent,
+} from "redux/reducers/event/eventSlice"
 import { IArenaOwner, IEvent, CreateEventPayload } from "types"
 import IconButton from "@material-ui/core/IconButton"
 import Edit from "@material-ui/icons/Edit"
@@ -86,7 +92,11 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   const classes = useStyles()
   const { onClose, open, isUpdate, selectedEvent } = props
   const user = useAppSelector(selectLoggedInUser) as IArenaOwner
+  const eventErrors = useAppSelector(selectEventErrors)
+  const hasErrors = useAppSelector(selectHasErrors)
   const dispatch = useAppDispatch()
+
+  const errors = eventErrors as IEvent
 
   const [eventImage, setEventImage] = useState<any>(null)
   const [eventTitle, setEventTitle] = useState("")
@@ -134,6 +144,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   }, [isUpdate, selectedEvent])
 
   const handleClose = () => {
+    dispatch(clearEventErrors())
     setInitailState()
     onClose()
   }
@@ -176,8 +187,10 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     } else {
       dispatch(createEvent(formData))
     }
-
-    handleClose()
+    console.log(hasErrors)
+    // if(!hasErrors) {
+    //   handleClose()
+    // }
   }
 
   const handleImageChange = (event: any) => {
@@ -237,6 +250,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               value={eventTitle}
               onChange={handleInputChange}
               className={classes.formInput}
+              error={!!errors.title}
+              helperText={errors.title}
             />
             <InputLabel id="sportType" className={classes.formInput}>
               Sport Type
@@ -273,6 +288,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               rows={3}
               onChange={handleInputChange}
               className={classes.formInput}
+              error={!!errors.description}
+              helperText={errors.description}
             />
 
             <TextField
@@ -286,6 +303,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               InputLabelProps={{
                 shrink: true,
               }}
+              error={!!errors.start}
+              helperText={errors.start}
             />
 
             <TextField
@@ -299,6 +318,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               InputLabelProps={{
                 shrink: true,
               }}
+              error={!!errors.end}
+              helperText={errors.end}
             />
 
             <TextField
@@ -311,6 +332,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               value={entryFee}
               onChange={handleInputChange}
               className={classes.formInput}
+              error={!!errors.entryFee}
+              helperText={errors.entryFee}
             />
 
             <div className={classes.eventParticipants}>
@@ -325,6 +348,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 onChange={handleInputChange}
                 className={classes.formInput}
                 style={{ marginRight: "16px" }}
+                error={!!errors.maxPlayers}
+                helperText={errors.maxPlayers}
               />
               <TextField
                 name="minimumParticipants"
@@ -336,6 +361,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 value={minimumParticipants}
                 onChange={handleInputChange}
                 className={classes.formInput}
+                error={!!errors.minPlayers}
+                helperText={errors.minPlayers}
               />
             </div>
 
