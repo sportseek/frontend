@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { updateRegistered } from "redux/reducers/event/eventSlice"
 
-import { Button, makeStyles, Theme, Typography } from "@material-ui/core"
+import { withStyles } from "@material-ui/styles"
+import { Button, makeStyles, Theme } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
 import PaymentIcon from "@material-ui/icons/Payment"
-import ThumbUpIcon from "@material-ui/icons/ThumbUp"
 import ThumbDownIcon from "@material-ui/icons/ThumbDown"
 
 import Tooltip from "components/Common/Tooltip"
@@ -15,7 +15,6 @@ import { IEvent } from "types"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 
 import EventInvite from "./EventInvite"
-import { withStyles } from "@material-ui/styles"
 import Payment from "./Payment"
 import StripeCheckout from "./Payment"
 
@@ -34,10 +33,10 @@ const ColorButton = withStyles((theme: Theme) => ({
       "linear-gradient(to right, #085078 0%, #85D8CE  51%, #085078  100%)",
     transition: "0.5s",
     backgroundSize: "200% auto",
-    //background: "linear-gradient(45deg, #52bfff, #6242ff)",
+    // background: "linear-gradient(45deg, #52bfff, #6242ff)",
     "&:hover": {
       backgroundPosition: "right center",
-      //background: "linear-gradient(45deg, #29b0ff, #4b26ff)",
+      // background: "linear-gradient(45deg, #29b0ff, #4b26ff)",
     },
   },
 }))(Button)
@@ -96,14 +95,16 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
         <Grid container spacing={3}>
           <Grid item>
             <Tooltip title="You will receive equivalent Credits.">
-              <ColorButton
-                startIcon={<ThumbDownIcon />}
-                variant="contained"
-                onClick={() => handleUpdateRegistered(false)}
-                disabled={currentEvent.status !== "active"}
-              >
-                Deregister
-              </ColorButton>
+              <span>
+                <ColorButton
+                  startIcon={<ThumbDownIcon />}
+                  variant="contained"
+                  onClick={() => handleUpdateRegistered(false)}
+                  disabled={currentEvent.status !== "active"}
+                >
+                  Deregister
+                </ColorButton>
+              </span>
             </Tooltip>
           </Grid>
           <Grid item>
@@ -114,14 +115,16 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
         <Grid container spacing={3}>
           <Grid item>
             <Tooltip title="Pay and confirm participation.">
-              <ColorButton
-                startIcon={<PaymentIcon />}
-                variant="contained"
-                onClick={handleOpenPayment}
-                disabled={currentEvent.status !== "active"}
-              >
-                Participate
-              </ColorButton>
+              <span>
+                <ColorButton
+                  startIcon={<PaymentIcon />}
+                  variant="contained"
+                  onClick={handleOpenPayment}
+                  disabled={currentEvent.status !== "active"}
+                >
+                  Participate
+                </ColorButton>
+              </span>
             </Tooltip>
           </Grid>
           <Grid item>
