@@ -100,6 +100,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
                 startIcon={<ThumbDownIcon />}
                 variant="contained"
                 onClick={() => handleUpdateRegistered(false)}
+                disabled={currentEvent.status !== "active"}
               >
                 Deregister
               </ColorButton>
@@ -117,6 +118,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
                 startIcon={<PaymentIcon />}
                 variant="contained"
                 onClick={handleOpenPayment}
+                disabled={currentEvent.status !== "active"}
               >
                 Participate
               </ColorButton>

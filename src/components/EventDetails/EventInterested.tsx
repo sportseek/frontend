@@ -79,6 +79,7 @@ const EventInterested: React.FC<Props> = ({ event: currentEvent }) => {
           startIcon={<ThumbDownIcon />}
           variant="contained"
           onClick={handleUpdateInterested}
+          disabled={currentEvent.status !== "active"}
         >
           Not Interested
         </ColorButton>
@@ -88,6 +89,7 @@ const EventInterested: React.FC<Props> = ({ event: currentEvent }) => {
             startIcon={<ThumbUpIcon />}
             variant="contained"
             onClick={handleUpdateInterested}
+            disabled={currentEvent.status !== "active"}
           >
             Interested
           </ColorButton>

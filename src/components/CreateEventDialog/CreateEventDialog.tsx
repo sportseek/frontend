@@ -14,7 +14,9 @@ import IconButton from "@material-ui/core/IconButton"
 import Edit from "@material-ui/icons/Edit"
 
 const useStyles = makeStyles({
-  createEventDialog: {},
+  createEventDialog: {
+    padding: "32px",
+  },
   eventInputs: {
     display: "flex",
     flexDirection: "column",
