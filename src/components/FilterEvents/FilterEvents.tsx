@@ -144,14 +144,6 @@ const sortByOptions = [
     id: "priceAscending",
     name: "Price: Ascending",
   },
-  // {
-  //   id: "registeredPlayersDescending",
-  //   name: "Registered Players: Descending",
-  // },
-  // {
-  //   id: "registeredPlayersAscending",
-  //   name: "Registered Players: Ascending",
-  // },
 ]
 
 const FilterEvents = () => {
@@ -328,12 +320,6 @@ const FilterEvents = () => {
         setSortValue(-1)
       } else if (value === "priceAscending") {
         setSortBy("entryFee")
-        setSortValue(1)
-      } else if (value === "registeredPlayersDescending") {
-        setSortBy("registeredPlayers")
-        setSortValue(-1)
-      } else if (value === "registeredPlayersAscending") {
-        setSortBy("registeredPlayers")
         setSortValue(1)
       } else {
         setSortBy(value)
