@@ -149,7 +149,7 @@ const Payment: React.FC<Props> = ({
             <div className={classes.paymentButtonContainer}>
               <Button
                 className={classes.outlinedBtn}
-                style={{marginRight: "32px"}}
+                style={{ marginRight: "32px" }}
                 color="primary"
                 onClick={() => handlePaymentMethod("withoutWallet")}
               >
@@ -171,7 +171,11 @@ const Payment: React.FC<Props> = ({
           </article>
         )}
         {!payWithWallet && !succeeded && (
-          <form id="payment-form" onSubmit={handleSubmitPayment} className="custom-form">
+          <form
+            id="payment-form"
+            onSubmit={handleSubmitPayment}
+            className="custom-form"
+          >
             <CardElement id="card-element" onChange={handleChange} />
             <Button color="primary" type="submit" className="paymentButton">
               Pay
