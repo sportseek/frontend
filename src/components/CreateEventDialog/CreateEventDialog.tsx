@@ -13,6 +13,7 @@ import {
   createEvent,
   selectEventErrors,
   selectHasErrors,
+  selectLoading,
   updateEvent,
 } from "redux/reducers/event/eventSlice"
 import { IArenaOwner, IEvent, CreateEventPayload } from "types"
@@ -94,6 +95,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   const user = useAppSelector(selectLoggedInUser) as IArenaOwner
   const eventErrors = useAppSelector(selectEventErrors)
   const hasErrors = useAppSelector(selectHasErrors)
+  const isLoading = useAppSelector(selectLoading)
   const dispatch = useAppDispatch()
 
   const errors = eventErrors as IEvent
@@ -149,6 +151,12 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     onClose()
   }
 
+  useEffect(() => {
+    if(!isLoading && !hasErrors) {
+      handleClose()
+    }
+  }, [isLoading, hasErrors])
+
   const handleInputChange = (e: any) => {
     const { name, value } = e.target
     if (name === "eventTitle") setEventTitle(value)
@@ -187,7 +195,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     } else {
       dispatch(createEvent(formData))
     }
-    console.log(hasErrors)
+    // console.log(hasErrors)
     // if(!hasErrors) {
     //   handleClose()
     // }
@@ -386,6 +394,18 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 Close
               </Button>
             </div>
+            {/* <div>
+              <p>Event {isUpdate ? "updated" : "created"} successfully.</p>
+              <Button
+                variant="contained"
+                color="secondary"
+                type="button"
+                className={classes.dialogBtn}
+                onClick={handleClose}
+              >
+                Close
+              </Button>
+            </div> */}
           </form>
         </div>
       </div>

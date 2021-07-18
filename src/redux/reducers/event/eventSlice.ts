@@ -33,6 +33,7 @@ interface EventState {
   hasErrors: boolean
   paymentSecretKey: string
   errors: EventErrors
+  loading: boolean
 }
 
 const initialState: EventState = {
@@ -49,6 +50,7 @@ const initialState: EventState = {
   hasErrors: false,
   paymentSecretKey: "",
   errors: {} as EventErrors,
+  loading: false
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -190,6 +192,7 @@ export const eventSlice = createSlice({
         state.reloadEvents = true
         state.hasErrors = false
         state.errors = {} as EventErrors
+        state.loading = false
       })
       .addCase(getEvents.fulfilled, (state, action) => {
         state.events = action.payload.eventList
@@ -231,16 +234,26 @@ export const eventSlice = createSlice({
           state.reloadEvents = true
           state.hasErrors = false
           state.errors = {} as EventErrors
+          state.loading = false
         }
       )
       .addMatcher(
         isAnyOf(createEvent.rejected, updateEvent.rejected),
         (state, action) => {
-          console.log(action.payload)
           const errs =
             action.payload === undefined ? ServerErrors : action.payload
           state.errors = errs as EventErrors
           state.hasErrors = true
+          state.loading = false
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          createEvent.pending,
+          updateEvent.pending
+        ),
+        (state) => {
+          state.loading = true
         }
       )
   },
@@ -264,5 +277,5 @@ export const selectEventErrors = (state: RootState) => state.event.errors
 export const selectHasErrors = (state: RootState) => state.event.hasErrors
 
 export const { clearEventDetails, setCurEventId, clearEventErrors } = eventSlice.actions
-
+export const selectLoading = (state: RootState) => state.event.loading
 export default eventSlice.reducer
