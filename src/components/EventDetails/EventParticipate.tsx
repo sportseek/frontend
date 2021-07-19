@@ -76,8 +76,6 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
 
   const currentUser = useAppSelector(selectLoggedInUser)
 
-  console.log(conflict)
-
   const [registered, setRegistered] = useState(false)
   const [openPayment, setOpenPayment] = useState(false)
   const [snackbarOpen, setsnackbarOpen] = React.useState(false)
@@ -159,21 +157,21 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
                 >
                   Participate
                 </ColorButton>
-                {conflict ? (
-                  <Snackbar
-                    open={snackbarOpen}
-                    autoHideDuration={6000}
-                    onClose={handleSnackbarClose}
-                  >
-                    <Alert onClose={handleSnackbarClose} severity="warning">
-                      WARNING: Event overlaps with another registered event!
-                    </Alert>
-                  </Snackbar>
-                ) : (
-                  ""
-                )}
               </span>
             </Tooltip>
+            {conflict ? (
+              <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+              >
+                <Alert onClose={handleSnackbarClose} severity="warning">
+                  WARNING: Event overlaps with another registered event!
+                </Alert>
+              </Snackbar>
+            ) : (
+              ""
+            )}
           </Grid>
           <Grid item>
             <EventInvite registered={registered} />
