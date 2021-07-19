@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react"
 
 import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { updateRegistered } from "redux/reducers/event/eventSlice"
+import {
+  updateRegistered,
+  selectEventConflict,
+  regConflict,
+} from "redux/reducers/event/eventSlice"
 
 import { withStyles } from "@material-ui/styles"
 import { Button, makeStyles, Theme } from "@material-ui/core"
@@ -17,6 +21,9 @@ import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import EventInvite from "./EventInvite"
 import Payment from "./Payment"
 import StripeCheckout from "./Payment"
+
+import Snackbar from "@material-ui/core/Snackbar"
+import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"
 
 type Props = {
   event: IEvent
@@ -41,6 +48,10 @@ const ColorButton = withStyles((theme: Theme) => ({
   },
 }))(Button)
 
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />
+}
+
 const useStyles = makeStyles({
   participate: {
     background: "linear-gradient(45deg, #52bfff, #6242ff)",
@@ -54,10 +65,33 @@ const useStyles = makeStyles({
 const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
   const classes = useStyles()
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if (currentEvent._id) {
+      dispatch(regConflict(currentEvent._id))
+    }
+  }, [currentEvent._id])
+
+  const conflict = useAppSelector(selectEventConflict)
+
   const currentUser = useAppSelector(selectLoggedInUser)
+
+  console.log(conflict)
 
   const [registered, setRegistered] = useState(false)
   const [openPayment, setOpenPayment] = useState(false)
+  const [snackbarOpen, setsnackbarOpen] = React.useState(false)
+
+  const handleSnackbarClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return
+    }
+
+    setsnackbarOpen(false)
+  }
 
   useEffect(() => {
     if (currentEvent.registeredPlayers) {
@@ -82,6 +116,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
   }
 
   const handleOpenPayment = () => {
+    setsnackbarOpen(true)
     setOpenPayment(true)
   }
 
@@ -102,7 +137,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
                   onClick={() => handleUpdateRegistered(false)}
                   disabled={currentEvent.status !== "active"}
                 >
-                  Deregister
+                  {registered ? "Deregister" : "Participate"}
                 </ColorButton>
               </span>
             </Tooltip>
@@ -124,6 +159,19 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
                 >
                   Participate
                 </ColorButton>
+                {conflict ? (
+                  <Snackbar
+                    open={snackbarOpen}
+                    autoHideDuration={6000}
+                    onClose={handleSnackbarClose}
+                  >
+                    <Alert onClose={handleSnackbarClose} severity="warning">
+                      WARNING: Event overlaps with another registered event!
+                    </Alert>
+                  </Snackbar>
+                ) : (
+                  ""
+                )}
               </span>
             </Tooltip>
           </Grid>

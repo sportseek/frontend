@@ -136,13 +136,16 @@ const EventInvite: React.FC<PropsComp> = ({ registered: registered }) => {
       ) : (
         <div>
           <Tooltip title="You can invite if you have added friends and registered for the event">
-            <Button
-              startIcon={<PeopleIcon />}
-              className={classes.inviteDisabled}
-              variant="contained"
-            >
-              Invite Friends
-            </Button>
+            <span>
+              <Button
+                startIcon={<PeopleIcon />}
+                className={classes.inviteDisabled}
+                variant="contained"
+                disabled
+              >
+                Invite Friends
+              </Button>
+            </span>
           </Tooltip>
         </div>
       )}

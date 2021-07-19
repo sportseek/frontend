@@ -29,6 +29,7 @@ interface EventState {
   totalArenaEvents: number
   hasError: boolean
   paymentSecretKey: string
+  eventConflict: boolean
 }
 
 const initialState: EventState = {
@@ -44,6 +45,7 @@ const initialState: EventState = {
   totalArenaEvents: 0,
   hasError: false,
   paymentSecretKey: "",
+  eventConflict: false,
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -150,6 +152,14 @@ export const createPaymentIntent = createAsyncThunk(
   }
 )
 
+export const regConflict = createAsyncThunk(
+  "event/regConflict",
+  async (eventId: string) => {
+    const response = await eventAPI.regConflict(eventId)
+    return response.data
+  }
+)
+
 export const eventSlice = createSlice({
   name: "event",
   initialState,
@@ -204,6 +214,9 @@ export const eventSlice = createSlice({
       .addCase(createPaymentIntent.fulfilled, (state, action) => {
         state.paymentSecretKey = action.payload.secretKey
       })
+      .addCase(regConflict.fulfilled, (state, action) => {
+        state.eventConflict = action.payload.eventConflict
+      })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
         (state) => {
@@ -227,6 +240,8 @@ export const selectEventMaxDate = (state: RootState) => state.event.maxDate
 export const selectEventMinDate = (state: RootState) => state.event.minDate
 export const selectStripeClientSecretKey = (state: RootState) =>
   state.event.paymentSecretKey
+export const selectEventConflict = (state: RootState) =>
+  state.event.eventConflict
 
 export const { clearEventDetails, setCurEventId } = eventSlice.actions
 
