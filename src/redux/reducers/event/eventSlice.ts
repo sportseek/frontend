@@ -14,7 +14,10 @@ import {
   InviteFriendsPayload,
   PaymentIntentPayload,
 } from "types/Event"
+import { ServerErrors } from "utils/constants"
 import eventAPI from "./eventAPI"
+
+type EventErrors = IEvent | []
 
 interface EventState {
   curEventId: string
@@ -27,8 +30,10 @@ interface EventState {
   maxDate: string
   minDate: string
   totalArenaEvents: number
-  hasError: boolean
+  hasErrors: boolean
   paymentSecretKey: string
+  errors: EventErrors
+  loading: boolean
 }
 
 const initialState: EventState = {
@@ -42,8 +47,10 @@ const initialState: EventState = {
   maxDate: "",
   minDate: "",
   totalArenaEvents: 0,
-  hasError: false,
+  hasErrors: false,
   paymentSecretKey: "",
+  errors: {} as EventErrors,
+  loading: false
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -56,17 +63,27 @@ export const fetchEventById = createAsyncThunk(
 
 export const updateEvent = createAsyncThunk(
   "event/update",
-  async (event: any) => {
-    const response = await eventAPI.update(event.payload, event.eventId)
-    return response.data
+  async (event: any, { rejectWithValue }) => {
+    try {
+      const response = await eventAPI.update(event.payload, event.eventId)
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return rejectWithValue(err.response.data)
+    }
   }
 )
 
 export const createEvent = createAsyncThunk(
   "events/create",
-  async (payload: any) => {
-    const response = await eventAPI.create(payload)
-    return response.data
+  async (payload: any, { rejectWithValue }) => {
+    try {
+      const response = await eventAPI.create(payload)
+      return response.data
+    } catch (err) {
+      if (!err.response) throw err
+      return rejectWithValue(err.response.data)
+    }
   }
 )
 
@@ -160,6 +177,10 @@ export const eventSlice = createSlice({
     clearEventDetails: (state) => {
       state.curEventId = ""
     },
+    clearEventErrors: (state) => {
+      state.hasErrors = false
+      state.errors = {} as EventErrors
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -169,6 +190,9 @@ export const eventSlice = createSlice({
       .addCase(updateEvent.fulfilled, (state, action) => {
         state.currentEvent = action.payload.event
         state.reloadEvents = true
+        state.hasErrors = false
+        state.errors = {} as EventErrors
+        state.loading = false
       })
       .addCase(getEvents.fulfilled, (state, action) => {
         state.events = action.payload.eventList
@@ -199,7 +223,7 @@ export const eventSlice = createSlice({
         state.maxDate = action.payload.maxEvent.start
       })
       .addCase(inviteFriends.fulfilled, (state, action) => {
-        state.hasError = false
+        state.hasErrors = false
       })
       .addCase(createPaymentIntent.fulfilled, (state, action) => {
         state.paymentSecretKey = action.payload.secretKey
@@ -208,6 +232,28 @@ export const eventSlice = createSlice({
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
         (state) => {
           state.reloadEvents = true
+          state.hasErrors = false
+          state.errors = {} as EventErrors
+          state.loading = false
+        }
+      )
+      .addMatcher(
+        isAnyOf(createEvent.rejected, updateEvent.rejected),
+        (state, action) => {
+          const errs =
+            action.payload === undefined ? ServerErrors : action.payload
+          state.errors = errs as EventErrors
+          state.hasErrors = true
+          state.loading = false
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          createEvent.pending,
+          updateEvent.pending
+        ),
+        (state) => {
+          state.loading = true
         }
       )
   },
@@ -227,7 +273,9 @@ export const selectEventMaxDate = (state: RootState) => state.event.maxDate
 export const selectEventMinDate = (state: RootState) => state.event.minDate
 export const selectStripeClientSecretKey = (state: RootState) =>
   state.event.paymentSecretKey
+export const selectEventErrors = (state: RootState) => state.event.errors
+export const selectHasErrors = (state: RootState) => state.event.hasErrors
 
-export const { clearEventDetails, setCurEventId } = eventSlice.actions
-
+export const { clearEventDetails, setCurEventId, clearEventErrors } = eventSlice.actions
+export const selectLoading = (state: RootState) => state.event.loading
 export default eventSlice.reducer

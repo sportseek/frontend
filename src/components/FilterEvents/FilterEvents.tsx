@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField"
 import MenuItem from "@material-ui/core/MenuItem"
 import Slider from "@material-ui/core/Slider"
 import { LocationOn, SportsBasketball, Search, Sort } from "@material-ui/icons"
-import { Button, InputAdornment } from "@material-ui/core"
+import { Button } from "@material-ui/core"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   getAllEvents,
@@ -55,7 +55,8 @@ const useStyles = makeStyles((theme: Theme) =>
     drawerPaper: {
       width: theme.filterbar.width,
       background: theme.filterbar.background,
-      overflow: "hidden",
+      overflowX: "hidden",
+      overflowY: "auto",
       zIndex: 600,
     },
     // necessary for content to be below app bar
@@ -106,7 +107,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 )
-
 
 const sportTypes = [
   {
@@ -327,7 +327,6 @@ const FilterEvents = () => {
     }
   }
 
-  
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -380,7 +379,7 @@ const FilterEvents = () => {
                   classes={{
                     inputRoot: classes.inputColor,
                     clearIndicator: classes.inputColor,
-                    endAdornment: classes.endAdornment,
+                    popupIndicator: classes.inputColor,
                   }}
                   getOptionLabel={(option) =>
                     typeof option === "string" ? option : option.description
