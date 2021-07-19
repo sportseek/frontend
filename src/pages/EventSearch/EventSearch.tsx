@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState, useRef } from "react"
 import { makeStyles, createStyles } from "@material-ui/core/styles"
 import { Grid, Grow, Theme } from "@material-ui/core"
 import Helmet from "react-helmet"
@@ -18,6 +18,9 @@ import {
   selectEventMaxDate,
 } from "redux/reducers/event/eventSlice"
 import moment from "moment"
+import Fab from "@material-ui/core/Fab"
+import ArrowUp from "@material-ui/icons/KeyboardArrowUp"
+import Tooltip from "components/Common/Tooltip"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,10 +34,32 @@ const useStyles = makeStyles((theme: Theme) =>
       flex: 1,
       display: "flex",
     },
+    fab: {
+      position: "fixed",
+      bottom: theme.spacing(5),
+      right: theme.spacing(40),
+    },
+    grid: {
+      overflow: "auto"
+    }
   })
 )
 
 const EventSearch = () => {
+
+  
+  const useMountEffect = (fun: any) => useEffect(fun, [])
+  
+  const myRef = useRef<null | HTMLDivElement>(null)
+
+  const executeScroll = () => {
+     myRef.current!.scrollIntoView({
+       behavior: 'smooth',
+     }) 
+  }
+  useMountEffect(executeScroll)
+
+
   const classes = useStyles()
 
   const dispatch = useAppDispatch()
@@ -85,32 +110,48 @@ const EventSearch = () => {
   }, [eventId, goBack, gotoEventDetails])
 
   return (
-    <div className={classes.root}>
-      <TabPanel value={tabIndex} index={0}>
+    <div className={classes.root} >
+      <div>
+      <TabPanel value={tabIndex} index={0} >
         <Helmet title="Search events" />
+
         <main className={classes.content}>
-          <Grid
-            container
-            spacing={4}
-            justify="space-around"
-            alignItems="center"
-          >
-            {allEvents.map((item, index) => (
-              <Grow
-                in
-                key={`${item._id} ${index}`}
-                style={{ transformOrigin: "0 0 0" }}
-                timeout={1000 + index * 150}
-              >
-                <Grid item xs={12} md={6} lg={4}>
-                  <EventCard event={item} openDetails={gotoEventDetails} />
-                </Grid>
-              </Grow>
-            ))}
-          </Grid>
+          <div ref={myRef}/>
+            <Grid
+              container
+              spacing={4}
+              justify="space-around"
+              alignItems="center"
+              
+              className={classes.grid}
+            >
+              {allEvents.map((item, index) => (
+                <Grow
+                  in
+                  key={`${item._id} ${index}`}
+                  style={{ transformOrigin: "0 0 0" }}
+                  timeout={1000 + index * 150}
+                >
+                  <Grid item xs={12} md={6} lg={4}>
+                    <EventCard event={item} openDetails={gotoEventDetails} />
+                  </Grid>
+                </Grow>
+              ))}
+            </Grid>
+          
         </main>
         <FilterEvents />
+        <Tooltip title="Go to Top">
+        <Fab
+          color="secondary"
+          onClick={executeScroll}
+          className={classes.fab}
+        >
+          <ArrowUp />
+        </Fab>
+        </Tooltip>
       </TabPanel>
+      </div>
       <TabPanel value={tabIndex} index={1}>
         <EventDetailsView
           goBack={goBack}
