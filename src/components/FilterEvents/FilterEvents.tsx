@@ -24,7 +24,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import parse from "autosuggest-highlight/parse"
 import throttle from "lodash/throttle"
 import Geocode from "utils/geoCodeUtils"
-import KeyboardDateTimePicker from "@material-ui/pickers"
+import { DateTimePicker, KeyboardDateTimePicker } from "@material-ui/pickers"
 
 const autocompleteService = { current: null }
 
@@ -327,7 +327,7 @@ const FilterEvents = () => {
     }
   }
 
-
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -380,7 +380,7 @@ const FilterEvents = () => {
                   classes={{
                     inputRoot: classes.inputColor,
                     clearIndicator: classes.inputColor,
-                    endAdornment: classes.endAdornment
+                    endAdornment: classes.endAdornment,
                   }}
                   getOptionLabel={(option) =>
                     typeof option === "string" ? option : option.description
@@ -448,6 +448,7 @@ const FilterEvents = () => {
                 <LocationOn color="secondary" />
               </Grid>
             </Grid>
+            <div className={classes.emptyDiv} />
             <Grid container spacing={2} alignItems="flex-end">
               <Grid item xs={10}>
                 <TextField
@@ -501,7 +502,21 @@ const FilterEvents = () => {
                     className: classes.inputColor,
                   }}
                 />
+                {/* <KeyboardDateTimePicker
+                  id="eventStartTime"
+                  value={eventStartTime}
+                  onChange={handleInputChange}
+                  label="From Date/Time"
+                  InputProps={{
+                    className: classes.inputColor,
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputColor,
+                  }}
+                  format="YYYY-MM-DD HH:MM"
+                /> */}
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   label="To Date/Time"
@@ -519,6 +534,20 @@ const FilterEvents = () => {
                     className: classes.inputColor,
                   }}
                 />
+
+                {/* <KeyboardDateTimePicker
+                  id="eventEndTime"
+                  value={eventEndTime}
+                  onChange={handleInputChange}
+                  label="To Date/Time"
+                  InputProps={{
+                    className: classes.inputColor,
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputColor,
+                  }}
+                  format="YYYY-MM-DD HH:MM"
+                /> */}
               </Grid>
             </Grid>
             <div className={classes.emptyDiv} />
