@@ -35,6 +35,7 @@ interface EventState {
   eventConflict: boolean
   errors: EventErrors
   loading: boolean
+  totalEvents: number
 }
 
 const initialState: EventState = {
@@ -53,6 +54,7 @@ const initialState: EventState = {
   eventConflict: false,
   errors: {} as EventErrors,
   loading: false,
+  totalEvents:0
 }
 
 export const fetchEventById = createAsyncThunk(
@@ -211,6 +213,7 @@ export const eventSlice = createSlice({
       })
       .addCase(getAllEvents.fulfilled, (state, action) => {
         state.allEvents = action.payload.eventList
+        state.totalEvents = action.payload.totalEvents
         state.reloadEvents = false
       })
       .addCase(updateInterested.fulfilled, (state, action) => {
@@ -281,6 +284,7 @@ export const selectEventMinPrice = (state: RootState) => state.event.minPrice
 export const selectAllEventsByCreator = (state: RootState) => state.event.events
 export const selectEventMaxDate = (state: RootState) => state.event.maxDate
 export const selectEventMinDate = (state: RootState) => state.event.minDate
+export const selectTotalEvents = (state: RootState) => state.event.totalEvents
 export const selectStripeClientSecretKey = (state: RootState) =>
   state.event.paymentSecretKey
 export const selectEventConflict = (state: RootState) =>
