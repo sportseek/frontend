@@ -146,7 +146,11 @@ const sortByOptions = [
   },
 ]
 
-const FilterEvents = () => {
+type Props = {
+  getEventFilterPayload: Function
+}
+
+const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
   const [lat, setLat] = React.useState<number>(0)
   const [lng, setLng] = React.useState<number>(0)
 
@@ -165,7 +169,7 @@ const FilterEvents = () => {
   }
 
   const classes = useStyles()
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
 
   const [location, setLocation] = React.useState<PlaceType | null>(null)
   const [inputLoc, setInputLoc] = React.useState("")
@@ -270,18 +274,20 @@ const FilterEvents = () => {
   }
 
   const handleSearch = () => {
-    dispatch(
-      getAllEvents({
-        eventTitle,
-        sportType: sportsType === "all" ? "" : sportsType,
-        eventStartTime: new Date(eventStartTime).toISOString(),
-        eventEndTime: new Date(eventEndTime).toISOString(),
-        eventFee,
-        location: lat === 0 ? "" : { lat, lng },
-        sortBy,
-        sortValue,
-      })
-    )
+    getEventFilterPayload({
+      eventTitle,
+      sportType: sportsType === "all" ? "" : sportsType,
+      eventStartTime: eventStartTime
+        ? new Date(eventStartTime).toISOString()
+        : "",
+      eventEndTime: eventEndTime ? new Date(eventEndTime).toISOString() : "",
+      eventFee,
+      location: lat === 0 ? "" : { lat, lng },
+      sortBy,
+      sortValue,
+    })
+    // dispatch(
+    // )
   }
 
   const handleClear = () => {
@@ -292,18 +298,21 @@ const FilterEvents = () => {
     setSortShow("start")
     setEventTitle("")
     setSportsType("all")
-    dispatch(
-      getAllEvents({
-        eventStartTime: new Date(
-          moment().format("YYYY-MM-DDTHH:MM")
-        ).toISOString(),
-        eventEndTime: new Date(
-          moment(maxDate).format("YYYY-MM-DDTHH:MM")
-        ).toISOString(),
-        sortBy: "start",
-        sortValue: 1,
-      })
-    )
+    getEventFilterPayload({
+      eventStartTime: new Date(
+        moment().format("YYYY-MM-DDTHH:MM")
+      ).toISOString(),
+      eventEndTime: new Date(
+        moment(maxDate).format("YYYY-MM-DDTHH:MM")
+      ).toISOString(),
+      sortBy: "start",
+      sortValue: 1,
+    })
+    // dispatch(
+    //   getAllEvents({
+
+    //   })
+    // )
   }
 
   const handleInputChange = (e: any) => {

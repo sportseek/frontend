@@ -24,6 +24,7 @@ import ArrowUp from "@material-ui/icons/KeyboardArrowUp"
 import Tooltip from "components/Common/Tooltip"
 import Pagination from "@material-ui/lab/Pagination"
 import { IEvent } from "types"
+import { SearchEventPayload } from "types/Event"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -66,7 +67,7 @@ const EventSearch = () => {
   const totalEvents = useAppSelector(selectTotalEvents)
   const [tabIndex, setTabIndex] = useState(0)
   const [page, setPage] = React.useState(1)
-
+  const [filterPayload, setFilterPayload] = useState<SearchEventPayload>({})
   const pageSize = 9
 
   const gotoEventDetails = useCallback(
@@ -83,13 +84,29 @@ const EventSearch = () => {
   }, [dispatch])
 
   useEffect(() => {
+    setPage(1)
+  }, [totalEvents])
+
+  useEffect(() => {
     dispatch(getMinMaxDate())
   }, [dispatch])
 
   useEffect(() => {
     if (maxDate) {
+      setFilterPayload({
+        eventStartTime: new Date(
+          moment().format("YYYY-MM-DDTHH:MM")
+        ).toISOString(),
+        eventEndTime: new Date(
+          moment(maxDate).format("YYYY-MM-DDTHH:MM")
+        ).toISOString(),
+        sortBy: "start",
+        sortValue: 1,
+      })
+
       dispatch(
         getAllEvents({
+          // ...filterPayload,
           eventStartTime: new Date(
             moment().format("YYYY-MM-DDTHH:MM")
           ).toISOString(),
@@ -118,16 +135,28 @@ const EventSearch = () => {
     setPage(value)
     dispatch(
       getAllEvents({
-        eventStartTime: new Date(
-          moment().format("YYYY-MM-DDTHH:MM")
-        ).toISOString(),
-        eventEndTime: new Date(
-          moment(maxDate).format("YYYY-MM-DDTHH:MM")
-        ).toISOString(),
-        sortBy: "start",
-        sortValue: 1,
+        ...filterPayload,
+        // eventStartTime: new Date(
+        //   moment().format("YYYY-MM-DDTHH:MM")
+        // ).toISOString(),
+        // eventEndTime: new Date(
+        //   moment(maxDate).format("YYYY-MM-DDTHH:MM")
+        // ).toISOString(),
+        // sortBy: "start",
+        // sortValue: 1,
         pageNumber: value,
         pageSize,
+      })
+    )
+  }
+
+  const getEventFilterPayload = (payload: SearchEventPayload) => {
+    setFilterPayload(payload)
+    dispatch(
+      getAllEvents({
+        ...payload,
+        pageNumber: 1,
+        pageSize: 9,
       })
     )
   }
@@ -169,7 +198,7 @@ const EventSearch = () => {
               </Grid>
             </Grid>
           </main>
-          <FilterEvents />
+          <FilterEvents getEventFilterPayload={getEventFilterPayload} />
           <Tooltip title="Go to Top">
             <Fab
               color="secondary"
