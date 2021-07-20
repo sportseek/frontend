@@ -129,6 +129,8 @@ const Payment: React.FC<Props> = ({
 
   return (
     <Dialog
+      // fullWidth
+      // maxWidth="md"
       onClose={handleClose}
       aria-labelledby="simple-dialog-title"
       open={open}
@@ -223,15 +225,13 @@ const StripeCheckout: React.FC<Props> = ({
   const classes = useStyles()
 
   return (
-    <div style={{ width: "40vw" }}>
-      <Elements stripe={promise}>
-        <Payment
-          open={open}
-          submitPayment={submitPayment}
-          closePaymentDialog={closePaymentDialog}
-        />
-      </Elements>
-    </div>
+    <Elements stripe={promise}>
+      <Payment
+        open={open}
+        submitPayment={submitPayment}
+        closePaymentDialog={closePaymentDialog}
+      />
+    </Elements>
   )
 }
 

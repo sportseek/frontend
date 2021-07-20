@@ -8,6 +8,7 @@ import {
   selectAllEventsByCreator,
   setCurEventId,
 } from "redux/reducers/event/eventSlice"
+import moment from "moment"
 
 type Props = {
   event: IEvent
@@ -19,7 +20,14 @@ const EventsByCreator: React.FC<Props> = ({ event: currentEvent }) => {
 
   useEffect(() => {
     if (currentEvent.creator)
-      dispatch(fetchAllEventsByCreator({ creator: currentEvent.creator }))
+      dispatch(
+        fetchAllEventsByCreator({
+          creator: currentEvent.creator,
+          eventStartTime: new Date(
+            moment().format("YYYY-MM-DDTHH:MM")
+          ).toISOString(),
+        })
+      )
   }, [dispatch, currentEvent.creator])
 
   const gotoEventDetails = useCallback(
