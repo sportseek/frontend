@@ -14,7 +14,7 @@ cd
 ```
 ### `npm install`
 
-## Running the application
+# Running the application
 
 In the project directory, you can run:
 
