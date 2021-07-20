@@ -51,7 +51,7 @@ const AddPersonalEventFormDialog = (props: FormProps) => {
 
   const validationErrors = errors as PEventPayload
 
-  React.useEffect(() => {
+  useEffect(() => {
     setPEvent((p) => ({
       ...p,
       start: moment(start).toISOString(),

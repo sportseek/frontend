@@ -10,9 +10,8 @@ import MenuItem from "@material-ui/core/MenuItem"
 import Slider from "@material-ui/core/Slider"
 import { LocationOn, SportsBasketball, Search, Sort } from "@material-ui/icons"
 import { Button } from "@material-ui/core"
-import { useAppDispatch, useAppSelector } from "redux/hooks"
+import { useAppSelector } from "redux/hooks"
 import {
-  getAllEvents,
   selectEventMaxPrice,
   selectEventMinPrice,
   selectEventMaxDate,
@@ -24,7 +23,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import parse from "autosuggest-highlight/parse"
 import throttle from "lodash/throttle"
 import Geocode from "utils/geoCodeUtils"
-import { DateTimePicker, KeyboardDateTimePicker } from "@material-ui/pickers"
 
 const autocompleteService = { current: null }
 
@@ -225,7 +223,7 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
     setEventEndTime(moment(maxDate).format("YYYY-MM-DDTHH:MM"))
   }, [maxDate])
 
-  React.useEffect(() => {
+  useEffect(() => {
     let active = true
 
     if (!autocompleteService.current && (window as any).google) {

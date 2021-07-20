@@ -60,7 +60,7 @@ export default function InviteFriendDialog(props: Props) {
 
   const { open: openDialog, handleClose, friends = [] } = props
   const [checked, setChecked] = React.useState<FrdDetails[]>([])
-  const [canInvite, setCanInvite] = React.useState(false)
+  // const [canInvite, setCanInvite] = React.useState(false)
 
   const handleToggle = (value: FrdDetails) => () => {
     const currentIndex = checked.findIndex((item) => item.email === value.email)

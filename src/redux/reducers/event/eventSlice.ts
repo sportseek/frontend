@@ -5,7 +5,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit"
 import { RootState } from "redux/store"
-import { IEvent, CreateEventPayload } from "types"
+import { IEvent } from "types"
 import {
   SearchEventPayload,
   UpdateInterestedPayload,
@@ -235,7 +235,7 @@ export const eventSlice = createSlice({
         state.minDate = action.payload.minEvent.start
         state.maxDate = action.payload.maxEvent.start
       })
-      .addCase(inviteFriends.fulfilled, (state, action) => {
+      .addCase(inviteFriends.fulfilled, (state) => {
         state.hasErrors = false
       })
       .addCase(createPaymentIntent.fulfilled, (state, action) => {
