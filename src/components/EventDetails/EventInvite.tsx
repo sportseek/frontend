@@ -123,6 +123,9 @@ const EventInvite: React.FC<PropsComp> = ({ registered: registered }) => {
               startIcon={<PeopleIcon />}
               onClick={handleClickRemove}
               variant="contained"
+              disabled={
+                currentEvent.registeredPlayers.length == currentEvent.maxPlayers
+              }
             >
               Invite Friends
             </ColorButton>
@@ -136,13 +139,16 @@ const EventInvite: React.FC<PropsComp> = ({ registered: registered }) => {
       ) : (
         <div>
           <Tooltip title="You can invite if you have added friends and registered for the event">
-            <Button
-              startIcon={<PeopleIcon />}
-              className={classes.inviteDisabled}
-              variant="contained"
-            >
-              Invite Friends
-            </Button>
+            <span>
+              <Button
+                startIcon={<PeopleIcon />}
+                className={classes.inviteDisabled}
+                variant="contained"
+                disabled
+              >
+                Invite Friends
+              </Button>
+            </span>
           </Tooltip>
         </div>
       )}

@@ -32,6 +32,7 @@ interface EventState {
   totalArenaEvents: number
   hasErrors: boolean
   paymentSecretKey: string
+  eventConflict: boolean
   errors: EventErrors
   loading: boolean
   totalEvents: number
@@ -50,6 +51,7 @@ const initialState: EventState = {
   totalArenaEvents: 0,
   hasErrors: false,
   paymentSecretKey: "",
+  eventConflict: false,
   errors: {} as EventErrors,
   loading: false,
   totalEvents:0
@@ -169,6 +171,14 @@ export const createPaymentIntent = createAsyncThunk(
   }
 )
 
+export const regConflict = createAsyncThunk(
+  "event/regConflict",
+  async (eventId: string) => {
+    const response = await eventAPI.regConflict(eventId)
+    return response.data
+  }
+)
+
 export const eventSlice = createSlice({
   name: "event",
   initialState,
@@ -182,7 +192,7 @@ export const eventSlice = createSlice({
     clearEventErrors: (state) => {
       state.hasErrors = false
       state.errors = {} as EventErrors
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -231,6 +241,9 @@ export const eventSlice = createSlice({
       .addCase(createPaymentIntent.fulfilled, (state, action) => {
         state.paymentSecretKey = action.payload.secretKey
       })
+      .addCase(regConflict.fulfilled, (state, action) => {
+        state.eventConflict = action.payload.eventConflict
+      })
       .addMatcher(
         isAnyOf(createEvent.fulfilled, cancelEvent.fulfilled),
         (state) => {
@@ -251,10 +264,7 @@ export const eventSlice = createSlice({
         }
       )
       .addMatcher(
-        isAnyOf(
-          createEvent.pending,
-          updateEvent.pending
-        ),
+        isAnyOf(createEvent.pending, updateEvent.pending),
         (state) => {
           state.loading = true
         }
@@ -277,9 +287,12 @@ export const selectEventMinDate = (state: RootState) => state.event.minDate
 export const selectTotalEvents = (state: RootState) => state.event.totalEvents
 export const selectStripeClientSecretKey = (state: RootState) =>
   state.event.paymentSecretKey
+export const selectEventConflict = (state: RootState) =>
+  state.event.eventConflict
 export const selectEventErrors = (state: RootState) => state.event.errors
 export const selectHasErrors = (state: RootState) => state.event.hasErrors
 
-export const { clearEventDetails, setCurEventId, clearEventErrors } = eventSlice.actions
+export const { clearEventDetails, setCurEventId, clearEventErrors } =
+  eventSlice.actions
 export const selectLoading = (state: RootState) => state.event.loading
 export default eventSlice.reducer

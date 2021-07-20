@@ -39,10 +39,10 @@ const EventDetails: React.FC<Props> = (props: Props) => {
   const dispatch = useAppDispatch()
   const currentArena = useAppSelector(selectCurrentArena)
 
-  useEffect(() => {
-    if (currentEvent.creator)
-      dispatch(fetchAllEventsByCreator({ creator: currentEvent.creator }))
-  }, [dispatch, currentEvent.creator])
+  // useEffect(() => {
+  //   if (currentEvent.creator)
+  //     dispatch(fetchAllEventsByCreator({ creator: currentEvent.creator }))
+  // }, [dispatch, currentEvent.creator])
 
   useEffect(() => {
     if (currentEvent.creator) dispatch(fetchArenaById(currentEvent.creator))
@@ -110,7 +110,7 @@ const EventDetails: React.FC<Props> = (props: Props) => {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="h5" gutterBottom>
-          Other events hosted by {currentArena.arenaName}
+          Some other events hosted by {currentArena.arenaName}
         </Typography>
       </Grid>
       <Grid item xs={12}>

@@ -56,6 +56,7 @@ export interface UpdateRegisteredPayload {
 
 export interface SearchEventsByCreatorPayload {
   creator: string
+  eventStartTime: string
 }
 
 export interface InviteFriendsPayload {

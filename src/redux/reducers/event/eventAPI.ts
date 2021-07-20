@@ -101,6 +101,12 @@ const createPaymentIntent = async (payload: PaymentIntentPayload) => {
   return response
 }
 
+const regConflict = async (eventId: string) => {
+  const url = `/${eventEndpoint}/regConflict/${eventId}`
+  const response = await axios.post(url)
+  return response
+}
+
 export default {
   fetchById,
   update,
@@ -116,4 +122,5 @@ export default {
   getMinMaxDate,
   inviteFriends,
   createPaymentIntent,
+  regConflict,
 }
