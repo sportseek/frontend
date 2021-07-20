@@ -564,13 +564,15 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
                 <Typography gutterBottom className={classes.inputColor}>
                   Price Range (€)
                 </Typography>
+                <div className={classes.emptyDiv} />
+                <div className={classes.emptyDiv} />
                 <Slider
                   className={classes.slider}
                   value={eventFee}
                   max={maxPrice}
                   min={minPrice}
                   onChange={handleChangePrice}
-                  valueLabelDisplay="auto"
+                  valueLabelDisplay="on"
                   aria-labelledby="range-slider"
                   getAriaValueText={valuetext}
                   id="eventFee"
