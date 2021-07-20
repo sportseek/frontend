@@ -123,6 +123,9 @@ const EventInvite: React.FC<PropsComp> = ({ registered: registered }) => {
               startIcon={<PeopleIcon />}
               onClick={handleClickRemove}
               variant="contained"
+              disabled={
+                currentEvent.registeredPlayers.length == currentEvent.maxPlayers
+              }
             >
               Invite Friends
             </ColorButton>

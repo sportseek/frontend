@@ -153,7 +153,11 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
                   startIcon={<PaymentIcon />}
                   variant="contained"
                   onClick={handleOpenPayment}
-                  disabled={currentEvent.status !== "active"}
+                  disabled={
+                    currentEvent.status !== "active" ||
+                    currentEvent.registeredPlayers.length ==
+                      currentEvent.maxPlayers
+                  }
                 >
                   Participate
                 </ColorButton>
