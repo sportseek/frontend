@@ -16,11 +16,14 @@ import {
   selectCurrentEventId,
   setCurEventId,
   selectEventMaxDate,
+  selectTotalEvents,
 } from "redux/reducers/event/eventSlice"
 import moment from "moment"
 import Fab from "@material-ui/core/Fab"
 import ArrowUp from "@material-ui/icons/KeyboardArrowUp"
 import Tooltip from "components/Common/Tooltip"
+import Pagination from "@material-ui/lab/Pagination"
+import { IEvent } from "types"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,26 +42,20 @@ const useStyles = makeStyles((theme: Theme) =>
       bottom: theme.spacing(5),
       right: theme.spacing(40),
     },
-    grid: {
-      overflow: "auto"
-    }
   })
 )
 
 const EventSearch = () => {
-
-  
   const useMountEffect = (fun: any) => useEffect(fun, [])
-  
+
   const myRef = useRef<null | HTMLDivElement>(null)
 
   const executeScroll = () => {
-     myRef.current!.scrollIntoView({
-       behavior: 'smooth',
-     }) 
+    myRef.current!.scrollIntoView({
+      behavior: "smooth",
+    })
   }
   useMountEffect(executeScroll)
-
 
   const classes = useStyles()
 
@@ -66,7 +63,11 @@ const EventSearch = () => {
   const allEvents = useAppSelector(selectAllEvents)
   const maxDate = useAppSelector(selectEventMaxDate)
   const eventId = useAppSelector(selectCurrentEventId)
+  const totalEvents = useAppSelector(selectTotalEvents)
   const [tabIndex, setTabIndex] = useState(0)
+  const [page, setPage] = React.useState(1)
+
+  const pageSize = 9
 
   const gotoEventDetails = useCallback(
     (id: string) => {
@@ -97,11 +98,12 @@ const EventSearch = () => {
           ).toISOString(),
           sortBy: "start",
           sortValue: 1,
+          pageNumber: page,
+          pageSize: pageSize,
         })
       )
     }
     dispatch(getMinMaxPrice())
-    // dispatch(getMinMaxDate())
   }, [dispatch, tabIndex, maxDate])
 
   useEffect(() => {
@@ -109,21 +111,40 @@ const EventSearch = () => {
     else goBack()
   }, [eventId, goBack, gotoEventDetails])
 
-  return (
-    <div className={classes.root} >
-      <div>
-      <TabPanel value={tabIndex} index={0} >
-        <Helmet title="Search events" />
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value)
+    dispatch(
+      getAllEvents({
+        eventStartTime: new Date(
+          moment().format("YYYY-MM-DDTHH:MM")
+        ).toISOString(),
+        eventEndTime: new Date(
+          moment(maxDate).format("YYYY-MM-DDTHH:MM")
+        ).toISOString(),
+        sortBy: "start",
+        sortValue: 1,
+        pageNumber: value,
+        pageSize,
+      })
+    )
+  }
 
-        <main className={classes.content}>
-          <div ref={myRef}/>
+  return (
+    <div className={classes.root}>
+      <div>
+        <TabPanel value={tabIndex} index={0}>
+          <Helmet title="Search events" />
+
+          <main className={classes.content}>
+            <div ref={myRef} />
             <Grid
               container
               spacing={4}
               justify="space-around"
               alignItems="center"
-              
-              className={classes.grid}
             >
               {allEvents.map((item, index) => (
                 <Grow
@@ -137,20 +158,28 @@ const EventSearch = () => {
                   </Grid>
                 </Grow>
               ))}
+              <Grid container spacing={4} justify="center" alignItems="center">
+                <Grid item xs={12} md={12} lg={12}>
+                  <Pagination
+                    count={Math.ceil(totalEvents / pageSize)}
+                    page={page}
+                    onChange={handlePageChange}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
-          
-        </main>
-        <FilterEvents />
-        <Tooltip title="Go to Top">
-        <Fab
-          color="secondary"
-          onClick={executeScroll}
-          className={classes.fab}
-        >
-          <ArrowUp />
-        </Fab>
-        </Tooltip>
-      </TabPanel>
+          </main>
+          <FilterEvents />
+          <Tooltip title="Go to Top">
+            <Fab
+              color="secondary"
+              onClick={executeScroll}
+              className={classes.fab}
+            >
+              <ArrowUp />
+            </Fab>
+          </Tooltip>
+        </TabPanel>
       </div>
       <TabPanel value={tabIndex} index={1}>
         <EventDetailsView
