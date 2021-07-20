@@ -47,17 +47,6 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const EventSearch = () => {
-  const useMountEffect = (fun: any) => useEffect(fun, [fun])
-
-  const myRef = useRef<null | HTMLDivElement>(null)
-
-  const executeScroll = () => {
-    myRef.current!.scrollIntoView({
-      behavior: "smooth",
-    })
-  }
-  useMountEffect(executeScroll)
-
   const classes = useStyles()
 
   const dispatch = useAppDispatch()
@@ -69,6 +58,16 @@ const EventSearch = () => {
   const [page, setPage] = React.useState(1)
   const [filterPayload, setFilterPayload] = useState<SearchEventPayload>({})
   const pageSize = 9
+
+  const rootDivRef = useRef<HTMLDivElement>(null)
+  const useMountEffect = (scroll: any) => useEffect(scroll, [scroll])
+
+  const executeScroll = () => {
+    if (rootDivRef && rootDivRef.current)
+      rootDivRef.current.scrollIntoView({
+        behavior: "smooth",
+      })
+  }
 
   const gotoEventDetails = useCallback(
     (id: string) => {
@@ -82,6 +81,8 @@ const EventSearch = () => {
     setTabIndex(0)
     dispatch(setCurEventId(""))
   }, [dispatch])
+
+  useMountEffect(executeScroll)
 
   useEffect(() => {
     setPage(1)
@@ -136,14 +137,6 @@ const EventSearch = () => {
     dispatch(
       getAllEvents({
         ...filterPayload,
-        // eventStartTime: new Date(
-        //   moment().format("YYYY-MM-DDTHH:MM")
-        // ).toISOString(),
-        // eventEndTime: new Date(
-        //   moment(maxDate).format("YYYY-MM-DDTHH:MM")
-        // ).toISOString(),
-        // sortBy: "start",
-        // sortValue: 1,
         pageNumber: value,
         pageSize,
       })
@@ -162,13 +155,12 @@ const EventSearch = () => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} ref={rootDivRef}>
       <div>
         <TabPanel value={tabIndex} index={0}>
           <Helmet title="Search events" />
 
           <main className={classes.content}>
-            <div ref={myRef} />
             <Grid
               container
               spacing={4}
