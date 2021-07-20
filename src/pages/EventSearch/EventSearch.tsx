@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const EventSearch = () => {
-  const useMountEffect = (fun: any) => useEffect(fun, [])
+  const useMountEffect = (fun: any) => useEffect(fun, [fun])
 
   const myRef = useRef<null | HTMLDivElement>(null)
 
@@ -116,12 +116,12 @@ const EventSearch = () => {
           sortBy: "start",
           sortValue: 1,
           pageNumber: page,
-          pageSize: pageSize,
+          pageSize,
         })
       )
     }
     dispatch(getMinMaxPrice())
-  }, [dispatch, tabIndex, maxDate])
+  }, [dispatch, tabIndex, maxDate, page])
 
   useEffect(() => {
     if (eventId) gotoEventDetails(eventId)
@@ -175,7 +175,7 @@ const EventSearch = () => {
               justify="space-around"
               alignItems="center"
             >
-              {allEvents.map((item, index) => (
+              {allEvents.map((item: IEvent, index: number) => (
                 <Grow
                   in
                   key={`${item._id} ${index}`}
@@ -188,8 +188,9 @@ const EventSearch = () => {
                 </Grow>
               ))}
               <Grid container spacing={4} justify="center" alignItems="center">
-                <Grid item xs={12} md={12} lg={12}>
+                <Grid item>
                   <Pagination
+                    color="secondary"
                     count={Math.ceil(totalEvents / pageSize)}
                     page={page}
                     onChange={handlePageChange}
