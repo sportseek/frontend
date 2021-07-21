@@ -152,7 +152,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   }
 
   useEffect(() => {
-    if(!isLoading && !hasErrors) {
+    if (!isLoading && !hasErrors) {
       handleClose()
     }
   }, [isLoading, hasErrors])
