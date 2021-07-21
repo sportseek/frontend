@@ -2,7 +2,7 @@ import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
 import Dialog from "@material-ui/core/Dialog"
-import { useAppDispatch } from "redux/hooks"
+import { useAppDispatch, useAppSelector } from "redux/hooks"
 import Avatar from "@material-ui/core/Avatar"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogContent from "@material-ui/core/DialogContent"
@@ -13,8 +13,15 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemAvatar from "@material-ui/core/ListItemAvatar"
-import { removeFriend } from "redux/reducers/user/userSlice"
 import Checkbox from "@material-ui/core/Checkbox"
+import {
+  getAllPEvents,
+  selectInviteEvents,
+} from "redux/reducers/pEvent/pEventSlice"
+import {
+  inviteFriends,
+  selectCurrentEvent,
+} from "redux/reducers/event/eventSlice"
 import { FrdDetails } from "../PlayerFriends/AddFriendDialog"
 
 const useStyles = makeStyles({
@@ -34,8 +41,26 @@ type Props = {
 export default function InviteFriendDialog(props: Props) {
   const classes = useStyles()
   const dispatch = useAppDispatch()
+  const currentEvent = useAppSelector(selectCurrentEvent)
+  React.useEffect(() => {
+    dispatch(
+      getAllPEvents({
+        eventStartTime: currentEvent.start?.toString(),
+        eventEndTime: currentEvent.end?.toString(),
+      })
+    )
+  }, [currentEvent, dispatch])
+
+  const pEvents = useAppSelector(selectInviteEvents)
+
+  const pEventMap = new Map()
+  pEvents.forEach((value) => {
+    pEventMap.set(value.creator, true)
+  })
+
   const { open: openDialog, handleClose, friends = [] } = props
   const [checked, setChecked] = React.useState<FrdDetails[]>([])
+  // const [canInvite, setCanInvite] = React.useState(false)
 
   const handleToggle = (value: FrdDetails) => () => {
     const currentIndex = checked.findIndex((item) => item.email === value.email)
@@ -53,7 +78,12 @@ export default function InviteFriendDialog(props: Props) {
   const handleSave = () => {
     if (checked.length > 0) {
       const ids = checked.map((item) => item.id)
-      dispatch(removeFriend(ids))
+      dispatch(
+        inviteFriends({
+          friendsIds: ids,
+          eventId: currentEvent._id,
+        })
+      )
     }
     handleClose()
   }
@@ -88,6 +118,7 @@ export default function InviteFriendDialog(props: Props) {
                       ) !== -1
                     }
                     inputProps={{ "aria-labelledby": labelId }}
+                    disabled={pEventMap.has(value.id)}
                   />
                 </ListItemSecondaryAction>
               </ListItem>
@@ -101,7 +132,7 @@ export default function InviteFriendDialog(props: Props) {
           color="primary"
           disabled={checked.length === 0}
         >
-          Remove
+          Invite
         </Button>
         <Button onClick={handleClose} color="primary">
           Cancel

@@ -76,7 +76,7 @@ const EditLocation: FC<Props> = (props: Props) => {
   const { updatePos, open, setOpen, position, userAddress } = props
 
   const [pinPos, setPinPos] = useState<ILocation>(position)
-  const [address, setAddress] = useState<IAddress>(userAddress)
+  const [address, setAddress] = useState<IAddress>({} as IAddress)
 
   const globalErrors = useAppSelector(selectUserErrors)
 
@@ -101,7 +101,12 @@ const EditLocation: FC<Props> = (props: Props) => {
 
     if (JSON.stringify(pinPos) !== JSON.stringify(position))
       fetchAddress(pinPos)
-  }, [pinPos, position])
+  }, [pinPos, position, userAddress])
+
+  useEffect(() => {
+    if (open) setAddress(userAddress)
+    else setAddress({} as IAddress)
+  }, [open, userAddress])
 
   useEffect(() => {
     if (!hasErrors && !loading) {

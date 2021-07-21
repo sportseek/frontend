@@ -38,6 +38,8 @@ export interface SearchEventPayload {
   location?: any
   sortBy?: string
   sortValue?: number
+  pageSize?: number
+  pageNumber?: number
 }
 
 export interface UpdateInterestedPayload {
@@ -49,8 +51,19 @@ export interface UpdateRegisteredPayload {
   eventId: string
   registered: boolean
   fee: number
+  withWallet: boolean
 }
 
 export interface SearchEventsByCreatorPayload {
   creator: string
+  eventStartTime: string
+}
+
+export interface InviteFriendsPayload {
+  friendsIds: string[]
+  eventId: string
+}
+
+export interface PaymentIntentPayload {
+  amount: number
 }

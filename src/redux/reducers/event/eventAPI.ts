@@ -4,6 +4,8 @@ import {
   UpdateInterestedPayload,
   UpdateRegisteredPayload,
   SearchEventsByCreatorPayload,
+  InviteFriendsPayload,
+  PaymentIntentPayload,
 } from "types/Event"
 import axios from "utils/axios"
 
@@ -15,14 +17,14 @@ const fetchById = async (id: string) => {
   return response
 }
 
-const create = async (payload: CreateEventPayload) => {
+const create = async (payload: any) => {
   const url = `/${eventEndpoint}/create`
   const response = await axios.post(url, payload)
   return response
 }
 
-const update = async (event: CreateEventPayload) => {
-  const url = `/${eventEndpoint}/update/${event._id}`
+const update = async (event: any, eventId: string) => {
+  const url = `/${eventEndpoint}/update/${eventId}`
   const response = await axios.put(url, event)
   return response
 }
@@ -33,9 +35,9 @@ const cancel = async (eventId: string) => {
   return response
 }
 
-const fetchEventList = async () => {
+const fetchEventList = async (payload: SearchEventPayload) => {
   const url = `/${eventEndpoint}/fetchEventList`
-  const response = await axios.get(url)
+  const response = await axios.post(url, payload)
   return response
 }
 
@@ -55,10 +57,7 @@ const updateInterested = async (interestedPayload: UpdateInterestedPayload) => {
 
 const updateRegistered = async (registeredPayload: UpdateRegisteredPayload) => {
   const url = `/${eventEndpoint}/updateRegistered/${registeredPayload.eventId}`
-  const response = await axios.put(url, {
-    registered: registeredPayload.registered,
-    fee: registeredPayload.fee,
-  })
+  const response = await axios.put(url, registeredPayload)
   return response
 }
 
@@ -90,6 +89,24 @@ const getMinMaxDate = async () => {
   return response
 }
 
+const inviteFriends = async (payload: InviteFriendsPayload) => {
+  const url = `/${eventEndpoint}/inviteFriends`
+  const response = await axios.post(url, payload)
+  return response
+}
+
+const createPaymentIntent = async (payload: PaymentIntentPayload) => {
+  const url = `/${eventEndpoint}/createPaymentIntent`
+  const response = await axios.post(url, payload)
+  return response
+}
+
+const regConflict = async (eventId: string) => {
+  const url = `/${eventEndpoint}/regConflict/${eventId}`
+  const response = await axios.post(url)
+  return response
+}
+
 export default {
   fetchById,
   update,
@@ -103,4 +120,7 @@ export default {
   getMinMaxPrice,
   fetchAllEventsByCreator,
   getMinMaxDate,
+  inviteFriends,
+  createPaymentIntent,
+  regConflict,
 }

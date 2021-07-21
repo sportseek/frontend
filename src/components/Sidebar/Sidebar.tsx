@@ -28,6 +28,8 @@ import { selectUserType } from "redux/reducers/auth/authSlice"
 import { PageDataType, getPages } from "pages"
 import { BUTTON_SLIDER } from "utils/constants"
 import Tooltip from "components/Common/Tooltip"
+import sidebarBG from "assets/sidebarBG.png"
+
 import NavItem from "./NavItem"
 
 const Root = styled("nav")(({ theme }) => ({
@@ -55,7 +57,8 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     overflow: "hidden",
     paddingTop: theme.spacing(2),
-    backgroundImage: "url(https://source.unsplash.com/YGGXciK3oa8/1600x1200)",
+    backgroundImage: `url(${sidebarBG})`,
+    // backgroundImage: "url(https://source.unsplash.com/YGGXciK3oa8/1600x1200)",
   },
   drawerOpen: {
     width: theme.sidebar.width,

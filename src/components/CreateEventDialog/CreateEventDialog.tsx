@@ -8,8 +8,17 @@ import { InputLabel, Select, MenuItem } from "@material-ui/core"
 import moment from "moment"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
-import { createEvent, updateEvent } from "redux/reducers/event/eventSlice"
+import {
+  clearEventErrors,
+  createEvent,
+  selectEventErrors,
+  selectHasErrors,
+  selectLoading,
+  updateEvent,
+} from "redux/reducers/event/eventSlice"
 import { IArenaOwner, IEvent, CreateEventPayload } from "types"
+import IconButton from "@material-ui/core/IconButton"
+import Edit from "@material-ui/icons/Edit"
 
 const useStyles = makeStyles({
   createEventDialog: {
@@ -46,6 +55,20 @@ const useStyles = makeStyles({
   dialogBtn: {
     marginTop: "24px",
   },
+  imageWrapper: {
+    textAlign: "center",
+    position: "relative",
+  },
+  profileImage: {
+    objectFit: "cover",
+    maxWidth: "100%",
+    maxHeight: "200px",
+  },
+  profileImgButton: {
+    position: "absolute",
+    top: "80%",
+    left: "70%",
+  },
 })
 
 export interface CreateEventDialogProps {
@@ -70,8 +93,14 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   const classes = useStyles()
   const { onClose, open, isUpdate, selectedEvent } = props
   const user = useAppSelector(selectLoggedInUser) as IArenaOwner
+  const eventErrors = useAppSelector(selectEventErrors)
+  const hasErrors = useAppSelector(selectHasErrors)
+  const isLoading = useAppSelector(selectLoading)
   const dispatch = useAppDispatch()
 
+  const errors = eventErrors as IEvent
+
+  const [eventImage, setEventImage] = useState<any>(null)
   const [eventTitle, setEventTitle] = useState("")
   const [sportType, setSportType] = useState("")
   const [eventDescription, setEventDescription] = useState("")
@@ -85,6 +114,23 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   const [maximumParticipants, setMaximumParticipants] = useState("")
   const [minimumParticipants, setMinimumParticipants] = useState("")
 
+  const defaultImage =
+    "https://res.cloudinary.com/fshahriar008/image/upload/v1609701702/user_bccush.png"
+  const [imageUrl, setImageUrl] = useState(defaultImage)
+  const hidden = true
+
+  const setInitailState = () => {
+    setEventTitle("")
+    setSportType("")
+    setEventDescription("")
+    setEventStartTime(moment().format("YYYY-MM-DDTHH:MM"))
+    setEventEndTime(moment().format("YYYY-MM-DDTHH:MM"))
+    setEntryFee("")
+    setMaximumParticipants("")
+    setMinimumParticipants("")
+    setImageUrl(defaultImage)
+  }
+
   useEffect(() => {
     if (isUpdate && selectedEvent) {
       setEventTitle(selectedEvent.title as string)
@@ -95,12 +141,21 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
       setEntryFee(selectedEvent.entryFee.toString())
       setMaximumParticipants(selectedEvent.maxPlayers.toString())
       setMinimumParticipants(selectedEvent.minPlayers.toString())
+      setImageUrl(selectedEvent.eventImageUrl)
     }
   }, [isUpdate, selectedEvent])
 
   const handleClose = () => {
+    dispatch(clearEventErrors())
+    setInitailState()
     onClose()
   }
+
+  useEffect(() => {
+    if(!isLoading && !hasErrors) {
+      handleClose()
+    }
+  }, [isLoading, hasErrors])
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target
@@ -117,26 +172,50 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   const handleCreateEvent = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const payload: CreateEventPayload = {
-      creator: user._id,
-      title: eventTitle,
-      sportType: sportType,
-      description: eventDescription,
-      start: new Date(eventStartTime).toISOString(),
-      end: new Date(eventEndTime).toISOString(),
-      entryFee: +entryFee,
-      maxPlayers: +maximumParticipants,
-      minPlayers: +minimumParticipants,
-    }
+    const formData = new FormData()
+    formData.append("image", eventImage)
+    formData.append("creator", user._id)
+    formData.append("title", eventTitle)
+    formData.append("sportType", sportType)
+    formData.append("description", eventDescription)
+    formData.append("start", new Date(eventStartTime).toISOString())
+    formData.append("end", new Date(eventEndTime).toISOString())
+    formData.append("entryFee", entryFee)
+    formData.append("maxPlayers", maximumParticipants)
+    formData.append("minPlayers", minimumParticipants)
 
     if (isUpdate && selectedEvent) {
-      payload._id = selectedEvent._id
-      dispatch(updateEvent(payload))
+      formData.append("_id", selectedEvent._id)
+      dispatch(
+        updateEvent({
+          payload: formData,
+          eventId: selectedEvent._id,
+        })
+      )
     } else {
-      dispatch(createEvent(payload))
+      dispatch(createEvent(formData))
     }
+    // console.log(hasErrors)
+    // if(!hasErrors) {
+    //   handleClose()
+    // }
+  }
 
-    handleClose()
+  const handleImageChange = (event: any) => {
+    const image = event.target.files[0]
+    let src = URL.createObjectURL(event.target.files[0])
+    let preview: any = document.getElementById("event-image-preview")
+    preview.src = src
+    setImageUrl(src)
+    setEventImage(image)
+    // api call
+    const formData = new FormData()
+    formData.append("image", image)
+    // dispatch(updateProfilePic(formData))
+  }
+  const handleEditPicture = () => {
+    const fileInput = document.getElementById("eventImageInput")
+    fileInput?.click()
   }
 
   return (
@@ -151,6 +230,23 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
         </DialogTitle>
         <div className={classes.eventInputs}>
           <form onSubmit={handleCreateEvent}>
+            <div className={classes.imageWrapper}>
+              <img
+                src={imageUrl}
+                id="event-image-preview"
+                alt="event"
+                className={classes.profileImage}
+              />
+              <input
+                type="file"
+                id="eventImageInput"
+                hidden={hidden}
+                onChange={handleImageChange}
+              />
+              <IconButton color="primary" onClick={handleEditPicture}>
+                <Edit />
+              </IconButton>
+            </div>
             <TextField
               autoComplete="title"
               name="eventTitle"
@@ -162,6 +258,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               value={eventTitle}
               onChange={handleInputChange}
               className={classes.formInput}
+              error={!!errors.title}
+              helperText={errors.title}
             />
             <InputLabel id="sportType" className={classes.formInput}>
               Sport Type
@@ -198,6 +296,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               rows={3}
               onChange={handleInputChange}
               className={classes.formInput}
+              error={!!errors.description}
+              helperText={errors.description}
             />
 
             <TextField
@@ -211,6 +311,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               InputLabelProps={{
                 shrink: true,
               }}
+              error={!!errors.start}
+              helperText={errors.start}
             />
 
             <TextField
@@ -224,6 +326,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               InputLabelProps={{
                 shrink: true,
               }}
+              error={!!errors.end}
+              helperText={errors.end}
             />
 
             <TextField
@@ -236,6 +340,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               value={entryFee}
               onChange={handleInputChange}
               className={classes.formInput}
+              error={!!errors.entryFee}
+              helperText={errors.entryFee}
             />
 
             <div className={classes.eventParticipants}>
@@ -249,6 +355,9 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 value={maximumParticipants}
                 onChange={handleInputChange}
                 className={classes.formInput}
+                style={{ marginRight: "16px" }}
+                error={!!errors.maxPlayers}
+                helperText={errors.maxPlayers}
               />
               <TextField
                 name="minimumParticipants"
@@ -260,6 +369,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 value={minimumParticipants}
                 onChange={handleInputChange}
                 className={classes.formInput}
+                error={!!errors.minPlayers}
+                helperText={errors.minPlayers}
               />
             </div>
 
@@ -275,7 +386,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
 
               <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 type="button"
                 className={classes.dialogBtn}
                 onClick={handleClose}
@@ -283,6 +394,18 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 Close
               </Button>
             </div>
+            {/* <div>
+              <p>Event {isUpdate ? "updated" : "created"} successfully.</p>
+              <Button
+                variant="contained"
+                color="secondary"
+                type="button"
+                className={classes.dialogBtn}
+                onClick={handleClose}
+              >
+                Close
+              </Button>
+            </div> */}
           </form>
         </div>
       </div>

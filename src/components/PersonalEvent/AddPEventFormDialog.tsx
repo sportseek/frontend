@@ -22,7 +22,6 @@ import Errorbar from "components/Common/Errorbar"
 
 type FormProps = {
   open: boolean
-  userId: string
   slotInfo: SlotInfo
   goBack: () => void
   handleClose: () => void
@@ -34,14 +33,12 @@ const AddPersonalEventFormDialog = (props: FormProps) => {
     handleClose,
     goBack,
     slotInfo: { start, end },
-    userId,
   } = props
 
   const dispatch = useAppDispatch()
 
   const [pEvent, setPEvent] = useState<PEventPayload>({
     title: "",
-    creator: userId,
     description: "",
     start: "",
     end: "",
@@ -54,7 +51,7 @@ const AddPersonalEventFormDialog = (props: FormProps) => {
 
   const validationErrors = errors as PEventPayload
 
-  React.useEffect(() => {
+  useEffect(() => {
     setPEvent((p) => ({
       ...p,
       start: moment(start).toISOString(),

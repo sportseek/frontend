@@ -29,7 +29,6 @@ type Props = {
 
 const EventDetails: React.FC<Props> = (props: Props) => {
   const { event: currentEvent } = props
-  const newEntryFee = currentEvent.entryFee / currentEvent.minPlayers
 
   const mainFeaturedPost = {
     title: currentEvent.title,
@@ -40,10 +39,10 @@ const EventDetails: React.FC<Props> = (props: Props) => {
   const dispatch = useAppDispatch()
   const currentArena = useAppSelector(selectCurrentArena)
 
-  useEffect(() => {
-    if (currentEvent.creator)
-      dispatch(fetchAllEventsByCreator({ creator: currentEvent.creator }))
-  }, [dispatch, currentEvent.creator])
+  // useEffect(() => {
+  //   if (currentEvent.creator)
+  //     dispatch(fetchAllEventsByCreator({ creator: currentEvent.creator }))
+  // }, [dispatch, currentEvent.creator])
 
   useEffect(() => {
     if (currentEvent.creator) dispatch(fetchArenaById(currentEvent.creator))
@@ -72,7 +71,7 @@ const EventDetails: React.FC<Props> = (props: Props) => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h5">
-              <b>Entry Fee</b>: {newEntryFee} {euro}
+              <b>Entry Fee</b>: {currentEvent.entryFee} {euro}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -87,8 +86,14 @@ const EventDetails: React.FC<Props> = (props: Props) => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1">
-              Credits earned if event is cancelled: {newEntryFee * 0.99}, Rev:{" "}
-              {currentEvent.revenue}
+              Amount received if event is cancelled: {currentEvent.entryFee},
+              Rev: {currentEvent.revenue}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">
+              Amount received if you Deregister from the event:{" "}
+              {Math.floor(currentEvent.entryFee * 0.99)}
             </Typography>
           </Grid>
         </Grid>
@@ -105,7 +110,7 @@ const EventDetails: React.FC<Props> = (props: Props) => {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="h5" gutterBottom>
-          Other events hosted by {currentArena.arenaName}
+          Some other events hosted by {currentArena.arenaName}
         </Typography>
       </Grid>
       <Grid item xs={12}>

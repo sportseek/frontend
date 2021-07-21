@@ -22,6 +22,8 @@ import { getUserName } from "utils/stringUtils"
 import Tooltip from "components/Common/Tooltip"
 import NotificationComponent from "components/Notification"
 
+import SSLogo from "assets/sslogo6.png"
+
 const useStyles = makeStyles((theme: Theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
@@ -35,6 +37,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
+  },
+  logo: {
+    height: 60,
+    width: 205,
   },
 }))
 
@@ -89,11 +95,11 @@ const HeaderFC = () => {
             <Menu />
           </IconButton>
         </Hidden>
-        <Typography variant="h6" noWrap>
-          SportSeek
-        </Typography>
+        <Toolbar>
+          <img src={SSLogo} alt="logo" className={classes.logo} />
+        </Toolbar>
         <Filler />
-        <IconButton disabled>
+        <IconButton disableRipple disableFocusRipple disableTouchRipple>
           <Avatar alt={name} src={profileImageUrl} className={classes.avatar}>
             {firstLetterOfName}
           </Avatar>

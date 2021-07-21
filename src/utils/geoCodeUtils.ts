@@ -4,6 +4,17 @@ import { IAddress, ILocation } from "types"
 Geocode.setApiKey(process.env.GEOCODE_API as string)
 Geocode.setLanguage("en")
 
+const getLatLngFromAddress = async (address: string) => {
+  const location = await Geocode.fromAddress(address)
+    .then((response) => response.results[0].geometry.location)
+    .catch((error) => {
+      console.error(error)
+      return null
+    })
+
+  return location
+}
+
 const generateAddressFromLocation = async (location: ILocation) => {
   const lat = String(location.lat)
   const lng = String(location.lng)
@@ -44,6 +55,6 @@ const getAddress = async (location: ILocation) => {
   return newAddress
 }
 
-export { getAddress, generateAddressFromLocation }
+export { getAddress, generateAddressFromLocation, getLatLngFromAddress }
 
 export default Geocode

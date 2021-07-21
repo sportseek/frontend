@@ -8,6 +8,7 @@ export interface INotification {
   description: string
   createdAt: string
   unreadStatus: boolean
+  eventId: string
 }
 
 export interface ReadNotificationPayload {
