@@ -13,6 +13,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions"
 import IconButton from "@material-ui/core/IconButton"
 import CloseIcon from "@material-ui/icons/Close"
 import Typography from "@material-ui/core/Typography"
+import Info from "@material-ui/icons/Info"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -85,18 +86,14 @@ const AddPersonalEventDialog = (props: Props) => {
           Add Event
         </DialogTitle>
         <DialogContent dividers>
+          <Info color="secondary"/>
           <Typography gutterBottom>
-            You can add your schedule when you are not available for any sport,
-            so if your friends wants to invite you they will know that you are
-            unavilable
-          </Typography>
-          <Typography gutterBottom>
-            Click Ok to make the time slots editable, you can drag to select
-            multiple time slots, after selecting slots you can create event
-          </Typography>
-          <Typography gutterBottom>
-            You can go to month view, if you are unavilable for days and set the
-            schedule there
+            If you are not available during a certain time, you can add it into
+            the calendar.
+            <p />
+            This will make sure friends cannot invite you during that time.
+            <p />
+            Multiple time slots can be selected by dragging.
           </Typography>
         </DialogContent>
         <DialogActions>

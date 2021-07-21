@@ -8,7 +8,7 @@ import {
 } from "redux/reducers/event/eventSlice"
 
 import { withStyles } from "@material-ui/styles"
-import { Button, makeStyles, Theme } from "@material-ui/core"
+import { Button } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
 import PaymentIcon from "@material-ui/icons/Payment"
 import ThumbDownIcon from "@material-ui/icons/ThumbDown"
@@ -17,19 +17,17 @@ import Tooltip from "components/Common/Tooltip"
 
 import { IEvent } from "types"
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
-
-import EventInvite from "./EventInvite"
-import Payment from "./Payment"
-import StripeCheckout from "./Payment"
-
 import Snackbar from "@material-ui/core/Snackbar"
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"
+
+import EventInvite from "./EventInvite"
+import StripeCheckout from "./Payment"
 
 type Props = {
   event: IEvent
 }
 
-const ColorButton = withStyles((theme: Theme) => ({
+const ColorButton = withStyles(() => ({
   root: {
     border: 0,
     borderRadius: 15,
@@ -52,25 +50,15 @@ function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
-const useStyles = makeStyles({
-  participate: {
-    background: "linear-gradient(45deg, #52bfff, #6242ff)",
-    border: 0,
-    borderRadius: 15,
-    color: "white",
-    padding: "15px 40px",
-  },
-})
-
 const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
-  const classes = useStyles()
+  
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (currentEvent._id) {
       dispatch(regConflict(currentEvent._id))
     }
-  }, [currentEvent._id])
+  }, [currentEvent._id, dispatch])
 
   const conflict = useAppSelector(selectEventConflict)
 
@@ -99,7 +87,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
       if (isAlreadyRegistered) setRegistered(true)
       else setRegistered(false)
     } else setRegistered(false)
-  }, [currentEvent, currentUser._id])
+  }, [currentEvent.registeredPlayers, currentUser._id])
 
   const handleUpdateRegistered = (withWallet: boolean) => {
     setRegistered(!registered)
@@ -155,7 +143,7 @@ const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
                   onClick={handleOpenPayment}
                   disabled={
                     currentEvent.status !== "active" ||
-                    currentEvent.registeredPlayers.length ==
+                    currentEvent.registeredPlayers.length ===
                       currentEvent.maxPlayers
                   }
                 >

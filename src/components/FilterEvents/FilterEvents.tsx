@@ -10,9 +10,8 @@ import MenuItem from "@material-ui/core/MenuItem"
 import Slider from "@material-ui/core/Slider"
 import { LocationOn, SportsBasketball, Search, Sort } from "@material-ui/icons"
 import { Button } from "@material-ui/core"
-import { useAppDispatch, useAppSelector } from "redux/hooks"
+import { useAppSelector } from "redux/hooks"
 import {
-  getAllEvents,
   selectEventMaxPrice,
   selectEventMinPrice,
   selectEventMaxDate,
@@ -96,6 +95,14 @@ const useStyles = makeStyles((theme: Theme) =>
           display: "none",
         },
     },
+    slider: {
+      width: 215,
+      marginLeft: theme.spacing(2),
+      marginRight: theme.spacing(2),
+    },
+    endAdornment: {
+      display: "none",
+    },
   })
 )
 
@@ -135,17 +142,13 @@ const sortByOptions = [
     id: "priceAscending",
     name: "Price: Ascending",
   },
-  // {
-  //   id: "registeredPlayersDescending",
-  //   name: "Registered Players: Descending",
-  // },
-  // {
-  //   id: "registeredPlayersAscending",
-  //   name: "Registered Players: Ascending",
-  // },
 ]
 
-const FilterEvents = () => {
+type Props = {
+  getEventFilterPayload: Function
+}
+
+const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
   const [lat, setLat] = React.useState<number>(0)
   const [lng, setLng] = React.useState<number>(0)
 
@@ -164,7 +167,7 @@ const FilterEvents = () => {
   }
 
   const classes = useStyles()
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
 
   const [location, setLocation] = React.useState<PlaceType | null>(null)
   const [inputLoc, setInputLoc] = React.useState("")
@@ -220,7 +223,7 @@ const FilterEvents = () => {
     setEventEndTime(moment(maxDate).format("YYYY-MM-DDTHH:MM"))
   }, [maxDate])
 
-  React.useEffect(() => {
+  useEffect(() => {
     let active = true
 
     if (!autocompleteService.current && (window as any).google) {
@@ -269,18 +272,20 @@ const FilterEvents = () => {
   }
 
   const handleSearch = () => {
-    dispatch(
-      getAllEvents({
-        eventTitle,
-        sportType: sportsType === "all" ? "" : sportsType,
-        eventStartTime: new Date(eventStartTime).toISOString(),
-        eventEndTime: new Date(eventEndTime).toISOString(),
-        eventFee,
-        location: lat === 0 ? "" : { lat, lng },
-        sortBy,
-        sortValue,
-      })
-    )
+    getEventFilterPayload({
+      eventTitle,
+      sportType: sportsType === "all" ? "" : sportsType,
+      eventStartTime: eventStartTime
+        ? new Date(eventStartTime).toISOString()
+        : "",
+      eventEndTime: eventEndTime ? new Date(eventEndTime).toISOString() : "",
+      eventFee,
+      location: lat === 0 ? "" : { lat, lng },
+      sortBy,
+      sortValue,
+    })
+    // dispatch(
+    // )
   }
 
   const handleClear = () => {
@@ -291,18 +296,21 @@ const FilterEvents = () => {
     setSortShow("start")
     setEventTitle("")
     setSportsType("all")
-    dispatch(
-      getAllEvents({
-        eventStartTime: new Date(
-          moment().format("YYYY-MM-DDTHH:MM")
-        ).toISOString(),
-        eventEndTime: new Date(
-          moment(maxDate).format("YYYY-MM-DDTHH:MM")
-        ).toISOString(),
-        sortBy: "start",
-        sortValue: 1,
-      })
-    )
+    getEventFilterPayload({
+      eventStartTime: new Date(
+        moment().format("YYYY-MM-DDTHH:MM")
+      ).toISOString(),
+      eventEndTime: new Date(
+        moment(maxDate).format("YYYY-MM-DDTHH:MM")
+      ).toISOString(),
+      sortBy: "start",
+      sortValue: 1,
+    })
+    // dispatch(
+    //   getAllEvents({
+
+    //   })
+    // )
   }
 
   const handleInputChange = (e: any) => {
@@ -319,12 +327,6 @@ const FilterEvents = () => {
         setSortValue(-1)
       } else if (value === "priceAscending") {
         setSortBy("entryFee")
-        setSortValue(1)
-      } else if (value === "registeredPlayersDescending") {
-        setSortBy("registeredPlayers")
-        setSortValue(-1)
-      } else if (value === "registeredPlayersAscending") {
-        setSortBy("registeredPlayers")
         setSortValue(1)
       } else {
         setSortBy(value)
@@ -452,6 +454,7 @@ const FilterEvents = () => {
                 <LocationOn color="secondary" />
               </Grid>
             </Grid>
+            <div className={classes.emptyDiv} />
             <Grid container spacing={2} alignItems="flex-end">
               <Grid item xs={10}>
                 <TextField
@@ -505,7 +508,21 @@ const FilterEvents = () => {
                     className: classes.inputColor,
                   }}
                 />
+                {/* <KeyboardDateTimePicker
+                  id="eventStartTime"
+                  value={eventStartTime}
+                  onChange={handleInputChange}
+                  label="From Date/Time"
+                  InputProps={{
+                    className: classes.inputColor,
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputColor,
+                  }}
+                  format="YYYY-MM-DD HH:MM"
+                /> */}
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   label="To Date/Time"
@@ -523,6 +540,20 @@ const FilterEvents = () => {
                     className: classes.inputColor,
                   }}
                 />
+
+                {/* <KeyboardDateTimePicker
+                  id="eventEndTime"
+                  value={eventEndTime}
+                  onChange={handleInputChange}
+                  label="To Date/Time"
+                  InputProps={{
+                    className: classes.inputColor,
+                  }}
+                  InputLabelProps={{
+                    className: classes.inputColor,
+                  }}
+                  format="YYYY-MM-DD HH:MM"
+                /> */}
               </Grid>
             </Grid>
             <div className={classes.emptyDiv} />
@@ -533,12 +564,15 @@ const FilterEvents = () => {
                 <Typography gutterBottom className={classes.inputColor}>
                   Price Range (€)
                 </Typography>
+                <div className={classes.emptyDiv} />
+                <div className={classes.emptyDiv} />
                 <Slider
+                  className={classes.slider}
                   value={eventFee}
                   max={maxPrice}
                   min={minPrice}
                   onChange={handleChangePrice}
-                  valueLabelDisplay="auto"
+                  valueLabelDisplay="on"
                   aria-labelledby="range-slider"
                   getAriaValueText={valuetext}
                   id="eventFee"
