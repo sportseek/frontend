@@ -281,8 +281,8 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
       eventEndTime: eventEndTime ? new Date(eventEndTime).toISOString() : "",
       eventFee,
       location: lat === 0 ? "" : { lat, lng },
-      sortBy,
-      sortValue,
+      sortBy: sortBy,
+      sortValue: sortValue,
     })
     // dispatch(
     // )
@@ -330,6 +330,7 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
         setSortValue(1)
       } else {
         setSortBy(value)
+        setSortValue(1)
       }
     }
   }

@@ -117,12 +117,12 @@ const EventSearch = () => {
           sortBy: "start",
           sortValue: 1,
           pageNumber: page,
-          pageSize,
+          pageSize: pageSize,
         })
       )
     }
     dispatch(getMinMaxPrice())
-  }, [dispatch, tabIndex, maxDate, page])
+  }, [dispatch, tabIndex, maxDate, page, pageSize])
 
   useEffect(() => {
     if (eventId) gotoEventDetails(eventId)
@@ -138,18 +138,19 @@ const EventSearch = () => {
       getAllEvents({
         ...filterPayload,
         pageNumber: value,
-        pageSize,
+        pageSize: pageSize,
       })
     )
   }
 
   const getEventFilterPayload = (payload: SearchEventPayload) => {
     setFilterPayload(payload)
+    setPage(1)
     dispatch(
       getAllEvents({
         ...payload,
         pageNumber: 1,
-        pageSize: 9,
+        pageSize: pageSize,
       })
     )
   }
