@@ -29,17 +29,13 @@ import {
   AddPersonalEventFormDialog,
   AddPersonalEventPopOver,
 } from "components/PersonalEvent"
+import { useHistory } from "react-router-dom"
 import CardHeader from "./CalendarCardHeader"
 import SubHeader from "./CalendarCardSubHeader"
 
-type PlayerCalendarProps = {
-  goto: (id: string) => void
-}
-
-const PlayerCalendar = (props: PlayerCalendarProps) => {
+const PlayerCalendar = () => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
-  const { goto: gotoEventDetails } = props
 
   const playerEvents = useAppSelector(selectEvents)
   const isPEventsUpdated = useAppSelector(selectNeedToUpdatePersonalEventList)
@@ -62,6 +58,13 @@ const PlayerCalendar = (props: PlayerCalendarProps) => {
   const { interestedEvents = [], registeredEvents = [] } = player
   const { interestedEventColor, registeredEventColor, personalEventColor } =
     theme.calendar
+
+  const history = useHistory()
+
+  const gotoEventDetails = (id: string) => {
+    const href = `/eventdetails/${id}`
+    history.push(href)
+  }
 
   useEffect(() => {
     dispatch(fetchLoggedInUser())

@@ -51,7 +51,6 @@ function Alert(props: AlertProps) {
 }
 
 const EventParticipate: React.FC<Props> = ({ event: currentEvent }) => {
-  
   const dispatch = useAppDispatch()
 
   useEffect(() => {

@@ -54,7 +54,7 @@ const initialState: EventState = {
   eventConflict: false,
   errors: {} as EventErrors,
   loading: false,
-  totalEvents:0
+  totalEvents: 0,
 }
 
 export const fetchEventById = createAsyncThunk(

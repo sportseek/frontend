@@ -12,8 +12,6 @@ import {
   selectCurrentArena,
 } from "redux/reducers/arena/arenaSlice"
 
-import { fetchAllEventsByCreator } from "redux/reducers/event/eventSlice"
-
 import Location from "components/Location"
 import EventAndArenaDesc from "./EventAndArenaDesc"
 import EventDates from "./EventDates"
@@ -38,11 +36,6 @@ const EventDetails: React.FC<Props> = (props: Props) => {
   const euro = "\u20AC"
   const dispatch = useAppDispatch()
   const currentArena = useAppSelector(selectCurrentArena)
-
-  // useEffect(() => {
-  //   if (currentEvent.creator)
-  //     dispatch(fetchAllEventsByCreator({ creator: currentEvent.creator }))
-  // }, [dispatch, currentEvent.creator])
 
   useEffect(() => {
     if (currentEvent.creator) dispatch(fetchArenaById(currentEvent.creator))
