@@ -132,7 +132,7 @@ const EventSearch = () => {
 
   return (
     <div className={classes.root} ref={rootDivRef}>
-      <div>
+      <div style={{ width: "100%" }}>
         <Helmet title="Search events" />
 
         <main className={classes.content}>

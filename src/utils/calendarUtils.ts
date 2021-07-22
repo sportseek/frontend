@@ -29,7 +29,7 @@ export const getViews = (isSmallScreen: boolean) =>
   isSmallScreen ? smallScreenViews : fullScreenViews
 
 export const getView = (isSmallScreen: boolean) =>
-  isSmallScreen ? "agenda" : "week"
+  isSmallScreen ? "agenda" : "month"
 
 export const setEventColor = (
   idList: string[] | undefined,

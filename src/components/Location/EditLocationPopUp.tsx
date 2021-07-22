@@ -78,6 +78,8 @@ const EditLocation: FC<Props> = (props: Props) => {
   const [pinPos, setPinPos] = useState<ILocation>(position)
   const [address, setAddress] = useState<IAddress>({} as IAddress)
 
+  const [disableSave, setSaveDisabled] = useState<boolean>(true)
+
   const globalErrors = useAppSelector(selectUserErrors)
 
   const showErrorBar = globalErrors instanceof Array && globalErrors.length > 0
@@ -85,6 +87,7 @@ const EditLocation: FC<Props> = (props: Props) => {
   const handleClose = useCallback(() => {
     dispatch(prepareForValidation())
     setOpen(false)
+    setSaveDisabled(true)
   }, [dispatch, setOpen])
 
   const handleSave = () => {
@@ -118,6 +121,7 @@ const EditLocation: FC<Props> = (props: Props) => {
     const lat = e.latLng.lat()
     const lng = e.latLng.lng()
     setPinPos({ lat, lng })
+    setSaveDisabled(false)
   }
 
   return (
@@ -151,7 +155,12 @@ const EditLocation: FC<Props> = (props: Props) => {
         </GoogleMap>
       </DialogContent>
       <DialogActions className={classes.actions}>
-        <Button onClick={handleSave} color="primary" variant="contained">
+        <Button
+          disabled={disableSave}
+          onClick={handleSave}
+          color="primary"
+          variant="contained"
+        >
           Save
         </Button>
         <Button onClick={handleClose} variant="contained" color="primary">

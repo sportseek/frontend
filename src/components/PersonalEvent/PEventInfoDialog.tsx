@@ -83,7 +83,7 @@ const AddPersonalEventDialog = (props: Props) => {
         open={open}
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Add Event
+          Add Schedule
         </DialogTitle>
         <DialogContent dividers>
           <Info color="secondary" />

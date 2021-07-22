@@ -29,9 +29,9 @@ import {
   AddPersonalEventFormDialog,
   AddPersonalEventPopOver,
 } from "components/PersonalEvent"
+import { useHistory } from "react-router-dom"
 import CardHeader from "./CalendarCardHeader"
 import SubHeader from "./CalendarCardSubHeader"
-import { useHistory } from "react-router-dom"
 
 const PlayerCalendar = () => {
   const theme = useTheme()

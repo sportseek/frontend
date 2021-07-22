@@ -1,14 +1,13 @@
 import React, { useEffect, useRef } from "react"
 import Helmet from "react-helmet"
 import { styled } from "@material-ui/core/styles"
-import { Fab as MuiFab, Grid } from "@material-ui/core"
-import { ChevronLeft } from "@material-ui/icons"
+import { Grid } from "@material-ui/core"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   selectCurrentEvent,
   fetchEventById,
 } from "redux/reducers/event/eventSlice"
-import { useHistory, RouteComponentProps, useParams } from "react-router-dom"
+import { RouteComponentProps, useParams } from "react-router-dom"
 import EventDetails from "components/EventDetails"
 import { EVENT_DETAILS_HEADER } from "utils/constants"
 
@@ -24,19 +23,11 @@ const Header = styled(Grid)({
   justifyContent: "space-between",
 })
 
-const Fab = styled(MuiFab)(({ theme }) => ({
-  position: "fixed",
-  top: theme.spacing(10),
-  right: theme.spacing(5),
-  zIndex: 500,
-}))
-
 const EventDetailsPage: React.FC<RouteComponentProps> = () => {
   const dispatch = useAppDispatch()
   const event = useAppSelector(selectCurrentEvent)
 
   const { id } = useParams<{ id: string }>()
-  const history = useHistory()
 
   const rootDivRef = useRef<HTMLDivElement>(null)
 
@@ -49,10 +40,6 @@ const EventDetailsPage: React.FC<RouteComponentProps> = () => {
       })
   }
 
-  const goBack = () => {
-    history.goBack()
-  }
-
   useMountEffect(executeScroll)
 
   useEffect(() => {
@@ -63,17 +50,7 @@ const EventDetailsPage: React.FC<RouteComponentProps> = () => {
     <Root ref={rootDivRef}>
       <Grid container spacing={2}>
         <Helmet title={EVENT_DETAILS_HEADER} />
-        <Header item xs={12} lg={4}>
-          <Fab
-            variant="extended"
-            size="small"
-            color="secondary"
-            onClick={goBack}
-          >
-            <ChevronLeft />
-            Back
-          </Fab>
-        </Header>
+        <Header item xs={12} lg={4} />
         <Grid item xs lg={12}>
           <EventDetails event={event} />
         </Grid>

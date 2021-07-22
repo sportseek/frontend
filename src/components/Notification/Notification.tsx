@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   getNotifications,
   readNotification,
-  selectLoggedInUser,
   selectUserNotification,
 } from "redux/reducers/user/userSlice"
 import { Notifications } from "@material-ui/icons"
@@ -45,7 +44,6 @@ const Notification = () => {
   const classes = useStyles()
   const dispatch = useAppDispatch()
   const userNotifications = useAppSelector(selectUserNotification)
-  const { type } = useAppSelector(selectLoggedInUser)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [pageNumber, setPageNumber] = useState(1)
   const [unreadNotification, setUnreadNotification] = useState(0)
@@ -77,7 +75,7 @@ const Notification = () => {
 
   const handleReadNotification = (notification: INotification) => {
     // readNotification(notificationId, pageNumber);
-    if (type === "player") gotoEventDetails(notification.eventId)
+    gotoEventDetails(notification.eventId)
     dispatch(readNotification({ notificationId: notification._id, pageNumber }))
     closeNotificationMenu()
   }
