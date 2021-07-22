@@ -97,13 +97,13 @@ const EventSearch = () => {
           ).toISOString(),
           sortBy: "start",
           sortValue: 1,
-          pageNumber: page,
-          pageSize,
+          pageNumber: 1,
+          pageSize: pageSize,
         })
       )
     }
     dispatch(getMinMaxPrice())
-  }, [dispatch, maxDate, page])
+  }, [dispatch, maxDate])
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -114,18 +114,19 @@ const EventSearch = () => {
       getAllEvents({
         ...filterPayload,
         pageNumber: value,
-        pageSize,
+        pageSize: pageSize,
       })
     )
   }
 
   const getEventFilterPayload = (payload: SearchEventPayload) => {
     setFilterPayload(payload)
+    setPage(1)
     dispatch(
       getAllEvents({
         ...payload,
         pageNumber: 1,
-        pageSize: 9,
+        pageSize: pageSize,
       })
     )
   }

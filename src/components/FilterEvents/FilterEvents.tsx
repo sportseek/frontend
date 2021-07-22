@@ -281,8 +281,8 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
       eventEndTime: eventEndTime ? new Date(eventEndTime).toISOString() : "",
       eventFee,
       location: lat === 0 ? "" : { lat, lng },
-      sortBy,
-      sortValue,
+      sortBy: sortBy,
+      sortValue: sortValue,
     })
     // dispatch(
     // )
@@ -330,6 +330,7 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
         setSortValue(1)
       } else {
         setSortBy(value)
+        setSortValue(1)
       }
     }
   }
@@ -350,7 +351,7 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
           <Divider />
           <div className={classes.margin}>
             <Grid container spacing={2} alignItems="flex-end">
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Typography
                   gutterBottom
                   variant="h5"
@@ -359,7 +360,7 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
                 >
                   Filters
                 </Typography>
-              </Grid>
+              </Grid> */}
               <Grid item xs={10}>
                 <TextField
                   label="Search"
