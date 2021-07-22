@@ -152,7 +152,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   }
 
   useEffect(() => {
-    if(!isLoading && !hasErrors) {
+    if (!isLoading && !hasErrors) {
       handleClose()
     }
   }, [isLoading, hasErrors])
@@ -336,7 +336,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               required
               fullWidth
               id="entryFee"
-              label="Entry Fee"
+              label="Entry Fee Per Player"
               value={entryFee}
               onChange={handleInputChange}
               className={classes.formInput}

@@ -86,8 +86,7 @@ const EventDetails: React.FC<Props> = (props: Props) => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1">
-              Amount received if event is cancelled: {currentEvent.entryFee},
-              Rev: {currentEvent.revenue}
+              Amount received if event is cancelled: {currentEvent.entryFee}
             </Typography>
           </Grid>
           <Grid item xs={12}>
