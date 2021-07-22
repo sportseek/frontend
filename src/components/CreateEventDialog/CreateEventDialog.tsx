@@ -146,8 +146,10 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   }, [isUpdate, selectedEvent])
 
   const handleClose = () => {
+    if(!isUpdate) {
+      setInitailState()
+    }
     dispatch(clearEventErrors())
-    setInitailState()
     onClose()
   }
 
