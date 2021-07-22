@@ -116,13 +116,13 @@ const EventSearch = () => {
           ).toISOString(),
           sortBy: "start",
           sortValue: 1,
-          pageNumber: page,
+          pageNumber: 1,
           pageSize: pageSize,
         })
       )
     }
     dispatch(getMinMaxPrice())
-  }, [dispatch, tabIndex, maxDate, page, pageSize])
+  }, [dispatch, tabIndex, maxDate, pageSize])
 
   useEffect(() => {
     if (eventId) gotoEventDetails(eventId)
