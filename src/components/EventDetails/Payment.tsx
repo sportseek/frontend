@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Dialog from "@material-ui/core/Dialog"
@@ -105,17 +105,17 @@ const Payment: React.FC<Props> = ({
     }
   }
 
-  const handleCreatePaymentIntent = async () => {
+  const handleCreatePaymentIntent = useCallback(async () => {
     dispatch(
       createPaymentIntent({
         amount: currentEvent.entryFee * 100,
       })
     )
-  }
+  }, [currentEvent.entryFee, dispatch])
 
   useEffect(() => {
     if (currentEvent.entryFee && !payWithWallet) handleCreatePaymentIntent()
-  }, [currentEvent.entryFee, payWithWallet])
+  }, [currentEvent.entryFee, handleCreatePaymentIntent, payWithWallet])
 
   const handleChange = async (event: any) => {
     setDisabled(event.empty)

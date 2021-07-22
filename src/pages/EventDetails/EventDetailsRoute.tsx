@@ -64,7 +64,12 @@ const EventDetailsPage: React.FC<RouteComponentProps> = () => {
       <Grid container spacing={2}>
         <Helmet title={EVENT_DETAILS_HEADER} />
         <Header item xs={12} lg={4}>
-          <Fab variant="extended" size="small" color="primary" onClick={goBack}>
+          <Fab
+            variant="extended"
+            size="small"
+            color="secondary"
+            onClick={goBack}
+          >
             <ChevronLeft />
             Back
           </Fab>
