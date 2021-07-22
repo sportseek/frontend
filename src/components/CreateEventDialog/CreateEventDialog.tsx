@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react"
+import React, { FormEvent, useCallback, useEffect, useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
 import DialogTitle from "@material-ui/core/DialogTitle"
@@ -16,7 +16,7 @@ import {
   selectLoading,
   updateEvent,
 } from "redux/reducers/event/eventSlice"
-import { IArenaOwner, IEvent, CreateEventPayload } from "types"
+import { IArenaOwner, IEvent } from "types"
 import IconButton from "@material-ui/core/IconButton"
 import Edit from "@material-ui/icons/Edit"
 
@@ -145,19 +145,19 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     }
   }, [isUpdate, selectedEvent])
 
-  const handleClose = () => {
-    if(!isUpdate) {
+  const handleClose = useCallback(() => {
+    if (!isUpdate) {
       setInitailState()
     }
     dispatch(clearEventErrors())
     onClose()
-  }
+  }, [dispatch, isUpdate, onClose])
 
   useEffect(() => {
-    if(!isLoading && !hasErrors) {
+    if (!isLoading && !hasErrors) {
       handleClose()
     }
-  }, [isLoading, hasErrors])
+  }, [isLoading, hasErrors, handleClose])
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target
@@ -205,8 +205,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
 
   const handleImageChange = (event: any) => {
     const image = event.target.files[0]
-    let src = URL.createObjectURL(event.target.files[0])
-    let preview: any = document.getElementById("event-image-preview")
+    const src = URL.createObjectURL(event.target.files[0])
+    const preview: any = document.getElementById("event-image-preview")
     preview.src = src
     setImageUrl(src)
     setEventImage(image)

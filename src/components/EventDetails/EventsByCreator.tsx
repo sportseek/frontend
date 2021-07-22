@@ -30,24 +30,14 @@ const EventsByCreator: React.FC<Props> = ({ event: currentEvent }) => {
       )
   }, [dispatch, currentEvent.creator])
 
-  const gotoEventDetails = useCallback(
-    (id: string) => {
-      // setTabIndex(1)
-      dispatch(setCurEventId(id))
-    },
-    [dispatch]
-  )
-
   return (
     <Grid container spacing={4} justify="space-around" alignItems="center">
       {eventsByCreator.map((item) =>
-        item._id != currentEvent._id ? (
+        item._id !== currentEvent._id ? (
           <Grid item xs={12} md={6} lg={3} key={item._id}>
-            <EventCard event={item} openDetails={gotoEventDetails} />
+            <EventCard event={item} />
           </Grid>
-        ) : (
-          ""
-        )
+        ) : null
       )}
     </Grid>
   )

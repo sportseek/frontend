@@ -87,7 +87,7 @@ const SideBar = (props: WithWidthProps) => {
   const open = useAppSelector(selectOpenSideBar)
   const mobileOpen = useAppSelector(selectOpenSideBarMobile)
   const userType = useAppSelector(selectUserType)
-  const pages: PageDataType[] = getPages(userType)
+  const pages: PageDataType[] = getPages(userType, true)
   const dispatch = useAppDispatch()
   const SliderIcon = open ? LeftIcon : RightIcon
   const toggleDrawer = () =>

@@ -83,10 +83,10 @@ const AddPersonalEventDialog = (props: Props) => {
         open={open}
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Add Event
+          Add Schedule
         </DialogTitle>
         <DialogContent dividers>
-          <Info color="secondary"/>
+          <Info color="secondary" />
           <Typography gutterBottom>
             If you are not available during a certain time, you can add it into
             the calendar.
