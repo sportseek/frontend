@@ -338,7 +338,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               required
               fullWidth
               id="entryFee"
-              label="Entry Fee"
+              label="Entry Fee Per Player"
               value={entryFee}
               onChange={handleInputChange}
               className={classes.formInput}

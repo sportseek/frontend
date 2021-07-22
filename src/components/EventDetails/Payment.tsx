@@ -20,6 +20,13 @@ import {
 import { selectLoggedInUser } from "redux/reducers/user/userSlice"
 import IPlayer from "types/Player"
 
+import Snackbar from "@material-ui/core/Snackbar"
+import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"
+
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />
+}
+
 const useStyles = makeStyles({
   paymentContainer: {
     padding: "16px",
@@ -127,6 +134,19 @@ const Payment: React.FC<Props> = ({
     else setPayWithWallet(false)
   }
 
+  const [snackbarOpen, setsnackbarOpen] = React.useState(false)
+
+  const handleSnackbarClose = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return
+    }
+
+    setsnackbarOpen(false)
+  }
+
   return (
     <Dialog
       // fullWidth
@@ -140,13 +160,20 @@ const Payment: React.FC<Props> = ({
       <div className={classes.paymentContainer}>
         {succeeded ? (
           <article>
-            <h4>Thank you</h4>
-            <h4>Your payment was successful</h4>
+            <h3>Thank you!</h3>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+              <Alert onClose={handleClose} severity="success">
+                Your payment was successful!
+              </Alert>
+            </Snackbar>
           </article>
         ) : (
           <article>
             <p>Your registration fee is {currentEvent.entryFee} </p>
-            <p>Your wallet: {player.wallet} </p>
+            <p>
+              Your wallet:{" "}
+              {player.wallet ? player.wallet.toFixed(2) : player.wallet}{" "}
+            </p>
 
             <div className={classes.paymentButtonContainer}>
               <Button

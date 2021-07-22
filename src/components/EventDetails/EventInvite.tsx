@@ -124,6 +124,7 @@ const EventInvite: React.FC<PropsComp> = ({ registered: registered }) => {
               onClick={handleClickRemove}
               variant="contained"
               disabled={
+                currentEvent.status !== "active" ||
                 currentEvent.registeredPlayers.length == currentEvent.maxPlayers
               }
             >
