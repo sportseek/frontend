@@ -279,7 +279,7 @@ const ArenaEvents = () => {
             ))}
           {arenaEvents.length === 0 && (
             <div>
-              <h3>You have not created any events yet</h3>
+              <h3>No events</h3>
             </div>
           )}
         </CardContent>

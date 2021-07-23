@@ -19,6 +19,8 @@ import {
 import { IArenaOwner, IEvent } from "types"
 import IconButton from "@material-ui/core/IconButton"
 import Edit from "@material-ui/icons/Edit"
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles({
   createEventDialog: {
@@ -71,6 +73,10 @@ const useStyles = makeStyles({
   },
 })
 
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export interface CreateEventDialogProps {
   open: boolean
   onClose: () => void
@@ -117,6 +123,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   const defaultImage =
     "https://res.cloudinary.com/fshahriar008/image/upload/v1609701702/user_bccush.png"
   const [imageUrl, setImageUrl] = useState(defaultImage)
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [snackbarMsg, setSnackbarMsg] = useState("")
   const hidden = true
 
   const setInitailState = () => {
@@ -168,8 +176,26 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     if (name === "eventEndTime") setEventEndTime(value)
     if (name === "entryFee") setEntryFee(value)
     if (name === "maximumParticipants") setMaximumParticipants(value)
-    if (name === "minimumParticipants") setMinimumParticipants(value)
+    if (name === "minimumParticipants") {
+      if (parseFloat(value) > parseFloat(maximumParticipants)) {
+        setSnackbarMsg("Minimum participants can not be greater than maximum participants")
+        setOpenSnackbar(true)
+        setMinimumParticipants("0")
+      }
+      else {
+        setMinimumParticipants(value)
+      }
+    }
   }
+
+  const handleSnackbarOpen = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleSnackbarClose = (event?: React.SyntheticEvent) => {
+
+    setOpenSnackbar(false);
+  };
 
   const handleCreateEvent = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -396,18 +422,11 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 Close
               </Button>
             </div>
-            {/* <div>
-              <p>Event {isUpdate ? "updated" : "created"} successfully.</p>
-              <Button
-                variant="contained"
-                color="secondary"
-                type="button"
-                className={classes.dialogBtn}
-                onClick={handleClose}
-              >
-                Close
-              </Button>
-            </div> */}
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
+              <Alert onClose={handleSnackbarClose} severity="error">
+                {snackbarMsg}
+        </Alert>
+            </Snackbar>
           </form>
         </div>
       </div>
