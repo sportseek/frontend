@@ -49,7 +49,7 @@ const EventDetails: React.FC = () => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
-              <b>Sport Type:</b> {currentEvent.sportType}
+              <b>Sport Type:</b> {currentEvent.sportType? (currentEvent.sportType.charAt(0).toUpperCase() + currentEvent.sportType.slice(1)):("")}
             </Typography>
           </Grid>
           <Grid item xs={12}>
