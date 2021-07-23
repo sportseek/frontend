@@ -12,7 +12,7 @@ import {
   selectCurrentArena,
 } from "redux/reducers/arena/arenaSlice"
 
-import Location from "components/Location"
+import Location from "components/EventLocation"
 import EventAndArenaDesc from "./EventAndArenaDesc"
 import EventDates from "./EventDates"
 import PlayerNumbers from "./EventPlayerNumbers"
@@ -93,7 +93,7 @@ const EventDetails: React.FC<Props> = (props: Props) => {
       <Grid item xs={12} lg={6}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Location editable={false} position={currentEvent.location} />
+            <Location arena={currentArena} />
           </Grid>
           <Grid item xs={12}>
             <ArenaContact arena={currentArena} />
