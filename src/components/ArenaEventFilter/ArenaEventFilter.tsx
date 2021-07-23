@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: "16px",
     },
     buttons: {
+      marginTop: "16px",
       display: "flex",
       alignContent: "center",
       justifyContent: "space-between",
@@ -170,8 +171,7 @@ const ArenaEventFilter: React.FC<Props> = ({ getFilterPayload }) => {
         elevation={0}
       >
         <div className={classes.margin}>
-          <h3>Filter Events</h3>
-          <Grid container spacing={2} alignItems="flex-end">
+          <Grid container>
             <Grid item xs={12}>
               <Typography
                 gutterBottom
@@ -192,9 +192,6 @@ const ArenaEventFilter: React.FC<Props> = ({ getFilterPayload }) => {
                 onChange={handleInputChange}
               />
             </Grid>
-            <Grid item xs={2}>
-              <Search color="secondary" />
-            </Grid>
           </Grid>
           <Grid container spacing={2} alignItems="flex-end">
             <Grid item xs={10}>
@@ -214,12 +211,7 @@ const ArenaEventFilter: React.FC<Props> = ({ getFilterPayload }) => {
                 ))}
               </TextField>
             </Grid>
-            <Grid item xs={2}>
-              <SportsBasketball color="secondary" />
-            </Grid>
           </Grid>
-          <div className={classes.emptyDiv} />
-          <Divider />
           <div className={classes.emptyDiv} />
           <Grid container spacing={2} alignItems="flex-end">
             <Grid item xs={12}>
@@ -245,9 +237,6 @@ const ArenaEventFilter: React.FC<Props> = ({ getFilterPayload }) => {
               />
             </Grid>
           </Grid>
-          <div className={classes.emptyDiv} />
-          <Divider />
-          <div className={classes.emptyDiv} />
           <div className={classes.buttons}>
             <Button
               variant="contained"
