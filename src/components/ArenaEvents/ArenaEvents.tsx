@@ -127,10 +127,11 @@ const ArenaEvents = () => {
     const { name, value } = e.target
     if (name === "pageSize") {
       setPageSize(value)
+      setPageNumber(1)
       dispatch(
         getEvents({
           ...filterPayload,
-          pageNumber,
+          pageNumber: 1,
           pageSize: value,
         })
       )

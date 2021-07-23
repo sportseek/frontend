@@ -151,13 +151,13 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     }
     dispatch(clearEventErrors())
     onClose()
-  }, [dispatch, isUpdate, onClose])
+  }, [dispatch, isUpdate])
 
   useEffect(() => {
     if (!isLoading && !hasErrors) {
       handleClose()
     }
-  }, [isLoading, hasErrors, handleClose])
+  }, [isLoading, hasErrors])
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target
