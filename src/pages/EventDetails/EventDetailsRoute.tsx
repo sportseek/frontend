@@ -2,11 +2,8 @@ import React, { useEffect, useRef } from "react"
 import Helmet from "react-helmet"
 import { styled } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
-import { useAppDispatch, useAppSelector } from "redux/hooks"
-import {
-  selectCurrentEvent,
-  fetchEventById,
-} from "redux/reducers/event/eventSlice"
+import { useAppDispatch } from "redux/hooks"
+import { fetchEventById } from "redux/reducers/event/eventSlice"
 import { RouteComponentProps, useParams } from "react-router-dom"
 import EventDetails from "components/EventDetails"
 import { EVENT_DETAILS_HEADER } from "utils/constants"
@@ -25,7 +22,6 @@ const Header = styled(Grid)({
 
 const EventDetailsPage: React.FC<RouteComponentProps> = () => {
   const dispatch = useAppDispatch()
-  const event = useAppSelector(selectCurrentEvent)
 
   const { id } = useParams<{ id: string }>()
 
@@ -52,7 +48,7 @@ const EventDetailsPage: React.FC<RouteComponentProps> = () => {
         <Helmet title={EVENT_DETAILS_HEADER} />
         <Header item xs={12} lg={4} />
         <Grid item xs lg={12}>
-          <EventDetails event={event} />
+          <EventDetails />
         </Grid>
       </Grid>
     </Root>
