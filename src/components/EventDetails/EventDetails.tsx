@@ -5,12 +5,12 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { Typography } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
 
-import { IEvent } from "types"
-
 import {
   fetchArenaById,
   selectCurrentArena,
 } from "redux/reducers/arena/arenaSlice"
+
+import { selectCurrentEvent } from "redux/reducers/event/eventSlice"
 
 import Location from "components/EventLocation"
 import EventAndArenaDesc from "./EventAndArenaDesc"
@@ -21,12 +21,8 @@ import EventInterested from "./EventInterested"
 import ArenaContact from "./ArenaContact"
 import EventsByCreator from "./EventsByCreator"
 
-type Props = {
-  event: IEvent
-}
-
-const EventDetails: React.FC<Props> = (props: Props) => {
-  const { event: currentEvent } = props
+const EventDetails: React.FC = () => {
+  const currentEvent = useAppSelector(selectCurrentEvent)
 
   const mainFeaturedPost = {
     title: currentEvent.title,
