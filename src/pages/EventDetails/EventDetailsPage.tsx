@@ -82,7 +82,7 @@ const EventDetailsPage = (props: EventDetailsProps) => {
           </Fab>
         </Header>
         <Grid item xs lg={12}>
-          <EventDetails event={event} />
+          <EventDetails />
         </Grid>
       </Grid>
     </Root>

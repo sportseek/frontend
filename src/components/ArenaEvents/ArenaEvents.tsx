@@ -127,10 +127,11 @@ const ArenaEvents = () => {
     const { name, value } = e.target
     if (name === "pageSize") {
       setPageSize(value)
+      setPageNumber(1)
       dispatch(
         getEvents({
           ...filterPayload,
-          pageNumber,
+          pageNumber: 1,
           pageSize: value,
         })
       )
@@ -278,7 +279,7 @@ const ArenaEvents = () => {
             ))}
           {arenaEvents.length === 0 && (
             <div>
-              <h3>You have not created any events yet</h3>
+              <h3>No events</h3>
             </div>
           )}
         </CardContent>

@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react"
+import React, { FormEvent, useCallback, useEffect, useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
 import DialogTitle from "@material-ui/core/DialogTitle"
@@ -16,9 +16,11 @@ import {
   selectLoading,
   updateEvent,
 } from "redux/reducers/event/eventSlice"
-import { IArenaOwner, IEvent, CreateEventPayload } from "types"
+import { IArenaOwner, IEvent } from "types"
 import IconButton from "@material-ui/core/IconButton"
 import Edit from "@material-ui/icons/Edit"
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles({
   createEventDialog: {
@@ -71,6 +73,10 @@ const useStyles = makeStyles({
   },
 })
 
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export interface CreateEventDialogProps {
   open: boolean
   onClose: () => void
@@ -117,6 +123,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
   const defaultImage =
     "https://res.cloudinary.com/fshahriar008/image/upload/v1609701702/user_bccush.png"
   const [imageUrl, setImageUrl] = useState(defaultImage)
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [snackbarMsg, setSnackbarMsg] = useState("")
   const hidden = true
 
   const setInitailState = () => {
@@ -145,14 +153,16 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     }
   }, [isUpdate, selectedEvent])
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
+    if (!isUpdate) {
+      setInitailState()
+    }
     dispatch(clearEventErrors())
-    setInitailState()
     onClose()
-  }
+  }, [dispatch, isUpdate])
 
   useEffect(() => {
-    if(!isLoading && !hasErrors) {
+    if (!isLoading && !hasErrors) {
       handleClose()
     }
   }, [isLoading, hasErrors])
@@ -166,8 +176,26 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
     if (name === "eventEndTime") setEventEndTime(value)
     if (name === "entryFee") setEntryFee(value)
     if (name === "maximumParticipants") setMaximumParticipants(value)
-    if (name === "minimumParticipants") setMinimumParticipants(value)
+    if (name === "minimumParticipants") {
+      if (parseFloat(value) > parseFloat(maximumParticipants)) {
+        setSnackbarMsg("Minimum participants can not be greater than maximum participants")
+        setOpenSnackbar(true)
+        setMinimumParticipants("0")
+      }
+      else {
+        setMinimumParticipants(value)
+      }
+    }
   }
+
+  const handleSnackbarOpen = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleSnackbarClose = (event?: React.SyntheticEvent) => {
+
+    setOpenSnackbar(false);
+  };
 
   const handleCreateEvent = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -203,8 +231,8 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
 
   const handleImageChange = (event: any) => {
     const image = event.target.files[0]
-    let src = URL.createObjectURL(event.target.files[0])
-    let preview: any = document.getElementById("event-image-preview")
+    const src = URL.createObjectURL(event.target.files[0])
+    const preview: any = document.getElementById("event-image-preview")
     preview.src = src
     setImageUrl(src)
     setEventImage(image)
@@ -336,7 +364,7 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
               required
               fullWidth
               id="entryFee"
-              label="Entry Fee"
+              label="Entry Fee Per Player"
               value={entryFee}
               onChange={handleInputChange}
               className={classes.formInput}
@@ -394,18 +422,11 @@ const CreateEventDialog = (props: CreateEventDialogProps) => {
                 Close
               </Button>
             </div>
-            {/* <div>
-              <p>Event {isUpdate ? "updated" : "created"} successfully.</p>
-              <Button
-                variant="contained"
-                color="secondary"
-                type="button"
-                className={classes.dialogBtn}
-                onClick={handleClose}
-              >
-                Close
-              </Button>
-            </div> */}
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
+              <Alert onClose={handleSnackbarClose} severity="error">
+                {snackbarMsg}
+        </Alert>
+            </Snackbar>
           </form>
         </div>
       </div>

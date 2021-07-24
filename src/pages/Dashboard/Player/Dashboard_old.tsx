@@ -61,7 +61,7 @@ const Dashboard = () => {
               justify="space-between"
             >
               <Grid item>
-                <Calendar goto={goEventDetails} />
+                <Calendar />
               </Grid>
             </ColContainer>
           </Column2>

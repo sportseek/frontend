@@ -281,8 +281,8 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
       eventEndTime: eventEndTime ? new Date(eventEndTime).toISOString() : "",
       eventFee,
       location: lat === 0 ? "" : { lat, lng },
-      sortBy,
-      sortValue,
+      sortBy: sortBy,
+      sortValue: sortValue,
     })
     // dispatch(
     // )
@@ -330,6 +330,7 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
         setSortValue(1)
       } else {
         setSortBy(value)
+        setSortValue(1)
       }
     }
   }
@@ -350,16 +351,6 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
           <Divider />
           <div className={classes.margin}>
             <Grid container spacing={2} alignItems="flex-end">
-              <Grid item xs={12}>
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  component="h2"
-                  className={classes.headertext}
-                >
-                  Filters
-                </Typography>
-              </Grid>
               <Grid item xs={10}>
                 <TextField
                   label="Search"
@@ -508,19 +499,6 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
                     className: classes.inputColor,
                   }}
                 />
-                {/* <KeyboardDateTimePicker
-                  id="eventStartTime"
-                  value={eventStartTime}
-                  onChange={handleInputChange}
-                  label="From Date/Time"
-                  InputProps={{
-                    className: classes.inputColor,
-                  }}
-                  InputLabelProps={{
-                    className: classes.inputColor,
-                  }}
-                  format="YYYY-MM-DD HH:MM"
-                /> */}
               </Grid>
 
               <Grid item xs={12}>
@@ -540,20 +518,6 @@ const FilterEvents: React.FC<Props> = ({ getEventFilterPayload }) => {
                     className: classes.inputColor,
                   }}
                 />
-
-                {/* <KeyboardDateTimePicker
-                  id="eventEndTime"
-                  value={eventEndTime}
-                  onChange={handleInputChange}
-                  label="To Date/Time"
-                  InputProps={{
-                    className: classes.inputColor,
-                  }}
-                  InputLabelProps={{
-                    className: classes.inputColor,
-                  }}
-                  format="YYYY-MM-DD HH:MM"
-                /> */}
               </Grid>
             </Grid>
             <div className={classes.emptyDiv} />

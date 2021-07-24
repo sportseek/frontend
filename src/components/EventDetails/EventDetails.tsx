@@ -5,16 +5,14 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { Typography } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
 
-import { IEvent } from "types"
-
 import {
   fetchArenaById,
   selectCurrentArena,
 } from "redux/reducers/arena/arenaSlice"
 
-import { fetchAllEventsByCreator } from "redux/reducers/event/eventSlice"
+import { selectCurrentEvent } from "redux/reducers/event/eventSlice"
 
-import Location from "components/Location"
+import Location from "components/EventLocation"
 import EventAndArenaDesc from "./EventAndArenaDesc"
 import EventDates from "./EventDates"
 import PlayerNumbers from "./EventPlayerNumbers"
@@ -23,12 +21,8 @@ import EventInterested from "./EventInterested"
 import ArenaContact from "./ArenaContact"
 import EventsByCreator from "./EventsByCreator"
 
-type Props = {
-  event: IEvent
-}
-
-const EventDetails: React.FC<Props> = (props: Props) => {
-  const { event: currentEvent } = props
+const EventDetails: React.FC = () => {
+  const currentEvent = useAppSelector(selectCurrentEvent)
 
   const mainFeaturedPost = {
     title: currentEvent.title,
@@ -38,11 +32,6 @@ const EventDetails: React.FC<Props> = (props: Props) => {
   const euro = "\u20AC"
   const dispatch = useAppDispatch()
   const currentArena = useAppSelector(selectCurrentArena)
-
-  // useEffect(() => {
-  //   if (currentEvent.creator)
-  //     dispatch(fetchAllEventsByCreator({ creator: currentEvent.creator }))
-  // }, [dispatch, currentEvent.creator])
 
   useEffect(() => {
     if (currentEvent.creator) dispatch(fetchArenaById(currentEvent.creator))
@@ -60,7 +49,7 @@ const EventDetails: React.FC<Props> = (props: Props) => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
-              <b>Sport Type:</b> {currentEvent.sportType}
+              <b>Sport Type:</b> {currentEvent.sportType? (currentEvent.sportType.charAt(0).toUpperCase() + currentEvent.sportType.slice(1)):("")}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -86,8 +75,7 @@ const EventDetails: React.FC<Props> = (props: Props) => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1">
-              Amount received if event is cancelled: {currentEvent.entryFee},
-              Rev: {currentEvent.revenue}
+              Amount received if event is cancelled: {currentEvent.entryFee}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -101,7 +89,7 @@ const EventDetails: React.FC<Props> = (props: Props) => {
       <Grid item xs={12} lg={6}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Location editable={false} position={currentEvent.location} />
+            <Location arena={currentArena} />
           </Grid>
           <Grid item xs={12}>
             <ArenaContact arena={currentArena} />

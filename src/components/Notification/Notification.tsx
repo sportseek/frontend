@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "redux/hooks"
 import {
   getNotifications,
   readNotification,
-  selectLoggedInUser,
   selectUserNotification,
 } from "redux/reducers/user/userSlice"
 import { Notifications } from "@material-ui/icons"
@@ -14,10 +13,10 @@ import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import Button from "@material-ui/core/Button"
 import Tooltip from "components/Common/Tooltip"
-import { setCurEventId } from "redux/reducers/event/eventSlice"
 import { INotification } from "types/Notification"
 import MarkunreadIcon from "@material-ui/icons/Markunread"
 import DraftsIcon from "@material-ui/icons/Drafts"
+import { useHistory } from "react-router-dom"
 
 const useStyles = makeStyles(() => ({
   notificationMenu: {
@@ -45,10 +44,11 @@ const Notification = () => {
   const classes = useStyles()
   const dispatch = useAppDispatch()
   const userNotifications = useAppSelector(selectUserNotification)
-  const { type } = useAppSelector(selectLoggedInUser)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [pageNumber, setPageNumber] = useState(1)
   const [unreadNotification, setUnreadNotification] = useState(0)
+
+  const history = useHistory()
 
   useEffect(() => {
     dispatch(getNotifications(pageNumber))
@@ -68,9 +68,14 @@ const Notification = () => {
     setAnchorEl(null)
   }
 
+  const gotoEventDetails = (id: string) => {
+    const href = `/eventdetails/${id}`
+    history.push(href)
+  }
+
   const handleReadNotification = (notification: INotification) => {
     // readNotification(notificationId, pageNumber);
-    if (type === "player") dispatch(setCurEventId(notification.eventId))
+    gotoEventDetails(notification.eventId)
     dispatch(readNotification({ notificationId: notification._id, pageNumber }))
     closeNotificationMenu()
   }

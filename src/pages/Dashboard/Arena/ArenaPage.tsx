@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: "32px",
   },
   arenaEvents: {
-    width: "50%",
+    width: "58%",
   },
   arenaDetails: {
     width: "40%",

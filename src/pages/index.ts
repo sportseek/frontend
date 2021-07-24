@@ -16,6 +16,7 @@ import MainLayout, { MainLayoutType } from "./MainLayout/Main"
 import Search from "./EventSearch/EventSearch"
 import PlayerBoard from "./Dashboard/Player/Dashboard"
 import ArenaBoard from "./Dashboard/Arena/ArenaPage"
+import EventDetails from "./EventDetails/EventDetailsRoute"
 
 import DummyPage from "./Dummy/DummyPage"
 
@@ -46,6 +47,15 @@ const EventSearch: Page = {
   icon: SearchIcon,
   containsHome: true,
   Component: Search,
+}
+
+const EventDetailsPage: Page = {
+  id: "Details",
+  path: "/eventdetails/:id",
+  header: "Details",
+  icon: SearchIcon,
+  containsHome: true,
+  Component: EventDetails,
 }
 
 const PlayerDashBoard: Page = {
@@ -102,12 +112,12 @@ const PlayerPages = [
 ]
 const ArenaPages = [ArenaDashBoard, SettingsRoutes, FaqRoutes, SupportRoutes]
 
-export const getPages = (type: string) => {
+export const getPages = (type: string, sidebar = false) => {
   switch (type) {
     case UserType.PLAYER:
-      return PlayerPages
+      return sidebar ? PlayerPages : [EventDetailsPage, ...PlayerPages]
     case UserType.ARENA:
-      return ArenaPages
+      return sidebar ? ArenaPages : [EventDetailsPage, ...ArenaPages]
     default:
       break
   }

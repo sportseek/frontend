@@ -8,14 +8,14 @@ import theme from "theme"
 
 const App = () => (
   <>
-      <StylesProvider injectFirst>
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline />
-          <Router>
-            <Routes />
-          </Router>
-        </MuiThemeProvider>
-      </StylesProvider>
+    <StylesProvider injectFirst>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <Routes />
+        </Router>
+      </MuiThemeProvider>
+    </StylesProvider>
   </>
 )
 
